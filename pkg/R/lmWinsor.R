@@ -166,6 +166,8 @@ lmWinsor <- function(formula, data, lower=NULL, upper=NULL, trim=0,
                        c("newConstraint", "lower", "upper") ) )
 #  
   X <- model.matrix(fit)[, !is.na(coef0), drop=FALSE]
+  yMin <- min(y.)
+  yMax <- max(y.) 
 #   
   for(i in 1:N){
 #   The standard exit from this loop is via 'break'
@@ -180,13 +182,15 @@ lmWinsor <- function(formula, data, lower=NULL, upper=NULL, trim=0,
         lows <- (which(!out[, 1])[max(dLow.)==dLow.])
         lowest <- lows[y.[lows]==min(y.[lows])]
         out[lowest, ] <- c(TRUE, FALSE)
-        templimits[i, "newConstraint"] <- lowest 
+        templimits[i, "newConstraint"] <- lowest
+        yMin <- min(yLin, pred[pred>pred[lowest]])
       }
       else{
         highs <- (which(!out[, 1])[max(dHi.)==dHi.])
         highest <- highs[y.[highs]==max(y.[highs])]      
         out[highest, ] <- TRUE
-        templimits[i, "newConstraint"] <- highest 
+        templimits[i, "newConstraint"] <- highest
+        yMax <- max(yUin, pred[pred<pred[highest]]) 
       }
     }
 #   7.2.  Use QP ...
@@ -216,14 +220,15 @@ lmWinsor <- function(formula, data, lower=NULL, upper=NULL, trim=0,
     AmatH <- X[outH, , drop=FALSE]
     Amat. <- rbind(-AmatL, AmatH)
 #
-    maxPredLo <- max(pred[outL], -Inf)
-    minPredHi <- min(pred[outH], Inf)
-    yMin <- min(y.[y.>maxPredLo], yL)+Eps
+#    maxPredLo <- max(pred[outL], -Inf)
+#    minPredHi <- min(pred[outH], Inf)
+#    yMin <- min(y.[y.>maxPredLo], yL)+Eps
 #
-    yMax <- max(y.[y.<minPredHi], yU)-Eps
+#    yMax <- max(y.[y.<minPredHi], yU)-Eps
 #
     bvec. <- c(rep(-yMin, nrow(AmatL)), rep(yMax, nrow(AmatH)))
-    templimits[i, c("lower", "upper")] <- range(-bvec.)     
+#
+    templimits[i, c("lower", "upper")] <- c(yMin, yMax)
 #
 #    QPi <- solve.QP(Dmat=Dmat., dvec=dvec., Amat=Amat., bvec=bvec.)
     env <- new.env()

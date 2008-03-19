@@ -182,19 +182,21 @@
   The options for 'message' are as follows:  
 
   \itemize{
-    \item{'Initial fit in bounds'}{
-      if all predictions were between 'lower' and 'upper' for 'y'.
+    \item{1}{
+      'Initial fit in bounds':  All predictions were between 'lower' and
+      'upper' for 'y'. 
     }
-    \item{'QP iterations successful'}{
-      The QP iteration described in 'Details', step 7, terminated with
-      all predictions either at or between the 'lower' and 'upper' for
-      'y'.  
+    \item{2}{
+      'QP iterations successful':  The QP iteration described in
+      'Details', step 7, terminated with all predictions either at or
+      between the 'lower' and 'upper' for 'y'.  
     }
-    \item{'Iteration terminated by a singular quadratic program'}{
-      The QP iteration described in 'Details', step 7, terminated when
-      the model.matrix for the QP objective function became rank
-      deficient.  (Rank deficient in this case means that the smallest
-      singular value is less than 'eps' times the largest.)  
+    \item{3}{
+      'Iteration terminated by a singular quadratic program':  The QP
+      iteration described in 'Details', step 7, terminated when the
+      model.matrix for the QP objective function became rank deficient.
+      (Rank deficient in this case means that the smallest singular
+      value is less than 'eps' times the largest.) 
     }
   }
 
