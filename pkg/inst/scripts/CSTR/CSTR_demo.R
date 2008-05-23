@@ -767,7 +767,7 @@ save(file="CSTR-section12-nls-prep.Rdata",
 .CSTRres0.trace <- NULL
 
 et.nls0.0 <- system.time(
-nlsFit0.0 <- nls(formula=
+nlsFit0.0 <- NLS(formula=
      ~CSTRres0(kref=kref, EoverR=EoverR, a=a, b=b,gradwrd=FALSE),
     start=as.list(parvec1234),
     control=nls.control(printEval=TRUE, warnOnly=TRUE), trace=TRUE) )
@@ -1180,7 +1180,7 @@ log10(s1234[1]/s1234[4])
 # Try passing arguments via a list 'data'
 
 et.nlsFit <- system.time( 
-nlsFit1234o <- nls(formula=~CSTRres(kref=kref, EoverR=EoverR, a=a, b=b,
+nlsFit1234o <- NLS(formula=~CSTRres(kref=kref, EoverR=EoverR, a=a, b=b,
    datstruct=datstr, fitstruct=fitstr, CSTRbasis=Cb, lambda=lam),
               data=list(datstr=datstruct, fitstr=fitStrH1234,
                              Cb=CSTRbasis, lam=lambda), 
@@ -1427,7 +1427,7 @@ fitStrHTemp$b <- btru
 #toc
 
 et.nlsFitT <- system.time( 
-nlsFitHTemp <- nls(formula=~CSTRres(kref=kref, EoverR=EoverR, a=a, b=b,
+nlsFitHTemp <- NLS(formula=~CSTRres(kref=kref, EoverR=EoverR, a=a, b=b,
    datstruct=datstr, fitstruct=fitstr, CSTRbasis=Cb, lambda=lam),
               data=list(datstr=datstruct, fitstr=fitStrHTemp,
                              Cb=CSTRbasis, lam=lambda), 
@@ -1680,7 +1680,7 @@ fitStrHConc$b <- btru
 #toc
 
 et.Conc <- system.time( 
-nlsFitHConc <- nls(formula=~CSTRres(kref=kref, EoverR=EoverR, a=a, b=b,
+nlsFitHConc <- NLS(formula=~CSTRres(kref=kref, EoverR=EoverR, a=a, b=b,
    datstruct=datstr, fitstruct=fitstr, CSTRbasis=Cb, lambda=lam),
               data=list(datstr=datstruct, fitstr=fitStrHConc,
                              Cb=CSTRbasis, lam=lambda), 
