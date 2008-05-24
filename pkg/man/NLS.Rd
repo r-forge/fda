@@ -20,8 +20,14 @@
   }
   \item{control}{
     an optional list of control settings.  See \link[stats]{nls} for the
-    names of the settable control values and their effect. 
+    names of the settable control values and their effect.
 
+    To diagnose errors, try the following:  
+
+    huh <- nls(..., control=nls.control(warnOnly=TRUE))
+    svd.huh <- svd(huh[['m']][['Rmat']]())
+
+    svd.huh$d # gives the singular values of the gradient matrix, and 
   }
 }
 \details{
