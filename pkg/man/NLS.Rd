@@ -14,7 +14,7 @@
          lower, upper, ...)
 }
 \arguments{
-  \item{formula, data, start, control, algorithm, trace, subset,
+  \item{formula, data, start, algorithm, trace, subset,
   weights, na.action, model, lower, upper, ...}{
     See help(nls, package=stats) for details.  
   }
@@ -22,12 +22,27 @@
     an optional list of control settings.  See \link[stats]{nls} for the
     names of the settable control values and their effect.
 
-    To diagnose errors, try the following:  
+    To diagnose errors, try the following:
 
-    huh <- nls(..., control=nls.control(warnOnly=TRUE))
+    huh <- NLS(..., control=nls.control(warnOnly=TRUE))
+
+    or
+
+    library(nls2) 
+    huh <- nls2(..., algorithm='brute-force')
+
+    then 
+    
     svd.huh <- svd(huh[['m']][['Rmat']]())
 
-    svd.huh$d # gives the singular values of the gradient matrix, and 
+    From this, svd.huh[['d']] gives the singular values of the gradient
+    matrix, and svd.huh[['v']] gives the corresponding singular
+    vectors.  If the smallest singular value is close to zero relative
+    to the largest, it suggests the model is overparameterized.  If no
+    error is found, you might consider removing one or more parameters
+    from the model.  One obvious candidate for that would be the
+    parameter associated with the largest element in the last column of
+    svd.huh[['v']].  
   }
 }
 \details{
@@ -47,8 +62,7 @@
 \seealso{
   \code{\link[stats]{nls}}
 }
-\examples{
-# Weighted Michaelis-Menten model
+\examples{# Weighted Michaelis-Menten model
 # with data = a list that can not be coerced to a data.frame 
 Treated <- Puromycin[Puromycin$state == "treated", ]
 TreatIrreg <- with(Treated,

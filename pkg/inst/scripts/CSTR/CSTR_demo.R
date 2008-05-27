@@ -758,6 +758,15 @@ save(file="CSTR-section12-nls-prep.Rdata",
      list=c("parvec0", "parvec1234", "datstruct", "fitStrCool", "fitStrHot", 
 		"fitStrH1234", "CSTRbasis", "lambda", "btru"))
 # load("CSTR-section12-nls-prep.Rdata")
+# or 
+# fdaPath <- system.file(package = 'fda')
+# fdaDir <- dir(fdaPath)
+# fdaScriptsPath <- dir(fdaPath, full.names=TRUE)[fdaDir == 'scripts']
+# fdaScriptsDir <- dir(fdaScriptsPath)
+# fdaCSTRpath <- dir(fdaScriptsPath, full.names=TRUE)[fdaScriptsDir=='CSTR']
+# fdaCSTRdir <- dir(fdaCSTRpath)
+# fdaCSTRdat <- dir(fdaCSTRpath, full.names=TRUE)[grep('\\.Rdata$', fdaCSTRdir)]
+# load(fdaCSTRdat)
 
 .datstruct <- datstruct
 .fitstruct <- fitStrH1234
@@ -767,6 +776,11 @@ save(file="CSTR-section12-nls-prep.Rdata",
 .CSTRres0.trace <- NULL
 
 et.nls0.0 <- system.time(
+nlsFit0.0 <- nls(formula=
+     ~CSTRres0(kref=kref, EoverR=EoverR, a=a, b=b,gradwrd=FALSE),
+    start=as.list(parvec1234),
+    control=nls.control(printEval=TRUE, warnOnly=TRUE), trace=TRUE) )
+et.nls0.0 <- system.time(
 nlsFit0.0 <- NLS(formula=
      ~CSTRres0(kref=kref, EoverR=EoverR, a=a, b=b,gradwrd=FALSE),
     start=as.list(parvec1234),
@@ -774,8 +788,7 @@ nlsFit0.0 <- NLS(formula=
 # warnOnly=TRUE to force output:
 # CSTR computations are so intense that 'nls' overestimates
 #   the numerical precision feasible and often
-#   terminates with an error & returns nothing
-#   when it can't achieve that level of precision.
+#   terminates with an error & returns nothing#   when it can't achieve that level of precision.
 #......70.23466 :  0.4 0.8 1.7 0.5 7
 #  It.   1, fac=           1, eval (no.,total): ( 1,  1):..... new dev = 10.9019
 #10.90186 :  0.4672504 0.8296264 1.9357038 0.4600686 
