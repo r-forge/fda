@@ -15,8 +15,13 @@
 %  Previously modified 26 October 2005
 
 %addpath('c:/matlab7/fdaM')
-addpath('d:/spencerg/statmtds/fda/Matlab/fdaM') ; 
-addpath('D:\spencerg\statmtds\fda\R\fda\inst\scripts\CSTR') ; 
+R_HOME = getenv('R_HOME') ; % Where is R installed?  
+Rpath = R_HOME(1:(end-4)) ; % Drop '\bin' 
+fdaPath = fullfile(Rpath, 'library\fda') ; 
+fdaM = fullfile(fdaPath, 'Matlab\fdaM') ; 
+addpath(fdaM) ; 
+CSTRpath = fullfile(fdaPath, 'scripts\CSTR') ; 
+addpath(CSTRpath) ; 
 
 %%  2.  Set up the problem 
 
@@ -436,7 +441,18 @@ lambda = 1e1.*[lambdaC, lambdaT];
 
 [res, jacobian] = CSTRfn(parvec0, datstruct, fitStrHot, ...
                          CSTRbasis, lambda);
-                     
+% manual check of jacobian(:, 4) 
+res4=CSTRfn(parvec0+[0 0 0 .01],datstruct,fitStrHot,CSTRbasis,lambda);
+jacob4 = (res4-res)/0.01 ; 
+figure(6) ; 
+plot(jacob4, jacobian(:, 4)) ; 
+rat = jacobian(:, 4) ./ jacob4 ; 
+median(rat) ;
+% Mostly off by a factor of 0.0124 
+mean(abs(rat - 0.0124) > 0.001) ; 
+% but with 17% of observations 'outliers', 
+% deviating from this by more than 0.001 
+
 % Save to compare with R 
 save CSTR1 -v6 res jacobian; 
                      
