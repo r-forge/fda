@@ -453,6 +453,24 @@ mean(abs(rat - 0.0124) > 0.001) ;
 % but with 17% of observations 'outliers', 
 % deviating from this by more than 0.001 
 
+% manual check of jacobian(:, 1) 
+res4k=CSTRfn(parvec0+[.01 0 0 0],datstruct,fitStrHot,CSTRbasis,lambda);
+jacob4k = (res4k-res)/0.01 ; 
+figure(7) 
+plot(jacob4k, jacobian(:, 1) ) 
+
+res4r=CSTRfn(parvec0+[0 .01 0 0],datstruct,fitStrHot,CSTRbasis,lambda);
+jacob4r = (res4r-res)/0.01 ; 
+figure(8) 
+plot(jacob4r, jacobian(:, 2) ) 
+
+res4a=CSTRfn(parvec0+[0 0 .01 0],datstruct,fitStrHot,CSTRbasis,lambda);
+jacob4a = (res4a-res)/0.01 ; 
+figure(9) 
+plot(jacob4a, jacobian(:, 3) ) 
+
+% Other parameters OK.  
+
 % Save to compare with R 
 save CSTR1 -v6 res jacobian; 
                      
