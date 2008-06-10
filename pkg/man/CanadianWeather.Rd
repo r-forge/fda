@@ -25,10 +25,12 @@ daily
 
     \itemize{
       \item{dailyAv}{
-	a three dimensional array c(365, 35, 3) summarizing data collected
-	at 35 different weather stations in Canada on the following:
+	a three dimensional array c(365, 35, 3) summarizing data
+	collected at 35 different weather stations in Canada on the
+	following: 
 	
-	[[1]] Temperature.C:  average daily temperature for each day of the year
+	[[1]] Temperature.C:  average daily temperature for each day of
+	the year 
 	
 	[[2]] Precipitation.mm:  average daily rainfall for each day of
 	the year rounded to 0.1 mm.  
@@ -43,6 +45,17 @@ daily
 	characters in length.  By contrast, daily[["place"]] which are
 	all 11 characters, with names having fewer characters being
 	extended with trailing blanks.  
+      }
+      \item{province}{
+	names of the Canadian province containing each place
+      }
+      \item{coordinates}{
+	a numeric matrix giving 'N.longitude' and 'W.latitude' for each
+	place.  
+      }
+      \item{region}{
+	Which of 4 climate zones contain each place:  Atlantic, Pacific,
+	Continental, Arctic.  
       }
       \item{monthlyTemp}{
 	A matrix of dimensions (12, 35) giving the average temperature
@@ -95,6 +108,7 @@ daily
 }
 %\seealso{\code{\link{eval.penalty}}}
 \examples{
+data(CanadianWeather) 
 # Expand the left margin to allow space for place names 
 op <- par(mar=c(5, 4, 4, 5)+.1)
 # Plot
