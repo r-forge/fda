@@ -59,8 +59,7 @@ fd(coef=matrix(0, 2, 1), basisobj=basisfd(),
   Ramsay, James O., and Silverman, Bernard W. (2002), \emph{Applied
     Functional Data Analysis}, Springer, New York
 }
-\examples{
-}
+%\examples{ }
 % docclass is function
 \keyword{smooth}
 \keyword{internal}

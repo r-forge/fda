@@ -66,11 +66,7 @@
 \seealso{
   \code{\link{month.abb}} 
 }
-\examples{
-
-
-
-}
+%\examples{ }
 % docclass is function
 \keyword{datasets}
 
