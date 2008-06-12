@@ -6,16 +6,13 @@
 \description{
   a matrix of dimensions (51, 20) giving ... ??? 
 }
-\format{
-}
+%\format{}
 
 \source{
   Ramsay, James O., and Silverman, Bernard W. (2002), \emph{Applied
     Functional Data Analysis}, Springer, New York, ch. 10. 
 }
 %\seealso{\code{\link{eval.penalty}}}
-\examples{
-
-}
+%\examples{}
 % docclass is function
 \keyword{datasets}

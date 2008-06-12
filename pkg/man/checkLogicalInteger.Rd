@@ -81,10 +81,7 @@ checkLogicalInteger(x, length., warnOnly=FALSE)
   \code{checkLogicalInteger} returns a logical vector of the required
   \code{length.}, unless it issues an error message.
 }
-\references{
-  
-
-}
+%\references{ }
 \author{
   Spencer Graves
 } 
