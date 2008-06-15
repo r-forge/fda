@@ -48,9 +48,12 @@ dirs(path='.', pattern=NULL, all.files=FALSE, full.names=FALSE,
 path2fdaM <- system.file('Matlab/fdaM', package='fda')
 dirs(path2fdaM)
 dirs(path2fdaM, full.names=TRUE)
-dirs(path2fdaM, recursive=TRUE) 
-dirs(path2fdaM, full.names=TRUE, recursive=TRUE) 
+dirs(path2fdaM, recursive=TRUE)
 
+# Directories to add to Matlab path
+# for R.matlab and fda
+add2MatlabPath <- c(system.file('externals', package='R.matlab'),
+        dirs(path2fdaM, full.names=TRUE, recursive=TRUE) ) 
 }
 \keyword{IO}% at least one, from doc/KEYWORDS
 
