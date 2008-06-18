@@ -1,7 +1,7 @@
 addpath ('c:\Program Files\matlab\fdaM')
 addpath ('c:\Program Files\matlab\fdaM\examples\lip')
 
-%  Last modified 24 July 2006
+%  Last modified 2008.06.15;  previously modified 24 July 2006
 
 %  -----------------------------------------------------------------------
 %                       Lip Movement Data

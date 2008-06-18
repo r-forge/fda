@@ -1,10 +1,9 @@
 plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
-                       index = 1:nrep, nfine = 101,
-                       residual = FALSE, sortwrd = FALSE,
-                       titles=NULL,  ylim=NULL, ask=FALSE,
-                       type=c("p", "l")[1+residual], xlab=argname,
-                       ylab, sub=Sub, col=1:9, lty=1:9, lwd=1,
-                       cex.pch=1, ...)
+                       index = 1:nrep, nfine = 101, residual = FALSE,
+                       sortwrd = FALSE, titles=NULL,  ylim=NULL,
+                       ask=TRUE, type=c("p", "l")[1+residual],
+                       xlab=argname, ylab, sub=Sub, col=1:9, lty=1:9,
+                       lwd=1, cex.pch=1, ...)
 {
 #PLOTFIT plots discrete data along with a functional data object for 
 #  fitting the data.  It is designed to be used after DATA2FD, 
@@ -24,9 +23,8 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
 #  SORTWRD  ... sort plots by mean square error
 #  TITLES   ... vector of title strings for curves
 
-# Last modified 2007.10.03 by Spencer Graves
-  
-#  Previously modified 20 March 2006
+# Last modified 2008.06.16 by Spencer Graves
+# previously modified 2007.10.03 and 20 March 2006
 
   dots <- list(...)
   if(is.null(titles) && ("main" %in% names(dots)))
@@ -124,11 +122,10 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
 #  dim(MSE)   <- c(      nrep,nvar)
 	
 # How many plots on a page?   
-  nOnOne <- {
-    if(ask) min(nrepi, 
-      max(length(col), length(lty), length(lwd), length(cex.pch)))
-    else nrepi*nvar
-  }
+  nOnOne <- 1
+#    { if(ask) min(nrepi, 
+#      max(length(col), length(lty), length(lwd), length(cex.pch)))
+#    else nrepi*nvar  }
 # types of plots
   col <- rep(col, length=nOnOne)
   lty <- rep(lty, length=nOnOne)

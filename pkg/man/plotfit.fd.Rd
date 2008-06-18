@@ -20,7 +20,7 @@
 plotfit.fd(y, argvals, fdobj, rng = rangeval,
            index = 1:nrep, nfine = 101, residual = FALSE,
            sortwrd = FALSE, titles=NULL, ylim=NULL,
-           ask=FALSE, type=c("p", "l")[1+residual],
+           ask=TRUE, type=c("p", "l")[1+residual],
            xlab=argname, ylab, sub=Sub, col=1:9, lty=1:9,
            lwd=1, cex.pch=1, ...)
 }
@@ -68,10 +68,11 @@ plotfit.fd(y, argvals, fdobj, rng = rangeval,
   \item{ask}{
     If TRUE and if 'y' has more levels than the max length of col, lty,
     lwd and cex.pch, the user must confirm page change before the next
-    plot will be created.  The number of lines / cases per plot is
-    controled by the maximum of the lengths of col, lty, lwd and cex.pch
-    (see below), except that if length(dim(x))>2, a separate plot is
-    created for each level of the third dimension of x.  
+    plot will be created.
+    %The number of lines / cases per plot is
+    %controled by the maximum of the lengths of col, lty, lwd and cex.pch
+    %(see below), except that if length(dim(x))>2, a separate plot is
+    %created for each level of the third dimension of x.  
   }
   \item{type}{
     type of plot desired, as described with \code{\link{plot}}.  If
