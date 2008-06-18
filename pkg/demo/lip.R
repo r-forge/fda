@@ -19,6 +19,8 @@
 
 #  ----------------  input the data  ------------------------
 
+
+
 liptime  <- seq(0,1,.02)
 liprange <- c(0,1)
 
@@ -43,9 +45,11 @@ names(lipfd$fdnames) = c("Normalized time", "Replications", "mm")
 
 #  ---------  plot the functions and their accelerations  -----
 
-par(mfrow=c(2,1), mar=c(5,5,4,2), pty="m", ask=FALSE)
+op <- par(mfrow=c(2,1), mar=c(5,5,4,2), pty="m", ask=FALSE)
+plot(lipfd,        main="Lip Position", cex=1.2)
 plot(lipfd,        main="Lip Position", cex=1.2)
 plot(lipfd, Lfd=2, ylab="mm/sec/sec", main="Lip Acceleration", cex=1.2)
+par(op)
 
 #  -----------------------------------------------------------------------
 #       Register the data using the two landmarks defined by the minimum

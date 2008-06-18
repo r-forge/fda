@@ -9,6 +9,7 @@
 #  These analyses are intended to illustrate the analysis of nonperiod data
 #  where a spline basis is the logical choice.  These analyses complement
 #  the daily weather data in that sense.
+#
 #  The growth data have the additional feature of being essentially
 #  monotonic or, to say the same thing in another way, have an essentially
 #  positive first derivative or velocity.  This requires monotone smoothing.
@@ -16,10 +17,12 @@
 #  inspecting the acceleration of the height curves, so that great emphasis
 #  is placed here on getting a good sensible and stable acceleration
 #  estimate.
-#  Finally, a large prortion of the variation in the growth curve data is due
-#  to phase variation, mainly through the variation in the timing of the
+#
+#  Finally, a large prortion of the variation in the growth curve data is 
+#  due to phase variation, mainly through the variation in the timing of the
 #  pubertal growth spurt.  Registration therefore plays a major role and is
 #  especially illustrated here.
+#
 #  Most of the analyses are carried out on the Berkeley growth data, which
 #  have the advantage of being freely distributable, whereas as more recent
 #  and larger data bases require special permission from the agencies that
