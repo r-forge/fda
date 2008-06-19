@@ -33,9 +33,7 @@ dirs(path='.', pattern=NULL, all.files=FALSE, full.names=FALSE,
 \value{
   A character vector of the desired subdirectories.  
 }
-\references{
-
-}
+%\references{}
 \author{
   Spencer Graves
 } 
