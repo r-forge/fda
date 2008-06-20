@@ -11,12 +11,16 @@
   and files.  With \code{recursive} = TRUE, it returns only files.  
 }
 \usage{
-dirs(path='.', pattern=NULL, all.files=FALSE, full.names=FALSE,
-     recursive=FALSE, ignore.case=FALSE) 
+dirs(path='.', pattern=NULL, exclude=NULL, all.files=FALSE,
+     full.names=FALSE, recursive=FALSE, ignore.case=FALSE) 
 }
 \arguments{
-  \item{path, pattern, all.files, full.names, recursive, ignore.case}{
+  \item{path, all.files, full.names, recursive, ignore.case}{
     as for \code{\link{dir}}
+  }
+  \item{pattern, exclude}{
+    optional regular expressions of filenames to include or exclude,
+    respectively.  
   }
 }
 \details{
@@ -47,11 +51,15 @@ path2fdaM <- system.file('Matlab/fdaM', package='fda')
 dirs(path2fdaM)
 dirs(path2fdaM, full.names=TRUE)
 dirs(path2fdaM, recursive=TRUE)
+dirs(path2fdaM, exclude='^@|^private$', recursive=TRUE)
 
 # Directories to add to Matlab path
 # for R.matlab and fda
-add2MatlabPath <- c(system.file('externals', package='R.matlab'),
-        dirs(path2fdaM, full.names=TRUE, recursive=TRUE) ) 
+R.matExt <- system.file('externals', package='R.matlab')
+fdaM <- dirs(path2fdaM, exclude='^@|^private$', full.names=TRUE,
+              recursive=TRUE)  
+add2MatlabPath <- c(R.matExt, path2fdaM, fdaM) 
+
 }
 \keyword{IO}% at least one, from doc/KEYWORDS
 

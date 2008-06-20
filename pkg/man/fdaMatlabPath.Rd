@@ -25,7 +25,8 @@ fdaMatlabPath(startupFile, R.matlab)
   1.  path2fdaM = path to the \code{Matlab/fdaM} subdiretory of the
   \code{fda} installation directory.
 
-  2.  dirs2add <- dirs(path2fdaM, full.names=TRUE, recursive=TRUE)
+  2.  Find all subdirectories of path2fdaM except those beginning in '@'
+  or including 'private'.  
 
   3.  if(requires(R.matlab)) add the path to \code{MatlabServer.m} to
   \code{dirs2add} 
