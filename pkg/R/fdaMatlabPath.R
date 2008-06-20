@@ -6,14 +6,9 @@ fdaMatlabPath <- function(startupFile, R.matlab) {
 ##
 ## 2.  dirs2add = dirs(path2fdaM, ...)
 ##
-  d2a.all <- dir(path2fdaM, full.names=TRUE, recursive=TRUE)
-  d2a.at <- dirs(path2fdaM, full.names=TRUE, recursive=TRUE,
-                 pattern = '!^@')
-  d2a.private <- dirs(path2fdaM, full.names=TRUE, recursive=TRUE,
-                      pattern='^private$')
-  no.at <- !(d2a.all %in% d2a.at)
-  no.private <- !(d2a.all %in% d2a.private)
-  dirs2add <- d2a.all[no.at & no.private]
+  d2a. <- dirs(path2fdaM, exclude='^@|^private$',
+             full.names=TRUE, recursive=TRUE)
+  dirs2add <- c(path2fdaM, d2a.) 
 ##
 ## 3.  requires(R.matlab)?
 ##
