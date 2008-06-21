@@ -1,5 +1,5 @@
-addpath ('c:\Program Files\matlab\fdaM')
-addpath ('c:\Program Files\matlab\fdaM\examples\lip')
+%addpath ('c:\Program Files\matlab\fdaM')
+%addpath ('c:\Program Files\matlab\fdaM\examples\lip')
 
 %  Last modified 2008.06.15;  previously modified 24 July 2006
 
@@ -7,18 +7,21 @@ addpath ('c:\Program Files\matlab\fdaM\examples\lip')
 %                       Lip Movement Data
 %  -----------------------------------------------------------------------
 
-%  ----------------  input the data  ------------------------
+% 0.  input the data  ------------------------
 
 fid = fopen('lip.dat','rt');
 lipmat = reshape(fscanf(fid,'%f'), [51, 20]);
 nobs = size(lipmat,2);  %  number of replications
 
-liptime  = (0:0.02:1)';  %  sampling points for each curve
+liptime  = (0:0.007:0.35)';  %  sampling points for each curve
+
+%%
+% 1.  Create an 'fda' object 
 
 %  ----------  set up the b-spline basis object  ------------
 %       use order 6 splines so we can look at acceleration
 
-lipbasis = create_bspline_basis([0,1], 31, 6);
+lipbasis = create_bspline_basis([0,0.35], 31, 6);
 
 %  -----  create the fd object  ---------
 
@@ -34,7 +37,7 @@ lipfd = smooth_basis(liptime, lipmat, lipfdPar);
 
 %  add names to dimensions
 
-lipfd_fdnames{1} = 'Normalized time';
+lipfd_fdnames{1} = 'time (seconds)';
 lipfd_fdnames{2} = 'Replications';
 lipfd_fdnames{3} = 'mm';
 lipfd = putnames(lipfd, lipfd_fdnames);

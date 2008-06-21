@@ -90,7 +90,10 @@ plot(lipfd, Lfd=1, ylab="mm/sec", main="Lip Velocity", cex=1.2)
 plot(lipfd, Lfd=2, ylab="mm/sec/sec", main="Lip Acceleration", cex=1.2)
 #par(op)
 
-
+##
+## 1.5.  plotfit.fd?
+##
+plotfit.fd(lip, liptime, lipfd)
 
 
 
