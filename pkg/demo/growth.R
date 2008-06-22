@@ -48,22 +48,25 @@
 #                           Berkeley Growth Data
 #  -----------------------------------------------------------------------
 
-#  Last modified 21 March 2006
-
-#  ------------------------  input the data  -----------------------
-
-ncasem <- 39
-ncasef <- 54
-nage   <- 31
+#  Last modified 2008.06.21;  previously modified 21 March 2006
+###
+###
+### 0.  Access the data (available in the 'fda' package)
+###
+###
 
 attach(growth)
-#age <- c( seq(1, 2, 0.25), seq(3, 8, 1), seq(8.5, 18, 0.5))
-# attribute of growth;  don't need to create 'age'
-#  when we attach growth.  
-rng <- c(1,18)
-agefine <- seq(1,18,length=101)
+(nage <- length(age))
+(ncasem <- ncol(hgtm))
+(ncasef <- ncol(hgtf))
 
-#  --------------  Smooth the data nonmonotonically  --------------
+(ageRng <- range(age))
+agefine <- seq(ageRng[1],ageRng[2],length=101)
+###
+###
+### 1.  Smooth the data (ignore monotonicity) --------------
+###
+###
 #  This smooth uses the usual smoothing methods to smooth the data,
 #  but is not guaranteed to produce a monotone fit.  This may not
 #  matter much for the estimate of the height function, but it can
@@ -147,8 +150,11 @@ for (i in children) {
          xlab="Years", ylab="", main="Acceleration")
     abline(h=0, lty=2)
 }
-
-#  -------  Compute monotone smooths of the data  -----------
+###
+###
+### 2.  Smooth the data monotonically  
+###
+###
 
 #  These analyses use a function written entirely in S-PLUS called
 #  smooth.monotone that fits the data with a function of the form
@@ -303,8 +309,11 @@ for (i in children) {
 }
 
 #  ---------------------------------------------------------------------
-#            Register the velocity curves for the girls
-#  ---------------------------------------------------------------------
+###
+###
+### 3.  Register the velocity curves for the girls
+###
+###
 
 nbasisw <- 15
 norder  <- 5
@@ -348,9 +357,11 @@ for (i in children) {
 }
 
 #  -----------------------------------------------------------------------
-#            Monotone smooth of short term growth data
-#  -----------------------------------------------------------------------
-
+###
+###
+### 4.  Monotone smooth of short term height measurements 
+###
+###
 #  ---------------- input the data  ----------------------------------
 
 temp <- scan("../data/onechild.txt",0)

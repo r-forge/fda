@@ -95,44 +95,8 @@ plot(lipfd, Lfd=2, ylab="mm/sec/sec", main="Lip Acceleration", cex=1.2)
 ##
 plotfit.fd(lip, liptime, lipfd)
 
-plotfit.fd(lip, liptime, lipfd, residual=TRUE, type='b')
-
-
-
-
-
-
-
-
-
-######### previous :  
-
-#  -------------  create the fd object -----------------
-#       use 31 order 6 splines so we can look at acceleration
-
-nbasis <- 51
-norder <- 6
-lipbasis <- create.bspline.basis(liprange, nbasis, norder)
-
-#  ------------  apply some light smoothing to this object  -------
-
-Lfdobj   <- int2Lfd(4)
-lambda   <- 1e-12
-lipfdPar <- fdPar(lipbasis, Lfdobj, lambda)
-
-lipfd <- smooth.basis(liptime, lip, lipfdPar)$fd
-names(lipfd$fdnames) = c("Normalized time", "Replications", "mm")
-
-#  set up plotting arrangements for one and two panel displays allowing
-#  for larger fonts
-
-#  ---------  plot the functions and their accelerations  -----
-
-op <- par(mfrow=c(2,1), mar=c(5,5,4,2), pty="m", ask=FALSE)
-plot(lipfd,        main="Lip Position", cex=1.2)
-plot(lipfd,        main="Lip Position", cex=1.2)
-plot(lipfd, Lfd=2, ylab="mm/sec/sec", main="Lip Acceleration", cex=1.2)
-par(op)
+plotfit.fd(lip, liptime, lipfd, residual=TRUE, type='b',
+           sortwrd=TRUE)
 
 ##
 ## 2.  Register the data
@@ -144,10 +108,25 @@ par(op)
 #  -----------------------------------------------------------------------
 
 nmarks <- 2
-
 lipmat   <- eval.fd(liptime,lipfd)
-
 lipmeanfd <- mean.fd(lipfd)
+
+lipmin <- apply(lipmat, 2, function(x)
+                which(x==min(x)) )
+lipelbow <- apply(lipmat, 2, function(x){
+  imin <- which(x==min(x))[1]
+  dx <- diff(x[-(1:imin)])
+  imax1 <- which(dx==max(dx))[1]
+  jmax <- seq(ceiling(imax1/2), imax1-1) 
+  d2x <- diff(dx[jmax])
+  elbow <- which(d2x==max(d2x))[1]
+  imin+jmax[1]+elbow+1
+} )
+
+lipmarks <- cbind(min=lipmin, elbow=lipelbow)
+                  
+
+
 
 par(mfrow=c(1,1),pty="m")
 lipmarks <- matrix(0,20,nmarks)

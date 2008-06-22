@@ -1,5 +1,8 @@
-%addpath ('c:\Program Files\matlab\fdaM')
-%addpath ('c:\Program Files\matlab\fdaM\examples\lip')
+% Need 'matlab\fdaM' in the path, 
+% e.g., by installing the 'fda' package for R and running 'fdaMatlabPath' 
+% or by creating a copy where the following will work:  
+% addpath ('c:\Program Files\matlab\fdaM')
+% addpath ('c:\Program Files\matlab\fdaM\examples\lip')
 
 %  Last modified 2008.06.15;  previously modified 24 July 2006
 
@@ -7,17 +10,17 @@
 %                       Lip Movement Data
 %  -----------------------------------------------------------------------
 
-% 0.  input the data  ------------------------
+%%
+% 0.  input the data  
 
 fid = fopen('lip.dat','rt');
 lipmat = reshape(fscanf(fid,'%f'), [51, 20]);
 nobs = size(lipmat,2);  %  number of replications
 
 liptime  = (0:0.007:0.35)';  %  sampling points for each curve
-
 %%
-% 1.  Create an 'fda' object 
-
+% 1.  Create an 'fd' object 'lipfd'
+%
 %  ----------  set up the b-spline basis object  ------------
 %       use order 6 splines so we can look at acceleration
 
@@ -60,8 +63,10 @@ subplot(2,1,2)
 plot(lipfd, 1, 1, 2);
 ylabel('mm/t/t')
 title('Lip acceleration')
+%%
+% 2.  register the data 
 
-%  ---- register the data using the minimum and the elbow as landmarks  ------
+% using the minimum and the elbow as landmarks  ------
 %               manually identify these points in each curve
 
 %  there are two landmarks, in addition to the beginning and end
@@ -231,8 +236,8 @@ lipwarpmat = eval_fd(lipwarpfd,liptime);
 lipdefmat  = lipwarpmat - liptime*ones(1,nobs);
 plot(liptime, lipdefmat, '-', [0,1], [0,0], ':')
 title('Deformation Functions')
-
-%  ---------- principal component analysis --------------------------
+%%
+% 3.  principal component analysis --------------------------
 
 nharm = 4;
 lippcastr = pca_fd(lipfd, nharm);
@@ -256,8 +261,8 @@ lipeigvals = lippcastr.values;
 plot(1:19,log10(lipeigvals(1:19)),'-o')
 xlabel('Eigenvalue Number')
 ylabel('Log10 Eigenvalue')
-
-%  -------------  principal differential analysis  -------------------
+%%
+% 4.  principal differential analysis  -------------------
 
 %  compute the weight functions by the basis expansion method
 

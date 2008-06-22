@@ -1,15 +1,16 @@
-%  Windows:
+% Need 'matlab\fdaM' in the path, 
+% e.g., by installing the 'fda' package for R and running 'fdaMatlabPath' 
+% or by creating a copy where the following will work:  
+% addpath ('c:\Program Files\Matlab\fdaM')
+% addpath ('c:\Program Files\Matlab\fdaM\examples\growth')
 
-addpath ('c:\Program Files\Matlab\fdaM')
-addpath ('c:\Program Files\Matlab\fdaM\examples\growth')
-
-%  Last modified 31 July 2006
+%  Last modified 2008.06.21;  previously modified 31 July 2006
 
 %  -----------------------------------------------------------------------
 %                    Berkeley Growth Data
 %  -----------------------------------------------------------------------
-
-%  ------------------------  input the data  -----------------------
+%%
+% 0.  Access the data  -----------------------
 
 ncasem = 39;
 ncasef = 54;
@@ -23,8 +24,9 @@ hgtfmat = reshape(fscanf(fid,'%f'),[nage,ncasef]);
 
 age = [ 1:0.25:2, 3:8, 8.5:0.5:18 ]';
 rng = [1,18];
-
-%  --------------  Smooth the data nonmonotonically  --------------
+%%
+% 1.  Smooth the data (ignore monotonicity)  --------------
+%
 %  This smooth uses the usual smoothing methods to smooth the data,
 %  but is not guaranteed to produce a monotone fit.  This may not
 %  matter much for the estimate of the height function, but it can
@@ -269,10 +271,9 @@ axis([1,18,-4,2])
 %  display the results
 
 growthdisplay(age, hgtfmat, hgtffd, hgtfstd, y2cMap, 'female')
-
-%  ----------------------------------------------------------
-%          Compute monotone smooths of the data  
-%  ----------------------------------------------------------
+%%
+% 2.  Smooth the data monotonically 
+%
 
 %  These analyses use a function written entirely in S-PLUS called
 %  smooth.monotone that fits the data with a function of the form
@@ -450,9 +451,9 @@ for i = index
   xlabel('Years') ;  title('Acceleration')
   pause;
 end
-
-%  ---------------------------------------------------------------------
-%            Register the velocity curves for the girls
+%%
+% 3.  Register the velocity curves for the girls
+%
 %  ---------------------------------------------------------------------
 
 nbasisw = 15;
@@ -494,11 +495,9 @@ for i = 1:length(index)
    axis('square')
    pause
 end
-
-%  ---------------------------------------------------------------------
-%        Monotone smooth of short term height measurements
-%  ---------------------------------------------------------------------
-
+%%
+% 4.  Smooth heights of one boy for one school year 
+%
 %  ---------------- input the data  ----------------------------------
 
 clear;
