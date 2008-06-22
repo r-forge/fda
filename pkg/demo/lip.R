@@ -95,6 +95,8 @@ plot(lipfd, Lfd=2, ylab="mm/sec/sec", main="Lip Acceleration", cex=1.2)
 ##
 plotfit.fd(lip, liptime, lipfd)
 
+plotfit.fd(lip, liptime, lipfd, residual=TRUE, type='b')
+
 
 
 
