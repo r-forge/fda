@@ -6,39 +6,60 @@
 \description{
   Write a sequence of Matlab commands to \code{fdaMatlabPath.m} in the
   working directory containing commands to add \code{fdaM} to the path
-  for Matlab.  Optionally, add these lines to \code{Matlab}
-  \code{startup.m} if it can be found.  
+  for Matlab.  
 }
 \usage{
-fdaMatlabPath(startupFile, R.matlab) 
+fdaMatlabPath(R.matlab) 
 }
 \arguments{
-  \item{startupFile}{
-    character string giving the name of the Matlab \code{startup.m}.  
-  }
   \item{R.matlab}{
     logical:  If TRUE, include '~R/library/R.matlab/externals' in the
-    path.  
+    path.  If(missing(R.matlab)) include '~R/library/R.matlab/externals'
+    only if R.matlab is installed.   
   }
 }
 \details{
-  1.  path2fdaM = path to the \code{Matlab/fdaM} subdiretory of the
-  \code{fda} installation directory.
+  \itemize{
+    \item{USAGE}{
+      If your Matlab installation does NOT have a \code{startup.m} file,
+      it might be wise to copy \code{fdaMatlabPath.m} into a directory
+      where Matlab would look for \code{startup.m}, then rename it to
+      \code{startup.m}.
 
-  2.  Find all subdirectories of path2fdaM except those beginning in '@'
-  or including 'private'.  
+      If you have a \code{startup.m}, you could add the contents of
+      \code{fdaMatlabPath.m} to \code{startup.m}.
 
-  3.  if(requires(R.matlab)) add the path to \code{MatlabServer.m} to
-  \code{dirs2add} 
+      Alternatively, you can copy \code{fdaMatlabPath.m} into the
+      directory containing \code{startup.m} and add the following to the
+      end of \code{startup.m}:
 
-  4.  d2a <- paste("addpath('", dirs2add, "');", sep='')
+      \tabular{lll}{
+	\tab if exist('fdaMatlabPath') \tab \cr
+	\tab \tab fdaMatlabPath ; \cr
+	\tab end \tab 
+      }
+    }
+    \item{ALGORITHM}{
+      1.  path2fdaM = path to the \code{Matlab/fdaM} subdiretory of the
+      \code{fda} installation directory. 
 
-  5.  writeLines(d2a, 'fdaMatlabPath.m')
+      2.  Find all subdirectories of path2fdaM except those beginning in
+      '@' or including 'private'. 
 
-  6.  if(exists(startupFile)) append \code{d2a} to it
+      3.  if(requires(R.matlab)) add the path to \code{MatlabServer.m}
+      to \code{dirs2add} 
+
+      4.  d2a <- paste("addpath('", dirs2add, "');", sep='')
+
+      5.  writeLines(d2a, 'fdaMatlabPath.m')
+
+      6.  if(exists(startupFile)) append \code{d2a} to it
+    }
+  }
 }
 \value{
-  a character vector of Matlab \code{addpath} commands.  
+  A character vector of Matlab \code{addpath} commands is returned
+  invisibly.  
 }
 \references{
   Matlab documentation for \code{addpath} and \code{startup.m}.  

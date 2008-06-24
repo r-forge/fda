@@ -1,4 +1,4 @@
-fdaMatlabPath <- function(startupFile, R.matlab) {
+fdaMatlabPath <- function(R.matlab) {
 ##
 ## 1.  path2fdaM = path to ~R/library/fda/Matlab/fdaM
 ##
@@ -32,15 +32,7 @@ fdaMatlabPath <- function(startupFile, R.matlab) {
 ##
   writeLines(d2a, 'fdaMatlabPath.m')
 ##
-## 6.  startupFile?  
+## 6.  Done
 ##
-  if(!missing(startupFile)){
-    if(exists(startupFile))
-      file.copy2(startupFile)
-    cat(d2a, file=startupFile, sep='\n', append=TRUE)
-  }
-##
-## 7.  Done
-##
-  d2a  
+  invisible(d2a)  
 }

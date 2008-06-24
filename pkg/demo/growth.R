@@ -77,6 +77,19 @@ agefine <- seq(ageRng[1],ageRng[2],length=101)
 #  -----------  Create fd objects   ----------------------------
 #  A B-spline basis with knots at age values and order 6 is used
 
+# A single call to smooth.basisPar would give us a cubic spline.  
+# However, to get a smooth image of acceleration,
+# we need a quintic spline (degree 5, order 6) 
+
+# .... 
+hgtmfd <- smooth.basisPar(age, hgtm, growfdPar)$fd
+
+
+
+
+
+
+
 knots  <- age
 norder <- 6
 nbasis <- length(knots) + norder - 2
