@@ -23,7 +23,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
 #  SORTWRD  ... sort plots by mean square error
 #  TITLES   ... vector of title strings for curves
 
-# Last modified 2008.06.16 by Spencer Graves
+# Last modified 2008.06.23 by Spencer Graves
 # previously modified 2007.10.03 and 20 March 2006
 
   dots <- list(...)
@@ -127,6 +127,8 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
 #      max(length(col), length(lty), length(lwd), length(cex.pch)))
 #    else nrepi*nvar  }
 # types of plots
+  if(ask & ((nvar*nrepi/nOnOne) > 1))
+    cat('Multiple plots:  Click in the plot to advance to the next') 
   col <- rep(col, length=nOnOne)
   lty <- rep(lty, length=nOnOne)
   lwd <- rep(lwd, length=nOnOne)
@@ -166,7 +168,8 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
 #  plot the residuals
 #      ylimit <- range(res)
       if(is.null(ylim))ylim <- range(res)
-      if(missing(ylab))ylab=rep("Residuals", nrepi)
+#      if(missing(ylab))ylab=rep("Residuals", nrepi)
+      if(missing(ylab))ylab=paste('Residuals for', varnames) 
 #      for (i in 1:nrep) {
       for (j in 1:nvar) {
         for (i in 1:nrepi){

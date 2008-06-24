@@ -15,7 +15,7 @@
 #  see the handwriting data.
 #  -----------------------------------------------------------------------
 
-#  Last modified 2008.06.20;  previously modified 21 March 2006
+#  Last modified 2008.06.23;  previously modified 21 March 2006
 ###
 ###
 ### 0.  Access the data:  Instantly available in the 'fda' package 
