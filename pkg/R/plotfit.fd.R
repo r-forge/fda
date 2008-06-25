@@ -2,7 +2,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
                        index = 1:nrep, nfine = 101, residual = FALSE,
                        sortwrd = FALSE, titles=NULL,  ylim=NULL,
                        ask=TRUE, type=c("p", "l")[1+residual],
-                       xlab=argname, ylab, sub=Sub, col=1:9, lty=1:9,
+                       xlab=argname, ylab, sub, col=1:9, lty=1:9,
                        lwd=1, cex.pch=1, ...)
 {
 #PLOTFIT plots discrete data along with a functional data object for 
@@ -81,13 +81,13 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
   MSE    <- apply(res^2,c(2,3),mean)
   dimnames(MSE) <- list(casenames, varnames)
   MSEsum <- apply(MSE,1,sum)
-	
+
 #  compute fitted values for fine mesh of values
 	
   xfine <- seq(rng[1], rng[2], len=nfine)
   yfine <- array(eval.fd(xfine, fdobj),c(nfine,nrep,nvar))
 	
-#  sort cases by MSE if desired
+#  sort cases by MSE if desired????? 
 	
   if (sortwrd && nrep > 1) {
     MSEind <- order(MSEsum)
@@ -156,6 +156,23 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
 #  plot the results
 	
   ndigit = abs(floor(log10(min(c(MSE)))) - 1)
+  if(missing(sub))
+    sub <- paste("  RMS residual =", round(sqrt(MSE),ndigit))
+  if(length(sub) != length(MSE)){
+    warning('length(sub) = ', length(sub), ' != ',
+            length(MSE), ' = ', length(MSE), '; forcing equality')
+    sub <- rep(sub, length=length(MSE)) 
+  }
+  if(is.null(dim(sub))){
+#    warning('is.null(dim(sub)); must match dim(MSE) = ',
+#            paste(dim(MSE), collapse=', '), ';  forcing equality.') 
+    dim(sub) <- dim(MSE)
+  }
+  if(!all(dim(sub)==dim(MSE))){
+    warning('dim(sub) = ', dim(sub), " != dim(MSE) = ",
+            paste(dim(MSE), collapse=', '), ';  forcing equality.') 
+    dim(sub) <- dim(MSE) 
+  }	
 # 'ask' is controlled by 'nOnOne' ... 
   op <- par(ask=FALSE)
 # Don't ask for the first plot,
@@ -178,18 +195,18 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
 #           plot(argvals, res[,i,j], xlim=rng, ylim=ylimit, 
 #              xlab=argname, ylab=paste("Residual for",varnames[j]))
             plot(rng, ylim, type="n", xlab=xlab,
-                 ylab=ylab[i], ...)
+                 ylab=ylab[j], ...)
+            axis(1)
+            axis(2)
             par(ask=ask)
             abline(h=0, lty=4, lwd=2)
             if(nOnOne==1){
-              Sub <- paste("  RMS residual =",
-                           round(sqrt(MSE[i,j]),ndigit))
               {
                 if (is.null(titles))
                   title(main=casenames[i],sub=sub)
 #                 title(main=paste("Case",casenames[i]),
 #                   sub =paste("  RMS residual =",round(sqrt(MSE[i,j]),ndigit)))
-                else title(main=titles[i], sub=sub)
+                else title(main=titles[i], sub=sub[i, j])
 #                 title(main=paste(titles[i]),
 #                    sub =paste("  RMS residual =",round(sqrt(MSE[i,j]),ndigit)))
               }
@@ -215,15 +232,15 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
 #          plot(argvals, y[,i,j], type="p", xlim=rng, ylim=ylimit, col=1,
 #               xlab=argname, ylab=varnames[j])
             plot(rng, ylim, type="n", xlab=xlab,
-                 ylab=ylab[i], ...)
+                 ylab=ylab[j], ...)
+            axis(1)
+            axis(2)
             par(ask=ask)
             if(nOnOne==1){
-              Sub <- paste("  RMS residual =",
-                           round(sqrt(MSE[i,j]),ndigit))
               {
                 if(is.null(titles)) title(main=casenames[i],
-                                          sub=sub)
-                else title(main=titles[i], sub=sub)
+                                          sub=sub[i, j])
+                else title(main=titles[i], sub=sub[i, j])
               }
             }
             iOnOne <- 0
