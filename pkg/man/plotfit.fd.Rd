@@ -21,7 +21,7 @@ plotfit.fd(y, argvals, fdobj, rng = rangeval,
            index = 1:nrep, nfine = 101, residual = FALSE,
            sortwrd = FALSE, titles=NULL, ylim=NULL,
            ask=TRUE, type=c("p", "l")[1+residual],
-           xlab=argname, ylab, sub=Sub, col=1:9, lty=1:9,
+           xlab=argname, ylab, sub, col=1:9, lty=1:9,
            lwd=1, cex.pch=1, ...)
 }
 \arguments{
