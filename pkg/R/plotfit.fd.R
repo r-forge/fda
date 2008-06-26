@@ -196,14 +196,14 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
 #              xlab=argname, ylab=paste("Residual for",varnames[j]))
             plot(rng, ylim, type="n", xlab=xlab,
                  ylab=ylab[j], ...)
-            axis(1)
-            axis(2)
+#            axis(1)
+#            axis(2)
             par(ask=ask)
             abline(h=0, lty=4, lwd=2)
             if(nOnOne==1){
               {
                 if (is.null(titles))
-                  title(main=casenames[i],sub=sub)
+                  title(main=casenames[i],sub=sub[i, j])
 #                 title(main=paste("Case",casenames[i]),
 #                   sub =paste("  RMS residual =",round(sqrt(MSE[i,j]),ndigit)))
                 else title(main=titles[i], sub=sub[i, j])
@@ -233,8 +233,8 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
 #               xlab=argname, ylab=varnames[j])
             plot(rng, ylim, type="n", xlab=xlab,
                  ylab=ylab[j], ...)
-            axis(1)
-            axis(2)
+#            axis(1)
+#            axis(2)
             par(ask=ask)
             if(nOnOne==1){
               {
