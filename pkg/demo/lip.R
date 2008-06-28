@@ -1,3 +1,4 @@
+library(fda)
 #  -----------------------------------------------------------------------
 #                       Lip Movement Data
 #  -----------------------------------------------------------------------
@@ -15,7 +16,7 @@
 #  see the handwriting data.
 #  -----------------------------------------------------------------------
 
-#  Last modified 2008.06.23;  previously modified 21 March 2006
+#  Last modified 2008.06.28;  previously modified 21 March 2006
 ###
 ###
 ### 0.  Access the data:  Instantly available in the 'fda' package 
@@ -36,8 +37,9 @@ lipfd3 <- smooth.basisPar(liptime, lip)$fd
 names(lipfd3$fdnames) <- c("time(seconds)", "replications", "mm")
 #op <- par(mfrow=c(2,1), mar=c(5,5,4,2), pty="m", ask=FALSE)
 plot(lipfd3,        main="Lip Position", cex=1.2)
-plot(lipfd3, Lfd=1, ylab="mm/sec", main="Lip Velocity", cex=1.2)
-plot(lipfd3, Lfd=2, ylab="mm/sec/sec", main="Lip Acceleration", cex=1.2)
+plot(lipfd3, Lfd=1, ylab="mm / sec", main="Lip Velocity", cex=1.2)
+plot(lipfd3, Lfd=2, ylab="mm / sec / sec", main="Lip Acceleration",
+     cex=1.2)
 #par(op)
 
 # PROBLEM:  lines too straight, especially position and velocity
@@ -63,15 +65,17 @@ plot(lipfd3.12, Lfd=2, ylab="mm/sec/sec", main="Lip Acceleration",
 # SOLUTION: Use quintic splines (degree 5 so order 6) 
 
 ##
-## 1.3.  Quintic basis
+## 1.3.  Quintic basis (order = 6) 
 ## 
-lipbasis <- create.bspline.basis(range(liptime), 31, 6) 
-lipfd5 <- smooth.basisPar(liptime, lip, lipbasis, lambda=1e-12)$fd
+#lipbasis <- create.bspline.basis(range(liptime), 31, 6) 
+#lipfd5 <- smooth.basisPar(liptime, lip, lipbasis, lambda=1e-12)$fd
+lipfd5 <- smooth.basisPar(liptime, lip, 6, lambda=1e-12)$fd
 names(lipfd5$fdnames) <- c("time(seconds)", "replications", "mm")
 #op <- par(mfrow=c(2,1), mar=c(5,5,4,2), pty="m", ask=FALSE)
 plot(lipfd5,        main="Lip Position", cex=1.2)
-plot(lipfd5, Lfd=1, ylab="mm/sec", main="Lip Velocity", cex=1.2)
-plot(lipfd5, Lfd=2, ylab="mm/sec/sec", main="Lip Acceleration", cex=1.2)
+plot(lipfd5, Lfd=1, ylab="mm / sec", main="Lip Velocity", cex=1.2)
+plot(lipfd5, Lfd=2, ylab="mm / sec / sec", main="Lip Acceleration",
+     cex=1.2)
 #par(op)
 
 # PROBLEM:  Acceleration poorly smoothed
@@ -81,13 +85,14 @@ plot(lipfd5, Lfd=2, ylab="mm/sec/sec", main="Lip Acceleration", cex=1.2)
 ##
 ## 1.4.  Penalize the 4th derivative, not the second
 ##
-lipfd <- smooth.basisPar(liptime, lip, lipbasis, Lfdobj=int2Lfd(4),
+lipfd <- smooth.basisPar(liptime, lip, 6, Lfdobj=int2Lfd(4),
                          lambda=1e-12)$fd
 names(lipfd$fdnames) <- c("time(seconds)", "replications", "mm")
 #op <- par(mfrow=c(2,1), mar=c(5,5,4,2), pty="m", ask=FALSE)
 plot(lipfd,        main="Lip Position", cex=1.2)
-plot(lipfd, Lfd=1, ylab="mm/sec", main="Lip Velocity", cex=1.2)
-plot(lipfd, Lfd=2, ylab="mm/sec/sec", main="Lip Acceleration", cex=1.2)
+plot(lipfd, Lfd=1, ylab="mm / sec", main="Lip Velocity", cex=1.2)
+plot(lipfd, Lfd=2, ylab="mm / sec / sec", main="Lip Acceleration",
+     cex=1.2)
 #par(op)
 
 ##
@@ -101,41 +106,21 @@ plotfit.fd(lip, liptime, lipfd, residual=TRUE, type='b',
 ##
 ## 2.  Register the data
 ##
-#  -----------------------------------------------------------------------
-#       Register the data using the two landmarks defined by the minimum
-#        and the right elbow.
-#       Manually identify these points in each curve
-#  -----------------------------------------------------------------------
+#  --------------------------------------------------------------------
+#       Register the data using the two landmarks defined by
+#        the left and right elbows.  
+#  --------------------------------------------------------------------
 
-nmarks <- 2
-lipmat   <- eval.fd(liptime,lipfd)
-lipmeanfd <- mean.fd(lipfd)
+# Optionally:  Manually identify these points in each curve
 
-lipmin <- apply(lipmat, 2, function(x)
-                which(x==min(x)) )
-lipelbow <- apply(lipmat, 2, function(x){
-  imin <- which(x==min(x))[1]
-  dx <- diff(x[-(1:imin)])
-  imax1 <- which(dx==max(dx))[1]
-  jmax <- seq(ceiling(imax1/2), imax1-1) 
-  d2x <- diff(dx[jmax])
-  elbow <- which(d2x==max(d2x))[1]
-  imin+jmax[1]+elbow+1
-} )
-
-lipmarks <- cbind(min=lipmin, elbow=lipelbow)
-                  
-
-
-
-par(mfrow=c(1,1),pty="m")
-lipmarks <- matrix(0,20,nmarks)
-index <- 1:20
-for (i in index) {
-  plot(liptime, lipmat[,i], xlab="", ylab="", main=paste("Curve",i))
-  indexi <- identify(liptime, lipmat[,i], n=nmarks)
-  lipmarks[i,] <- liptime[indexi]
-}
+#par(mfrow=c(1,1),pty="m")
+#lipmarks <- matrix(0,20,nmarks)
+#index <- 1:20
+#for (i in index) {
+#  plot(liptime, lipmat[,i], xlab="", ylab="", main=paste("Curve",i))
+#  indexi <- identify(liptime, lipmat[,i], n=nmarks)
+#  lipmarks[i,] <- liptime[indexi]
+#}
 
 lipmeanmarks <- apply(lipmarks,2,mean)
 
@@ -148,9 +133,16 @@ lipmeanmarks <- apply(lipmarks,2,mean)
 
 wnbasis <- 6
 wnorder <- 4
-wbreaks <- c(0,lipmeanmarks,1)
-warpbasis <- create.bspline.basis(liprange, wnbasis, wnorder, wbreaks);
-WfdPar    <- fdPar(fd(matrix(0,wnbasis,1), warpbasis), 2, 1e-4)
+wbreaks <- c(0,lipmeanmarks,0.35) 
+
+#warpbasis <- create.bspline.basis(liprange, wnbasis, wnorder, wbreaks);
+#warpbasis <- create.bspline.basis(range(lip), wnbasis, wnorder, wbreaks);
+warpbasis <- create.bspline.basis(nbasis=wnbasis, norder=wnorder,
+                                  breaks=wbreaks);
+fd(basisobj=warpbasis)
+WfdPar    <- fdPar(fd(basisobj=warpbasis), 2, 1e-4)
+WfdPar.    <- fdPar(fd(matrix(0,wnbasis,1), warpbasis), 2, 1e-4)
+all.equal(WfdPar, WfdPar.)
 
 lipreglist <- landmarkreg(lipfd, lipmarks, lipmeanmarks, WfdPar)
 

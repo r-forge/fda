@@ -13,8 +13,8 @@
   arguments to functions that estimate functional parameters.  
 }
 \usage{
-fdPar(fdobj=fd(), Lfdobj=int2Lfd(0), lambda=0,
-      estimate=TRUE, penmat=NULL)
+%fdPar(fdobj=fd(), Lfdobj=NULL, lambda=0, estimate=TRUE, penmat=NULL)
+fdPar(fdobj=fd(), Lfdobj=int2Lfd(0), lambda=0, estimate=TRUE, penmat=NULL)
 }
 \arguments{
   \item{fdobj}{
@@ -25,7 +25,8 @@ fdPar(fdobj=fd(), Lfdobj=int2Lfd(0), lambda=0,
   }
   \item{Lfdobj}{
     either a nonnegative integer or a linear differential operator
-    object 
+    object.  If NULL and fdobj[['type']] == 'bspline', Lfdobj =
+    int2obj(max(0, norder-2)), where norder = order of fdobj.   
   }
   \item{lambda}{
     a nonnegative real number specifying the amount of smoothing
