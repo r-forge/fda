@@ -298,6 +298,7 @@ smooth.basis <- function (argvals, y, fdParobj, wtvec=rep(1,n), dffactor=1,
 
   smoothlist <- list( fdobj, df, gcv, coef, SSE, penmat, y2cMap )
   names(smoothlist) <- c("fd", "df", "gcv", "coef", "SSE", "penmat", "y2cMap")
-
+  
+  class(smoothlist) <- 'fdSmooth' 
   return( smoothlist )
 }
