@@ -14,16 +14,13 @@ lip
 liptime
 }
 \format{
-  
-  \description{
-    \item{lip}{
-      a matrix of dimension c(51, 20) giving the position of the lower
-      lip every 7 milliseconds for 350 miliseconds.
-    }
-    \item{liptime}{
-      time in seconds from the start = seq(0, 0.35, 51) = every 7
-      milliseconds.  
-    }
+  \item{lip}{
+    a matrix of dimension c(51, 20) giving the position of the lower
+    lip every 7 milliseconds for 350 miliseconds.
+  }
+  \item{liptime}{
+    time in seconds from the start = seq(0, 0.35, 51) = every 7
+    milliseconds.  
   }
 } 
 \details{
@@ -45,6 +42,8 @@ liptime
   19.3.  
 }
 %\seealso{\code{\link{eval.penalty}}}
-%\examples{}
+\examples{
+#  See the \code{lip} \code{demo}.  
+}
 % docclass is function
 \keyword{datasets}

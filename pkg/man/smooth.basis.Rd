@@ -64,36 +64,6 @@ smooth.basis(argvals, y, fdParobj, wtvec=rep(1,n),
     }
   }
 }
-\value{
-  a named list of length 7 containing:
-
-  \item{fd}{
-    a functional data object that smooths the data.
-  }
-  \item{df}{
-    a degrees of freedom measure of the smooth
-  }
-  \item{gcv}{
-    the value of the generalized cross-validation or GCV criterion.  If
-    there are multiple curves, this is a vector of values, one per
-    curve.  If the smooth is multivariate, the result is a matrix of gcv
-    values, with columns corresponding to variables.  
-  }
-  \item{coef}{
-    the coefficient matrix or array for the basis function expansion of
-    the smoothing function 
-  }
-  \item{SSE}{
-    the error sums of squares.  SSE is a vector or a matrix of the same
-    size as GCV. 
-  }
-  \item{penmat}{
-    the penalty matrix.
-  }
-  \item{y2cMap}{
-    the matrix mapping the data to the coefficients.
-  }
-}
 \details{
   If the smoothing parameter \code{lambda} is zero, there is no penalty
   on roughness.  As lambda increases, usually in logarithmic terms, the
@@ -127,6 +97,36 @@ smooth.basis(argvals, y, fdParobj, wtvec=rep(1,n),
   the data in a basis system with reasonably high resolution using
   \code{data2fd}, and then smooth the resulting functional data object
   using function \code{smooth.fd}.
+}
+\value{
+  a named list of length 7 containing the following:  
+
+  \item{fd}{
+    a functional data object containing a smooth of the data. 
+  }
+  \item{df}{
+    a degrees of freedom measure of the smooth
+  }
+  \item{gcv}{
+    the value of the generalized cross-validation or GCV criterion.  If
+    there are multiple curves, this is a vector of values, one per
+    curve.  If the smooth is multivariate, the result is a matrix of gcv
+    values, with columns corresponding to variables.  
+  }
+  \item{coef}{
+    the coefficient matrix or array for the basis function expansion of
+    the smoothing function 
+  }
+  \item{SSE}{
+    the error sums of squares.  SSE is a vector or a matrix of the same
+    size as GCV. 
+  }
+  \item{penmat}{
+    the penalty matrix.
+  }
+  \item{y2cMap}{
+    the matrix mapping the data to the coefficients.
+  }
 }
 \seealso{
   \code{\link{data2fd}}, 

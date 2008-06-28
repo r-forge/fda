@@ -29,12 +29,26 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=int2Lfd(2),
     only one replicate and variable are assumed.  
   }
   \item{fdobj}{
-    a functional data object, although the argument may also be a
-    functional basis object or another functional parameter object.
-    Basis objects are converted to functional data objects with the
-    identity matrix as the coefficient matrix.
+    One of the following:
 
-    If NULL, fdobj = create.bspline.basis(argvals).  
+    \itemize{
+      \item{fd}{a functional data object (class \code{fd})}
+      \item{basisfd}{
+	a functional basis object, which is converted to a functional
+	data object with the identity matrix as the coefficient matrix.
+      }
+      \item{fdPar}{
+	a functional parameter object (class \code{fdPar})
+      }
+      \item{integer}{
+	an integer giving the order of a B-spline basis, which is
+	further converted to a functional data object with the identity
+	matrix as the coefficient matrix.  
+      }
+      \item{NULL}{
+	Defaults to fdobj = create.bspline.basis(argvals).
+      }
+    }
   }
   \item{Lfdobj}{
     either a nonnegative integer or a linear differential operator
@@ -109,7 +123,9 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=int2Lfd(2),
   }
 }
 \details{
-  1.  if(is.null(fdobj))fdobj <- create.bspline.basis(argvals) 
+  1.  if(is.null(fdobj))fdobj <- create.bspline.basis(argvals).  Else
+  if(is.integer(fdobj)) fdobj <- create.bspline.basis(argvals, norder =
+  fdobj) 
   
   2.  fdPar
 
@@ -129,7 +145,9 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=int2Lfd(2),
   \code{\link{smooth.pos}}
 }
 \examples{
-# simplest call
+##
+## simplest call
+##
 girlGrowthSm <- with(growth, smooth.basisPar(argvals=age, y=hgtf))
 plot(girlGrowthSm$fd, xlab="age", ylab="height (cm)",
          main="Girls in Berkeley Growth Study" )
@@ -138,26 +156,50 @@ plot(deriv(girlGrowthSm$fd), xlab="age", ylab="growth rate (cm / year)",
 plot(deriv(girlGrowthSm$fd, 2), xlab="age",
         ylab="growth acceleration (cm / year^2)",
         main="Girls in Berkeley Growth Study" )
-
 #  Shows the effects of three levels of smoothing
 #  where the size of the third derivative is penalized.
 #  The null space contains quadratic functions.
+
+##
+## Another simple call
+##
+lipSm <- smooth.basisPar(liptime, lip)
+#plot(lipSm)
+
+
+
+
+
 x <- seq(-1,1,0.02)
 y <- x + 3*exp(-6*x^2) + sin(1:101)/2
 # sin not rnorm to make it easier to compare
 # results across platforms 
 
 #  set up a saturated B-spline basis
-basisobj <- create.bspline.basis(c(-1,1),101)
-fdParobj <- fdPar(basisobj, 2, lambda=1)
-result1.  <- smooth.basis(x, y, fdParobj)
+basisobj101 <- create.bspline.basis(c(-1,1),101)
+fdParobj101 <- fdPar(basisobj101, 2, lambda=1)
+result101  <- smooth.basis(x, y, fdParobj101)
 
-result1 <- smooth.basisPar(argvals=x, y=y,
-              fdobj=basisobj, Lfdobj=2, lambda=1)
-all.equal(result1, result1.)
+basisobj <- create.bspline.basis(c(-1,1))
+all.equal(basisobj101, basisobj)
+
+fdParobj <- fdPar(basisobj, 2, lambda=1)
+result  <- smooth.basis(x, y, fdParobj)
+#all.equal(result101, result)
+
+resultP <- smooth.basisPar(argvals=x, y=y, fdobj=basisobj, lambda=1)
+
+result4 <- smooth.basisPar(argvals=x, y=y, fdobj=4, lambda=1)
+
+#all.equal(result1, result1.)
 # TRUE 
 
-with(result1, c(df, gcv)) #  display df and gcv measures
+
+
+
+
+
+#with(result1, c(df, gcv)) #  display df and gcv measures
 fdParobj <- fdPar(basisobj, 2, lambda=1e-4)
 result2 <- smooth.basisPar(x, y, basisobj, 2, lambda=1e-4)
 
@@ -167,7 +209,7 @@ result3 <- smooth.basisPar(x, y, basisobj, 2, lambda=0)
 with(result3, c(df, gcv)) #  display df and gcv measures
 
 plot(x,y)           # plot the data
-lines(result1$fd, lty=2)  #  add heavily penalized smooth
+#lines(result1$fd, lty=2)  #  add heavily penalized smooth
 lines(result2$fd, lty=1)  #  add reasonably penalized smooth
 lines(result3$fd, lty=3)  #  add smooth without any penalty
 legend(-1,3,c("1","0.0001","0"),lty=c(2,1,3))
