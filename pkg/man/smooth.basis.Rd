@@ -12,8 +12,7 @@
   differential operator.
 }
 \usage{
-smooth.basis(argvals, y, fdParobj, wtvec=rep(1,n),
-             dffactor=1,
+smooth.basis(argvals, y, fdParobj, wtvec=rep(1,n), dffactor=1,
              fdnames=list(NULL, dimnames(y)[2], NULL))
 }
 \arguments{
@@ -99,7 +98,8 @@ smooth.basis(argvals, y, fdParobj, wtvec=rep(1,n),
   using function \code{smooth.fd}.
 }
 \value{
-  a named list of length 7 containing the following:  
+  an object of class \code{fdSmooth}, which is a list of length 7 with
+  the following components: 
 
   \item{fd}{
     a functional data object containing a smooth of the data. 
