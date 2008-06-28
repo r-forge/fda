@@ -129,16 +129,11 @@ smooth.basis(argvals, y, fdParobj, wtvec=rep(1,n), dffactor=1,
   }
 }
 \seealso{
-  \code{\link{data2fd}}, 
-  \code{\link{df2lambda}}, 
-  \code{\link{lambda2df}}, 
-  \code{\link{lambda2gcv}}, 
-  \code{\link{plot.fd}}, 
-  \code{\link{project.basis}}, 
-  \code{\link{smooth.fd}}, 
-  \code{\link{smooth.monotone}}, 
-  \code{\link{smooth.pos}}
-  \code{\link{smooth.basisPar}}
+  \code{\link{data2fd}}, \code{\link{df2lambda}}, 
+  \code{\link{lambda2df}}, \code{\link{lambda2gcv}}, 
+  \code{\link{plot.fd}}, \code{\link{project.basis}}, 
+  \code{\link{smooth.fd}}, \code{\link{smooth.monotone}}, 
+  \code{\link{smooth.pos}}, \code{\link{smooth.basisPar}}
 }
 \examples{
 # A toy example that creates problems with
@@ -148,7 +143,8 @@ b2.3 <- create.bspline.basis(norder=2, breaks=c(0, .5, 1))
 # continuous, bounded, locally linear
 fdPar2 <- fdPar(b2.3, Lfdobj=2, lambda=1)
 # Penalize excessive slope Lfdobj=1;  
-# second derivative Lfdobj=2 is discontinuous.
+# second derivative Lfdobj=2 is discontinuous,
+# so the following generates an error:  
 #fd2.3s0 <- smooth.basis(0:1, 0:1, fdPar2)
 
 b3.4 <- create.bspline.basis(norder=3, breaks=c(0, .5, 1))
@@ -160,6 +156,8 @@ fdPar3 <- fdPar(b3.4, lambda=1)
 fd3.4s0 <- smooth.basis(0:1, 0:1, fdPar3)
 plot(fd3.4s0$fd)
 
+# same plot via plot.fdSmooth
+plot(fd3.4s0) 
 
 #  Shows the effects of three levels of smoothing
 #  where the size of the third derivative is penalized.
