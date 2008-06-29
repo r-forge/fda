@@ -15,8 +15,7 @@
   are.  
 }
 \usage{
-fd(coef=matrix(0, 2, 1), basisobj=basisfd(),
-   fdnames=defaultnames)
+fd(coef=NULL, basisobj=basisfd(), fdnames=defaultnames)
 }
 \arguments{
   \item{coef}{
@@ -28,6 +27,8 @@ fd(coef=matrix(0, 2, 1), basisobj=basisfd(),
     functional data objects.  A functional data object is referred to as
     "univariate" if this argument is a vector or a matrix, and
     "multivariate" if it is a three-dimensional array.
+
+    if(is.null(coef)) coef <- rep(0, basisobj[['nbasis']]) 
   }
   \item{basisobj}{
     a functional basis object defining the basis
@@ -49,8 +50,7 @@ fd(coef=matrix(0, 2, 1), basisobj=basisfd(),
   \code{is.fd}.
 
   Normally only developers of new functional data analysis
-  functions will actually need to use this function, so no examples are
-  provided.  
+  functions will actually need to use this function.  
 }
 \source{
   Ramsay, James O., and Silverman, Bernard W. (2006), \emph{Functional
@@ -61,7 +61,13 @@ fd(coef=matrix(0, 2, 1), basisobj=basisfd(),
 }
 \examples{
 bspl1.1 <- create.bspline.basis(norder=1, breaks=0:1)
-fd.bspl1.1 <- fd(1, basisobj=bspl1.1)
+fd.bspl1.1 <- fd(0, basisobj=bspl1.1)
+
+fd.bspl1.1a <- fd(basisobj=bspl1.1)
+\dontshow{ stopifnot( }
+all.equal(fd.bspl1.1, fd.bspl1.1a)
+\dontshow{ ) }
+
 }
 % docclass is function
 \keyword{smooth}
