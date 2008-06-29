@@ -25,7 +25,9 @@ norder.bspline(x, ...)
   }
   \item{\dots}{optional arguments currently unused} 
 }
-%\details{ }
+\details{
+  norder throws an error of basisfd[['type']] != 'bspline'.  
+}
 \value{
   An integer giving the order of the B-spline.  
 }
@@ -59,7 +61,13 @@ stopifnot(norder(create.bspline.basis(norder=2, breaks=c(0,.5, 1))) == 2)
 
 # Defaut B-spline basis:  Cubic spline:  degree 3, order 4,
 # 21 breaks, 19 interior knots.  
-stopifnot(norder(create.bspline.basis()) == 4) 
+stopifnot(norder(create.bspline.basis()) == 4)
+
+\dontrun{
+norder(create.fourier.basis(c(0,12) ))
+Error in norder.bspline(x) : 
+  object x is of type = fourier;  'norder' is only defined for type = 'bsline'
+}
 
 }
 \keyword{smooth}

@@ -13,15 +13,15 @@
   arguments to functions that estimate functional parameters.  
 }
 \usage{
+%fdPar(fdobj=NULL, Lfdobj=NULL, lambda=0, estimate=TRUE, penmat=NULL)
 fdPar(fdobj=fd(), Lfdobj=NULL, lambda=0, estimate=TRUE, penmat=NULL)
-%fdPar(fdobj=fd(), Lfdobj=int2Lfd(0), lambda=0, estimate=TRUE, penmat=NULL)
 }
 \arguments{
   \item{fdobj}{
-    a functional data object, although the argument may also be a
-    functional basis object or another functional parameter object.
-    Basis objects are converted to functional data objects with the
-    identity matrix as the coefficient matrix.
+    a functional data object, functional basis object, a functional
+    parameter object or a matrix.  If class(fdobj) == 'basisfd', it is
+    converted to functional data objects with the identity matrix as the
+    coefficient matrix.  If it a matrix, it is replaced by fd(fdobj).      
   }
   \item{Lfdobj}{
     either a nonnegative integer or a linear differential operator
