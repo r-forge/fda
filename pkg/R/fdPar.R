@@ -8,7 +8,7 @@
 
 #  Generator function of class fdPar
 
-fdPar <- function(fdobj=fd(), Lfdobj=NULL, lambda=0, estimate=TRUE, 
+fdPar <- function(fdobj=NULL, Lfdobj=NULL, lambda=0, estimate=TRUE, 
                   penmat=NULL){
 		
 # Sets up a functional parameter object
@@ -68,7 +68,14 @@ fdPar <- function(fdobj=fd(), Lfdobj=NULL, lambda=0, estimate=TRUE,
       dropind  <- basisobj$dropind
       nbasis   <- nbasis - length(dropind)
     }
-    else stop("First argument is neither a functional data object nor a basis object.")
+    else if(is.numeric(fdobj)){
+      fdobj <- fd(fdobj)
+      nbasis <- fdobj$nbasis
+    }
+    else 
+      stop("First argument is neither a functional data object, ",
+           "nor a basis object, nor a parameter object, nor ",
+           "a matrix.")
   }
 
 #  check Lfdobj
