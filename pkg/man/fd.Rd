@@ -59,7 +59,10 @@ fd(coef=matrix(0, 2, 1), basisobj=basisfd(),
   Ramsay, James O., and Silverman, Bernard W. (2002), \emph{Applied
     Functional Data Analysis}, Springer, New York
 }
-%\examples{ }
+\examples{
+bspl1.1 <- create.bspline.basis(norder=1, breaks=0:1)
+fd.bspl1.1 <- fd(1, basisobj=bspl1.1)
+}
 % docclass is function
 \keyword{smooth}
 \keyword{internal}
