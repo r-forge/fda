@@ -13,8 +13,8 @@
   arguments to functions that estimate functional parameters.  
 }
 \usage{
-%fdPar(fdobj=NULL, Lfdobj=NULL, lambda=0, estimate=TRUE, penmat=NULL)
-fdPar(fdobj=fd(), Lfdobj=NULL, lambda=0, estimate=TRUE, penmat=NULL)
+fdPar(fdobj=NULL, Lfdobj=NULL, lambda=0, estimate=TRUE, penmat=NULL)
+%fdPar(fdobj=fd(), Lfdobj=NULL, lambda=0, estimate=TRUE, penmat=NULL)
 }
 \arguments{
   \item{fdobj}{
@@ -90,6 +90,8 @@ basisobj <- create.bspline.basis(rangeval, 11)
 #  set up initial value for Wfdobj
 Wfd0 <- fd(matrix(0,11,1), basisobj)
 WfdParobj <- fdPar(Wfd0)
+
+WfdP3 <- fdPar(seq(-3, 3, length=11))
 
 ##
 ##  smooth the Canadian daily temperature data 
