@@ -8,7 +8,7 @@
 
 #  Generator function of class fdPar
 
-fdPar <- function(fdobj=fd(), Lfdobj=int2Lfd(0), lambda=0, estimate=TRUE, 
+fdPar <- function(fdobj=fd(), Lfdobj=NULL, lambda=0, estimate=TRUE, 
                   penmat=NULL){
 		
 # Sets up a functional parameter object
@@ -72,11 +72,19 @@ fdPar <- function(fdobj=fd(), Lfdobj=int2Lfd(0), lambda=0, estimate=TRUE,
   }
 
 #  check Lfdobj
-
-  Lfdobj <- int2Lfd(Lfdobj)
-
+  {
+    if(is.null(Lfdobj)){
+      norder <- {
+        if(fdobj$basis$type=='bspline')norder.bspline(fdobj$basis)
+        else 2
+      }
+      Lfdobj <- int2Lfd(max(0, norder-2))
+    }
+    else
+      Lfdobj <- int2Lfd(Lfdobj)
+  }
   if (!inherits(Lfdobj, "Lfd"))
-    stop("LFDOBJ is not a linear differential operator object.")
+    stop("'Lfdobj' is not a linear differential operator object.")
 
 #  check lambda
 
