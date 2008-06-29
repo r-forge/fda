@@ -15,7 +15,7 @@
   are.  
 }
 \usage{
-fd(coef=NULL, basisobj=basisfd(), fdnames=defaultnames)
+fd(coef=NULL, basisobj=NULL, fdnames=defaultnames)
 }
 \arguments{
   \item{coef}{
@@ -32,6 +32,13 @@ fd(coef=NULL, basisobj=basisfd(), fdnames=defaultnames)
   }
   \item{basisobj}{
     a functional basis object defining the basis
+
+    if(is.null(basisobj)){
+      rc <- range(coef)
+      if(diff(rc)==0) rc <- rc+0:1
+      nb <- max(4, nrow(coef)) 
+      basisobj <- create.bspline.basis(rc, nbasis = nb)
+    }
   }
   \item{fdnames}{
     A list of length 3, each member being a string vector containing
@@ -67,6 +74,16 @@ fd.bspl1.1a <- fd(basisobj=bspl1.1)
 \dontshow{ stopifnot( }
 all.equal(fd.bspl1.1, fd.bspl1.1a)
 \dontshow{ ) }
+
+\dontrun{
+fd.bspl1.1b <- fd(0)
+Error in fd(0) : 
+  Number of coefficients does not match number of basis functions.
+
+... because fd by default wants to create a cubic spline 
+}
+
+fd.bspl4 <- fd(rep(0,4))
 
 }
 % docclass is function
