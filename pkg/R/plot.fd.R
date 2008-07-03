@@ -1,9 +1,9 @@
 plot.fdSmooth <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
                           xlim=NULL, ylim=NULL, xlab=NULL,
                           ylab=NULL, ask=FALSE, nx=201, ...){
-  plot(x$fd, y, Lfdobj=0, href=TRUE, titles=NULL,
+  plot(x$fd, y, Lfdobj=Lfdobj, href=href, titles=titles,
               xlim=xlim, ylim=ylim, xlab=xlab,
-              ylab=ylab, ask=FALSE, nx=201, ...)
+              ylab=ylab, ask=ask, nx=nx, ...)
 }
 
 plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
@@ -181,7 +181,8 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
       }
     }
   }
-  invisible(NULL)
+#  invisible(NULL)
+  'done'
 }
 
 zerofind <- function(fmat)
