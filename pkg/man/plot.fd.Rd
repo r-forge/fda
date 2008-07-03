@@ -75,7 +75,7 @@
   suitable array must first be defined using the \code{par} function. 
 }
 \value{
-  invisible(NULL)
+  'done'
 }
 \section{Side Effects}{
   a plot of the functional observations
