@@ -27,17 +27,17 @@ daily
       \item{dailyAv}{
 	a three dimensional array c(365, 35, 3) summarizing data
 	collected at 35 different weather stations in Canada on the
-	following: 
+	following:
 	
-	[[1]] Temperature.C:  average daily temperature for each day of
-	the year 
+	[,,1] = [,, 'Temperature.C']:  average daily temperature for
+	each day of the year 
 	
-	[[2]] Precipitation.mm:  average daily rainfall for each day of
-	the year rounded to 0.1 mm.  
+	[,,2] = [,, 'Precipitation.mm']:  average daily rainfall for
+	each day of the year rounded to 0.1 mm.  
 
-	[[3]] log10precip:  base 10 logarithm of Precipitation.mm after
-	first replacing 27 zeros by 0.05 mm (Ramsay and Silverman 2006,
-	p. 248).   
+	[,,3] = [,, 'log10precip']:  base 10 logarithm of
+	Precipitation.mm after first replacing 27 zeros by 0.05 mm
+	(Ramsay and Silverman 2006, p. 248).   
       }    
       \item{place}{
 	Names of the 35 different weather stations in Canada whose data
