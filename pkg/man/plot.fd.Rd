@@ -76,6 +76,10 @@
 }
 \value{
   'done'
+  % This used to return 'invisible(NULL)'.
+  % However, with R 2.7.0 under XEmacs with ESS,
+  % it sometimes failed to plot.  I changed the return value,
+  % and the problem disappeared.  
 }
 \section{Side Effects}{
   a plot of the functional observations
