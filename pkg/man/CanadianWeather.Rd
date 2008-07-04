@@ -22,7 +22,9 @@ daytime
   before the other format became available and for compatability with
   the Matlab 'fda' code.
 
-  \item{daytime}{ ((1:365) - 0.5)} 
+  \item{daytime}{
+    ((1:365) - 0.5) assuming observations taken at noon each day 
+  } 
   \item{CanadianWeather}{
     A list with the following components:
 
