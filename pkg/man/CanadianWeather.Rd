@@ -2,6 +2,7 @@
 \docType{data}
 \alias{CanadianWeather}
 \alias{daily}
+\alias{daytime}
 \title{
   Canadian average annual weather cycle
 }
@@ -12,14 +13,16 @@
 \usage{
 CanadianWeather
 daily
+daytime
 }
 \format{
   'CanadianWeather' and 'daily' are lists containing essentially the
   same data.  'CanadianWeather' may be preferred for most purposes;
   'daily' is included primarily for compatability with scripts written
   before the other format became available and for compatability with
-  the Matlab 'fda' code.    
+  the Matlab 'fda' code.
 
+  \item{daytime}{ ((1:365) - 0.5)} 
   \item{CanadianWeather}{
     A list with the following components:
 
