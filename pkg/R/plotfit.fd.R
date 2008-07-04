@@ -1,8 +1,26 @@
-plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
-                       index = 1:nrep, nfine = 101, residual = FALSE,
+#plotfit <- function (x, ...){
+#  UseMethod("plotfit")
+#}
+
+plotfit.fdSmooth <- function(y, argvals, fdSm, rng = NULL,
+                       index = NULL, nfine = 101, residual = FALSE,
                        sortwrd = FALSE, titles=NULL,  ylim=NULL,
                        ask=TRUE, type=c("p", "l")[1+residual],
-                       xlab=argname, ylab, sub, col=1:9, lty=1:9,
+                       xlab=NULL, ylab=NULL, sub=NULL, col=1:9,
+                       lty=1:9, lwd=1, cex.pch=1, ...){
+  plotfit.fd(y, argvals, fdSm$fd, rng = rng, index = index,
+             nfine = nfine, residual = residual, 
+             sortwrd = sortwrd, titles=titles,  ylim=ylim,
+             ask=ask, type=c("p", "l")[1+residual],
+             xlab=xlab, ylab=ylab, sub=sub, col=1:9, lty=1:9,
+             lwd=1, cex.pch=1, ...)
+}
+
+plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
+                       index = NULL, nfine = 101, residual = FALSE,
+                       sortwrd = FALSE, titles=NULL,  ylim=NULL,
+                       ask=TRUE, type=c("p", "l")[1+residual],
+                       xlab=NULL, ylab=NULL, sub=NULL, col=1:9, lty=1:9,
                        lwd=1, cex.pch=1, ...)
 {
 #PLOTFIT plots discrete data along with a functional data object for 
@@ -33,7 +51,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
 		"Third argument is not a functional data object.")
 
   basisobj <- fdobj$basis
-  rangeval <- basisobj$rangeval
+  if(is.null(rng))rng <- basisobj$rangeval
 	
   coef  <- fdobj$coefs
   coefd <- dim(coef)
@@ -106,7 +124,9 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
   }
 	
 #  set up fit and data as 3D arrays, selecting curves in INDEX
-	
+
+  if(is.null(index))index <- 1:nrep
+#  
   y     <- y    [,index,, drop=FALSE]
   yhat  <- yhat [,index,, drop=FALSE]
   res   <- res  [,index,, drop=FALSE]
@@ -156,7 +176,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
 #  plot the results
 	
   ndigit = abs(floor(log10(min(c(MSE)))) - 1)
-  if(missing(sub))
+  if(is.null(sub))
     sub <- paste("  RMS residual =", round(sqrt(MSE),ndigit))
   if(length(sub) != length(MSE)){
     warning('length(sub) = ', length(sub), ' != ',
@@ -186,7 +206,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
 #      ylimit <- range(res)
       if(is.null(ylim))ylim <- range(res)
 #      if(missing(ylab))ylab=rep("Residuals", nrepi)
-      if(missing(ylab))ylab=paste('Residuals for', varnames) 
+      if(is.null(ylab))ylab=paste('Residuals for', varnames) 
 #      for (i in 1:nrep) {
       for (j in 1:nvar) {
         for (i in 1:nrepi){
@@ -194,6 +214,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = rangeval,
           if(iOnOne %in% c(0, nOnOne)[1:(1+ask)]){
 #           plot(argvals, res[,i,j], xlim=rng, ylim=ylimit, 
 #              xlab=argname, ylab=paste("Residual for",varnames[j]))
+            if(is.null(xlab))xlab <- argname
             plot(rng, ylim, type="n", xlab=xlab,
                  ylab=ylab[j], ...)
 #            axis(1)

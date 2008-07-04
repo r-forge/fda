@@ -182,6 +182,10 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
     }
   }
 #  invisible(NULL)
+# This used to return 'invisible(NULL)'.
+# However, with R 2.7.0 under XEmacs with ESS,
+# it sometimes failed to plot.  I changed the return value,
+# and the problem disappeared.  
   'done'
 }
 
