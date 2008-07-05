@@ -223,8 +223,23 @@ with(result104.0, c(df, gcv, SSE))
 
 plotfit.fd(y, x, result104.0[['fd']], nfine=501)
 # perfect (over)fit
-# Need lambda > 0.  
+# Need lambda > 0.
 
+##
+## Example 5.  gait
+##
+gaittime  <- (1:20)/21
+gaitrange <- c(0,1)
+gaitbasis <- create.fourier.basis(gaitrange,21)
+lambda    <- 10^(-11.5)
+harmaccelLfd <- vec2Lfd(c(0, 0, (2*pi)^2, 0))
+
+gaitfdPar <- fdPar(gaitbasis, harmaccelLfd, lambda)
+gaitfd <- smooth.basis(gaittime, gait, gaitfdPar)$fd
+\dontrun{
+# by default creats multiple plots, asking for a click between plots 
+plotfit.fd(gait, gaittime, gaitfd)
+}
 }
 % docclass is function
 \keyword{smooth}
