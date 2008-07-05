@@ -114,11 +114,14 @@ smooth.basis <- function (argvals, y, fdParobj,
     nvar <- 1
     coef <- rep(0,nbasis)
     y <- matrix(y,n,1)
+    ynames <- 'rep1'
+    vnames <- 'value1' 
   }
   if (ndim == 2)  {
     nrep <- ncol(y)
     nvar <- 1
     coef <- matrix(0,nbasis,nrep)
+    ynames <- dimnames(y)[[2]] 
   }
   if (ndim == 3)  {
     nrep <- dim(y)[2]
@@ -304,6 +307,11 @@ smooth.basis <- function (argvals, y, fdParobj,
         SSEi <- sum((y[,i] - yhat[,i])^2)
         gcv[i] <- (SSEi/n)/((n - df.)/n)^2
       }
+      if(ndim>1){
+        ynames <- dimnames(y)[[2]]
+        if(is.null(ynames))ynames <- dimnames(yhat)[[2]]
+        names(gcv) <- ynames
+      }
     } else {
       gcv <- matrix(0,nrep,nvar)
       for (ivar in 1:nvar) {
@@ -312,7 +320,12 @@ smooth.basis <- function (argvals, y, fdParobj,
           gcv[i,ivar] <- (SSEi/n)/((n - df.)/n)^2
         }
       }
-    }
+      ynames <- dimnames(y)[[2]]
+      if(is.null(ynames))ynames <- dimnames(yhat)[[2]]
+      vnames <- dimnames(y)[[3]]
+      if(is.null(vnames))vnames <- dimnames(yhat)[[3]]
+      dimnames(gcv) <- list(ynames, vnames)       
+    }      
   } else {
 #    gcv <- NA
     gcv <- Inf 
@@ -333,7 +346,12 @@ smooth.basis <- function (argvals, y, fdParobj,
 #                                    paste("values",as.character(1:nvar)) )
   if(is.null(fdnames)){ 
     if (ndim == 1) fdnames <- list("time", "reps", "values")
-    if (ndim == 2) fdnames <- list("time",
+    if (ndim == 2)
+      
+
+
+
+      fdnames <- list("time",
           paste("reps",as.character(1:nrep)),
           "values")
     if (ndim == 3) fdnames <- list("time",

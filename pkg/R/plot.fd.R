@@ -116,10 +116,10 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
   crvnames <- fdobj$fdnames[[2]]
   varnames <- fdobj$fdnames[[3]]
 # Don't ask for the first plot, but do for later plots if(ask)   
-  op <- par(ask=FALSE)
+#  op <- par(ask=FALSE)
 # Don't ask for the first plot,
 # but if ask==TRUE, do ask for succeeding plots 
-  on.exit(par(op))
+#  on.exit(par(op))
 # A single line?  
   if (ndim < 2) {
     plot (y, fdmat, type="l", xlim=xlim, ylim=ylim,
@@ -135,13 +135,17 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
 #      if (zerofind(fdmat) && href) abline(h=0,lty=2)
       if (zerofind(ylim) && href) abline(h=0,lty=2)
     } else  {
+      op <- par(ask=FALSE)
+# Don't ask for the first plot,
+# but if ask==TRUE, do ask for succeeding plots 
+      on.exit(par(op))
       cat('Multiple plots:  Click in the plot to advance to the next') 
 #      op <- par(ask = TRUE)
 #      on.exit(par(op))
       for (irep in 1:nrep) {
         plot (y, fdmat[,irep], type="l", xlim=xlim, ylim=ylim,
                 xlab=xlab, ylab=ylab, ...)
-        par(ask=ask)
+        if(irep<2) par(ask=ask)
 #        if (zerofind(fdmat[,irep]) && href) abline(h=0,lty=2)
         if (zerofind(ylim) && href) abline(h=0,lty=2)
         if (!is.null(titles)) title(titles[irep])
@@ -164,13 +168,18 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
         if (zerofind(ylim) && href) abline(h=0,lty=2)
       }
     } else {
+      op <- par(ask=FALSE)
+# Don't ask for the first plot,
+# but if ask==TRUE, do ask for succeeding plots 
+      on.exit(par(op))
+      cat('Multiple plots:  Click in the plot to advance to the next') 
       for (irep in 1:nrep) {
 #            if (ivar==1){op <- par(ask = TRUE); on.exit(par(op)) }
 #            else { op <- par(ask = FALSE); on.exit(par(op)) }
         for (ivar in 1:nvar) {
           plot(y,fdmat[,irep,ivar],type="l", xlim=xlim, ylim=ylim,
                 xlab=xlab, ylab=ylab, ...)
-          par(ask=ask)
+          if((irep<2) && (ivar<2)) par(ask=ask)
 #          if (zerofind(fdmat[,irep,ivar]) && href) abline(h=0,lty=2)
           if (zerofind(ylim) && href) abline(h=0,lty=2)
           if (!is.null(titles)) title(titles[irep])
