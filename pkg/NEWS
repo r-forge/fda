@@ -5,6 +5,11 @@ second edition (2006) and 'Applied Functional Data Analysis'
 
 Release 1.2.4 fixes a few bugs and adds defaults to 
 'smooth.basis' and 'smooth.basisPar' to make them easier to use.  
+The output of 'smooth.basis' and 'smooth.basisPar' now have class 
+'fdSmooth', with methods for 'plot', 'lines', and 'plotfit'.  
+There have also been improvements to the 'plotfit' function and 
+the 'CanadianWeather' data.  Also, a function 'norder' has been 
+added, which returns the order of a B-spline.  
 
 Release 1.2.3 adds to previous versions a script to create most 
 of the figures of chapter 6 of "Applied Functional Data Analysis" 
