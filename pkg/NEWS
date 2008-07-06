@@ -3,6 +3,9 @@ second edition (2006) and 'Applied Functional Data Analysis'
 (2002), both by James O. Ramsay and Bernard W. Silverman 
 (Springer).  
 
+Release 1.2.4 fixes a few bugs and adds defaults to 
+'smooth.basis' and 'smooth.basisPar' to make them easier to use.  
+
 Release 1.2.3 adds to previous versions a script to create most 
 of the figures of chapter 6 of "Applied Functional Data Analysis" 
 by Ramsay and Silverman.  Other changes offer simpler calls to 
