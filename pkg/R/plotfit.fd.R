@@ -41,7 +41,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
 #  SORTWRD  ... sort plots by mean square error
 #  TITLES   ... vector of title strings for curves
 
-# Last modified 2008.06.23 by Spencer Graves
+# Last modified 2008.07.05 by Spencer Graves
 # previously modified 2007.10.03 and 20 March 2006
 
   dots <- list(...)
@@ -58,8 +58,23 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
   ndim  <- length(coefd)
 	
   y <- as.array(y)
-  n <- dim(y)[1]
+  yd <- dim(y)
+  ndy <- length(yd)
+  if(ndy > ndim)
+    stop("Number of dimensions of y = ", ndy, " exceeds ",
+         ndim, " = number of dimensions of fdobj$coefs")
+
+
+
   
+# Are dimensions compatible?
+# If yes, extract names .. 
+
+  n <- dim(y)[1]
+
+  tnames <- dimnames(y)[[1]]
+
+  Ynames <- dimnames(y) 
   dimnames(y) <- NULL
   if (ndim < 2) nrep <- 1 else nrep <- coefd[2]
   if (ndim < 3) nvar <- 1 else nvar <- coefd[3]

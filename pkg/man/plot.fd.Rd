@@ -30,7 +30,10 @@
   \item{y}{
     sequence of points at which to evaluate the functions 'x' and plot
     on the horizontal axis.  Defaults to seq(rangex[1], rangex[2],
-    length = nx).  
+    length = nx).
+
+    NOTE:  This will be the values on the horizontal axis, NOT the
+    vertical axis.  
   }
   \item{Lfdobj}{
     either a nonnegative integer or a linear differential operator
