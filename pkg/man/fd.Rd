@@ -50,7 +50,9 @@ fd(coef=NULL, basisobj=NULL, fdnames=defaultnames)
   }
 }
 \value{
-  a functional data object
+  A functional data object (i.e., having class \code{fd}), which is a
+  list with components named \code{coefs}, \code{basis}, and
+  \code{fdnames}.  
 }
 \details{
   To check that an object is of this class, use function

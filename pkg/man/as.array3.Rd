@@ -42,7 +42,7 @@ as.array3(x)
 \seealso{
   \code{\link{dim}},
   \code{\link{dimnames}}
-  \code{\link{checkDims}}
+  \code{\link{checkDims3}}
 }
 \examples{
 ##
