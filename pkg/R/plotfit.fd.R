@@ -56,19 +56,26 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
   coef  <- fdobj$coefs
   coefd <- dim(coef)
   ndim  <- length(coefd)
-	
+
   y <- as.array(y)
   yd <- dim(y)
   ndy <- length(yd)
   if(ndy > ndim)
     stop("Number of dimensions of y = ", ndy, " exceeds ",
-         ndim, " = number of dimensions of fdobj$coefs")
+         ndim, " = number of dimensions of fdobj$coefs")  
+# Are dimensions compatible?
+# If yes, extract names ..
+  subset <- checkDims3(y, fdobj[['coef']],
+                      defaultNames = fdobj[['fdnames']])
+  y <- subset$x
+  coef <- subset$y
+
+
+
 
 
 
   
-# Are dimensions compatible?
-# If yes, extract names .. 
 
   n <- dim(y)[1]
 

@@ -1,4 +1,4 @@
-checkDims <- function(x, y=NULL, xdim=2:3, ydim=2:3, defaultNames='x',
+checkDims3 <- function(x, y=NULL, xdim=2:3, ydim=2:3, defaultNames='x',
          subset=c('xiny', 'yinx', 'neither') ){
 ##
 ## 1.  length(xdim) == length(ydim)?
@@ -26,7 +26,7 @@ checkDims <- function(x, y=NULL, xdim=2:3, ydim=2:3, defaultNames='x',
 ##
   for(id in 1:nDims){
     dNi <- list(dNames[[id]], dNames0)
-    out <- checkDim(x, y, xdim[id], ydim[id], dNi, subset)
+    out <- checkDim3(x, y, xdim[id], ydim[id], dNi, subset)
     x <- out$x
     y <- out$y
   }
@@ -36,7 +36,7 @@ checkDims <- function(x, y=NULL, xdim=2:3, ydim=2:3, defaultNames='x',
   out
 }
 
-checkDim <- function(x, y=NULL, xdim=1, ydim=1, defaultNames='x',
+checkDim3 <- function(x, y=NULL, xdim=1, ydim=1, defaultNames='x',
          subset=c('xiny', 'yinx', 'neither') ){
 ##
 ## 1.  Check xdim, ydim 
@@ -211,7 +211,7 @@ checkDim <- function(x, y=NULL, xdim=1, ydim=1, defaultNames='x',
       }
     }
     else
-      if(sbsts == 'neither'){
+      if(sbst == 'neither'){
         if(dim(x3)[1] != dim(y3)[1])
           stop('dim(x)[xdim=', xdim, '] = ', dim(x3)[1],
                ' != ', dim(y3)[1], ' = dim(y)[ydim=',

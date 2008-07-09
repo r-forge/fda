@@ -1,17 +1,17 @@
-\name{checkDims}
-\alias{checkDim}
-\alias{checkDims}
+\name{checkDims3}
+\alias{checkDim3}
+\alias{checkDims3}
 \title{
   Compare dimensions and dimnames of arrays 
 }
 \description{
-  Compare selected dimensions and dimnames of arrays and either give an
-  error or force matching.  
+  Compare selected dimensions and dimnames of arrays, coercing objects
+  to 3-dimensional arrays and either give an error or force matching.  
 }
 \usage{
-checkDim(x, y=NULL, xdim=1, ydim=1, defaultNames='x',
+checkDim3(x, y=NULL, xdim=1, ydim=1, defaultNames='x',
          subset=c('xiny', 'yinx', 'neither') )
-checkDims(x, y=NULL, xdim=2:3, ydim=2:3, defaultNames='x',
+checkDims3(x, y=NULL, xdim=2:3, ydim=2:3, defaultNames='x',
          subset=c('xiny', 'yinx', 'neither') )
 }
 \arguments{
@@ -24,12 +24,12 @@ checkDims(x, y=NULL, xdim=2:3, ydim=2:3, defaultNames='x',
     \code{as.array3}. 
   }
   \item{xdim, ydim}{
-    For \code{checkDim}, these are positive integers indicating which
+    For \code{checkDim3}, these are positive integers indicating which
     dimension of \code{x} will be compared with which dimension of
     \code{y}.  
 
-    For \code{checkDims}, these are positive integer vectors of the same
-    length, passed one at a time to \code{checkDim}.  The default here
+    For \code{checkDims3}, these are positive integer vectors of the same
+    length, passed one at a time to \code{checkDim3}.  The default here
     is to force matching dimensions for \code{\link{plotfit.fd}}.  
   }
   \item{defaultNames}{
@@ -61,10 +61,10 @@ checkDims(x, y=NULL, xdim=2:3, ydim=2:3, defaultNames='x',
   }
 }
 \details{
-  For \code{checkDims}, confirm that \code{xdim} and \code{ydim} have
-  the same length, and call \code{checkDim} for each pair.  
+  For \code{checkDims3}, confirm that \code{xdim} and \code{ydim} have
+  the same length, and call \code{checkDim3} for each pair.  
 
-  For \code{checkDim}, proceed as follows:
+  For \code{checkDim3}, proceed as follows:
 
   1.  if((xdim>3) | (ydim>3)) throw an error.
 
@@ -110,28 +110,28 @@ checkDims(x, y=NULL, xdim=2:3, ydim=2:3, defaultNames='x',
 \examples{
 # Select the first two rows of y 
 stopifnot(all.equal( 
-checkDim(1:2, 3:5),
+checkDim3(1:2, 3:5),
 list(x=array(1:2, c(2,1,1), list(c('x1','x2'), NULL, NULL)), 
      y=array(3:4, c(2,1,1), list(c('x1','x2'), NULL, NULL)) )
 )) 
 
 # Select the first two rows of a matrix y 
 stopifnot(all.equal(
-checkDim(1:2, matrix(3:8, 3)),
+checkDim3(1:2, matrix(3:8, 3)),
 list(x=array(1:2,         c(2,1,1), list(c('x1','x2'), NULL, NULL)), 
      y=array(c(3:4, 6:7), c(2,2,1), list(c('x1','x2'), NULL, NULL)) )
 ))
 
 # Select the first column of y
 stopifnot(all.equal(
-checkDim(1:2, matrix(3:8, 3), 2, 2), 
+checkDim3(1:2, matrix(3:8, 3), 2, 2), 
 list(x=array(1:2,         c(2,1,1), list(NULL, 'x', NULL)), 
      y=array(3:5, c(3,1,1), list(NULL, 'x', NULL)) )
 ))
 
 # Select the first two rows and the first column of y
 stopifnot(all.equal(
-checkDims(1:2, matrix(3:8, 3), 1:2, 1:2),
+checkDims3(1:2, matrix(3:8, 3), 1:2, 1:2),
 list(x=array(1:2, c(2,1,1), list(c('x1','x2'), 'x', NULL)), 
      y=array(3:4, c(2,1,1), list(c('x1','x2'), 'x', NULL)) ) 
 ))
@@ -145,19 +145,19 @@ y1a <- y1. <- as.array3(y1)
 dimnames(y1a)[[1]] <- c('x1', 'x2', 'x3')
 
 stopifnot(all.equal(
-checkDim(x1, y1),
+checkDim3(x1, y1),
 list(x=x1a, y=y1a[1:2, , , drop=FALSE])
 ))
 
 # Select columns 2 & 3 of y 
 stopifnot(all.equal(
-checkDim(x1, y1, 2, 2),
+checkDim3(x1, y1, 2, 2),
 list(x=x1., y=y1.[, 2:3, , drop=FALSE ])
 ))
 
 # Select the first 2 rows and  columns 2 & 3 of y 
 stopifnot(all.equal(
-checkDims(x1, y1, 1:2, 1:2),
+checkDims3(x1, y1, 1:2, 1:2),
 list(x=x1a, y=y1a[1:2, 2:3, , drop=FALSE ])
 )) 
 
@@ -165,7 +165,7 @@ list(x=x1a, y=y1a[1:2, 2:3, , drop=FALSE ])
 x23 <- matrix(1:6, 2, dimnames=list(letters[2:3], letters[1:3]))
 x23. <- as.array3(x23) 
 stopifnot(all.equal(
-checkDim(x23, xdim=1, ydim=2),
+checkDim3(x23, xdim=1, ydim=2),
 list(x=x23., y=x23.[, 2:3,, drop=FALSE ])
 ))
 
@@ -174,7 +174,7 @@ x4a <- x4 <- matrix(1:4, 2)
 y4 <- matrix(5:8, 2, dimnames=list(letters[1:2], letters[3:4]))
 dimnames(x4a) <- dimnames(t(y4))
 stopifnot(all.equal(
-checkDims(x4, y4, 1:2, 2:1),
+checkDims3(x4, y4, 1:2, 2:1),
 list(x=as.array3(x4a), y=as.array3(y4))
 ))
 
