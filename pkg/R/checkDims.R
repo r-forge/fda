@@ -1,4 +1,4 @@
-checkDims <- function(x, y=NULL, xdim=1, ydim=1, defaultNames='x',
+checkDims <- function(x, y=NULL, xdim=2:3, ydim=2:3, defaultNames='x',
          subset=c('xiny', 'yinx', 'neither') ){
 ##
 ## 1.  length(xdim) == length(ydim)?
