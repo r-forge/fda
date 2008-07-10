@@ -78,6 +78,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
   n <- dim(y)[1]
   argname <- names(fdnames)[[1]]
   if (is.null(argname)) argname <- "Argument Value"
+  if(is.null(xlab))xlab <- argname
   tnames <- dimnames(y)[[1]]
 #  
   nrep <- dim(y)[2]
@@ -241,7 +242,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
 #  plot the data and fit
 #     ylimit <- range(c(c(y),c(yfine)))
       if(is.null(ylim))ylim <- range(c(c(y),c(yfine)))
-      if(missing(ylab))ylab <- varnames
+      if(is.null(ylab))ylab <- varnames
 #     for (i in 1:nrep) { 
       for (j in 1:nvar) {
         for (i in 1:nrepi) {
