@@ -10,9 +10,13 @@
 }
 \usage{
 checkDim3(x, y=NULL, xdim=1, ydim=1, defaultNames='x',
-         subset=c('xiny', 'yinx', 'neither') )
+         subset=c('xiny', 'yinx', 'neither'),
+         xName=substring(deparse(substitute(x)), 1, 33),
+         yName=substring(deparse(substitute(y)), 1, 33) )
 checkDims3(x, y=NULL, xdim=2:3, ydim=2:3, defaultNames='x',
-         subset=c('xiny', 'yinx', 'neither') )
+         subset=c('xiny', 'yinx', 'neither'),
+         xName=substring(deparse(substitute(x)), 1, 33),
+         yName=substring(deparse(substitute(y)), 1, 33) )
 }
 \arguments{
   \item{x, y}{
@@ -44,8 +48,8 @@ checkDims3(x, y=NULL, xdim=2:3, ydim=2:3, defaultNames='x',
     short, it is extended to the required length using
     paste(defaultNames, 1:ni), where \code{ni} = the required length. 
 
-    If it is a list, it must have length (length(xdim)+1).  Each
-    component must be either a character vector of NULL.  If neither
+    If it is a list, it should have length (length(xdim)+1).  Each
+    component must be either a character vector or NULL.  If neither
     \code{x} nor \code{y} have dimenames for the first compared
     dimensions, defaultNames[[1]] will be used instead unless it is
     NULL, in which case the last component of defaultNames will be
@@ -58,6 +62,11 @@ checkDims3(x, y=NULL, xdim=2:3, ydim=2:3, defaultNames='x',
     reversed.
 
     If 'neither', any dimension mismatch generates an error.  
+  }
+  
+  \item{xName, yName}{
+    names of the arguments \code{x} and \code{y}, used only to in error
+    messages.  
   }
 }
 \details{
@@ -178,6 +187,21 @@ checkDims3(x4, y4, 1:2, 2:1),
 list(x=as.array3(x4a), y=as.array3(y4))
 ))
 
+# as used in plotfit.fd
+daybasis65 <- create.fourier.basis(c(0, 365), 65)
+
+daytempfd <- with(CanadianWeather, data2fd(
+       dailyAv[,,"Temperature.C"], day.5, 
+       daybasis65, argnames=list("Day", "Station", "Deg C")) )
+
+defaultNms <- with(daytempfd, c(fdnames[2], fdnames[3], x='x'))
+subset <- checkDims3(CanadianWeather$dailyAv[, , "Temperature.C"],
+               daytempfd$coef, defaultNames=defaultNms)
+# Problem:  dimnames(...)[[3]] = '1' 
+# Fix:  
+subset3 <- checkDims3(
+        CanadianWeather$dailyAv[, , "Temperature.C", drop=FALSE],
+               daytempfd$coef, defaultNames=defaultNms)
 }
 \keyword{utilities}
 
