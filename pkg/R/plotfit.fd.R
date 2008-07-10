@@ -41,82 +41,49 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
 #  SORTWRD  ... sort plots by mean square error
 #  TITLES   ... vector of title strings for curves
 
-# Last modified 2008.07.05 by Spencer Graves
+# Last modified 2008.07.09 by Spencer Graves
 # previously modified 2007.10.03 and 20 March 2006
-
+##
+## 1.  Basic checks   
+##
   dots <- list(...)
   if(is.null(titles) && ("main" %in% names(dots)))
     titles <- dots$main
-  if (!(inherits(fdobj, "fd"))) stop(
-		"Third argument is not a functional data object.")
+  if (!(inherits(fdobj, "fd")))
+    stop("Third argument is not a functional data object.")
 
   basisobj <- fdobj$basis
   if(is.null(rng))rng <- basisobj$rangeval
-	
-  coef  <- fdobj$coefs
-  coefd <- dim(coef)
-  ndim  <- length(coefd)
-
-  y <- as.array(y)
-  yd <- dim(y)
-  ndy <- length(yd)
-  if(ndy > ndim)
-    stop("Number of dimensions of y = ", ndy, " exceeds ",
-         ndim, " = number of dimensions of fdobj$coefs")  
+#
 # Are dimensions compatible?
 # If yes, extract names ..
-  subset <- checkDims3(y, fdobj[['coef']],
-                      defaultNames = fdobj[['fdnames']])
+  fdnames <- fdobj$fdnames
+  yName <- substring(deparse(substitute(y)), 1, 33)
+  fdName <- paste(substring(deparse(substitute(fdobj)), 1, 22),
+                  "$coef", sep='')
+  defaultNms <- c(fdnames[2], fdnames[3], x='x')
+  subset <- checkDims3(y, fdobj$coef, defaultNames = defaultNms,
+                       xName=yName, yName=fdName)
   y <- subset$x
   coef <- subset$y
-
-
-
-
-
-
-  
-
+#
   n <- dim(y)[1]
-
-  tnames <- dimnames(y)[[1]]
-
-  Ynames <- dimnames(y) 
-  dimnames(y) <- NULL
-  if (ndim < 2) nrep <- 1 else nrep <- coefd[2]
-  if (ndim < 3) nvar <- 1 else nvar <- coefd[3]
-  dim(y) <- c(n, nrep, nvar)
-	
-  curveno <- 1:nrep
-	
-  fdnames <- fdobj$fdnames
   argname <- names(fdnames)[[1]]
-#
-  casenames <- {
-    if(nrep == 1)names(fdnames)[[2]]
-    else {
-      if(is.null(fdnames[[2]])) dimnames(y)[[2]]
-      else fdnames[[2]]
-    }
-  }
-#
-  varnames <- {
-    if (nvar == 1) names(fdnames)[[3]]
-    else {
-      if(is.null(fdnames[[3]])) dimnames(y)[[3]]
-      else fdnames[[3]]
-    }
-  }
-#  
   if (is.null(argname)) argname <- "Argument Value"
-  if (is.null(casenames) || length(casenames) != nrep)
-		casenames <- as.character(1:nrep)
-  if (is.null( varnames) || length( varnames) != nvar)
-		varnames  <- as.character(1:nvar)
-
-#  compute fitted values for evalargs and fine mesh of values
-	
-  yhat   <- array(eval.fd(argvals, fdobj),c(n,nrep,nvar))
+  tnames <- dimnames(y)[[1]]
+#  
+  nrep <- dim(y)[2]
+  nvar <- dim(y)[3] 
+#
+  curveno <- 1:nrep
+#
+  casenames <- dimnames(y)[[2]]
+  varnames <- dimnames(y)[[3]]
+##
+## 2.  Computed fitted values for argvals and a fine mesh 
+##  	
+  yhat   <- as.array3(eval.fd(argvals, fdobj))
+#  yhat   <- array(eval.fd(argvals, fdobj),c(n,nrep,nvar))
   res    <- y - yhat
   MSE    <- apply(res^2,c(2,3),mean)
   dimnames(MSE) <- list(casenames, varnames)
