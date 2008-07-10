@@ -61,11 +61,19 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
   yName <- substring(deparse(substitute(y)), 1, 33)
   fdName <- paste(substring(deparse(substitute(fdobj)), 1, 22),
                   "$coef", sep='')
+##
+## 2.  Use 'checkDims' to reconcile y and fdoj$coef 
+##  
+#  The default fdnames may not work well   
   defaultNms <- c(fdnames[2], fdnames[3], x='x')
+  if((length(defaultNms[[2]])<2) && !is.null(names(defaultNms))
+     && !is.na(names(defaultNms)[2]))
+    defaultNms[[2]] <- names(defaultNms)[2]
+#    
   subset <- checkDims3(y, fdobj$coef, defaultNames = defaultNms,
                        xName=yName, yName=fdName)
   y <- subset$x
-  coef <- subset$y
+  fdobj$coef <- subset$y
 #
   n <- dim(y)[1]
   argname <- names(fdnames)[[1]]

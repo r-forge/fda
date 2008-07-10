@@ -188,6 +188,11 @@ daytempfd <- with(CanadianWeather, data2fd(
  
 with(CanadianWeather, plotfit.fd(dailyAv[, , "Temperature.C"],
      argvals= day.5, daytempfd, index=1, titles=place, axes=FALSE) )
+# Default ylab = daytempfd[['fdnames']] 
+
+with(CanadianWeather, plotfit.fd(dailyAv[, , "Temperature.C", drop=FALSE],
+     argvals= day.5, daytempfd, index=1, titles=place, axes=FALSE) )
+# Better:  ylab = dimnames(y)[[3]]
 
 # Label the horizontal axis with the month names
 axis(1, monthBegin.5, labels=FALSE)
