@@ -99,8 +99,8 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
   }
 }
 \value{
-  The output of a call to 'smooth.data', which is a named list of length
-  7 and class \code{fdSmooth}:  
+  The output of a call to 'smooth.basis', which is a named list of
+  length 6 and class \code{fdSmooth} with the following components:  
 
   \item{fdobj}{
     a functional data object that smooths the data.
@@ -114,10 +114,10 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
     curve.  If the smooth is multivariate, the result is a matrix of gcv
     values, with columns corresponding to variables.  
   }
-  \item{coef}{
-    the coefficient matrix or array for the basis function expansion of
-    the smoothing function 
-  }
+%  \item{coef}{
+%    the coefficient matrix or array for the basis function expansion of
+%    the smoothing function 
+%  }
   \item{SSE}{
     the error sums of squares.  SSE is a vector or a matrix of the same
     size as 'gcv'. 

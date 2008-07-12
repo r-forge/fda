@@ -3,6 +3,11 @@ second edition (2006) and 'Applied Functional Data Analysis'
 (2002), both by James O. Ramsay and Bernard W. Silverman 
 (Springer).  
 
+Release 2.0.0 added 'coef' generic functions to extract the 
+coefficients from objects of class 'fd', 'fdPar', and 'fdSmooth'.  
+Also, the 'coef' component in objects of class 'fdSmooth' was 
+removed as it was redundant with 'fd$coefs'.  
+
 Release 1.2.4 fixes a few bugs and adds defaults to 
 'smooth.basis' and 'smooth.basisPar' to make them easier to use.  
 The output of 'smooth.basis' and 'smooth.basisPar' now have class 

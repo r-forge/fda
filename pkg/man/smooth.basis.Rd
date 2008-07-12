@@ -98,8 +98,8 @@ smooth.basis(argvals, y, fdParobj, wtvec=rep(1, length(argvals)),
   using function \code{smooth.fd}.
 }
 \value{
-  an object of class \code{fdSmooth}, which is a list of length 7 with
-  the following components: 
+  an object of class \code{fdSmooth}, which is a names list of length 6
+  with the following components: 
 
   \item{fd}{
     a functional data object containing a smooth of the data. 
@@ -113,10 +113,10 @@ smooth.basis(argvals, y, fdParobj, wtvec=rep(1, length(argvals)),
     curve.  If the smooth is multivariate, the result is a matrix of gcv
     values, with columns corresponding to variables.  
   }
-  \item{coef}{
-    the coefficient matrix or array for the basis function expansion of
-    the smoothing function 
-  }
+%  \item{coef}{
+%    the coefficient matrix or array for the basis function expansion of
+%    the smoothing function 
+%  }
   \item{SSE}{
     the error sums of squares.  SSE is a vector or a matrix of the same
     size as GCV. 

@@ -68,6 +68,12 @@ fd(coef=NULL, basisobj=NULL, fdnames=defaultnames)
   Ramsay, James O., and Silverman, Bernard W. (2002), \emph{Applied
     Functional Data Analysis}, Springer, New York
 }
+\seealso{
+  \code{\link{data2fd}} 
+  \code{\link{smooth.basis}}
+  \code{\link{density.fd}}
+  \code{\link{create.bspline.basis}}
+}
 \examples{
 bspl1.1 <- create.bspline.basis(norder=1, breaks=0:1)
 fd.bspl1.1 <- fd(0, basisobj=bspl1.1)
@@ -76,6 +82,7 @@ fd.bspl1.1a <- fd(basisobj=bspl1.1)
 \dontshow{ stopifnot( }
 all.equal(fd.bspl1.1, fd.bspl1.1a)
 \dontshow{ ) }
+# TRUE
 
 \dontrun{
 fd.bspl1.1b <- fd(0)
