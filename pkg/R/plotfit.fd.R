@@ -90,8 +90,9 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
   varnames <- dimnames(y)[[3]]
 ##
 ## 2.  Computed fitted values for argvals and a fine mesh 
-##  	
-  yhat   <- as.array3(eval.fd(argvals, fdobj))
+##
+  yhat. <- eval.fd(argvals, fdobj)
+  yhat   <- as.array3(yhat.) 
 #  yhat   <- array(eval.fd(argvals, fdobj),c(n,nrep,nvar))
   res    <- y - yhat
   MSE    <- apply(res^2,c(2,3),mean)

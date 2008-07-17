@@ -163,7 +163,9 @@ create.bspline.basis(rangeval=c(0, 1), nbasis=NULL, norder=4,
   \code{\link[stats]{spline.des}}
 }
 \examples{
-# The simplest basis currently available with this function:
+##
+## The simplest basis currently available with this function:
+##
 str(bspl1.1 <- create.bspline.basis(norder=1, breaks=0:1))
 plot(bspl1.1)
 # 1 basis function, order 1 = degree 0 = step function:  
