@@ -1,9 +1,9 @@
-plot.basisfd <- function(x, ...) {
+plot.basisfd <- function(x, knots=TRUE, ...) {
   basisobj <- x
 #  plot a basis object
 
-# last modified 2007.09.09 Spencer Graves 
-#  Previously modified 26 October 2005
+# last modified 2008.07.21 by Spencer Graves 
+#  Previously modified 26 October 2005 and 2007.09.09
 
 #  check BASISOBJ
 
@@ -45,4 +45,7 @@ plot.basisfd <- function(x, ...) {
            xlab=xlabel, ylab=ylabel, cex=cexval,
            xlim=c(argvals[1],argvals[nx]),
            ylim=c(minval, maxval))
+# knots?
+  if(knots && (x$type=='bspline'))
+    abline(v=knots(x), lty='dotted', col='red') 
 }
