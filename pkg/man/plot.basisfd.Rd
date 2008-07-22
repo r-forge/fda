@@ -18,8 +18,7 @@ plot.basisfd(x, knots=TRUE, ...)
     are plotted using vertical dotted, red lines.  Ignored otherwise.  
   }
   \item{\dots }{
-    additional plotting parameters that can be used
-    in \code{plot}
+    additional plotting parameters passed to \code{matplot}.  
   }
 }
 \value{
