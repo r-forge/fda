@@ -26,13 +26,11 @@ as.fd(x)
     The 'fda' package (as of version 2.0.0) supports B-splines with
     coincident boundary knots.  For periodic phenomena, the
     \code{DierckxSpline} packages uses periodic spines, while \code{fda}
-    recommends finite Fourier series.  
+    recommends finite Fourier series.  Accordingly, \code{as.fd.dierckx}
+    if x[["periodic"]] is TRUE.  
 
-
-    It recommends Fourier bases for periodic
-    phenomena and does not supporb B-splines with periodic boundary
-    knots.  Accordingly, 'dierckx2fd' currently stops with an error
-    message if object[["periodic"]] is TRUE.  
+    The following describes how the components of a \code{dierckx}
+    object are handled by as.dierckx(as.fd(x)):   
     
     \itemize{
       \item{x}{lost.  Restored from the knots.}
@@ -93,6 +91,7 @@ as.fd(x)
 }
 \author{Spencer Graves}
 \seealso{
+  \code{\link[DierckxSpline]{as.dierckx}}
   \code{\link[DierckxSpline]{curfit}}
   \code{\link{fd}}
 }
