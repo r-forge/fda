@@ -160,34 +160,34 @@ str(CanadianTempPrecip.fd)
 # Returns invisibly the mean square deviations
 # between observed and fdobj=daytempfd 
 (CanadianWea.MSE <- with(CanadianWeather, plotfit.fd(
-   x=dailyAv[,,"Temperature.C"], argvals=day.5, 
+   y=dailyAv[,,"Temperature.C"], argvals=day.5, 
    fdobj=CanadianTempPrecip.fd[,1], index=1:7, axes=FALSE) ))
 axisIntervals(1)
 axis(2)
 
 # Same as from a univariate functional data object 
 (CanadianWea.MSE <- with(CanadianWeather, plotfit.fd(
-   x=dailyAv[,,"Temperature.C"], argvals=day.5, 
+   y=dailyAv[,,"Temperature.C"], argvals=day.5, 
    fdobj=daytempfd, index=1:7, axes=FALSE) ))
 axisIntervals(1)
 axis(2)
 
-with(CanadianWeather, plotfit.fd(x=dailyAv[,,"Temperature.C"],
+with(CanadianWeather, plotfit.fd(y=dailyAv[,,"Temperature.C"],
    argvals=day.5, fdobj=daytempfd, index=8:14, axes=FALSE) )
 axisIntervals(1)
 axis(2)
 
-with(CanadianWeather, plotfit.fd(x=dailyAv[,,"Temperature.C"],
+with(CanadianWeather, plotfit.fd(y=dailyAv[,,"Temperature.C"],
    argvals=day.5, fdobj=daytempfd, index=15:21, axes=FALSE) )
 axisIntervals(1)
 axis(2)
 
-with(CanadianWeather, plotfit.fd(x=dailyAv[,,"Temperature.C"],
+with(CanadianWeather, plotfit.fd(y=dailyAv[,,"Temperature.C"],
    argvals=day.5, fdobj=daytempfd, index=22:28, axes=FALSE) )
 axisIntervals(1)
 axis(2)
 
-with(CanadianWeather, plotfit.fd(x=dailyAv[,,"Temperature.C"],
+with(CanadianWeather, plotfit.fd(y=dailyAv[,,"Temperature.C"],
    argvals=day.5, fdobj=daytempfd, index=29:35, axes=FALSE) )
 axisIntervals(1)
 axis(2)
@@ -204,16 +204,16 @@ axis(2)
 #residual  <- TRUE
 #sortwrd   <- TRUE
 
-with(CanadianWeather, plotfit.fd(x=dailyAv[,,"Temperature.C"],
+with(CanadianWeather, plotfit.fd(y=dailyAv[,,"Temperature.C"],
        argvals=day.5, fdobj=daytempfd, index=c(1:3, 33:35), 
            nfine=366, residual=TRUE, sortwrd=TRUE, axes=FALSE) )
 axisIntervals(1)
 axis(2)
 # To see the lines individually, plot them 1, 2 or 3 at a time:  
-#with(CanadianWeather, plotfit.fd(x=dailyAv[,,"Temperature.C",
+#with(CanadianWeather, plotfit.fd(y=dailyAv[,,"Temperature.C",
 #   argvals=day.5, fdobj=daytempfd, index=c(1:3, 33:35),
 #   nfine=366, residual=TRUE, sortwrd=TRUE, ask=TRUE, col=1, lty=1) )
-#with(CanadianWeather, plotfit.fd(x=dailyAV[,,"Temperature.C",
+#with(CanadianWeather, plotfit.fd(y=dailyAV[,,"Temperature.C",
 #   argvals=day.5, fdobj=daytempfd, index=c(1:3, 33:35),
 #   nfine=366, residual=TRUE, sortwrd=TRUE, ask=TRUE, col=1:3, lty=1) )
 # NOTE:  "col=1, lty=1" allows a singly plot per page.  
@@ -221,12 +221,12 @@ axis(2)
 #  Plot precipitation curves and values
 
 CanadianWeather$place
-with(CanadianWeather, plotfit.fd(x=dailyAv[,,"log10precip"],
+with(CanadianWeather, plotfit.fd(y=dailyAv[,,"log10precip"],
      argvals=day.5, fdobj=dayprecfd, index=1, titles=place,
      axes=FALSE) )
 axisIntervals(1)
 axis(2)
-with(CanadianWeather, plotfit.fd(x=dailyAv[,,"log10precip"],
+with(CanadianWeather, plotfit.fd(y=dailyAv[,,"log10precip"],
      argvals=day.5, fdobj=dayprecfd, index=35, titles=place,
      axes=FALSE) )
 axisIntervals(1)
@@ -243,7 +243,7 @@ daytempfdSm <- smooth.fdPar(daytempfd, harmaccelLfd365, lambda=10)
 dayprecfdSm <- smooth.fdPar(dayprecfd, harmaccelLfd365, lambda=1e5)
 
 # Or
-daytempSm <- smooth.fdPar(CanadianWea.fd[,1], harmaccelLfd365, lambda=10)
+daytempSm <- smooth.fdPar(daytempfdSm, harmaccelLfd365, lambda=10)
 str(daytempfdSm)
 str(daytempSm)
 # fdnames lost in bivariate ...
@@ -259,7 +259,7 @@ str(CanadianWea.fd[,1])
 
 #  Plot temperature curves and values
 
-with(CanadianWeather, plotfit.fd(x=dailyAv[,,"Temperature.C"],
+with(CanadianWeather, plotfit.fd(y=dailyAv[,,"Temperature.C"],
      argvals=day.5, fdobj=daytempSm, titles=place) )
 
 #  Plot residuals for three best fits and three worst fits
@@ -940,74 +940,10 @@ betafdPar <- fdPar(betafd, harmaccelLfd365, lambda, estimate)
 betalist <- vector("list",p)
 for (j in 1:p) betalist[[j]] <- betafdPar
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #  compute regression coefficient functions and
 #  predicted functions
 
 fRegressList <- fRegress(tempfd, xfdlist, betalist)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #  plot regression functions
@@ -1579,10 +1515,10 @@ legend(100, 8, c("Weighted", "Unweighted"),
      daytempfd <- data2fd(CanadianWeather$dailyAv[,,"Temperature.C"],
          day.5, daybasis65, argnames=list("Day", "Station", "Deg C")) )
       
-     with(CanadianWeather, plotfit.fd(x=dailyAv[,,"Temperature.C"],
+     with(CanadianWeather, plotfit.fd(y=dailyAv[,,"Temperature.C"],
             argvals=day.5, daytempfd, index=1, titles=place) )
-     with(CanadianWeather, plotfit.fd(x=dailyAv[,,"Temperature.C"],
+     with(CanadianWeather, plotfit.fd(y=dailyAv[,,"Temperature.C"],
             argvals=day.5, daytempfd, index=c(2, 35), titles=place) )
-     with(CanadianWeather, plotfit.fd(x=dailyAv[,,"Temperature.C"],
+     with(CanadianWeather, plotfit.fd(y=dailyAv[,,"Temperature.C"],
             argvals=day.5, daytempfd, index=c(2, 35), titles=place, 
                col=c("black", "blue") ) )
