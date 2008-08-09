@@ -1,0 +1,186 @@
+Fstat.fd <- function(y,yhat,argvals=NULL) {    # observed, predicted and where to evaluate
+
+	if( is.numeric(yhat) ){ yhat = as.vector(yhat) }
+
+	if( (is.vector(y) & !is.vector(yhat)) | (is.fd(y) &!is.fd(yhat)) ){
+		stop("y and yhat must both be either scalars or functional data objects.")
+	}
+
+
+	if( is.fd(y) ){
+		rangeobs = y$basis$range
+		rangehat = yhatfdobj$basis$range
+
+		if( !prod(rangeobs == rangehat) ){
+			stop("y and yhat do not have the same range")
+		}
+
+
+		if(is.null(argvals)){
+			argvals = seq(rangeobs[1],rangeobs[2],length.out=101)
+		}
+
+		yvec = eval.fd(argvals,y)
+		yhatvec = eval.fd(argvals,yhat)
+
+		F = apply(yhatvec,1,var)/apply( (yvec-yhatvec)^2,1,mean)
+
+	}
+	else{ 
+		yvec = y
+		yhatvec = yhat
+
+		F = var(yhatvec)/mean( (yvec-yhatvec)^2 )
+	}
+
+	return( list(F=F,argvals=argvals) )
+}
+
+
+
+Fperm.fd <- function(yfdPar, xfdlist, betalist, wt=rep(1,N),  # Standard inputs to fRegress
+			nperm=200,argvals=NULL,q=0.95,plotres=TRUE) # number of permutations,
+{										  # where to evaluate functional
+	Fnull = rep(0,nperm)						  # responses, quantile to compare
+										  # and do we plot the results?
+	Fnullvals = c()
+
+	begin <- proc.time()
+	fRegressList <- fRegress(yfdPar, xfdlist, betalist)
+	elapsed.time <- max(proc.time()-begin,na.rm=TRUE) 		
+
+	if( elapsed.time > 30/nperm ){
+		print(paste('Estimated Computing time =',round(nperm*elapsed.time),'seconds.'))
+	}
+
+	yhat <- fRegressList$yhatfdobj
+		
+	tFstat <- Fstat.fd(yfdPar,yhat,argvals)
+
+	Fvals <- tFstat$F
+	Fobs = max(Fvals)
+
+	argvals = tFstat$argvals
+
+	if(is.vector(yfdPar)){ n = length(yfdPar) }
+	else{ n = ncol(yfdPar$coefs) }
+
+	for(i in 1:nperm){
+		
+		tyfdPar = yfdPar[sample(n)]
+
+		fRegressList <- fRegress(tyfdPar, xfdlist, betalist)
+		
+		yhat <- fRegressList$yhatfdobj
+
+		tFstat = Fstat.fd(yfdPar,yhat,argvals)
+		
+		Fnullvals <- cbind(Fnullvals,tFstat$F)
+		
+		Fnull[i] = max(Fnullvals[,i])
+	}
+	
+
+	pval = mean( Fobs < Fnull )
+	qval = quantile(Fnull,q)
+
+	pvals.pts = apply(Fvals<Fnullvals,1,mean)
+	qvals.pts = apply(Fnullvals,1,quantile,q)
+
+
+	if(plotres){
+		if(is.fd(yfdPar)){
+			ylims = c(min(c(Fvals,qval)),max(c(Fobs,qval)))
+	
+			plot(argvals,Fvals,type="l",ylim=ylims,col=2)
+			lines(argvals,qvals.pts,lty=2,col=4)
+			abline(h=qval,lty=2,col=4)
+			abline(h=Fobs,col=2)
+		}
+		else{
+			xlims = c(min(c(Fnull,Fobs)),max(c(Fnull,Fobs)))
+			hist(Fnull,xlim=xlims)
+			abline(v = Fobs,col=2)
+			abline(v = qval,col=4)
+		}
+	}
+	
+	return(list(pval=pval,qval=qval,Fobs=Fobs,Fnull=Fnull,
+		Fvals=Fvals,Fnullvals=Fnullvals,pvals.pts=pvals.pts,qvals.pts=qvals.pts,
+		fRegressList=fRegressList,argvals=argvals))
+}
+
+
+tperm.fd <- function(x1fd,x2fd,nperm=200,q=0.95,argvals=NULL,plotres=TRUE) # first and second
+{												   # groups of data,
+	if( !is.fd(x1fd) | !is.fd(x2fd) ){						   # number permuts
+		stop("x1fd and x2fd must both be functional data objects")	   # quantile
+	}											   # where to evaluate
+												   # do I plot
+	rangeobs = x1fd$basis$range
+	rangehat = x2fd$basis$range
+
+	if( !prod(rangeobs == rangehat) ){
+		stop("x1fd and x2fd do not have the same range.")
+	}
+
+	if(is.null(argvals)){
+		argvals = seq(rangeobs[1],rangeobs[2],length.out=101)
+	}
+
+	x1mat = eval.fd(argvals,x1fd)
+	x2mat = eval.fd(argvals,x2fd)
+
+	n1 = ncol(x1mat)
+	n2 = ncol(x2mat)
+
+	Xmat = cbind(x1mat,x2mat)
+
+	Tnull = rep(0,nperm)
+
+	Tnullvals = matrix(0,length(argvals),nperm)
+
+	for(i in 1:nperm){
+		tXmat = Xmat[,sample(n1+n2)]
+
+		tmean1 = apply(tXmat[,1:n1],1,mean)
+		tmean2 = apply(tXmat[,n1+(1:n2)],1,mean)
+
+		tvar1 = apply(tXmat[,1:n1],1,var)/n1
+		tvar2 = apply(tXmat[,n1+(1:n2)],1,var)/n2	
+
+		Tnullvals[,i] = abs(tmean1-tmean2)/sqrt(tvar1+tvar2)
+		Tnull[i] = max(Tnullvals[,i])
+	}
+
+	mean1 = apply(Xmat[,1:n1],1,mean)
+	mean2 = apply(Xmat[,n1+(1:n2)],1,mean)
+
+	var1 = apply(Xmat[,1:n1],1,var)/n1
+	var2 = apply(Xmat[,n1+(1:n2)],1,var)/n2	
+
+	Tvals = abs(mean1-mean2)/sqrt(var1+var2)
+	Tobs = max(Tvals)
+
+	pval = mean( Tobs < Tnull )
+	qval = quantile(Tnull,q)
+
+	pvals.pts = apply(Tvals<Tnullvals,1,mean)
+	qvals.pts = apply(Tnullvals,1,quantile,q)
+
+	if(plotres){
+		ylims = c( min(Tobs,-qval),max(Tobs,qval))
+		
+		plot(argvals,Tvals,type='l',col=2,ylim=ylims)
+		lines(argvals,qvals.pts,lty=2,col=4)
+		abline(h=qval,lty=2,col=4)
+		abline(h=-qval,lty=2,col=4)
+		abline(h=Tobs,lty=2,col=2)
+	}
+
+
+	return( list(pval=pval,qval=qval,Tobs=Tobs,Tnull=Tnull,
+		Tvals=Tvals,qvals.pts=qvals.pts,pvals.pts=pvals.pts,
+		argvals=argvals) )
+}
+
