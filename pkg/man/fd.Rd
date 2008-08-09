@@ -101,7 +101,7 @@ Error in fd(0) :
 bspl4 <- create.bspline.basis(nbasis=4)
 plot(bspl4) 
 parab4.5 <- fd(c(3, -1, -1, 3)/3, bspl4)
-# = 4*(x-.5) 
+# = 4*(x-.5)^2
 plot(parab4.5) 
 
 }

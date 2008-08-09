@@ -9,7 +9,7 @@ Fstat.fd <- function(y,yhat,argvals=NULL) {    # observed, predicted and where t
 
 	if( is.fd(y) ){
 		rangeobs = y$basis$range
-		rangehat = yhatfdobj$basis$range
+		rangehat = yhat$basis$range
 
 		if( !prod(rangeobs == rangehat) ){
 			stop("y and yhat do not have the same range")
@@ -38,7 +38,8 @@ Fstat.fd <- function(y,yhat,argvals=NULL) {    # observed, predicted and where t
 
 
 
-Fperm.fd <- function(yfdPar, xfdlist, betalist, wt=rep(1,N),  # Standard inputs to fRegress
+Fperm.fd <- function(yfdPar, xfdlist, betalist,
+                     wt=NULL, # Standard inputs to fRegress
 			nperm=200,argvals=NULL,q=0.95,plotres=TRUE) # number of permutations,
 {										  # where to evaluate functional
 	Fnull = rep(0,nperm)						  # responses, quantile to compare

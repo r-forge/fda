@@ -150,10 +150,10 @@
 }
 \author{ Spencer Graves }
 \seealso{
+  \code{\link{lmWinsor}} 
+  \code{\link{predict.lmeWinsor}} 
   \code{\link[nlme]{lme}}
   \code{\link{quantile}}
-  \code{\link[quadprog]{solve.QP}}
-  \code{\link{lmWinsor}} 
 }
 \examples{
 fm1w <- lmeWinsor(distance ~ age, data = Orthodont,

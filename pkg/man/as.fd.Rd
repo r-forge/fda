@@ -1,6 +1,7 @@
 \name{as.fd}
 \alias{as.fd}
 \alias{as.fd.dierckx}
+\alias{as.fd.function}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
   Convert a spline object to class 'fd' 
@@ -10,70 +11,81 @@
   (class \code{fd}) format.  
 }
 \usage{
-as.fd(x)
-\method{as.fd}{dierckx}(x) 
+as.fd(x, ...)
+\method{as.fd}{dierckx}(x, ...) 
+\method{as.fd}{function}(x, ...) 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
     an object to be converted to class \code{fd}.  
   }
+  \item{\dots}{
+    optional arguments passed to specific methods, currently unused.  
+  }
 }
 \details{
-  The behavior depends on the \code{class} and nature of \code{x}.  
+  The behavior depends on the \code{class} and nature of \code{x}.
 
-  \item{as.fd.dierckx}{
-    The 'fda' package (as of version 2.0.0) supports B-splines with
-    coincident boundary knots.  For periodic phenomena, the
-    \code{DierckxSpline} packages uses periodic spines, while \code{fda}
-    recommends finite Fourier series.  Accordingly, \code{as.fd.dierckx}
-    if x[["periodic"]] is TRUE.  
+  \itemize{
+    \item{as.fd.dierckx}{
+      The 'fda' package (as of version 2.0.0) supports B-splines with
+      coincident boundary knots.  For periodic phenomena, the
+      \code{DierckxSpline} packages uses periodic spines, while
+      \code{fda} recommends finite Fourier series.  Accordingly,
+      \code{as.fd.dierckx} if x[["periodic"]] is TRUE.  
 
-    The following describes how the components of a \code{dierckx}
-    object are handled by as.dierckx(as.fd(x)):   
+      The following describes how the components of a \code{dierckx}
+      object are handled by as.dierckx(as.fd(x)):   
     
-    \itemize{
-      \item{x}{lost.  Restored from the knots.}
-      \item{y}{
-	lost.  Restored from spline predictions at the restored values
-	of 'x'.  
+      \itemize{
+	\item{x}{lost.  Restored from the knots.}
+	\item{y}{
+	  lost.  Restored from spline predictions at the restored values
+	  of 'x'.  
+	}
+	\item{w}{lost.  Restored as rep(1, length(x)).}
+	\item{from, to}{fd[["basis"]][["rangeval"]] }
+	\item{k}{
+	  coded indirectly as fd[["basis"]][["nbasis"]] -
+	  length(fd[["basis"]][["params"]]) - 1.  
+	}
+	\item{s}{lost, restored as 0.}
+	\item{nest}{lost, restored as length(x) + k + 1}
+	\item{n}{
+	  coded indirectly as 2*fd[["basis"]][["nbasis"]] -
+	  length(fd[["basis"]][["params"]]).
+	}
+	\item{knots}{
+	  The end knots are stored (unreplicated) in
+	  fd[["basis"]][["rangeval"]], while the interior knots are
+	  stored in fd[["basis"]][["params"]].
+	}
+	\item{fp}{lost.  Restored as 0.}
+	\item{wrk, lwrk, iwrk}{
+	  lost.  Restore by refitting to the knots.  
+	}
+	\item{ier}{lost.  Restored as 0.}
+	\item{message}{lost.  Restored as character(0).}
+	\item{g}{stored indirectly as
+	  length(fd[["basis"]][["params"]]).} 
+	\item{method}{lost.  Restored as "ss".}
+	\item{periodic}{
+	  'dierckx2fd' only translates 'dierckx' objects
+	  with coincident boundary knots.  Therefore, 'periodic' is
+	  restored as FALSE.
+	} 
+	\item{routine}{lost.  Restored as 'curfit.default'.}
+	\item{xlab}{fd[["fdnames"]][["args"]]}
+	\item{ylab}{fd[["fdnames"]][["funs"]]}
       }
-      \item{w}{lost.  Restored as rep(1, length(x)).}
-      \item{from, to}{fd[["basis"]][["rangeval"]] }
-      \item{k}{
-	coded indirectly as fd[["basis"]][["nbasis"]] -
-	length(fd[["basis"]][["params"]]) - 1.  
-      }
-      \item{s}{lost, restored as 0.}
-      \item{nest}{lost, restored as length(x) + k + 1}
-      \item{n}{
-	coded indirectly as 2*fd[["basis"]][["nbasis"]] -
-	length(fd[["basis"]][["params"]]).
-      }
-      \item{knots}{
-	The end knots are stored (unreplicated) in
-	fd[["basis"]][["rangeval"]], while the interior knots are stored
-	in fd[["basis"]][["params"]].
-      }
-      \item{fp}{lost.  Restored as 0.}
-      \item{wrk, lwrk, iwrk}{
-	lost.  Restore by refitting to the knots.  
-      }
-      \item{ier}{lost.  Restored as 0.}
-      \item{message}{lost.  Restored as character(0).}
-      \item{g}{stored indirectly as length(fd[["basis"]][["params"]]).}
-      \item{method}{lost.  Restored as "ss".}
-      \item{periodic}{
-	'dierckx2fd' only translates 'dierckx' objects
-	with coincident boundary knots.  Therefore, 'periodic' is
-	restored as FALSE.
-      } 
-      \item{routine}{lost.  Restored as 'curfit.default'.}
-      \item{xlab}{fd[["fdnames"]][["args"]]}
-      \item{ylab}{fd[["fdnames"]][["funs"]]}
+    }
+
+    \item{as.fd.function}{
+      Create an \code{fd} object from a function of the form created by
+      \code{splinefun}.  
     }
   }
-   
 }
 \value{
   \code{as.fd.dierckx} converts an object of class 'dierckx' into one of
