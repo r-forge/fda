@@ -108,6 +108,9 @@ as.fd(x, ...)
   \code{\link{fd}}
 }
 \examples{
+##
+## as.fd.dierckx
+##
 x <- 0:24
 y <- c(1.0,1.0,1.4,1.1,1.0,1.0,4.0,9.0,13.0,
        13.4,12.8,13.1,13.0,14.0,13.0,13.5,
@@ -131,6 +134,7 @@ all.equal(knots(curfit.xy, FALSE), knots(curfit.fd, FALSE))
 all.equal(coef(curfit.xy), as.vector(coef(curfit.fd)))
 \dontshow{)}
 
+
 %curfit2 <- fd2dierckx(curfit.fd)
 %pred.y2 <- predict(curfit2, x.)
 %sum(abs(pred.y-pred.y2))/(sum(abs(pred.y)+abs(pred.y2))/2)
@@ -145,6 +149,28 @@ all.equal(coef(curfit.xy), as.vector(coef(curfit.fd)))
 %# TRUE 
 %# Other components are NOT preserved in translation
 %# and so can NOT be restored.
+
+##
+## as.fd.function(splinefun(...), ...) 
+## 
+x <- 1:7
+y <- sin((x-0.5)*pi)
+f <- splinefun(x, y)
+fd. <- as.fd(f)
+x. <- seq(1, 7, .02)
+fx. <- f(x.)
+fdx. <- eval.fd(x., fd.) 
+plot(range(x), range(y, fx., fdx.), type='n')
+points(x, y)
+lines(x., sin((x.-0.5)*pi), lty='dashed') 
+lines(x., f(x.), col='blue')
+lines(x., eval.fd(x., fd.), col='red')
+# splinefun and as.fd(splineful(...)) are close
+# but quite different from the actual function
+# apart from the actual 7 points fitted,
+# which are fitted exactly
+# ... and there is no information in the data
+# to support a better fit!
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

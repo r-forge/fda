@@ -53,7 +53,7 @@ as.fd.dierckx <- function(x, ...){
   fd(coef=coef., basisobj=B.basis, fdnames=fdNms)
 }
 
-as.fd.splinefun <- function(x, ...){
+as.fd.function <- function(x, ...){
 # Translate an object of class splinefun to class fd
 ##
 ## 1.  check class
@@ -98,37 +98,13 @@ as.fd.splinefun <- function(x, ...){
 ##
 ## 2.  Create a basis 
 ##
-
-
-
-
-
-
-  
-#  rngval <- with(x, c(from, to))
-#  nKnots <- x$n
-  
-# length(dierckx$knots) = nest = estimated number of knots
-# number actually used = dierckx$n  
-#  knots <- object$knots[1:n]
-#  Knots <- knots(x, interior=FALSE)
-#  k <- x$k
-#  nOrder <- k+1
-#  breaks <- Knots[nOrder:(nKnots-k)]
-#
-#  xlab <- x$xlab
-#  if(!require(fda))
-    stop("library(fda) required for function 'dierckx2fd'",
-         ";  please install.") 
-# 
-#  B.basis <- create.bspline.basis(rangeval=rngval, norder=nOrder,
-#                                breaks=breaks, names=xlab)
-##
-## 3.  Create fd object
-##
-#  coef. <- coef(x)
-#
-#  ylab <- x$ylab
-#  fdNms <- list(args=xlab, reps="reps 1", funs=ylab)
-#  fd(coef=coef., basisobj=B.basis, fdnames=fdNms)
+  Knots <- xz$x
+  y.x <- xz$y
+#  basis <- create.bspline.basis(breaks=Knots)
+  basis <- create.bspline.basis(range(Knots), breaks=Knots)
+  fd. <- fdPar(basis, lambda=0)
+  nKn <- length(Knots) 
+  nobs <- (2*nKn-1)
+  x. <- seq(Knots[1], Knots[nKn], length=nobs) 
+  smooth.basis(x., x(x.), fd.)$fd
 }

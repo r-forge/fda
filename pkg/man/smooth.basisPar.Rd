@@ -102,7 +102,7 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
   The output of a call to 'smooth.basis', which is a named list of
   length 6 and class \code{fdSmooth} with the following components:  
 
-  \item{fdobj}{
+  \item{fd}{
     a functional data object that smooths the data.
   }
   \item{df}{
