@@ -9,7 +9,7 @@
 }
 \usage{
 smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
-      lambda=1/diff(range(argvals)), estimate=TRUE, penmat=NULL,
+      lambda=0, estimate=TRUE, penmat=NULL,
       wtvec=rep(1, length(argvals)), fdnames=NULL)
 }
 \arguments{
@@ -33,8 +33,9 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
     \itemize{
       \item{fd}{a functional data object (class \code{fd})}
       \item{basisfd}{
-	a functional basis object, which is converted to a functional
-	data object with the identity matrix as the coefficient matrix.
+	a functional basis object (class \code{basisfd}, which is
+	converted to a functional data object with the identity matrix
+	as the coefficient matrix. 
       }
       \item{fdPar}{
 	a functional parameter object (class \code{fdPar})
