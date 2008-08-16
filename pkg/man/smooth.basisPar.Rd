@@ -140,7 +140,7 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
   3.  smooth.basis 
 }
 \seealso{
-  \code{\link{data2fd}}, 
+  \code{\link{Data2fd}}, 
   \code{\link{df2lambda}}, 
   \code{\link{fdPar}}, 
   \code{\link{lambda2df}}, 
