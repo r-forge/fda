@@ -1,50 +1,41 @@
-\name{data2fd.old}
-\alias{data2fd}
+\name{Data2fd}
+\alias{Data2fd}
 \title{
-  Depricated:  use 'Data2fd'  
+  Create a functional data object from data 
 }
 \description{
-  This function converts an array \code{y} of function values
-  plus an array \code{argvals} of argument values into a
-  functional data object.  This a function that tries to
-  do as much for the user as possible.  A basis function
-  expansion is used to represent the curve, but no roughness
-  penalty is used.  The data are fit using the least squares
-  fitting criterion.  NOTE:  Interpolation with data2fd(...) can be 
-  shockingly bad, as illustrated in one of the examples.  
+  This function converts an array \code{y} of function values plus an
+  array \code{argvals} of argument values into a functional data object.
+  This function tries to do as much for the user as possible.  NOTE:
+  Interpolation with data2fd(...) can be shockingly bad, as illustrated
+  in one of the examples. 
 }
 \usage{
-data2fd(y, argvals=seq(0, 1, len = n), basisobj,
-        fdnames=defaultnames,
-        argnames=c("time", "reps", "values"))
+Data2fd(argvals, y, basisobj, nderiv=4, lambda=0, 
+        fdnames=NULL, argnames=c("time", "reps", "values"))
 }
 \arguments{
   \item{y}{
     an array containing sampled values of curves.
-    
-    If \code{y} is a vector, only one replicate and variable are
-    assumed.
-    
-    If \code{y} is a matrix, rows must correspond to argument values and
-    columns to replications or cases, and it will be assumed that there
-    is only one variable per observation.
-
-    If \code{y} is a three-dimensional array, the first dimension (rows)
-    corresponds to argument values, the second (columns) to
-    replications, and the third layers) to variables within
-    replications.  Missing values are permitted, and the number of
-    values may vary from one replication to another.  If this is the
-    case, the number of rows must equal the maximum number of argument
-    values, and columns of \code{y} having fewer values must be padded
-    out with NA's. 
+    If \code{y} is a vector, only one replicate and variable are assumed.
+    If \code{y} is a matrix, rows must correspond to argument
+    values and columns to replications or cases, and it will be assumed
+    that there is only one variable per observation.  If \code{y}
+    is a three-dimensional array, the first dimension (rows)
+    corresponds to argument values, the second (columns) to replications,
+    and the third (layers) to variables within replications.  Missing
+    values are permitted, and the number of values may vary from one
+    replication to another.  If this is the case, the number of
+    rows must equal the maximum number of argument values,
+    and columns of \code{y} having fewer values must be padded out with
+    NA's.   
   }
   \item{argvals}{
-    a set of argument values.
-
-    If this is a vector, the same set of argument values is used for all
-    columns of \code{y}.  If \code{argvals} is a matrix, the columns
-    correspond to the columns of \code{y}, and contain the argument
-    values for that replicate or case.    
+    a set of argument values.  If this is a vector, the same set of
+    argument values is used for all columns of \code{y}.  If
+    \code{argvals} is a matrix, the columns correspond to the columns of
+    \code{y}, and contain the 
+    argument values for that replicate or case.
   }
   \item{basisobj}{
     either:  A \code{basisfd} object created by function
@@ -97,7 +88,6 @@ data2fd(y, argvals=seq(0, 1, len = n), basisobj,
   applications, it would be better to use the function \code{\link{smooth.basis}}
 }
 \seealso{
-  \code{\line{Data2fd}}
   \code{\link{smooth.basis}}, 
   \code{\link{smooth.basisPar}}, 
   \code{\link{project.basis}}, 
@@ -111,6 +101,10 @@ data2fd(y, argvals=seq(0, 1, len = n), basisobj,
 b1.2 <- create.bspline.basis(norder=1, breaks=c(0, .5, 1))
 # 2 bases, order 1 = degree 0 = step functions
 
+
+
+
+\dontrun{
 str(fd1.2 <- data2fd(0:1, basisobj=b1.2))
 plot(fd1.2)
 # A step function:  0 to time=0.5, then 1 after 
@@ -179,7 +173,16 @@ range(growth$hgtf-girlPred[seq(1, by=2, length=31),])
 matplot(age2, girlPred, type="l")
 with(growth, matpoints(age, hgtf))
 # girl.data2fd fits the data fine but goes berzerk
-# between points 
+# between points
+
+
+}
+
+
+
+
+
+
 
 }
 % docclass is function
