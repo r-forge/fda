@@ -231,6 +231,14 @@ with(result4.0, c(df, gcv)) #  display df and gcv measures
 # but generalized cross validation = Inf
 # suggesting overfitting.  
 
+##
+## fdnames?
+##
+girlGrow12 <- with(growth, smooth.basisPar(argvals=age, y=hgtf[, 1:2],
+              fdnames=c('age', 'girl', 'height')) ) 
+girlGrow12. <- with(growth, smooth.basisPar(argvals=age, y=hgtf[, 1:2],
+    fdnames=list(age=age, girl=c('Carol', 'Sally'), value='height')) )
+
 }
 % docclass is function
 \keyword{smooth}
