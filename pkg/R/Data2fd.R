@@ -1,5 +1,5 @@
-Data2fd <- function(argvals, y, basisobj, nderiv=4, lambda=0.0,
-                    fdnames=NULL, argnames = c("time", "reps", "values") )
+Data2fd <- function(argvals=NULL, y=NULL, basisobj=NULL, nderiv=NULL,
+                    lambda=0.0, fdnames=NULL)
 {
 #  DATA2FD Converts an array Y of function values plus an array
 #    ARGVALS of argument values into a functional data object.
@@ -150,93 +150,14 @@ Data2fd <- function(argvals, y, basisobj, nderiv=4, lambda=0.0,
 #  supplied in reverse order, so that users can employ the same order as
 #  that used in the other smoothing functions, namely ARGVALS before Y.
 
-#  Last modified:  23 July 2008
+#  Last modified:  2008.08.16 by Spencer Graves
+#  previously modified 23 July 2008
 
- #  check the BASIS argument
-
- if (!inherits(basisobj, "basisfd")) 
-    stop("Argument BASISOBJ is not a basis object.")
-
- nbasis = basisobj$nbasis
-
- #  check whether ARGVALS and Y should be swapped
-
- swaplist = argvalsy.swap(argvals, y, basisobj)
- argvals  = swaplist[[1]]
- y        = swaplist[[2]]
-
- #  check that length of argvals equals the length of 
- #  first dimension of y
-
- y    = as.array(y)
- ydim = dim(y)
- if (length(argvals) != ydim[1]) 
-     stop(paste("Length of first dimension of Y",
-                "not equal to length of ARGVALS."))
-
- #  check the dimensions of Y
-
- if (length(ydim) > 3) 
-    stop("Too many dimensions for argument Y.")
- 
- #  Test if (arguments are outside of the range in the basis.
-
- rangeval = basisobj$rangeval
- if (min(argvals) < rangeval[1] || max(argvals) > rangeval[2]) 
-    stop("Some arguments values are outside of the range in BASISOBJ.")
-
- #  set default values for optional parameters
-
- defaultnames      = vector("list", 3)
- defaultnames[[1]] = "argument values"
- defaultnames[[2]] = "replications"
- defaultnames[[3]] = "variables"
-
- if (inherits(nderiv, "list")) {
-     fdnames = nderiv
-     nderiv  = 2
- }
-
- #  check values of optional arguments
-
- if (!inherits(nderiv, "numeric") && 
-     !inherits(nderiv, "character")) 
-         stop("NDERIV is neither a number nor a character.")
-
- if (inherits(nderiv, "character")) {
-     if (nderiv == "h") {
-         #  ----  set up the harmonic acceleration operator  -------
-         period = rangeval[2]-rangeval[1]
-         nderiv = vec2Lfd(c(0,(2*pi/period)^2,0), rangeval)
-     } else {
-         stop("NDERIV is not an allowed character.")
-     }
- }
-
- if (!inherits(lambda, "numeric")) stop("LAMBDA is not a number.")
- 
- if (lambda < 0.0) stop("LAMBDA is negative.")
-
- if (!inherits(fdnames, "list")) stop("FDNAMES is not a list object")
- 
- if (length(fdnames) < 3) fdnames[[3]] = "variables"
- if (length(fdnames) < 2) fdnames[[2]] = "replications"
-
- #  do the smoothing
-
- fdParobj   = fdPar(basisobj, nderiv, lambda)
- argvals    = as.vector(argvals)
- smoothlist = smooth.basis(argvals, y, fdParobj, fdnames=fdnames)
- return(smoothlist)
+  argChk <- argvalsy.swap(argvals, y, basisobj)
+#
+  smBasis <- with(argChk, smooth.basisPar(argvals=argvals, y=y,
+                fdobj=basisobj, Lfdobj=nderiv, lambda=lambda,
+                fdnames=fdnames) )
+# 
+  smBasis$fd
 }
-
-
-
-
-
-
-
-
-
-
-

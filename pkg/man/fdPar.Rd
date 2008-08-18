@@ -26,7 +26,7 @@ fdPar(fdobj=NULL, Lfdobj=NULL, lambda=0, estimate=TRUE, penmat=NULL)
   \item{Lfdobj}{
     either a nonnegative integer or a linear differential operator
     object.  If NULL and fdobj[['type']] == 'bspline', Lfdobj =
-    int2obj(max(0, norder-2)), where norder = order of fdobj.   
+    int2Lfd(max(0, norder-2)), where norder = order of fdobj.   
   }
   \item{lambda}{
     a nonnegative real number specifying the amount of smoothing
@@ -72,7 +72,8 @@ fdPar(fdobj=NULL, Lfdobj=NULL, lambda=0, estimate=TRUE, penmat=NULL)
   \code{\link{smooth.fdPar}}, 
   \code{\link{smooth.basis}}, 
   \code{\link{smooth.basisPar}}, 
-  \code{\link{smooth.monotone}}, 
+  \code{\link{smooth.monotone}},
+  \code{\line{int2Lfd}}
 }
 \examples{
 ##
