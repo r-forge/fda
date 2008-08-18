@@ -54,7 +54,7 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
   \item{Lfdobj}{
     either a nonnegative integer or a linear differential operator
     object.  If NULL and fdobj[['type']] == 'bspline', Lfdobj =
-    int2obj(max(0, norder-2)), where norder = order of fdobj.   
+    int2Lfd(max(0, norder-2)), where norder = order of fdobj.   
   }
   \item{lambda}{
     a nonnegative real number specifying the amount of smoothing
