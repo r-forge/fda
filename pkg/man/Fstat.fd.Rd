@@ -26,9 +26,11 @@ the dependent variable object.  It may be:
 \value{
   A list with components
   \itemize{
-    \item \code{F}: the calculated pointwise F-statistics. 
-    \item \code{argvals}: argument values for evaluating the F-statistic if \code{yfdPar} 
-    is a functional data object. 
+    \item{F}{the calculated pointwise F-statistics.}
+    \item{argvals}{
+      argument values for evaluating the F-statistic if \code{yfdPar} is
+      a functional data object.
+    }
   }  
 } 
 \details{
