@@ -122,6 +122,13 @@ Data2fd(argvals=NULL, y=NULL, basisobj=NULL, nderiv=NULL,
     and variables
   }
 }
+\references{
+  Ramsay, James O., and Silverman, Bernard W. (2005), \emph{Functional 
+    Data Analysis, 2nd ed.}, Springer, New York. 
+
+  Ramsay, James O., and Silverman, Bernard W. (2002), \emph{Applied
+    Functional Data Analysis}, Springer, New York.
+}
 \seealso{
   \code{\link{smooth.basisPar}}, 
   \code{\link{smooth.basis}}, 

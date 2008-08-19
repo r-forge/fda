@@ -99,6 +99,15 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
     }
   }
 }
+\details{
+  1.  if(is.null(fdobj))fdobj <- create.bspline.basis(argvals).  Else
+  if(is.integer(fdobj)) fdobj <- create.bspline.basis(argvals, norder =
+  fdobj) 
+  
+  2.  fdPar
+
+  3.  smooth.basis 
+}
 \value{
   The output of a call to 'smooth.basis', which is a named list of
   length 6 and class \code{fdSmooth} with the following components:  
@@ -130,14 +139,12 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
     the matrix mapping the data to the coefficients.
   }
 }
-\details{
-  1.  if(is.null(fdobj))fdobj <- create.bspline.basis(argvals).  Else
-  if(is.integer(fdobj)) fdobj <- create.bspline.basis(argvals, norder =
-  fdobj) 
-  
-  2.  fdPar
+\references{
+  Ramsay, James O., and Silverman, Bernard W. (2005), \emph{Functional 
+    Data Analysis, 2nd ed.}, Springer, New York. 
 
-  3.  smooth.basis 
+  Ramsay, James O., and Silverman, Bernard W. (2002), \emph{Applied
+    Functional Data Analysis}, Springer, New York.
 }
 \seealso{
   \code{\link{Data2fd}}, 

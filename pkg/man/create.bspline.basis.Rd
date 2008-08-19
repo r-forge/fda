@@ -150,6 +150,13 @@ create.bspline.basis(rangeval=NULL, nbasis=NULL, norder=4,
   the end knots must be replicated manually when using
   \link[splines]{splineDesign} or \link[splines]{spline.des}.  
 }
+\references{
+  Ramsay, James O., and Silverman, Bernard W. (2005), \emph{Functional 
+    Data Analysis, 2nd ed.}, Springer, New York. 
+
+  Ramsay, James O., and Silverman, Bernard W. (2002), \emph{Applied
+    Functional Data Analysis}, Springer, New York.
+}
 \seealso{
   \code{\link{basisfd}}, 
   \code{\link{create.constant.basis}}, 

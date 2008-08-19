@@ -114,7 +114,7 @@ as.fd(x, ...)
   Dierckx, P. (1991) \emph{Curve and Surface Fitting with Splines},
   Oxford Science Publications.
 
-  Ramsay, James O., and Silverman, Bernard W. (2006), \emph{Functional 
+  Ramsay, James O., and Silverman, Bernard W. (2005), \emph{Functional 
     Data Analysis, 2nd ed.}, Springer, New York. 
 
   Ramsay, James O., and Silverman, Bernard W. (2002), \emph{Applied
