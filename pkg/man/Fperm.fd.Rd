@@ -19,13 +19,13 @@ Fperm.fd(yfdPar, xfdlist, betalist,wt=NULL,
     \itemize{
       \item{vector}{ if the dependent variable is scalar.}
       \item{fd}{
-	a functional data object if the dependent variable is
-	functional.
+    a functional data object if the dependent variable is
+    functional.
       }
       \item{fdPar}{
-	a functional parameter object if the dependent variable is
-	functional, and if it is necessary to smooth the prediction of
-	the dependent variable.
+    a functional parameter object if the dependent variable is
+    functional, and if it is necessary to smooth the prediction of
+    the dependent variable.
       }
     }
   }
@@ -120,7 +120,7 @@ Fperm.fd(yfdPar, xfdlist, betalist,wt=NULL,
 \seealso{
   \code{\link{fRegress}}
   \code{\link{Fstat.fd}}
-  \code{\link{tstat.fd}}
+  \code{\link{tperm.fd}}
 }
 %\examples{
 %}
