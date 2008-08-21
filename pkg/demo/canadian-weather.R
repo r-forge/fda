@@ -1013,6 +1013,22 @@ for (j in 1:p) {
 }
 par(op)
 
+
+
+# Now a couple of perumatation tests
+
+# permutation t-test between atlantic and pacific 
+
+t.res = tperm.fd(tempfd[atlindex],tempfd[pacindex])
+
+
+# instead, we'll try a permutation F-test for the regression
+
+F.res = Fperm.fd(tempfd, xfdlist, betalist)
+
+
+
+
 #  -----------------------------------------------------------------------
 #         predict log precipitation from climate zone and temperature
 #  -----------------------------------------------------------------------
@@ -1162,6 +1178,7 @@ for (j in 1:p) {
 	        main=prednames[j])
 }
 par(op)
+
 
 
 #  ---------------------------------------------------------------
@@ -1332,6 +1349,13 @@ betaplotmat <- cbind(betavec, betavec+2*betastderrvec,
 matplot(day.5, betaplotmat, type="l", lty=c(1,4,4),
         xlab="Day", ylab="Temperature Reg. Coeff.")
 lines(c(0, 365),c(0,0),lty=2)
+
+
+# We can F-test this as well
+
+F.res2 = Fperm.fd(annualprec, xfdlist, betalist)
+
+
 
 #  ---------------------------------------------------------------
 #         predict log precipitation from temperature
