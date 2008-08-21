@@ -1,12 +1,12 @@
-\name{Fstat.fd} 
+\name{Fstat.fd}
 \alias{Fstat.fd}
 \title{
   F-statistic for functional linear regression.
 }
 \description{
-  Fstat.fd calculates a pointwise F-statistic for functional linear regression. 
+  Fstat.fd calculates a pointwise F-statistic for functional linear regression.
 }
-\usage{ Fstat.fd(y,yhat,argvals=NULL)} 
+\usage{ Fstat.fd(y,yhat,argvals=NULL)}
 \arguments{
 \item{y}{
 the dependent variable object.  It may be:
@@ -16,13 +16,13 @@ the dependent variable object.  It may be:
 }
 }
 \item{yhat}{
- The predicted values corresponding to \code{y}. It must be of the same class. 
+ The predicted values corresponding to \code{y}. It must be of the same class.
 }
 \item{argvals}{
-  If \code{yfdPar} is a functional data object, the points at which to evaluate 
-  the pointwise F-statistic. 
+  If \code{yfdPar} is a functional data object, the points at which to evaluate
+  the pointwise F-statistic.
 }
-} 
+}
 \value{
   A list with components
   \itemize{
@@ -31,24 +31,24 @@ the dependent variable object.  It may be:
       argument values for evaluating the F-statistic if \code{yfdPar} is
       a functional data object.
     }
-  }  
-} 
+  }
+}
 \details{
-   An F-statistic is calculated as the ratio of residual variance to predicted 
-  variance. 
-  
+   An F-statistic is calculated as the ratio of residual variance to predicted
+  variance.
+
   If \code{argvals} is not specified and \code{yfdPar} is a \code{fd} object,
-  it defaults to 101 equally-spaced points on the range of \code{yfdPar}. 
-} 
+  it defaults to 101 equally-spaced points on the range of \code{yfdPar}.
+}
 \source{
   Ramsay, James O., and Silverman, Bernard W. (2006), \emph{Functional
     Data Analysis, 2nd ed.}, Springer, New York.
-} 
+}
 \seealso{
   \code{\link{fRegress}}
   \code{\link{Fstat.fd}}
-  \code{\link{tstat.fd}}
-} 
+  \code{\link{tperm.fd}}
+}
 \examples{
 }
 \keyword{smooth}
