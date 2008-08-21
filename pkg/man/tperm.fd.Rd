@@ -16,7 +16,7 @@
   }
   \item{x2fd}{
     a functional data object giving the second group of functional
-    observations.  
+    observations.
   }
   \item{nperm}{
     number of permutations to use in creating the null distribution.
@@ -35,7 +35,7 @@
   }
 }
 \details{
-   The usual t-statistic is calculated pointwise and the test based on the 
+   The usual t-statistic is calculated pointwise and the test based on the
    maximal value. If \code{argvals} is not specified,
   it defaults to 101 equally-spaced points on the range of \code{yfdPar}.
 }
@@ -66,7 +66,7 @@
 \seealso{
   \code{\link{fRegress}}
   \code{\link{Fstat.fd}}
-  \code{\link{tstat.fd}}
+  \code{\link{Fstat.fd}}
 }
 %\examples{ }
 \keyword{smooth}
