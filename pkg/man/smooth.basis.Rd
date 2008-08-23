@@ -111,7 +111,9 @@ smooth.basis(argvals, y, fdParobj, wtvec=rep(1, length(argvals)),
     the value of the generalized cross-validation or GCV criterion.  If
     there are multiple curves, this is a vector of values, one per
     curve.  If the smooth is multivariate, the result is a matrix of gcv
-    values, with columns corresponding to variables.  
+    values, with columns corresponding to variables.
+
+    \deqn{gcv = n*SSE/((n-df)^2)}
   }
 %  \item{coef}{
 %    the coefficient matrix or array for the basis function expansion of

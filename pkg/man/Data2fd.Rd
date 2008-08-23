@@ -150,7 +150,19 @@ op <- par(mfrow=c(2,1))
 plot(b1.2, main='bases') 
 plot(fd1.2, main='fit')
 par(op) 
-# A step function:  0 to time=0.5, then 1 after 
+# A step function:  0 to time=0.5, then 1 after
+
+##
+## Simple oversmoothing
+##
+b1.3 <- create.bspline.basis(nbasis=3, norder=1)
+fd1.3.5 <- Data2fd(1:2, basisobj=b1.3, lambda=0.5)
+plot(0:1, c(0, 2), type='n')
+points(0:1, 1:2)
+lines(fd1.3.5)
+# Fit = penalized least squares with penalty = 
+#          = lambda * integral(0:1 of basis^2),
+#            which shrinks the points towards 0.  
 
 ##
 ## linear spline fit 

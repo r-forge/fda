@@ -31,6 +31,5 @@ smooth.basisPar <- function(argvals, y, fdobj=NULL, Lfdobj=NULL,
   w <- wtvec
 #  smoothB <- smooth.basis(argvals, y, fdP, wtvec=w,
 #        dffactor=dffactor, fdnames=fdnames)
-  smooth.basis(argvals, y, fdP, wtvec=w,
-        fdnames=fdnames)
+  smooth.basis(argvals, y, fdP, wtvec=w, fdnames=fdnames)
 }
