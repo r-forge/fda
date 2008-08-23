@@ -47,8 +47,7 @@ the dependent variable object.  It may be:
 \seealso{
   \code{\link{fRegress}}
   \code{\link{Fstat.fd}}
-  \code{\link{tperm.fd}}
-}
-\examples{
-}
+%  \code{\link{tstat.fd}}
+} 
+%\examples{}
 \keyword{smooth}
