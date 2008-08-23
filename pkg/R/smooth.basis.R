@@ -59,7 +59,7 @@ smooth.basis <- function (argvals, y, fdParobj,
 
   if (is.vector(y)) y <- as.matrix(y)
 	
-  if(!inherits(y, "matrix") & !inherits(y, "array"))
+  if(!inherits(y, "matrix") && !inherits(y, "array"))
     stop("'y' is not of class matrix or class array.")
 
   ydim <- dim(y);
@@ -170,7 +170,7 @@ smooth.basis <- function (argvals, y, fdParobj,
     }
     if (lambda > 0) {
 #  smoothing required, set up coefficient matrix for normal equations
-      penmat  <- eval.penalty(basisobj, Lfdobj)
+      penmat    <- eval.penalty(basisobj, Lfdobj)
       Bnorm   <- sqrt(sum(c(Bmat0)^2))
       pennorm <- sqrt(sum(c(penmat)^2))
       condno  <- pennorm/Bnorm
