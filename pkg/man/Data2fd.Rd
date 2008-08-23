@@ -142,27 +142,51 @@ Data2fd(argvals=NULL, y=NULL, basisobj=NULL, nderiv=NULL,
 ##
 ## Simplest possible example:  step function 
 ##
-b1.2 <- create.bspline.basis(norder=1, breaks=c(0, .5, 1))
-# 2 bases, order 1 = degree 0 = step functions
+b1.1 <- create.bspline.basis(nbasis=1, norder=1)
+# 1 basis, order 1 = degree 0 = step function
 
-fd1.2 <- Data2fd(0:1, basisobj=b1.2)
+y12 <- 1:2
+fd1.1 <- Data2fd(y12, basisobj=b1.1)
+plot(fd1.1)
+# fd1.1 = mean(y12) = 1.5 
+
+fd1.1.5 <- Data2fd(y12, basisobj=b1.1, lambda=0.5)
+eval.fd(seq(0, 1, .2), fd1.1.5)
+# fd1.1.5 = sum(y12)/(n+lambda*integral(over arg=0 to 1 of 1))
+#         = 3 / (2+0.5) = 1.2
+
+##
+## 3 step functions
+##
+b1.2 <- create.bspline.basis(nbasis=2, norder=1)
+# 2 bases, order 1 = degree 0 = step functions
+fd1.2 <- Data2fd(1:2, basisobj=b1.2)
+
 op <- par(mfrow=c(2,1))
 plot(b1.2, main='bases') 
 plot(fd1.2, main='fit')
 par(op) 
-# A step function:  0 to time=0.5, then 1 after
+# A step function:  1 to 0.5, then 2 
 
 ##
 ## Simple oversmoothing
 ##
 b1.3 <- create.bspline.basis(nbasis=3, norder=1)
-fd1.3.5 <- Data2fd(1:2, basisobj=b1.3, lambda=0.5)
+fd1.3.5 <- Data2fd(y12, basisobj=b1.3, lambda=0.5)
 plot(0:1, c(0, 2), type='n')
-points(0:1, 1:2)
+points(0:1, y12)
 lines(fd1.3.5)
 # Fit = penalized least squares with penalty = 
 #          = lambda * integral(0:1 of basis^2),
-#            which shrinks the points towards 0.  
+#            which shrinks the points towards 0.
+# X1.3 = matrix(c(1,0, 0,0, 0,1), 2)
+# XtX = crossprod(X1.3) = diag(c(1, 0, 1))
+# penmat = diag(3)/3
+#        = 3x3 matrix of integral(over arg=0:1 of basis[i]*basis[j])
+# Xt.y = crossprod(X1.3, y12) = c(1, 0, 2)
+# XtX + lambda*penmat = diag(c(7, 1, 7)/6 
+# so coef(fd1.3.5) = solve(XtX + lambda*penmat, Xt.y)
+#                  = c(6/7, 0, 12/7)
 
 ##
 ## linear spline fit 
