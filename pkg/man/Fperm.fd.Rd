@@ -120,8 +120,7 @@ Fperm.fd(yfdPar, xfdlist, betalist,wt=NULL,
 \seealso{
   \code{\link{fRegress}}
   \code{\link{Fstat.fd}}
-  \code{\link{tperm.fd}}
+%  \code{\link{tstat.fd}}
 }
-%\examples{
-%}
+%\examples{}
 \keyword{smooth}

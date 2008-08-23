@@ -66,7 +66,7 @@
 \seealso{
   \code{\link{fRegress}}
   \code{\link{Fstat.fd}}
-  \code{\link{Fstat.fd}}
+%  \code{\link{tstat.fd}}
 }
 %\examples{ }
 \keyword{smooth}
