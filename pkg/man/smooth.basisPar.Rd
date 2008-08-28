@@ -31,9 +31,11 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
     One of the following:
 
     \itemize{
-      \item{fd}{a functional data object (class \code{fd})}
+      \item{fd}{
+	a functional data object (class \code{fd})
+      }
       \item{basisfd}{
-	a functional basis object (class \code{basisfd}, which is
+	a functional basis object (class \code{basisfd}), which is
 	converted to a functional data object with the identity matrix
 	as the coefficient matrix. 
       }
@@ -45,7 +47,7 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
 	further converted to a functional data object with the identity
 	matrix as the coefficient matrix.  
       }
-      \item{matrix or array}{replaced by fd(fdobj)} 	
+      \item{matrix or array}{replaced by fd(fdobj)}	
       \item{NULL}{
 	Defaults to fdobj = create.bspline.basis(argvals).
       }
