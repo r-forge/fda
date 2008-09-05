@@ -1,0 +1,93 @@
+eval.monfd                package:fda                R Documentation
+
+_V_a_l_u_e_s _o_f _a _M_o_n_o_t_o_n_e _F_u_n_c_t_i_o_n_a_l _D_a_t_a _O_b_j_e_c_t
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Evaluate a monotone functional data object at specified argument
+     values, or evaluate a derivative of the functional object.
+
+_U_s_a_g_e:
+
+     eval.monfd(evalarg, Wfd, Lfdobj=int2Lfd(0))
+
+_A_r_g_u_m_e_n_t_s:
+
+ evalarg: a vector of argument values at which the functional data
+          object is to be evaluated. 
+
+     Wfd: a functional data object that defines the monotone function
+          to be evaluated.  Only univariate functions are permitted. 
+
+  Lfdobj: a nonnegative integer specifying a derivative to be
+          evaluated.  AT this time of writing, permissible derivative
+          values are 0, 1, 2, or 3. A linear differential operator is
+          not allowed. 
+
+_D_e_t_a_i_l_s:
+
+     A monotone function data object $h(t)$ is defined by  $h(t) =
+     [D^{-1} exp Wfd](t)$.  In this equation, the operator  $D^{-1}$
+     means taking the indefinite integral of the function to which it
+     applies. Note that this equation implies that the monotone
+     function has a value of zero at the lower limit of the arguments. 
+     To actually fit monotone data, it will usually be necessary to
+     estimate an intercept and a regression coefficient to be applied
+     to $h(t)$, usually with the least squares regression function
+     'lsfit'. The function 'Wfd' that defines the monotone function is
+     usually estimated by monotone smoothing function
+     'smooth.monotone.'
+
+_V_a_l_u_e:
+
+     a matrix containing the monotone function values.  The first
+     dimension corresponds to the argument values in 'evalarg' and the
+     second to replications.
+
+_S_e_e _A_l_s_o:
+
+     'eval.fd',  'eval.posfd'
+
+_E_x_a_m_p_l_e_s:
+
+     #  Estimate the acceleration functions for growth curves
+     #  See the analyses of the growth data.
+     #  Set up the ages of height measurements for Berkeley data
+     age <- c( seq(1, 2, 0.25), seq(3, 8, 1), seq(8.5, 18, 0.5))
+     #  Range of observations
+     rng <- c(1,18)
+     #  First set up a basis for monotone smooth
+     #  We use b-spline basis functions of order 6
+     #  Knots are positioned at the ages of observation.
+     norder <- 6
+     nage   <- 31
+     nbasis <- nage + norder - 2
+     wbasis <- create.bspline.basis(rng, nbasis, norder, age)
+     #  starting values for coefficient
+     cvec0 <- matrix(0,nbasis,1)
+     Wfd0  <- fd(cvec0, wbasis)
+     #  set up functional parameter object
+     Lfdobj    <- 3          #  penalize curvature of acceleration
+     lambda    <- 10^(-0.5)  #  smoothing parameter
+     growfdPar <- fdPar(Wfd0, Lfdobj, lambda)
+     #  Set up wgt vector
+     wgt   <- rep(1,nage)
+     #  Smooth the data for the first girl
+     hgt1 = growth$hgtf[,1]
+     result <- smooth.monotone(age, hgt1, growfdPar, wgt)
+     #  Extract the functional data object and regression
+     #  coefficients
+     Wfd  <- result$Wfdobj
+     beta <- result$beta
+     #  Evaluate the fitted height curve over a fine mesh
+     agefine <- seq(1,18,len=101)
+     hgtfine <- beta[1] + beta[2]*eval.monfd(agefine, Wfd)
+     #  Plot the data and the curve
+     plot(age, hgt1, type="p")
+     lines(agefine, hgtfine)
+     #  Evaluate the acceleration curve
+     accfine <- beta[2]*eval.monfd(agefine, Wfd, 2)
+     #  Plot the acceleration curve
+     plot(agefine, accfine, type="l")
+     lines(c(1,18),c(0,0),lty=4)
+

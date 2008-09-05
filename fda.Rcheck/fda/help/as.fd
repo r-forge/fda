@@ -1,0 +1,220 @@
+as.fd                  package:fda                  R Documentation
+
+_C_o_n_v_e_r_t _a _s_p_l_i_n_e _o_b_j_e_c_t _t_o _c_l_a_s_s '_f_d'
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Translate a spline object of another class into the Functional
+     Data (class 'fd') format.
+
+_U_s_a_g_e:
+
+     as.fd(x, ...)
+     ## S3 method for class 'fdSmooth':
+     as.fd(x, ...)
+     ## S3 method for class 'dierckx':
+     as.fd(x, ...) 
+     ## S3 method for class 'function':
+     as.fd(x, ...)
+     ## S3 method for class 'smooth.spline':
+     as.fd(x, ...) 
+
+_A_r_g_u_m_e_n_t_s:
+
+       x: an object to be converted to class 'fd'.   
+
+     ...: optional arguments passed to specific methods, currently
+          unused.   
+
+_D_e_t_a_i_l_s:
+
+     The behavior depends on the 'class' and nature of 'x'.
+
+
+   _a_s._f_d._f_d_S_m_o_o_t_h extract the 'fd' component
+
+   _a_s._f_d._d_i_e_r_c_k_x The 'fda' package (as of version 2.0.0) supports
+        B-splines with coincident boundary knots.  For periodic
+        phenomena, the 'DierckxSpline' packages uses periodic spines,
+        while 'fda' recommends finite Fourier series.  Accordingly,
+        'as.fd.dierckx' if x[["periodic"]] is TRUE.  
+
+        The following describes how the components of a 'dierckx'
+        object are handled by as.dierckx(as.fd(x)):   
+
+      _x lost.  Restored from the knots.
+
+      _y lost.  Restored from spline predictions at the restored values
+           of 'x'.  
+
+      _w lost.  Restored as rep(1, length(x)).
+
+      _f_r_o_m, _t_o fd[["basis"]][["rangeval"]] 
+
+      _k coded indirectly as fd[["basis"]][["nbasis"]] -
+           length(fd[["basis"]][["params"]]) - 1.  
+
+      _s lost, restored as 0.
+
+      _n_e_s_t lost, restored as length(x) + k + 1
+
+      _n coded indirectly as 2*fd[["basis"]][["nbasis"]] -
+           length(fd[["basis"]][["params"]]).
+
+      _k_n_o_t_s The end knots are stored (unreplicated) in
+           fd[["basis"]][["rangeval"]], while the interior knots are
+           stored in fd[["basis"]][["params"]].
+
+      _f_p lost.  Restored as 0.
+
+      _w_r_k, _l_w_r_k, _i_w_r_k lost.  Restore by refitting to the knots.  
+
+      _i_e_r lost.  Restored as 0.
+
+      _m_e_s_s_a_g_e lost.  Restored as character(0).
+
+      _g stored indirectly as length(fd[["basis"]][["params"]]). 
+
+      _m_e_t_h_o_d lost.  Restored as "ss".
+
+      _p_e_r_i_o_d_i_c 'dierckx2fd' only translates 'dierckx' objects with
+           coincident boundary knots.  Therefore, 'periodic' is
+           restored as FALSE. 
+
+      _r_o_u_t_i_n_e lost.  Restored as 'curfit.default'.
+
+      _x_l_a_b fd[["fdnames"]][["args"]]
+
+      _y_l_a_b fd[["fdnames"]][["funs"]]
+
+
+   _a_s._f_d._f_u_n_c_t_i_o_n Create an 'fd' object from a function of the form
+        created by 'splinefun'.  This will translate method = 'fmn' and
+        'natural' but not 'periodic':  'fmn' splines are isomorphic to
+        standard B-splines with coincident boundary knots, which is the
+        basis produced by 'create.bspline.basis'.  'natural' splines
+        occupy a subspace of this space, with the restriction that the
+        second derivative at the end points is zero (as noted in the
+        Wikipedia 'spline' article).  'periodic' splines do not use
+        coindicent boundary knots and are not currently supported in
+        'fda';  instead, 'fda' uses finite Fourier bases for periodic
+        phenomena.  
+
+
+   _a_s._f_d._s_m_o_o_t_h._s_p_l_i_n_e Create an 'fd' object from a 'smooth.spline'
+        object.
+
+
+_V_a_l_u_e:
+
+     'as.fd.dierckx' converts an object of class 'dierckx' into one of
+     class 'fd'.
+
+_A_u_t_h_o_r(_s):
+
+     Spencer Graves
+
+_R_e_f_e_r_e_n_c_e_s:
+
+     Dierckx, P. (1991) _Curve and Surface Fitting with Splines_,
+     Oxford Science Publications.
+
+     Ramsay, James O., and Silverman, Bernard W. (2005), _Functional 
+     Data Analysis, 2nd ed._, Springer, New York. 
+
+     Ramsay, James O., and Silverman, Bernard W. (2002), _Applied
+     Functional Data Analysis_, Springer, New York.
+
+     'spline' entry in _Wikipedia_ <URL:
+     http://en.wikipedia.org/wiki/Spline_(mathematics)>
+
+_S_e_e _A_l_s_o:
+
+     'as.dierckx' 'curfit' 'fd' 'splinefun'
+
+_E_x_a_m_p_l_e_s:
+
+     ##
+     ## as.fd.fdSmooth
+     ##
+     girlGrowthSm <- with(growth, smooth.basisPar(argvals=age, y=hgtf))
+     girlGrowth.fd <- as.fd(girlGrowthSm)
+
+     ##
+     ## as.fd.dierckx
+     ##
+     x <- 0:24
+     y <- c(1.0,1.0,1.4,1.1,1.0,1.0,4.0,9.0,13.0,
+            13.4,12.8,13.1,13.0,14.0,13.0,13.5,
+            10.0,2.0,3.0,2.5,2.5,2.5,3.0,4.0,3.5)
+     library(DierckxSpline) 
+     curfit.xy <- curfit(x, y, s=0)
+
+     curfit.fd <- as.fd(curfit.xy)
+     plot(curfit.fd) # as an 'fd' object 
+     points(x, y) # Curve goes through the points.  
+
+     x. <- seq(0, 24, length=241)
+     pred.y <- predict(curfit.xy, x.) 
+     lines(x., pred.y, lty="dashed", lwd=3, col="blue")
+     # dierckx and fd objects match.
+
+
+     all.equal(knots(curfit.xy, FALSE), knots(curfit.fd, FALSE))
+
+
+     all.equal(coef(curfit.xy), as.vector(coef(curfit.fd)))
+
+
+
+
+     ##
+     ## as.fd.function(splinefun(...), ...) 
+     ## 
+     x2 <- 1:7
+     y2 <- sin((x2-0.5)*pi)
+     f <- splinefun(x2, y2)
+     fd. <- as.fd(f)
+     x. <- seq(1, 7, .02)
+     fx. <- f(x.)
+     fdx. <- eval.fd(x., fd.) 
+     plot(range(x2), range(y2, fx., fdx.), type='n')
+     points(x2, y2)
+     lines(x., sin((x.-0.5)*pi), lty='dashed') 
+     lines(x., f(x.), col='blue')
+     lines(x., eval.fd(x., fd.), col='red', lwd=3, lty='dashed')
+     # splinefun and as.fd(splineful(...)) are close
+     # but quite different from the actual function
+     # apart from the actual 7 points fitted,
+     # which are fitted exactly
+     # ... and there is no information in the data
+     # to support a better fit!
+
+     # Translate also a natural spline 
+     fn <- splinefun(x2, y2, method='natural')
+     fn. <- as.fd(fn)
+     lines(x., fn(x.), lty='dotted', col='blue')
+     lines(x., eval.fd(x., fn.), col='green', lty='dotted', lwd=3)
+
+     ## Not run: 
+     # Will NOT translate a periodic spline
+     fp <- splinefun(x, y, method='periodic')
+     as.fd(fp)
+     #Error in as.fd.function(fp) : 
+     #  x (fp)  uses periodic B-splines, and as.fd is programmed
+     #   to translate only B-splines with coincident boundary knots.
+
+     ## End(Not run)
+
+     ##
+     ## as.fd.smooth.spline
+     ##
+     cars.spl <- with(cars, smooth.spline(speed, dist))
+     cars.fd <- as.fd(cars.spl)
+
+     plot(dist~speed, cars)
+     lines(cars.spl)
+     sp. <- with(cars, seq(min(speed), max(speed), len=101))
+     d. <- eval.fd(sp., cars.fd)
+     lines(sp., d., lty=2, col='red', lwd=3)
+

@@ -1,0 +1,100 @@
+<html><head><title>F-statistic for functional linear regression.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>Fstat.fd(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   Fstat.fd">
+<param name="keyword" value=" F-statistic for functional linear regression.">
+</object>
+
+
+<h2>F-statistic for functional linear regression.</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Fstat.fd calculates a pointwise F-statistic for functional linear regression.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre> Fstat.fd(y,yhat,argvals=NULL)</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+the dependent variable object.  It may be:
+<ul>
+<li>a vector if the dependent variable is scalar.
+<li>a functional data object if the dependent variable is functional.
+</ul>
+</td></tr>
+<tr valign="top"><td><code>yhat</code></td>
+<td>
+The predicted values corresponding to <code>y</code>. It must be of the same class.
+</td></tr>
+<tr valign="top"><td><code>argvals</code></td>
+<td>
+If <code>yfdPar</code> is a functional data object, the points at which to evaluate
+the pointwise F-statistic.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+An F-statistic is calculated as the ratio of residual variance to predicted
+variance.
+</p>
+<p>
+If <code>argvals</code> is not specified and <code>yfdPar</code> is a <code>fd</code> object,
+it defaults to 101 equally-spaced points on the range of <code>yfdPar</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+A list with components
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>F</code></td>
+<td>
+the calculated pointwise F-statistics.</td></tr>
+<tr valign="top"><td><code>argvals</code></td>
+<td>
+argument values for evaluating the F-statistic if <code>yfdPar</code> is
+a functional data object.
+</td></tr>
+</table>
+<p>
+
+normal-bracket21bracket-normal</p>
+
+<h3>Source</h3>
+
+<p>
+Ramsay, James O., and Silverman, Bernard W. (2006), <EM>Functional
+Data Analysis, 2nd ed.</EM>, Springer, New York.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="fRegress.html">fRegress</a></code>
+<code><a href="Fstat.fd.html">Fstat.fd</a></code>
+</p>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

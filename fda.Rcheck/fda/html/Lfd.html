@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Define a Linear Differential Operator Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for Lfd {fda}"><tr><td>Lfd {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Define a Linear Differential Operator Object</h2>
+
+
+<h3>Description</h3>
+
+<p>
+A linear differential operator of order $m$ is defined,
+usually to specify a roughness penalty.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+Lfd(nderiv=0, bwtlist=vector("list", 0))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>nderiv</code></td>
+<td>
+a nonnegative integer specifying the order $m$ of the
+highest order derivative in the operator
+</td></tr>
+<tr valign="top"><td><code>bwtlist</code></td>
+<td>
+a list of length $m$.  Each member contains a
+functional data object that acts as a weight function for a
+derivative.  The first member weights the function, the
+second the first derivative, and so on up to order $m-1$.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+To check that an object is of this class, use functions
+<code>is.Lfd</code> or <code>int2Lfd</code>.
+</p>
+<p>
+Linear differential operator objects are often used to
+define roughness penalties for smoothing towards a
+"hypersmooth" function that is annihilated by the operator.
+For example, the harmonic acceleration operator used in the
+analysis of the Canadian daily weather data annihilates linear
+combinations of $1, sin(2 pi t/365)$ and $cos(2 pi t/365)$,
+and the larger the smoothing parameter, the closer the smooth
+function will be to a function of this shape.
+</p>
+<p>
+Function <code>pda.fd</code> estimates a linear differential
+operator object that comes as close as possible to annihilating
+a functional data object.
+</p>
+<p>
+A linear differential operator of order $m$ is a
+linear combination of the derivatives of a functional
+data object up to order $m$.  The derivatives of
+orders 0, 1, ..., $m-1$ can each be multiplied
+by a weight function $b(t)$ that may or may not vary with
+argument $t$.
+</p>
+<p>
+If the notation $D^j$ is taken to
+mean "take the derivative of order $j$", then a linear
+differental operator $L$ applied to function $x$
+has the expression
+</p>
+<p>
+$Lx(t) = b_0(t) x(t) + b_1(t)Dx(t) + ... + b_{m-1}(t) D^{m-1} x(t)
++ D^mx(t)$
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+a linear differential operator object</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="int2Lfd.html">int2Lfd</a></code>, 
+<code><a href="vec2Lfd.html">vec2Lfd</a></code>, 
+<code><a href="fdPar.html">fdPar</a></code>, 
+<code><a href="pda.fd.html">pda.fd</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  Set up the harmonic acceleration operator
+dayrange  &lt;- c(0,365)
+Lbasis  &lt;- create.constant.basis(dayrange)
+Lcoef   &lt;- matrix(c(0,(2*pi/365)^2,0),1,3)
+bfdobj  &lt;- fd(Lcoef,Lbasis)
+bwtlist &lt;- fd2list(bfdobj)
+harmaccelLfd &lt;- Lfd(3, bwtlist)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

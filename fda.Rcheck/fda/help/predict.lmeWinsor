@@ -1,0 +1,88 @@
+predict.lmeWinsor            package:fda            R Documentation
+
+_P_r_e_d_i_c_t _m_e_t_h_o_d _f_o_r _W_i_n_s_o_r_i_z_e_d _l_i_n_e_a_r _m_o_d_e_l _f_i_t_s _w_i_t_h _m_i_x_e_d _e_f_f_e_c_t_s
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Model predictions for object of class 'lmeWinsor'.
+
+_U_s_a_g_e:
+
+     ## S3 method for class 'lmeWinsor':
+     predict(object, newdata, level=Q, asList=FALSE,
+           na.action=na.fail, ...)
+
+_A_r_g_u_m_e_n_t_s:
+
+ object : Object of class inheriting from 'lmeWinsor', representing a
+          fitted linear mixed-effects model.   
+
+ newdata : an optional data frame to be used for obtaining the
+          predictions. All variables used in the fixed and random
+          effects models, as well as the grouping factors, must be
+          present in the data frame. If missing, the fitted values are
+          returned. 
+
+  level : an optional integer vector giving the level(s) of grouping to
+          be used in obtaining the predictions. Level values increase
+          from outermost to innermost grouping, with level zero
+          corresponding to the population predictions. Defaults to the
+          highest or innermost level of grouping.  
+
+ asList : an optional logical value. If 'TRUE' and a single value is
+          given in 'level', the returned object is a list with the
+          predictions split by groups; else the returned value is
+          either a vector or a data frame, according to the length of
+          'level'.  
+
+na.action: a function that indicates what should happen when 'newdata'
+          contains 'NA's.  The default action ('na.fail') causes the
+          function to print an error message and terminate if there are
+          any incomplete observations.  
+
+     ...: additional arguments for other methods 
+
+_D_e_t_a_i_l_s:
+
+     1.  Identify inputs and outputs as with lmeWinsor.  
+
+     2.  If 'newdata' are provided, clip all numeric xNames to
+     (object[["lower"]], object[["upper"]]). 
+
+     3.  Call predict.lme  
+
+     4.  Clip the responses to the relevant components of
+     (object[["lower"]], object[["upper"]]).
+
+     5.  Done.
+
+_V_a_l_u_e:
+
+     'predict.lmeWinsor' produces a vector of predictions or a matrix
+     of predictions with limits or a list, as produced by predict.lme
+
+_A_u_t_h_o_r(_s):
+
+     Spencer Graves
+
+_S_e_e _A_l_s_o:
+
+     'lmeWinsor' 'predict.lme' 'lmWinsor' 'predict.lm'
+
+_E_x_a_m_p_l_e_s:
+
+     fm1w <- lmeWinsor(distance ~ age, data = Orthodont,
+                      random=~age|Subject)
+     # predict with newdata 
+     newDat <- data.frame(age=seq(0, 30, 2),
+                Subject=factor(rep("na", 16)) )
+     pred1w <- predict(fm1w, newDat, level=0)
+
+     # fit with 10 percent Winsorization 
+     fm1w.1 <- lmeWinsor(distance ~ age, data = Orthodont,
+                      random=~age|Subject, trim=0.1)
+     pred30 <- predict(fm1w.1)
+     stopifnot(all.equal(as.numeric(
+                   quantile(Orthodont$distance, c(.1, .9))),
+               range(pred30)) )
+

@@ -1,0 +1,36 @@
+\HeaderA{vec2Lfd}{Make a Linear Differential Operator Object from a Vector}{vec2Lfd}
+\keyword{smooth}{vec2Lfd}
+\begin{Description}\relax
+A linear differential operator object of order $m$ is
+constructed from the number in a vector of length $m$.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+vec2Lfd(bwtvec, rangeval=c(0,1))
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{bwtvec}] a vector of coefficients to define the linear differential
+operator object
+
+\item[\code{rangeval}] a vector of length 2 specifying the range over which the
+operator is defined
+
+\end{ldescription}
+\end{Arguments}
+\begin{Value}
+a linear differential operator object
+\end{Value}
+\begin{SeeAlso}\relax
+\code{\LinkA{int2Lfd}{int2Lfd}}, 
+\code{\LinkA{Lfd}{Lfd}}
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+#  define the harmonic acceleration operator used in the
+#  analysis of the daily temperature data
+harmaccelLfd <- vec2Lfd(c(0,(2*pi/365)^2,0), c(0,365))
+\end{ExampleCode}
+\end{Examples}
+

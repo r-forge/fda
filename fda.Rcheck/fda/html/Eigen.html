@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Eigenanalysis preserving dimnames</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for Eigen {fda}"><tr><td>Eigen {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Eigenanalysis preserving dimnames</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Compute eigenvalues and vectors, assigning names to the eigenvalues
+and dimnames to the eigenvectors.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+Eigen(x, symmetric, only.values = FALSE, EISPACK = FALSE,
+      valuenames )
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+a square matrix whose spectral decomposition is to be computed.  
+</td></tr>
+<tr valign="top"><td><code>symmetric</code></td>
+<td>
+logical:  If TRUE, the matrix is assumed to be symmetric (or 
+Hermitian if complex) and only its lower triangle (diagonal
+included) is used.  If 'symmetric' is not specified, the
+matrix is inspected for symmetry.
+</td></tr>
+<tr valign="top"><td><code>only.values</code></td>
+<td>
+if 'TRUE', only the eigenvalues are computed and returned, otherwise
+both eigenvalues and eigenvectors are returned. 
+</td></tr>
+<tr valign="top"><td><code>EISPACK</code></td>
+<td>
+logical. Should EISPACK be used (for compatibility with R &lt; 1.7.0)?
+</td></tr>
+<tr valign="top"><td><code>valuenames</code></td>
+<td>
+character vector of length nrow(x) or a character string that can be
+extended to that length by appening 1:nrow(x).
+<br>
+The default depends on symmetric and whether
+<code><a href="../../base/html/colnames.html">rownames</a></code> == <code><a href="../../base/html/colnames.html">colnames</a></code>:  If
+<code><a href="../../base/html/colnames.html">rownames</a></code> == <code><a href="../../base/html/colnames.html">colnames</a></code> and
+symmetric = TRUE (either specified or determined by
+inspection), the default is "paste('ev', 1:nrow(x), sep='')".
+Otherwise, the default is colnames(x) unless this is NULL. 
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+1.  Check 'symmetric'  
+</p>
+<p>
+2.  ev &lt;- eigen(x, symmetric, only.values = FALSE, EISPACK = FALSE);
+see <code><a href="../../base/html/eigen.html">eigen</a></code> for more details.  
+</p>
+<p>
+3.  rNames = rownames(x);  if this is NULL, rNames = if(symmetric)
+paste('x', 1:nrow(x), sep='') else paste('xcol', 1:nrow(x)).  
+</p>
+<p>
+4.  Parse 'valuenames', assign to names(ev[['values']]).  
+</p>
+<p>
+5.  dimnames(ev[['vectors']]) &lt;- list(rNames, valuenames) 
+</p>
+<p>
+NOTE:  This naming convention is fairly obvious if 'x' is symmetric.
+Otherwise, dimensional analysis suggests problems with almost any
+naming convention.  To see this, consider the following simple
+example:
+</p>
+<p align="center"><i>
+X &lt;- matrix(1:4, 2, dimnames=list(LETTERS[1:2], letters[3:4]))
+</i></p>
+<table summary="Rd table">
+<tr>
+  <td align="right"></td>  <td align="right"> c </td>  <td align="right"> d </td>
+</tr>
+<tr>
+  <td align="right"> A </td>  <td align="right"> 1 </td>  <td align="right"> 3 </td>
+</tr>
+<tr>
+  <td align="right"> B </td>  <td align="right"> 2 </td>  <td align="right"> 4 </td>
+</tr>
+</table>
+
+</p><p align="center"><i>
+X.inv &lt;- solve(X)
+</i></p>
+<table summary="Rd table">
+<tr>
+  <td align="right"></td>  <td align="right"> A </td>  <td align="right"> B </td>
+</tr>
+<tr>
+  <td align="right"> c </td>  <td align="right"> -2 </td>  <td align="right"> 1.5 </td>
+</tr>
+<tr>
+  <td align="right"> d </td>  <td align="right"> 1 </td>  <td align="right"> -0.5 </td>
+</tr>
+</table>
+
+<p>
+One way of interpreting this is to assume that colnames are really
+reciprocals of the units.  Thus, in this example, X[1,1] is in units
+of 'A/c' and X.inv[1,1] is in units of 'c/A'.  This would make any
+matrix with the same row and column names potentially dimensionless.
+Since eigenvalues are essentially the diagonal of a diagonal matrix,
+this would mean that eigenvalues are dimensionless, and their names
+are merely placeholders.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+a list with components values and (if only.values = FALSE)
+vectors, as described in <code><a href="../../base/html/eigen.html">eigen</a></code>.</p>
+
+<h3>Author(s)</h3>
+
+<p>
+Spencer Graves
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="../../base/html/eigen.html">eigen</a></code>,
+<code><a href="../../base/html/svd.html">svd</a></code>
+<code><a href="../../base/html/qr.html">qr</a></code>
+<code><a href="../../base/html/chol.html">chol</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+X &lt;- matrix(1:4, 2, dimnames=list(LETTERS[1:2], letters[3:4]))
+eigen(X)
+Eigen(X)
+Eigen(X, valuenames='eigval')
+
+Y &lt;- matrix(1:4, 2, dimnames=list(letters[5:6], letters[5:6]))
+Eigen(Y)
+
+Eigen(Y, symmetric=TRUE)
+# only the lower triangle is used;
+# the upper triangle is ignored.  
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

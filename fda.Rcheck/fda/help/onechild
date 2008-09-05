@@ -1,0 +1,33 @@
+onechild                 package:fda                 R Documentation
+
+_g_r_o_w_t_h _i_n _h_e_i_g_h_t _o_f _o_n_e _1_0-_y_e_a_r-_o_l_d _b_o_y
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Heights of a boy of age approximately 10 collected during one
+     school year.  The data were collected "over one school year, with
+     gaps corresponding to the school vacations" (AFDA, p. 84)
+
+_F_o_r_m_a_t:
+
+     A data.frame with two columns:  
+
+     _d_a_y Integers counting the day into data collection with gaps
+          indicating days during which data were not collected.  
+
+     _h_e_i_g_h_t Height of the boy measured on the indicated day.  
+
+
+_S_o_u_r_c_e:
+
+     Ramsay, James O., and Silverman, Bernard W. (2002), _Applied
+     Functional Data Analysis, 2nd ed._, Springer, New York. 
+
+     Tuddenham, R. D., and Snyder, M. M. (1954) "Physical growth of
+     California boys and girls from birth to age 18", _University of
+     California Publications in Child Development_, 1, 183-364.
+
+_E_x_a_m_p_l_e_s:
+
+     with(onechild, plot(day, height, type="b"))
+

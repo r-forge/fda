@@ -1,0 +1,12 @@
+fda-internal               package:fda               R Documentation
+
+_F_D_A _i_n_t_e_r_n_a_l _f_u_n_c_t_i_o_n_s
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Internal undocumentation functions
+
+_U_s_a_g_e:
+
+     center.fd(fdobj)
+

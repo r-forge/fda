@@ -1,0 +1,32 @@
+\HeaderA{onechild}{growth in height of one 10-year-old boy}{onechild}
+\keyword{datasets}{onechild}
+\begin{Description}\relax
+Heights of a boy of age approximately 10 collected during one school
+year.  The data were collected "over one school year, with gaps
+corresponding to the school vacations" (AFDA, p. 84)
+\end{Description}
+\begin{Format}\relax
+A data.frame with two columns:  
+\describe{
+\item[day] Integers counting the day into data collection with gaps
+indicating days during which data were not collected.  
+
+\item[height] Height of the boy measured on the indicated day.  
+
+}
+\end{Format}
+\begin{Source}\relax
+Ramsay, James O., and Silverman, Bernard W. (2002), \emph{Applied
+Functional Data Analysis, 2nd ed.}, Springer, New York. 
+
+Tuddenham, R. D., and Snyder, M. M. (1954) "Physical growth of
+California boys and girls from birth to age 18", \emph{University of
+California Publications in Child Development}, 1, 183-364.
+\end{Source}
+\begin{Examples}
+\begin{ExampleCode}
+with(onechild, plot(day, height, type="b"))
+
+\end{ExampleCode}
+\end{Examples}
+

@@ -1,0 +1,20 @@
+getbasisrange              package:fda              R Documentation
+
+_E_x_t_r_a_c_t _t_h_e _r_a_n_g_e _f_r_o_m _a _b_a_s_i_s _o_b_j_e_c_t
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Extracts the 'range' component from basis object 'basisobj'.
+
+_U_s_a_g_e:
+
+     getbasisrange(basisobj) 
+
+_A_r_g_u_m_e_n_t_s:
+
+basisobj: a functional basis object  
+
+_V_a_l_u_e:
+
+     a numeric vector of length 2
+

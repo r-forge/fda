@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Winsorized Regression with mixed effects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for lmeWinsor {fda}"><tr><td>lmeWinsor {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Winsorized Regression with mixed effects</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Clip inputs and mixed-effects predictions to (upper, lower) or to
+selected quantiles to limit wild predictions outside the training
+set.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  lmeWinsor(fixed, data, random, lower=NULL, upper=NULL, trim=0,
+        quantileType=7, correlation, weights, subset, method,
+        na.action, control, contrasts = NULL, keep.data=TRUE, 
+        ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fixed</code></td>
+<td>
+a two-sided linear formula object describing the fixed-effects part
+of the model, with the response on the left of a '~' operator and
+the terms, separated by '+' operators, on the right.  The left hand
+side of 'formula' must be a single vector in 'data', untransformed.
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+an optional data frame containing the variables named in 'fixed',
+'random', 'correlation', 'weights', and 'subset'.  By default the
+variables are taken from the environment from which <a href="../../nlme/html/lme.html">lme</a>
+is  called. 
+</td></tr>
+<tr valign="top"><td><code>random</code></td>
+<td>
+a random- / mixed-effects specification, as described with
+<a href="../../nlme/html/lme.html">lme</a>.
+<br>
+NOTE:  Unlike <a href="../../nlme/html/lme.html">lme</a>, 'random' must be provided;  it can
+not be inferred from 'data'.  
+</td></tr>
+<tr valign="top"><td><code>lower, upper</code></td>
+<td>
+optional numeric vectors with names matching columns of 'data'
+giving limits on the ranges of predictors and predictions:  If
+present, values below 'lower' will be increased to 'lower', and
+values above 'upper' will be decreased to 'upper'.  If absent, these
+limit(s) will be inferred from quantile(..., prob=c(trim, 1-trim),
+na.rm=TRUE, type=quantileType).  
+</td></tr>
+<tr valign="top"><td><code>trim</code></td>
+<td>
+the fraction (0 to 0.5) of observations to be considered outside the
+range of the data in determining limits not specified in 'lower' and
+'upper'.  
+<br>
+NOTES:
+<br>
+(1) trim&gt;0 with a singular fit may give an error.  In such cases,
+fix the singularity and retry.
+<br>
+(2) trim = 0.5 should NOT be used except to check the algorithm,
+because it trims everything to the median, thereby providing zero
+leverage for estimating a regression.
+<br>
+(3) The current algorithm does does NOT adjust any of the variance
+parameter estimates to account for predictions outside 'lower' and
+'upper'.  This will have no effect for trim = 0 or trim otherwise so
+small that there are not predictions outside 'lower' and 'upper'.
+However, for more substantive trimming, this could be an issue.
+This is different from <a href="lmWinsor.html">lmWinsor</a>. 
+</td></tr>
+<tr valign="top"><td><code>quantileType</code></td>
+<td>
+an integer between 1 and 9 selecting one of the nine quantile
+algorithms to be used with 'trim' to determine limits not provided
+with 'lower' and 'upper'.  
+</td></tr>
+<tr valign="top"><td><code>correlation</code></td>
+<td>
+an optional correlation structure, as described with
+<a href="../../nlme/html/lme.html">lme</a>. 
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+an optional heteroscedasticity structure, as described with
+<a href="../../nlme/html/lme.html">lme</a>. 
+</td></tr>
+<tr valign="top"><td><code> subset </code></td>
+<td>
+an optional vector specifying a subset of observations to be used in
+the fitting process, as described with <a href="../../nlme/html/lme.html">lme</a>.  
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+a character string.  If '"REML"' the model is fit by maximizing the
+restricted log-likelihood.  If '"ML"' the log-likelihood is
+maximized.  Defaults to '"REML"'. 
+</td></tr>
+<tr valign="top"><td><code> na.action </code></td>
+<td>
+a function that indicates what should happen when the data contain
+'NA's.  The default action ('na.fail') causes 'lme' to print an
+error message and terminate if there are any incomplete
+observations. 
+</td></tr>
+<tr valign="top"><td><code>control</code></td>
+<td>
+a list of control values for the estimation algorithm to replace the
+default values returned by the function
+<a href="../../nlme/html/lmeControl.html">lmeControl</a>. Defaults to an empty list.
+<br>
+NOTE:  Other control parameters such as 'singular.ok' as documented
+in <a href="../../nlme/html/glsControl.html">glsControl</a> may also work, but should be used with
+caution.  
+</td></tr>
+<tr valign="top"><td><code> contrasts </code></td>
+<td>
+an optional list. See the 'contrasts.arg' of
+'model.matrix.default'. 
+</td></tr>
+<tr valign="top"><td><code>keep.data</code></td>
+<td>
+logical: should the 'data' argument (if supplied and a data frame)
+be saved as part of the model object? 
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+additional arguments to be passed to the low level regression
+fitting functions;  see <a href="../../nlme/html/lm.html">lm</a>. 
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+1.  Identify inputs and outputs as follows:
+</p>
+<p>
+1.1.  mdly &lt;- mdlx &lt;- fixed;  mdly[[3]] &lt;- NULL;  mdlx[[2]] &lt;- NULL;
+</p>
+<p>
+1.2.  xNames &lt;- c(all.vars(mdlx), all.vars(random)).
+</p>
+<p>
+1.3.  yNames &lt;- all.vars(mdly).  Give an error if
+as.character(mdly[[2]]) != yNames. 
+</p>
+<p>
+2.  Do 'lower' and 'upper' contain limits for all numeric columns of
+'data?  Create limits to fill any missing.   
+</p>
+<p>
+3.  clipData = data with all xNames clipped to (lower, upper).
+</p>
+<p>
+4.  fit0 &lt;- lme(...)
+</p>
+<p>
+5.  Add components lower and upper to fit0 and convert it to class
+c('lmeWinsor', 'lme').  
+</p>
+<p>
+6.  Clip any stored predictions at the Winsor limits for 'y'.  
+</p>
+<p>
+NOTE:  This is different from <a href="lmWinsor.html">lmWinsor</a>, which uses quadratic 
+programming with predictions outside limits, transferring extreme
+points one at a time to constraints that force the unWinsorized
+predictions for those points to be at least as extreme as the limits.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+an object of class c('lmeWinsor', 'lme') with 'lower', 'upper', and
+'message' components in addition to the standard 'lm' components.  The
+'message' is a list with its first component being either 'all
+predictions inside limits' or 'predictions outside limits'.  In the
+latter case, there rest of the list summarizes how many and which
+points have predictions outside limits.</p>
+
+<h3>Author(s)</h3>
+
+<p>
+Spencer Graves
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="lmWinsor.html">lmWinsor</a></code> 
+<code><a href="predict.lmeWinsor.html">predict.lmeWinsor</a></code> 
+<code><a href="../../nlme/html/lme.html">lme</a></code>
+<code><a href="../../stats/html/quantile.html">quantile</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+fm1w &lt;- lmeWinsor(distance ~ age, data = Orthodont,
+                 random=~age|Subject) 
+fm1w.1 &lt;- lmeWinsor(distance ~ age, data = Orthodont,
+                 random=~age|Subject, trim=0.1) 
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

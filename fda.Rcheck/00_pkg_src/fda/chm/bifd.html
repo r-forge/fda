@@ -1,0 +1,157 @@
+<html><head><title>Create a bivariate functional data object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>bifd(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   bifd">
+<param name="keyword" value=" Create a bivariate functional data object">
+</object>
+
+
+<h2>Create a bivariate functional data object</h2>
+
+
+<h3>Description</h3>
+
+<p>
+This function creates a bivariate functional data object, which
+consists of two bases for expanding a functional data object of two 
+variables, s and t, and a set of coefficients defining this expansion.
+The bases are contained in "basisfd" objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bifd (coef=matrix(0,2,1), sbasisobj=create.bspline.basis(),
+      tbasisobj=create.bspline.basis(), fdnames=defaultnames)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>coef</code></td>
+<td>
+a two-, three-, or four-dimensional array containing
+coefficient values for the expansion of each set of bivariate
+function values=terms of a set of basis function values
+<br>
+If 'coef' is two dimensional, this implies that there is only
+one variable and only one replication.  In that case, 
+the first and second dimensions correspond to
+the basis functions for the first and second argument,
+respectively.
+<br>
+If 'coef' is three dimensional, this implies that there are multiple
+replicates on only one variable.  In that case, 
+the first and second dimensions correspond to
+the basis functions for the first and second argument,
+respectively, and the third dimension corresponds to
+replications.
+<br>
+If 'coef' has four dimensions, the fourth dimension
+corresponds to variables.
+</td></tr>
+<tr valign="top"><td><code>sbasisobj</code></td>
+<td>
+a functional data basis object
+for the first argument s of the bivariate function.  
+</td></tr>
+<tr valign="top"><td><code>tbasisobj</code></td>
+<td>
+a functional data basis object
+for the second argument t of the bivariate function.  
+</td></tr>
+<tr valign="top"><td><code>fdnames</code></td>
+<td>
+A list of length 4 containing dimnames for 'coefs' if it is a
+4-dimensional array.  If it is only 2- or 3-dimensional, the later
+components of fdnames are not applied to 'coefs'.  In any event, the
+components of fdnames describe the following:
+<br>
+(1) The row of 'coefs' corresponding to the bases in sbasisobj.
+Defaults to sbasisobj[["names"]] if non-null and of the proper
+length, or to existing dimnames(coefs)[[1]] if non-null and of the
+proper length, and to 's1', 's2', ...,
+otherwise.  
+<br>
+(2) The columns of 'coefs' corresponding to the bases in tbasisobj.
+Defaults to tbasisobj[["names"]] if non-null and of the proper
+length, or to existing dimnames(coefs)[[2]] if non-null and of the
+proper length, and to 't1', 't2', ...,  
+otherwise.  
+<br>
+(3) The replicates.  Defaults to dimnames(coefs)[[3]] if non-null
+and of the proper length, and to 'rep1', ..., otherwise.
+<br>
+(4) Variable names.  Defaults to dimnames(coefs)[[4]] if non-null
+and of the proper length, and to 'var1', ..., otherwise.  
+</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+A bivariate functional data object = a list of class 'bifd' 
+with the following components:
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>coefs</code></td>
+<td>
+the input 'coefs' possible with dimnames from dfnames if provided or
+from sbasisobj$names and tbasisobsj$names
+</td></tr>
+<tr valign="top"><td><code>sbasisobj</code></td>
+<td>
+a functional data basis object
+for the first argument s of the bivariate function.  
+</td></tr>
+<tr valign="top"><td><code>tbasisobj</code></td>
+<td>
+a functional data basis object
+for the second argument t of the bivariate function.  
+</td></tr>
+<tr valign="top"><td><code>bifdnames</code></td>
+<td>
+a list of length 4 giving names for the dimensions of coefs, with
+one or two unused lists of names if length(dim(coefs)) is only two
+or one, respectively.  
+</td></tr>
+</table>
+
+<h3>Author(s)</h3>
+
+<p>
+Spencer Graves
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="basisfd.html">basisfd</a></code>
+<code><a href="data2fd.old.html">data2fd</a></code> 
+<code><a href="objAndNames.html">objAndNames</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+Bspl2 &lt;- create.bspline.basis(nbasis=2, norder=1)
+Bspl3 &lt;- create.bspline.basis(nbasis=3, norder=2)
+
+(bBspl2.3 &lt;- bifd(array(1:6, dim=2:3), Bspl2, Bspl3))
+str(bBspl2.3)
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

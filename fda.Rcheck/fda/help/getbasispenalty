@@ -1,0 +1,60 @@
+getbasispenalty             package:fda             R Documentation
+
+_E_v_a_l_u_a_t_e _a _R_o_u_g_h_n_e_s_s _P_e_n_a_l_t_y _M_a_t_r_i_x
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     A basis roughness penalty matrix is the matrix containing the
+     possible inner products of pairs of basis functions. These inner
+     products are typically defined in terms of the value of a
+     derivative or of a linear differential operator applied to the
+     basis function.  The basis penalty matrix plays an important role
+     in the computation of functions whose roughness is controlled by a
+     roughness penalty.
+
+_U_s_a_g_e:
+
+     getbasispenalty(basisobj, Lfdobj=NULL)
+
+_A_r_g_u_m_e_n_t_s:
+
+basisobj: a basis object. 
+
+  Lfdobj: 
+
+_D_e_t_a_i_l_s:
+
+     A roughness penalty for a function $x(t)$ is defined by
+     integrating the square of either the derivative of  $ x(t) $ or,
+     more generally, the result of applying a linear differential
+     operator $L$ to it.  The most common roughness penalty is the
+     integral of the square of the second derivative, and this is the
+     default. To apply this roughness penalty, the matrix of inner
+     products of the basis functions defining this function is
+     necessary. This function just calls the roughness penalty
+     evaluation function specific to the basis involved.
+
+_V_a_l_u_e:
+
+     a symmetric matrix of order equal to the number of basis functions
+     defined by the B-spline basis object.  Each element is the inner
+     product of two B-spline basis functions after taking the
+     derivative.
+
+_S_e_e _A_l_s_o:
+
+     'eval.penalty'
+
+_E_x_a_m_p_l_e_s:
+
+     #  set up a B-spline basis of order 4 with 13 basis functions
+     #  and knots at 0.0, 0.1,..., 0.9, 1.0.
+     basisobj <- create.bspline.basis(c(0,1),13)
+     #  compute the 13 by 13 matrix of inner products of second derivatives
+     penmat <- getbasispenalty(basisobj)
+     #  set up a Fourier basis with 13 basis functions
+     #  and and period 1.0.
+     basisobj <- create.fourier.basis(c(0,1),13)
+     #  compute the 13 by 13 matrix of inner products of second derivatives
+     penmat <- getbasispenalty(basisobj)
+

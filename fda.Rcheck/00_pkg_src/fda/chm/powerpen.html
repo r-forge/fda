@@ -1,0 +1,90 @@
+<html><head><title>Power Penalty Matrix</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>powerpen(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   powerpen">
+<param name="keyword" value=" Power Penalty Matrix">
+</object>
+
+
+<h2>Power Penalty Matrix</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Computes the matrix defining the roughness penalty for functions
+expressed in terms of a power basis.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+powerpen(basisobj, Lfdobj=int2Lfd(2))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>basisobj</code></td>
+<td>
+a power basis object.
+</td></tr>
+<tr valign="top"><td><code>Lfdobj</code></td>
+<td>
+either a nonnegative integer or a linear differential operator object.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+A roughness penalty for a function $ x(t) $ is defined by
+integrating the square of either the derivative of  $ x(t) $ or,
+more generally, the result of applying a linear differential operator
+$ L $ to it.  The most common roughness penalty is the integral of
+the square of the second derivative, and
+this is the default. To apply this roughness penalty, the matrix of
+inner products produced by this function is necessary.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+a symmetric matrix of order equal to the number of basis functions
+defined by the power basis object.  Each element is the inner product
+of two power basis functions after applying the derivative or linear
+differential operator defined by <code>Lfdobj</code>.</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="create.power.basis.html">create.power.basis</a></code>, 
+<code><a href="powerbasis.html">powerbasis</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+#  set up an power basis with 3 basis functions.
+#  the powers are 0, 1, and 2.
+basisobj &lt;- create.power.basis(c(0,1),3,c(0,1,2))
+#  compute the 3 by 3 matrix of inner products of second derivatives
+#FIXME
+#penmat &lt;- powerpen(basisobj, 2)
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

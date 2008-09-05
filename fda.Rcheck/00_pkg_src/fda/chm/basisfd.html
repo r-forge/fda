@@ -1,0 +1,174 @@
+<html><head><title>Define a Functional Basis Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>basisfd(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   basisfd">
+<param name="keyword" value=" Define a Functional Basis Object">
+</object>
+
+
+<h2>Define a Functional Basis Object</h2>
+
+
+<h3>Description</h3>
+
+<p>
+This is the constructor function for objects of the <code>basisfd</code>
+class.  Each function that sets up an object of this class must call
+this function.  This includes functions <code>create.bspline.basis</code>,
+<code>create.constant.basis</code>, <code>create.fourier.basis</code>, and so
+forth that set up basis objects of a specific type.  Ordinarily, user
+of the functional data analysis software will not need to call this
+function directly, but these notes are valuable to understanding what
+the "slots" or "members" of the <code>basisfd</code> class are.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+basisfd(type, rangeval, nbasis, params,
+        dropind=NULL, quadvals=NULL,
+        values=vector("list", 0))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>type</code></td>
+<td>
+a character string indicating the type of basis.  Currently,
+there are eight possible types:
+<br>
+<ol>
+<li>bspline
+<li>const
+<li>expon
+<li>fourier
+<li>monom
+<li>polyg
+<li>polynom
+<li>power
+</ol>
+<br>
+</td></tr>
+<tr valign="top"><td><code>rangeval</code></td>
+<td>
+a vector of length 2 containing the lower and upper boundaries
+of the range over which the basis is defined
+</td></tr>
+<tr valign="top"><td><code>nbasis</code></td>
+<td>
+the number of basis functions
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+a vector of parameter values defining the basis
+</td></tr>
+<tr valign="top"><td><code>dropind</code></td>
+<td>
+a vector of integers specifiying the basis functions to
+be dropped, if any.  For example, if it is required that
+a function be zero at the left boundary, this is achieved
+by dropping the first basis function, the only one that
+is nonzero at that point. Default value NULL.
+</td></tr>
+<tr valign="top"><td><code>quadvals</code></td>
+<td>
+a matrix with two columns and a number of rows equal to the number of
+argument values used to approximate an integral using Simpson's rule.
+The first column contains these argument values.
+A minimum of 5 values are required for
+each inter-knot interval, and that is often enough. These
+are equally spaced between two adjacent knots.
+The second column contains the weights used for Simpson's
+rule.  These are proportional to 1, 4, 2, 4, ..., 2, 4, 1.
+</td></tr>
+<tr valign="top"><td><code>values</code></td>
+<td>
+a list containing the basis functions and their derivatives
+evaluated at the quadrature points contained in the first
+column of <code> quadvals </code>.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+Previous versions of the 'fda' software used the name <code>basis</code>
+for this class, and the code in Matlab still does.  However, this
+class name was already used elsewhere in the S languages, and there
+was a potential for a clash that might produce mysterious and perhaps
+disastrous consequences.
+</p>
+<p>
+To check that an object is of this class, use function
+<code><a href="is.basis.html">is.basis</a></code>.
+</p>
+<p>
+It is comparatively simple to add new basis types.  The code in
+the following functions needs to be estended to allow for the new
+type: <code><a href="basisfd.html">basisfd</a></code>, <code><a href="fda-internal.html">use.proper.basis</a></code>,
+<code><a href="getbasismatrix.html">getbasismatrix</a></code> and <code><a href="getbasispenalty.html">getbasispenalty</a></code>.
+In addition, a new "create" function should be written for the
+new type, as well as functions analogous to <code><a href="fourier.html">fourier</a></code> and
+<code><a href="fourierpen.html">fourierpen</a></code> for evaluating basis functions for basis
+penalty matrices.
+</p>
+<p>
+The "create" function names are rather long, and users who mind
+all that typing might be advised to modify these to versions with
+shorter names, such as "splbas", "conbas", and etc.  However, a
+principle of good programming practice is to keep the code readable,
+preferably by somebody other than the programmer.
+</p>
+<p>
+Normally only developers of new basis types will actually need
+to use this function, so no examples are provided.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+an object of class <code>basisfd</code></p>
+
+<h3>Source</h3>
+
+<p>
+Ramsay, James O., and Silverman, Bernard W. (2006), <EM>Functional
+Data Analysis, 2nd ed.</EM>, Springer, New York.
+</p>
+<p>
+Ramsay, James O., and Silverman, Bernard W. (2002), <EM>Applied
+Functional Data Analysis</EM>, Springer, New York
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="is.basis.html">is.basis</a></code>, 
+<code><a href="fda-internal.html">is.eqbasis</a></code>, 
+<code><a href="plot.basisfd.html">plot.basisfd</a></code>, 
+<code><a href="getbasismatrix.html">getbasismatrix</a></code>, 
+<code><a href="getbasispenalty.html">getbasispenalty</a></code>, 
+<code><a href="create.bspline.basis.html">create.bspline.basis</a></code>, 
+<code><a href="create.constant.basis.html">create.constant.basis</a></code>, 
+<code><a href="create.exponential.basis.html">create.exponential.basis</a></code>, 
+<code><a href="create.fourier.basis.html">create.fourier.basis</a></code>, 
+<code><a href="create.monomial.basis.html">create.monomial.basis</a></code>, 
+<code><a href="create.polygonal.basis.html">create.polygonal.basis</a></code>, 
+<code><a href="create.polynomial.basis.html">create.polynomial.basis</a></code>, 
+<code><a href="create.power.basis.html">create.power.basis</a></code>
+</p>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

@@ -1,0 +1,75 @@
+norder                  package:fda                  R Documentation
+
+_O_r_d_e_r _o_f _a _B-_s_p_l_i_n_e
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     norder = number of basis functions minus the number of interior
+     knots.
+
+_U_s_a_g_e:
+
+     norder(x, ...) 
+     ## S3 method for class 'fd':
+     norder(x, ...)
+     ## S3 method for class 'basisfd':
+     norder(x, ...)
+     ## Default S3 method:
+     norder(x, ...)
+     norder.bspline(x, ...) 
+
+_A_r_g_u_m_e_n_t_s:
+
+       x: Either a basisfd object or an object containing a basisfd
+          object as a component.   
+
+     ...: optional arguments currently unused
+
+_D_e_t_a_i_l_s:
+
+     norder throws an error of basisfd[['type']] != 'bspline'.
+
+_V_a_l_u_e:
+
+     An integer giving the order of the B-spline.
+
+_A_u_t_h_o_r(_s):
+
+     Spencer Graves
+
+_S_e_e _A_l_s_o:
+
+     'create.bspline.basis'
+
+_E_x_a_m_p_l_e_s:
+
+     bspl1.1 <- create.bspline.basis(norder=1, breaks=0:1)
+
+     stopifnot(norder(bspl1.1)==1)
+
+     stopifnot(norder(fd(0, basisobj=bspl1.1))==1)
+
+     stopifnot(norder(fd(rep(0,4)))==4)
+
+     stopifnot(norder(list(fd(rep(0,4))))==4)
+     ## Not run: 
+     norder(list(list(fd(rep(0,4)))))
+     Error in norder.default(list(list(fd(rep(0, 4))))) : 
+       input is not a 'basisfd' object and does not have a 'basisfd'
+     component. 
+     ## End(Not run)
+
+     stopifnot(norder(create.bspline.basis(norder=1, breaks=c(0,.5, 1))) == 1) 
+
+     stopifnot(norder(create.bspline.basis(norder=2, breaks=c(0,.5, 1))) == 2)
+
+     # Defaut B-spline basis:  Cubic spline:  degree 3, order 4,
+     # 21 breaks, 19 interior knots.  
+     stopifnot(norder(create.bspline.basis()) == 4)
+
+     ## Not run: 
+     norder(create.fourier.basis(c(0,12) ))
+     Error in norder.bspline(x) : 
+       object x is of type = fourier;  'norder' is only defined for type = 'bsline'
+     ## End(Not run)
+

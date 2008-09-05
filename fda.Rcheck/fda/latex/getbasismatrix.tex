@@ -1,0 +1,38 @@
+\HeaderA{getbasismatrix}{Values of Basis Functions or their Derivatives}{getbasismatrix}
+\keyword{smooth}{getbasismatrix}
+\begin{Description}\relax
+Evaluate a set of basis functions or their derivatives at
+a set of argument values.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+getbasismatrix(evalarg, basisobj, nderiv=0)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{evalarg}] a vector of arguments values.
+
+\item[\code{basisobj}] a basis object.
+
+\item[\code{nderiv}] a nonnegative integer specifying the derivative to be evaluated.
+
+\end{ldescription}
+\end{Arguments}
+\begin{Value}
+a matrix of basis function or derivative values.  Rows correspond
+to argument values and columns to basis functions.
+\end{Value}
+\begin{SeeAlso}\relax
+\code{\LinkA{eval.fd}{eval.fd}}
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+# Minimal example:  a B-spline of order 1, i.e., a step function
+# with 0 interior knots:
+bspl1.1 <- create.bspline.basis(norder=1, breaks=0:1)
+getbasismatrix(seq(0, 1, .2), bspl1.1)
+
+\end{ExampleCode}
+\end{Examples}
+

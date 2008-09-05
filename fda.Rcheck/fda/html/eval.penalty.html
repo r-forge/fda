@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Evaluate a Basis Penalty Matrix</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for eval.penalty {fda}"><tr><td>eval.penalty {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Evaluate a Basis Penalty Matrix</h2>
+
+
+<h3>Description</h3>
+
+<p>
+A basis roughness penalty matrix is the matrix containing
+the possible inner products of pairs of basis functions.
+These inner products are typically defined in terms of
+the value of a derivative or of a linear differential
+operator applied to the basis function.  The basis penalty
+matrix plays an important role in the computation of
+functions whose roughness is controlled by a roughness
+penalty.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+eval.penalty(basisobj, Lfdobj=int2Lfd(0), rng=rangeval)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>basisobj</code></td>
+<td>
+a basis object.</td></tr>
+<tr valign="top"><td><code>Lfdobj</code></td>
+<td>
+either a nonnegative integer defining an order of a
+derivative or a linear differential operator.
+</td></tr>
+<tr valign="top"><td><code>rng</code></td>
+<td>
+a vector of length 2 defining a restricted range.
+Optionally, the inner products can be computed over
+a range of argument values that lies within the
+interval covered by the basis function definition.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+The inner product can be computed exactly for many
+types of bases if $m$ is an integer.  These include
+B-spline, fourier, exponential, monomial, polynomial and power bases.
+In other cases, and for noninteger operators, the
+inner products are computed by an iterative numerical
+integration method called Richard extrapolation using the
+trapezoidal rule.
+</p>
+<p>
+If the penalty matrix must be evaluated repeatedly,
+computation can be greatly speeded up by avoiding the use
+of this function, and instead using quadrature points and
+weights defined by Simpson's rule.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+a square symmetric matrix whose order is equal
+to the number of basis functions defined by
+the basis function object <code> basisobj </code>.
+If <code>Lfdobj</code> is $m$ or a linear
+differential operator of order $m$, the rank
+of the matrix should be at least approximately equal to
+its order minus  $m$.</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="getbasispenalty.html">getbasispenalty</a></code>, 
+<code><a href="eval.basis.html">eval.basis</a></code>,
+</p>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

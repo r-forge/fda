@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Mark Intervals on a Plot Axis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for axisIntervals {fda}"><tr><td>axisIntervals {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Mark Intervals on a Plot Axis</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Adds an axis to the current plot, with tick marks delimiting interval
+described by labels
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+axisIntervals(side, atTick1=monthBegin.5, atTick2=monthEnd.5,
+      atLabels=monthMid, labels=month.abb, cex.axis=0.9, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>side</code></td>
+<td>
+an integer specifying which side of the plot the axis is to
+be drawn on.  The axis is placed as follows: 1=below, 2=left,
+3=above and 4=right.
+</td></tr>
+<tr valign="top"><td><code>atTick1</code></td>
+<td>
+the points at which tick-marks marking the starting points of the
+intervals are to be drawn.  This defaults to 'monthBegin.5' to mark
+monthly periods for an annual cycle.  These are constructed by
+calling axis(side, at=atTick1, labels=FALSE, ...).  For more detail
+on this, see 'axis'.  
+</td></tr>
+<tr valign="top"><td><code>atTick2</code></td>
+<td>
+the points at which tick-marks marking the ends of the
+intervals are to be drawn.  This defaults to 'monthBegin.5' to mark
+monthly periods for an annual cycle.  These are constructed by
+calling axis(side, at=atTick2, labels=FALSE, ...).  Use atTick2=NA
+to rely only on atTick1.  For more detail
+on this, see 'axis'.  
+</td></tr>
+<tr valign="top"><td><code>atLabels</code></td>
+<td>
+the points at which 'labels' should be typed.  These are constructed
+by calling axis(side, at=atLabels, tick=FALSE, ...).  For more detail
+on this, see 'axis'.  
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+Labels to be typed at locations 'atLabels'.  This is accomplished by
+calling axis(side, at=atLabels, labels=labels, tick=FALSE, ...).
+For more detail on this, see 'axis'.   
+</td></tr>
+<tr valign="top"><td><code>cex.axis</code></td>
+<td>
+Character expansion (magnification) used for axis annotations
+('labels' in this function call) relative
+to the current setting of 'cex'.  For more detail, see 'par'.    
+</td></tr>
+<tr valign="top"><td><code>... </code></td>
+<td>
+additional arguments passed to 
+<code>axis</code>. 
+</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+The value from the third (labels) call to 'axis'.  This function is
+usually invoked for its side effect, which is to add an axis to an
+already existing plot.</p>
+
+<h3>Side Effects</h3>
+
+<p>
+An axis is added to the current plot.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>
+Spencer Graves
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="../../graphics/html/axis.html">axis</a></code>, 
+<code><a href="../../graphics/html/par.html">par</a></code>
+<code><a href="dateAccessories.html">monthBegin.5</a></code>
+<code><a href="dateAccessories.html">monthEnd.5</a></code>
+<code><a href="dateAccessories.html">monthMid</a></code>
+<code><a href="../../base/html/Constants.html">month.abb</a></code>
+<code><a href="dateAccessories.html">monthLetters</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+daybasis65 &lt;- create.fourier.basis(c(0, 365), 65)
+
+daytempfd &lt;- with(CanadianWeather, data2fd(
+       dailyAv[,,"Temperature.C"], day.5,
+       daybasis65, argnames=list("Day", "Station", "Deg C")) )
+ 
+with(CanadianWeather, plotfit.fd(
+      dailyAv[,,"Temperature.C"], argvals=day.5,
+          daytempfd, index=1, titles=place, axes=FALSE) )
+# Label the horizontal axis with the month names
+axisIntervals(1) 
+axis(2)
+# Depending on the physical size of the plot,
+# axis labels may not all print.
+# In that case, there are 2 options:
+# (1) reduce 'cex.lab'.
+# (2) Use different labels as illustrated by adding
+#     such an axis to the top of this plot 
+
+axisIntervals(3, labels=monthLetters, cex.lab=1.2, line=-0.5) 
+# 'line' argument here is passed to 'axis' via '...' 
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

@@ -1,0 +1,43 @@
+plotscores                package:fda                R Documentation
+
+_P_l_o_t _P_r_i_n_c_i_p_a_l _C_o_m_p_o_n_e_n_t _S_c_o_r_e_s
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     The coefficients multiplying the harmonics or principal component
+     functions are plotted as points.
+
+_U_s_a_g_e:
+
+     plotscores(pcafd, scores=c(1, 2), xlab=NULL, ylab=NULL,
+                loc=1, matplt2=FALSE, ...)
+
+_A_r_g_u_m_e_n_t_s:
+
+   pcafd: an object of the "pca.fd" class that is output by function
+          'pca.fd'. 
+
+  scores: the indices of the harmonics for which coefficients are
+          plotted. 
+
+    xlab: a label for the horizontal axis. 
+
+    ylab: a label for the vertical axis. 
+
+     loc: an integer: if loc  >0, you can then click on the plot in loc
+          places and you'll get plots of the functions with these
+          values of the principal component coefficients. 
+
+ matplt2: a logical value: if 'TRUE', the curves are plotted on the
+          same plot; otherwise, they are plotted separately. 
+
+    ... : additional plotting arguments used in function 'plot'. 
+
+_S_i_d_e _E_f_f_e_c_t_s:
+
+     a plot of scores
+
+_S_e_e _A_l_s_o:
+
+     'pca.fd'
+

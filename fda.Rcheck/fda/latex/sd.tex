@@ -1,0 +1,72 @@
+\HeaderA{sd.fd}{Standard Deviation of Functional Data}{sd.fd}
+\aliasA{std.fd}{sd.fd}{std.fd}
+\aliasA{stddev.fd}{sd.fd}{stddev.fd}
+\aliasA{stdev.fd}{sd.fd}{stdev.fd}
+\keyword{smooth}{sd.fd}
+\begin{Description}\relax
+Evaluate the standard deviation of a set of functions in a functional
+data object.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+sd.fd(fdobj)
+std.fd(fdobj)
+stdev.fd(fdobj)
+stddev.fd(fdobj)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{fdobj}] a functional data object.
+
+\end{ldescription}
+\end{Arguments}
+\begin{Details}\relax
+The multiple aliases are provided for compatibility with previous
+versions and with other languages.  The name for the standard
+deviation function in R is 'sd'.  Matlab uses 'std'.  S-Plus and
+Microsoft Excal use 'stdev'.  'stddev' was used in a previous version
+of the 'fda' package and is retained for compatibility.
+\end{Details}
+\begin{Value}
+a functional data object with a single replication
+that contains the standard deviation of the one or several functions in
+the object \code{fdobj}.
+\end{Value}
+\begin{SeeAlso}\relax
+\code{\LinkA{mean.fd}{mean.fd}}, 
+\code{\LinkA{sum.fd}{sum.fd}}, 
+\code{\LinkA{center.fd}{center.fd}}
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+liptime  <- seq(0,1,.02)
+liprange <- c(0,1)
+
+#  -------------  create the fd object -----------------
+#       use 31 order 6 splines so we can look at acceleration
+
+nbasis <- 51
+norder <- 6
+lipbasis <- create.bspline.basis(liprange, nbasis, norder)
+lipbasis <- create.bspline.basis(liprange, nbasis, norder)
+
+#  ------------  apply some light smoothing to this object  -------
+
+Lfdobj   <- int2Lfd(4)
+lambda   <- 1e-12
+lipfdPar <- fdPar(lipbasis, Lfdobj, lambda)
+
+lipfd <- smooth.basis(liptime, lip, lipfdPar)$fd
+names(lipfd$fdnames) = c("Normalized time", "Replications", "mm")
+
+lipstdfd <- sd.fd(lipfd)
+plot(lipstdfd)
+
+all.equal(lipstdfd, std.fd(lipfd))
+all.equal(lipstdfd, stdev.fd(lipfd))
+all.equal(lipstdfd, stddev.fd(lipfd))
+
+\end{ExampleCode}
+\end{Examples}
+
