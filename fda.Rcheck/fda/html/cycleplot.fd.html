@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Plot Cycles for a Periodic Bivariate Functional Data Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for cycleplot.fd {fda}"><tr><td>cycleplot.fd {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Plot Cycles for a Periodic Bivariate Functional Data Object</h2>
+
+
+<h3>Description</h3>
+
+<p>
+A plotting function for data such as the knee-hip angles in
+the gait data or temperature-precipitation curves for the
+weather data.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cycleplot.fd(fdobj, matplt=TRUE, nx=201, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fdobj</code></td>
+<td>
+a bivariate functional data object to be plotted.
+</td></tr>
+<tr valign="top"><td><code>matplt</code></td>
+<td>
+if TRUE, all cycles are plotted simultaneously; otherwise
+each cycle in turn is plotted.
+</td></tr>
+<tr valign="top"><td><code>nx</code></td>
+<td>
+the number of argument values in a fine mesh to be
+plotted.  Increase the default number of 201 if
+the curves have a lot of detail in them.
+</td></tr>
+<tr valign="top"><td><code>... </code></td>
+<td>
+additional plotting parameters such as axis labels and
+etc. that are used in all plot functions.
+</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+None</p>
+
+<h3>Side Effects</h3>
+
+<p>
+A plot of the cycles
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="plot.fd.html">plot.fd</a></code>, 
+<code><a href="plotfit.fd.html">plotfit.fd</a></code>, 
+demo(gait)
+</p>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

@@ -1,0 +1,130 @@
+plot.fd                 package:fda                 R Documentation
+
+_P_l_o_t _a _F_u_n_c_t_i_o_n_a_l _D_a_t_a _O_b_j_e_c_t
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Functional data observations, or a derivative of them, are
+     plotted. These may be either plotted simultaneously, as 'matplot'
+     does for multivariate data, or one by one with a mouse click to
+     move from one plot to another.  The function also accepts the
+     other plot specification arguments that the regular 'plot' does. 
+     Calling 'plot' with an 'fdSmooth' object is simply plots its
+     code{fd} component.
+
+_U_s_a_g_e:
+
+     ## S3 method for class 'fd':
+     plot(x, y, Lfdobj=0, href=TRUE, titles=NULL,
+                         xlim=NULL, ylim=NULL, xlab=NULL,
+                         ylab=NULL, ask=FALSE, nx=201, ...)
+     ## S3 method for class 'fdSmooth':
+     plot(x, y, Lfdobj=0, href=TRUE, titles=NULL,
+                         xlim=NULL, ylim=NULL, xlab=NULL,
+                         ylab=NULL, ask=FALSE, nx=201, ...)
+
+_A_r_g_u_m_e_n_t_s:
+
+       x: functional data object(s) to be plotted. 
+
+       y: sequence of points at which to evaluate the functions 'x' and
+          plot on the horizontal axis.  Defaults to seq(rangex[1],
+          rangex[2], length = nx).
+
+          NOTE:  This will be the values on the horizontal axis, NOT
+          the vertical axis.   
+
+  Lfdobj: either a nonnegative integer or a linear differential
+          operator object. If present, the derivative or the value of
+          applying the operator is plotted rather than the functions
+          themselves. 
+
+    href: a logical variable:  If 'TRUE', add a horizontal reference
+          line at 0.   
+
+  titles: a vector of strings for identifying curves 
+
+    xlab: a label for the horizontal axis. 
+
+    ylab: a label for the vertical axis. 
+
+    xlim: a vector of length 2 containing axis limits for the
+          horizontal axis. 
+
+    ylim: a vector of length 2 containing axis limits for the vertical
+          axis. 
+
+     ask: a logical value:  If 'TRUE', each curve is shown separately,
+          and the plot advances with a mouse click 
+
+      nx: the number of points to use to define the plot.  The default
+          is usually enough, but for a highly variable function more
+          may be required. 
+
+    ... : additional plotting arguments that can be used with function
+          'plot' 
+
+_D_e_t_a_i_l_s:
+
+     Note that for multivariate data, a suitable array must first be
+     defined using the 'par' function.
+
+_V_a_l_u_e:
+
+     'done'
+
+_S_i_d_e _E_f_f_e_c_t_s:
+
+     a plot of the functional observations
+
+_S_e_e _A_l_s_o:
+
+     'lines.fd', 'plotfit.fd'
+
+_E_x_a_m_p_l_e_s:
+
+     ##
+     ## plot.df
+     ##
+     #daytime   <- (1:365)-0.5
+     #dayrange  <- c(0,365)
+     #dayperiod <- 365
+     #nbasis     <- 65
+     #dayrange  <- c(0,365)
+
+     daybasis65 <- create.fourier.basis(c(0, 365), 65)
+     harmaccelLfd <- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
+
+     harmfdPar     <- fdPar(daybasis65, harmaccelLfd, lambda=1e5)
+
+     daytempfd <- with(CanadianWeather, data2fd(
+             dailyAv[,,"Temperature.C"], day.5, 
+             daybasis65,argnames=list("Day", "Station", "Deg C")) )
+
+     #  plot all the temperature functions for the monthly weather data
+     plot(daytempfd, main="Temperature Functions")
+
+     ## Not run: 
+     # To plot one at a time:  
+     # The following pauses to request page changes.
+
+     plot(daytempfd, main="Temperature Functions", ask=TRUE)
+     ## End(Not run)
+
+     ##
+     ## plot.fdSmooth
+     ##
+     b3.4 <- create.bspline.basis(norder=3, breaks=c(0, .5, 1))
+     # 4 bases, order 3 = degree 2 =
+     # continuous, bounded, locally quadratic 
+     fdPar3 <- fdPar(b3.4, lambda=1)
+     # Penalize excessive slope Lfdobj=1;  
+     # second derivative Lfdobj=2 is discontinuous.
+     fd3.4s0 <- smooth.basis(0:1, 0:1, fdPar3)
+
+     # using plot.fd directly 
+     plot(fd3.4s0$fd)
+
+     # same plot via plot.fdSmooth 
+     plot(fd3.4s0)
+

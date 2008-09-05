@@ -1,0 +1,74 @@
+<html><head><title>Rotate a Matrix of Component Loadings using the VARIMAX Criterion</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>varmx(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   varmx">
+<param name="keyword" value=" Rotate a Matrix of Component Loadings using the VARIMAX Criterion">
+</object>
+
+
+<h2>Rotate a Matrix of Component Loadings using the VARIMAX Criterion</h2>
+
+
+<h3>Description</h3>
+
+<p>
+The matrix being rotated contains the values of the component
+functional data objects computed in either a principal
+components analysis or a canonical correlation analysis.
+The values are computed over a fine mesh of argument values.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+varmx(amat)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>amat</code></td>
+<td>
+the matrix to be rotated.  The number of rows is
+equal to the number of argument values <code>nx</code> used
+in a fine mesh.  The number of columns is the number of
+components to be rotated.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+The VARIMAX criterion is the variance of the squared component values.
+As this criterion is maximized with respect to a rotation of the
+space spanned by the columns of the matrix, the squared loadings
+tend more and more to be either near 0 or near 1, and this tends to
+help with the process of labelling or interpreting the rotated matrix.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+a square rotation matrix of order equal to the number
+of components that are rotated.  A rotation matrix
+$T$ has that property that $T'T = TT' = I$.</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="varmx.pca.fd.html">varmx.pca.fd</a></code>, 
+<code><a href="varmx.cca.fd.html">varmx.cca.fd</a></code>
+</p>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

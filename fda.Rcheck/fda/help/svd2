@@ -1,0 +1,38 @@
+svd2                   package:fda                   R Documentation
+
+_s_i_n_g_u_l_a_r _v_a_l_u_e _d_e_c_o_m_p_o_s_i_t_i_o_n _w_i_t_h _a_u_t_o_m_a_t_i_c _e_r_r_o_r _h_a_n_d_l_i_n_g
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     The 'svd' function in R 2.5.1 occasionally throws an error with a
+     cryptic message.  In some such cases, changing the LINPACK
+     argument works.
+
+_U_s_a_g_e:
+
+       svd2(x, nu = min(n, p), nv = min(n, p), LINPACK = FALSE)
+
+_A_r_g_u_m_e_n_t_s:
+
+x, nu, nv, LINPACK: as for the 'svd' function in the 'base' package. 
+
+_D_e_t_a_i_l_s:
+
+     In R 2.5.1, the 'svd' function sometimes stops with a cryptic
+     error message for a matrix x for which a second call to 'svd' with
+     !LINPACK will produce an answer.  When such conditions occur,
+     assign 'x' with attributes 'nu', 'nv', and 'LINPACK' to
+     '.svd.LINPACK.error.matrix' in 'env = .GlobalEnv'.
+
+     Except for these rare pathologies, 'svd2' should work the same as
+     'svd'.
+
+_V_a_l_u_e:
+
+     a list with components d, u, and v, as described in the help file
+     for 'svd' in the 'base' package.
+
+_S_e_e _A_l_s_o:
+
+     'svd',
+

@@ -1,0 +1,70 @@
+mean.fd                 package:fda                 R Documentation
+
+_M_e_a_n _o_f _F_u_n_c_t_i_o_n_a_l _D_a_t_a
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Evaluate the mean of a set of functions in a functional data
+     object.
+
+_U_s_a_g_e:
+
+     mean.fd(x, ...)
+
+_A_r_g_u_m_e_n_t_s:
+
+       x: a functional data object. 
+
+     ...: Other arguments to match the generic function for 'mean'
+
+_V_a_l_u_e:
+
+     a functional data object with a single replication that contains
+     the mean of the functions in the object 'fd'.
+
+_S_e_e _A_l_s_o:
+
+     'stddev.fd',  'var.fd',  'sum.fd',  'center.fd' 'mean'
+
+_E_x_a_m_p_l_e_s:
+
+     ##
+     ## 1.  univeriate:  lip motion
+     ##
+     liptime  <- seq(0,1,.02)
+     liprange <- c(0,1)
+
+     #  -------------  create the fd object -----------------
+     #       use 31 order 6 splines so we can look at acceleration
+
+     nbasis <- 51
+     norder <- 6
+     lipbasis <- create.bspline.basis(liprange, nbasis, norder)
+
+     #  ------------  apply some light smoothing to this object  -------
+
+     lipLfdobj   <- int2Lfd(4)
+     lipLambda   <- 1e-12
+     lipfdPar <- fdPar(lipbasis, lipLfdobj, lipLambda)
+
+     lipfd <- smooth.basis(liptime, lip, lipfdPar)$fd
+     names(lipfd$fdnames) = c("Normalized time", "Replications", "mm")
+
+     lipmeanfd <- mean.fd(lipfd)
+     plot(lipmeanfd)
+
+     ##
+     ## 2.  Trivariate:  CanadianWeather
+     ##
+     dayrng <- c(0, 365) 
+
+     nbasis <- 51
+     norder <- 6 
+
+     weatherBasis <- create.fourier.basis(dayrng, nbasis)
+
+     weather.fd <- smooth.basis(day.5, CanadianWeather$dailyAv,
+                 weatherBasis)
+
+     str(weather.fd.mean <- mean.fd(weather.fd$fd))
+

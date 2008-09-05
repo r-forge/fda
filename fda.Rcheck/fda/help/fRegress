@@ -1,0 +1,109 @@
+fRegress                 package:fda                 R Documentation
+
+_A _F_u_n_c_t_i_o_n_a_l _R_e_g_r_e_s_s_i_o_n _A_n_a_l_y_s_i_s _o_f _t_h_e _C_o_n_c_u_r_r_e_n_t _T_y_p_e
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     This function carries out a functional regression analysis, where
+     either the dependent variable or one or more independent variables
+     are functional.  Non-functional variables may be included on
+     either side of the equation.  In a concurrent functional linear
+     model all function variables are all evaluated at a common time or
+     argument value $t$.   That is, the fit is defined in terms of the
+     behavior of all variables at a fixed time, or in terms of "now"
+     behavior.
+
+_U_s_a_g_e:
+
+     fRegress(yfdPar, xfdlist, betalist, wt=rep(1,N))
+
+_A_r_g_u_m_e_n_t_s:
+
+  yfdPar: the dependent variable object.  It may be an object of three
+          possible classes:
+
+             *  a vector if the dependent variable is scalar.
+
+             *  a functional data object if the dependent variable is
+                functional.
+
+             *  a functional parameter object if the dependent variable
+                is functional,    and if it is necessary to smooth the
+                prediction of the dependent variable.
+
+ xfdlist: a list of length equal to the number of independent
+          variables. Members of this list are the independent
+          variables.  They be objects of either of these two classes:
+
+
+             *  a vector if the independent dependent variable is
+                scalar.
+
+             *  a functional data object if the dependent variable is
+                functional.
+
+          In either case, the object must have the same number of
+          replications as the dependent variable object.  That is, if
+          it is a scalar, it must be of the same length as the
+          dependent variable, and if it is functional, it must have the
+          same number of replications as the dependent variable. 
+
+betalist: a list of length equal to the number of independent
+          variables. Members of this list define the regression
+          functions to be estimated. They are functional parameter
+          objects.  Note that even if corresponding independent
+          variable is scalar, its regression coefficient will be
+          functional if the dependent variable is functional.  Each of
+          these functional parameter objects defines a single
+          functional data object, that is, with only one replication. 
+
+      wt: weights for weighted least squares  
+
+_D_e_t_a_i_l_s:
+
+     In the computation of regression function estimates, all
+     independent variables are treated as if they are functional.  If
+     argument 'xfdlist' contains one or more vectors, these are
+     converted to functional data objects having the constant basis
+     with coefficients equal to the elements of the vector.
+
+     Needless to say, if all the variables in the model are scalar, use
+     this function, but rather either 'ls' or 'lsfit'.
+
+_V_a_l_u_e:
+
+     a named list of length 6 with these members:
+
+  yfdPar: yhe first argument in the call to 'fRegress'. 
+
+ xfdlist: the second argument in the call to 'fRegress'. 
+
+betalist: the third argument in the call to 'fRegress'. 
+
+betaestlist: a list of length equal to the number of independent
+          variables and with members having the same functional
+          parameter structure as the corresponding members of
+          'betalist'.  These are the estimated regression coefficient
+          functions. 
+
+yhatfdobj: a functional data object if the dependent variable is
+          functional or a vector if the dependent variable is scalar. 
+          This is the set of predicted by the functional regression
+          model for the dependent variable. 
+
+ Cmatinv: a matrix containing the inverse of the coefficient matrix for
+          the linear equations that define the solution to the
+          regression problem.  This matrix is required for function 
+          'fRegress.stderr' that estimates confidence regions for the
+          regression coefficient function estimates. 
+
+_S_e_e _A_l_s_o:
+
+     'fRegress.stderr',  'fRegress.CV',  'linmod'
+
+_E_x_a_m_p_l_e_s:
+
+     #See the Canadian daily weather data analyses in the file
+     # this-is-escaped-code{ for 
+     #examples of all the cases covered by this-is-escaped-codenormal-bracket48bracket-normal.
+

@@ -1,0 +1,70 @@
+\HeaderA{objAndNames}{Add names to an object}{objAndNames}
+\keyword{attribute}{objAndNames}
+\begin{Description}\relax
+Add names to an object from 'preferred' if available and 'default' if
+not.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+objAndNames(object, preferred, default)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{object}] an object of some type to which names must be added.  If
+length(dim(object))>0 add 'dimnames', else add 'names'.  
+
+\item[\code{preferred}] A list to check first for names to add to 'object'.  
+
+\item[\code{default}] A list to check for names to add to 'object' if appropriate names
+are not found in 'preferred'.  
+
+\end{ldescription}
+\end{Arguments}
+\begin{Details}\relax
+1.  If length(dim(object))<1, names(object) are taken from 'preferred'
+if they are not NULL and have the correct length, else try 'default'.
+
+2.  Else for(lvl in 1:length(dim(object))) take dimnames[[lvl]] from
+'preferred[[i]]' if they are not NULL and have the correct length,
+else try 'default[[lvl]].
+\end{Details}
+\begin{Value}
+An object of the same class and structure as 'object' but with either
+names or dimnames added or changed.
+\end{Value}
+\begin{Author}\relax
+Spencer Graves
+\end{Author}
+\begin{SeeAlso}\relax
+\code{\LinkA{data2fd}{data2fd}}, 
+\code{\LinkA{bifd}{bifd}}
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+# The following should NOT check 'anything' here
+tst1 <- objAndNames(1:2, list(letters[1:2], LETTERS[1:2]), anything)
+all.equal(tst1, c(a=1, b=2))
+
+# The following should return 'object unchanged
+tst2 <- objAndNames(1:2, NULL, list(letters))
+all.equal(tst2, 1:2)
+
+tst3 <- objAndNames(1:2, list("a", 2), list(letters[1:2]))
+all.equal(tst3, c(a=1, b=2) )
+
+# The following checks a matrix / array
+tst4 <- array(1:6, dim=c(2,3))
+tst4a <- tst4
+dimnames(tst4a) <- list(letters[1:2], LETTERS[1:3])
+tst4b <- objAndNames(tst4, 
+       list(letters[1:2], LETTERS[1:3]), anything)
+all.equal(tst4b, tst4a)
+
+tst4c <- objAndNames(tst4, NULL,        
+       list(letters[1:2], LETTERS[1:3]) )
+all.equal(tst4c, tst4a)
+
+\end{ExampleCode}
+\end{Examples}
+

@@ -1,0 +1,96 @@
+\HeaderA{axisIntervals}{Mark Intervals on a Plot Axis}{axisIntervals}
+\keyword{smooth}{axisIntervals}
+\keyword{hplot}{axisIntervals}
+\begin{Description}\relax
+Adds an axis to the current plot, with tick marks delimiting interval
+described by labels
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+axisIntervals(side, atTick1=monthBegin.5, atTick2=monthEnd.5,
+      atLabels=monthMid, labels=month.abb, cex.axis=0.9, ...)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{side}] an integer specifying which side of the plot the axis is to
+be drawn on.  The axis is placed as follows: 1=below, 2=left,
+3=above and 4=right.
+
+\item[\code{atTick1}] the points at which tick-marks marking the starting points of the
+intervals are to be drawn.  This defaults to 'monthBegin.5' to mark
+monthly periods for an annual cycle.  These are constructed by
+calling axis(side, at=atTick1, labels=FALSE, ...).  For more detail
+on this, see 'axis'.  
+
+\item[\code{atTick2}] the points at which tick-marks marking the ends of the
+intervals are to be drawn.  This defaults to 'monthBegin.5' to mark
+monthly periods for an annual cycle.  These are constructed by
+calling axis(side, at=atTick2, labels=FALSE, ...).  Use atTick2=NA
+to rely only on atTick1.  For more detail
+on this, see 'axis'.  
+
+\item[\code{atLabels}] the points at which 'labels' should be typed.  These are constructed
+by calling axis(side, at=atLabels, tick=FALSE, ...).  For more detail
+on this, see 'axis'.  
+
+\item[\code{labels}] Labels to be typed at locations 'atLabels'.  This is accomplished by
+calling axis(side, at=atLabels, labels=labels, tick=FALSE, ...).
+For more detail on this, see 'axis'.   
+
+\item[\code{cex.axis}] Character expansion (magnification) used for axis annotations
+('labels' in this function call) relative
+to the current setting of 'cex'.  For more detail, see 'par'.    
+
+\item[\code{... }] additional arguments passed to 
+\code{axis}. 
+
+\end{ldescription}
+\end{Arguments}
+\begin{Value}
+The value from the third (labels) call to 'axis'.  This function is
+usually invoked for its side effect, which is to add an axis to an
+already existing plot.
+\end{Value}
+\begin{Section}{Side Effects}
+An axis is added to the current plot.
+\end{Section}
+\begin{Author}\relax
+Spencer Graves
+\end{Author}
+\begin{SeeAlso}\relax
+\code{\LinkA{axis}{axis}}, 
+\code{\LinkA{par}{par}}
+\code{\LinkA{monthBegin.5}{monthBegin.5}}
+\code{\LinkA{monthEnd.5}{monthEnd.5}}
+\code{\LinkA{monthMid}{monthMid}}
+\code{\LinkA{month.abb}{month.abb}}
+\code{\LinkA{monthLetters}{monthLetters}}
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+daybasis65 <- create.fourier.basis(c(0, 365), 65)
+
+daytempfd <- with(CanadianWeather, data2fd(
+       dailyAv[,,"Temperature.C"], day.5,
+       daybasis65, argnames=list("Day", "Station", "Deg C")) )
+ 
+with(CanadianWeather, plotfit.fd(
+      dailyAv[,,"Temperature.C"], argvals=day.5,
+          daytempfd, index=1, titles=place, axes=FALSE) )
+# Label the horizontal axis with the month names
+axisIntervals(1) 
+axis(2)
+# Depending on the physical size of the plot,
+# axis labels may not all print.
+# In that case, there are 2 options:
+# (1) reduce 'cex.lab'.
+# (2) Use different labels as illustrated by adding
+#     such an axis to the top of this plot 
+
+axisIntervals(3, labels=monthLetters, cex.lab=1.2, line=-0.5) 
+# 'line' argument here is passed to 'axis' via '...' 
+
+\end{ExampleCode}
+\end{Examples}
+

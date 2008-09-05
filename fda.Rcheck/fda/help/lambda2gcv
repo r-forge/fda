@@ -1,0 +1,32 @@
+lambda2gcv                package:fda                R Documentation
+
+_C_o_m_p_u_t_e _G_C_V _C_r_i_t_e_r_i_o_n
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     The generalized cross-validation or GCV criterion is often used to
+     select an appropriate smoothing parameter value, by finding the
+     smoothing parameter that minimizes GCV.  This function locates
+     that value.
+
+_U_s_a_g_e:
+
+     lambda2gcv(log10lambda, argvals, y, fdParobj,
+                wtvec=rep(1, length(y)))
+
+_A_r_g_u_m_e_n_t_s:
+
+log10lambda: the logarithm (base 10) of the smoothing parameter 
+
+ argvals: a vector of argument values. 
+
+       y: the data to be smoothed. 
+
+fdParobj: a functional parameter object defining the smooth. 
+
+   wtvec: a weight vector used in the smoothing. 
+
+_V_a_l_u_e:
+
+     the value of the GCV criterion.
+

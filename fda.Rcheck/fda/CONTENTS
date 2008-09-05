@@ -1,0 +1,809 @@
+Entry: CSTR
+Aliases: CSTR CSTR2in CSTR2 CSTRfn CSTRfitLS CSTRres CSTRres0 CSTRsse
+Keywords: smooth
+Description: Continuously Stirred Temperature Reactor
+URL: ../../../library/fda/html/CSTR.html
+
+Entry: CanadianWeather
+Aliases: CanadianWeather daily
+Keywords: datasets
+Description: Canadian average annual weather cycle
+URL: ../../../library/fda/html/CanadianWeather.html
+
+Entry: Data2fd
+Aliases: Data2fd
+Keywords: smooth
+Description: Create a functional data object from data
+URL: ../../../library/fda/html/Data2fd.html
+
+Entry: Eigen
+Aliases: Eigen
+Keywords: array
+Description: Eigenanalysis preserving dimnames
+URL: ../../../library/fda/html/Eigen.html
+
+Entry: Fperm.fd
+Aliases: Fperm.fd
+Keywords: smooth
+Description: Permutation F-test for functional linear regression.
+URL: ../../../library/fda/html/Fperm.fd.html
+
+Entry: Fstat.fd
+Aliases: Fstat.fd
+Keywords: smooth
+Description: F-statistic for functional linear regression.
+URL: ../../../library/fda/html/Fstat.fd.html
+
+Entry: Lfd
+Aliases: Lfd
+Keywords: smooth
+Description: Define a Linear Differential Operator Object
+URL: ../../../library/fda/html/Lfd.html
+
+Entry: TaylorSpline
+Aliases: TaylorSpline TaylorSpline.fd TaylorSpline.fdPar TaylorSpline.fdSmooth TaylorSpline.dierckx
+Keywords: smooth manip
+Description: Taylor representation of a B-Spline
+URL: ../../../library/fda/html/TaylorSpline.html
+
+Entry: argvalsy.swap
+Aliases: argvalsy.swap
+Keywords: smooth
+Description: Swap argvals with y if the latter is simpler.
+URL: ../../../library/fda/html/argvalsy.swap.html
+
+Entry: arithmetic.basisfd
+Aliases: arithmetic.basisfd ==.basisfd
+Keywords: smooth
+Description: Arithmatic on functional basis objects
+URL: ../../../library/fda/html/arithmetic.basisfd.html
+
+Entry: arithmetic.fd
+Aliases: arithmetic.fd +.fd plus.fd -.fd minus.fd *.fd times.fd
+Keywords: smooth
+Description: Arithmetic on functional data ('fd') objects
+URL: ../../../library/fda/html/arithmetic.fd.html
+
+Entry: as.array3
+Aliases: as.array3 as.array3
+Keywords: utilities
+Description: Reshape a vector or array to have 3 dimensions.
+URL: ../../../library/fda/html/as.array3.html
+
+Entry: as.fd
+Aliases: as.fd as.fd.fdSmooth as.fd.dierckx as.fd.function as.fd.smooth.spline
+Keywords: smooth manip
+Description: Convert a spline object to class 'fd'
+URL: ../../../library/fda/html/as.fd.html
+
+Entry: axisIntervals
+Aliases: axisIntervals
+Keywords: smooth hplot
+Description: Mark Intervals on a Plot Axis
+URL: ../../../library/fda/html/axisIntervals.html
+
+Entry: basisfd
+Aliases: basisfd
+Keywords: smooth smooth internal
+Description: Define a Functional Basis Object
+URL: ../../../library/fda/html/basisfd.html
+
+Entry: basisfd.product
+Aliases: basisfd.product *.basisfd
+Keywords: smooth
+Description: Product of two basisfd objects
+URL: ../../../library/fda/html/basisfd.product.html
+
+Entry: bifd
+Aliases: bifd
+Keywords: attribute
+Description: Create a bivariate functional data object
+URL: ../../../library/fda/html/bifd.html
+
+Entry: bsplineS
+Aliases: bsplineS
+Keywords: smooth
+Description: B-spline Basis Function Values
+URL: ../../../library/fda/html/bsplineS.html
+
+Entry: bsplinepen
+Aliases: bsplinepen
+Keywords: smooth
+Description: B-Spline Penalty Matrix
+URL: ../../../library/fda/html/bsplinepen.html
+
+Entry: cca.fd
+Aliases: cca.fd
+Keywords: smooth
+Description: Functional Canonical Correlation Analysis
+URL: ../../../library/fda/html/cca.fd.html
+
+Entry: center.fd
+Aliases: center.fd
+Keywords: smooth
+Description: Center Functional Data
+URL: ../../../library/fda/html/center.fd.html
+
+Entry: checkDims3
+Aliases: checkDim3 checkDims3
+Keywords: utilities
+Description: Compare dimensions and dimnames of arrays
+URL: ../../../library/fda/html/checkDims3.html
+
+Entry: checkLogicalInteger
+Aliases: checkLogical checkNumeric checkLogicalInteger
+Keywords: attribute utilities
+Description: Does an argument satisfy required conditions?
+URL: ../../../library/fda/html/checkLogicalInteger.html
+
+Entry: coef.fd
+Aliases: coef.fd coef.fdPar coef.fdSmooth coef.Taylor coefficients.fd coefficients.fdPar coefficients.fdSmooth coefficients.Taylor
+Keywords: utilities
+Description: Extract functional coefficients
+URL: ../../../library/fda/html/coef.html
+
+Entry: cor.fd
+Aliases: cor.fd
+Keywords: smooth
+Description: Correlation matrix from functional data object(s)
+URL: ../../../library/fda/html/cor.fd.html
+
+Entry: create.bspline.basis
+Aliases: create.bspline.basis
+Keywords: smooth
+Description: Create a B-spline Basis
+URL: ../../../library/fda/html/create.bspline.basis.html
+
+Entry: create.constant.basis
+Aliases: create.constant.basis
+Keywords: smooth
+Description: Create a Constant Basis
+URL: ../../../library/fda/html/create.constant.basis.html
+
+Entry: create.exponential.basis
+Aliases: create.exponential.basis
+Keywords: smooth
+Description: Create an Exponential Basis
+URL: ../../../library/fda/html/create.exponential.basis.html
+
+Entry: create.fourier.basis
+Aliases: create.fourier.basis
+Keywords: smooth
+Description: Create a Fourier Basis
+URL: ../../../library/fda/html/create.fourier.basis.html
+
+Entry: create.monomial.basis
+Aliases: create.monomial.basis
+Keywords: smooth
+Description: Create a Monomial Basis
+URL: ../../../library/fda/html/create.monomial.basis.html
+
+Entry: create.polygonal.basis
+Aliases: create.polygonal.basis
+Keywords: smooth
+Description: Create a Polygonal Basis
+URL: ../../../library/fda/html/create.polygonal.basis.html
+
+Entry: create.polynomial.basis
+Aliases: create.polynomial.basis
+Keywords: smooth
+Description: Create a Polynomial Basis
+URL: ../../../library/fda/html/create.polynomial.basis.html
+
+Entry: create.power.basis
+Aliases: create.power.basis
+Keywords: smooth
+Description: Create a Power Basis Object
+URL: ../../../library/fda/html/create.power.basis.html
+
+Entry: cycleplot.fd
+Aliases: cycleplot.fd
+Keywords: smooth
+Description: Plot Cycles for a Periodic Bivariate Functional Data Object
+URL: ../../../library/fda/html/cycleplot.fd.html
+
+Entry: data2fd.old
+Aliases: data2fd
+Keywords: smooth
+Description: Depricated: use 'Data2fd'
+URL: ../../../library/fda/html/data2fd.old.html
+
+Entry: dateAccessories
+Aliases: dateAccessories monthAccessories dayOfYear day.5 daysPerMonth monthEnd monthEnd.5 monthBegin.5 monthMid monthLetters weeks
+Keywords: datasets
+Description: Numeric and character vectors to facilitate working with dates
+URL: ../../../library/fda/html/dateAccessories.html
+
+Entry: density.fd
+Aliases: density.fd
+Keywords: smooth
+Description: Compute a Probability Density Function
+URL: ../../../library/fda/html/density.fd.html
+
+Entry: deriv.fd
+Aliases: deriv.fd
+Keywords: smooth
+Description: Compute a Derivative of a Functional Data Object
+URL: ../../../library/fda/html/deriv.fd.html
+
+Entry: df2lambda
+Aliases: df2lambda
+Keywords: smooth
+Description: Convert Degrees of Freedom to a Smoothing Parameter Value
+URL: ../../../library/fda/html/df2lambda.html
+
+Entry: dirs
+Aliases: dirs dirs dirs
+Keywords: IO
+Description: Get subdirectories
+URL: ../../../library/fda/html/dirs.html
+
+Entry: eval.basis
+Aliases: eval.basis
+Keywords: smooth
+Description: Values of Basis Functions or their Derivatives
+URL: ../../../library/fda/html/eval.basis.html
+
+Entry: eval.bifd
+Aliases: eval.bifd
+Keywords: smooth
+Description: Values a Two-argument Functional Data Object
+URL: ../../../library/fda/html/eval.bifd.html
+
+Entry: eval.fd
+Aliases: eval.fd
+Keywords: smooth
+Description: Values of a Functional Data Object
+URL: ../../../library/fda/html/eval.fd.html
+
+Entry: eval.monfd
+Aliases: eval.monfd
+Keywords: smooth
+Description: Values of a Monotone Functional Data Object
+URL: ../../../library/fda/html/eval.monfd.html
+
+Entry: eval.penalty
+Aliases: eval.penalty
+Keywords: smooth
+Description: Evaluate a Basis Penalty Matrix
+URL: ../../../library/fda/html/eval.penalty.html
+
+Entry: eval.posfd
+Aliases: eval.posfd
+Keywords: smooth
+Description: Evaluate a Positive Functional Data Object
+URL: ../../../library/fda/html/eval.posfd.html
+
+Entry: evaldiag.bifd
+Aliases: evaldiag.bifd
+Keywords: smooth
+Description: Evaluate the Diagonal of a Bivariate Functional Data Object
+URL: ../../../library/fda/html/evaldiag.bifd.html
+
+Entry: expect.phi
+Aliases: normint.phi normden.phi expect.phi expectden.phi expectden.phiphit
+Keywords: smooth smooth
+Description: Expectatation of basis functions
+URL: ../../../library/fda/html/expect.phi.html
+
+Entry: expon
+Aliases: expon
+Keywords: smooth
+Description: Exponential Basis Function Values
+URL: ../../../library/fda/html/expon.html
+
+Entry: exponpen
+Aliases: exponpen
+Keywords: smooth
+Description: Exponential Penalty Matrix
+URL: ../../../library/fda/html/exponpen.html
+
+Entry: fRegress.CV
+Aliases: fRegress.CV
+Keywords: smooth
+Description: Computes Cross-validated Error Sum of Squares for a Functional Regression Model
+URL: ../../../library/fda/html/fRegress.CV.html
+
+Entry: fRegress
+Aliases: fRegress
+Keywords: smooth
+Description: A Functional Regression Analysis of the Concurrent Type
+URL: ../../../library/fda/html/fRegress.html
+
+Entry: fRegress.stderr
+Aliases: fRegress.stderr
+Keywords: smooth
+Description: Compute Standard errors of Coefficient Functions Estimated by Functional Regression Analysis
+URL: ../../../library/fda/html/fRegress.stderr.html
+
+Entry: fd
+Aliases: fd
+Keywords: smooth internal
+Description: Define a Functional Data Object
+URL: ../../../library/fda/html/fd.html
+
+Entry: fdPar
+Aliases: fdPar
+Keywords: smooth
+Description: Define a Functional Parameter Object
+URL: ../../../library/fda/html/fdPar.html
+
+Entry: fda-internal
+Aliases: /.fd Varfnden Varfninten [.fd ^.fd c.fd derivchk derivs eigchk expect.phiphit fd2list fdchk fngrad.smooth.monotone fngrad.smooth.morph geigen hesscal.smooth.monotone hesscal.smooth.morph is.diag is.eqbasis is.integerLfd isotone knotmultchk linesearch linesearch.smooth.monotone linesearch.smooth.morph loglfnden loglfninten loglfnpos loglhesspos m2ij monfn mongrad monhess normalize.phi pendiagfn plot.Lfd plot.cca.fd polintarray polintmat polynom polynompen polyprod ppBspline ppderiv print.Lfd print.basisfd print.bifd print.fd print.fdPar rangechk regfngrad reghess regyfn rkck rkqs shifty sqrt.fd stepchk stepit symsolve trapzmat use.proper.basis
+Keywords: internal
+Description: FDA internal functions
+URL: ../../../library/fda/html/fda-internal.html
+
+Entry: fda-package
+Aliases: fda-package fda
+Keywords: smooth
+Description: Functional Data Analysis in R
+URL: ../../../library/fda/html/fda-package.html
+
+Entry: fdaMatlabPath
+Aliases: fdaMatlabPath
+Keywords: programming
+Description: Add 'fdaM' to the Matlab path
+URL: ../../../library/fda/html/fdaMatlabPath.html
+
+Entry: file.copy2
+Aliases: file.copy2
+Keywords: IO
+Description: Copy a file with a default 'to' name
+URL: ../../../library/fda/html/file.copy2.html
+
+Entry: fourier
+Aliases: fourier
+Keywords: smooth
+Description: Fourier Basis Function Values
+URL: ../../../library/fda/html/fourier.html
+
+Entry: fourierpen
+Aliases: fourierpen
+Keywords: smooth
+Description: Fourier Penalty Matrix
+URL: ../../../library/fda/html/fourierpen.html
+
+Entry: gait
+Aliases: gait
+Keywords: datasets
+Description: Hip and knee angle while walking
+URL: ../../../library/fda/html/gait.html
+
+Entry: getbasismatrix
+Aliases: getbasismatrix
+Keywords: smooth
+Description: Values of Basis Functions or their Derivatives
+URL: ../../../library/fda/html/getbasismatrix.html
+
+Entry: getbasispenalty
+Aliases: getbasispenalty
+Keywords: smooth
+Description: Evaluate a Roughness Penalty Matrix
+URL: ../../../library/fda/html/getbasispenalty.html
+
+Entry: getbasisrange
+Aliases: getbasisrange
+Keywords: attribute
+Description: Extract the range from a basis object
+URL: ../../../library/fda/html/getbasisrange.html
+
+Entry: growth
+Aliases: growth
+Keywords: datasets
+Description: Berkeley Growth Study data
+URL: ../../../library/fda/html/growth.html
+
+Entry: handwrit
+Aliases: handwrit
+Keywords: datasets
+Description: Cursive handwriting samples
+URL: ../../../library/fda/html/handwrit.html
+
+Entry: inprod.bspline
+Aliases: inprod.bspline
+Keywords: smooth
+Description: Compute Inner Products B-spline Expansions.
+URL: ../../../library/fda/html/inprod.Bspline.html
+
+Entry: inprod
+Aliases: inprod
+Keywords: smooth
+Description: Inner products of Functional Data Objects.
+URL: ../../../library/fda/html/inprod.html
+
+Entry: int2Lfd
+Aliases: int2Lfd
+Keywords: smooth
+Description: Convert Integer to Linear Differential Operator
+URL: ../../../library/fda/html/int2Lfd.html
+
+Entry: intensity.fd
+Aliases: intensity.fd
+Keywords: smooth
+Description: Intensity Function for Point Process
+URL: ../../../library/fda/html/intensity.fd.html
+
+Entry: is.Lfd
+Aliases: is.Lfd
+Keywords: smooth
+Description: Confirm Object has Class "Lfd"
+URL: ../../../library/fda/html/is.Lfd.html
+
+Entry: is.basis
+Aliases: is.basis
+Keywords: smooth
+Description: Confirm Object is Class "Basisfd"
+URL: ../../../library/fda/html/is.basis.html
+
+Entry: is.fd
+Aliases: is.fd
+Keywords: smooth
+Description: Confirm Object has Class "fd"
+URL: ../../../library/fda/html/is.fd.html
+
+Entry: is.fdPar
+Aliases: is.fdPar
+Keywords: smooth
+Description: Confirm Object has Class "fdPar"
+URL: ../../../library/fda/html/is.fdPar.html
+
+Entry: knots.fd
+Aliases: knots.fd knots.fdSmooth knots.basisfd
+Keywords: smooth optimize
+Description: Extract the knots from a function basis or data object
+URL: ../../../library/fda/html/knots.fd.html
+
+Entry: lambda2df
+Aliases: lambda2df
+Keywords: smooth
+Description: Convert Smoothing Parameter to Degrees of Freedom
+URL: ../../../library/fda/html/lambda2df.html
+
+Entry: lambda2gcv
+Aliases: lambda2gcv
+Keywords: smooth
+Description: Compute GCV Criterion
+URL: ../../../library/fda/html/lambda2gcv.html
+
+Entry: landmarkreg
+Aliases: landmarkreg
+Keywords: smooth
+Description: Landmark Registration of Functional Observations
+URL: ../../../library/fda/html/landmarkreg.html
+
+Entry: lines.fd
+Aliases: lines.fd lines.fdSmooth
+Keywords: smooth
+Description: Add Lines from Functional Data to a Plot
+URL: ../../../library/fda/html/lines.fd.html
+
+Entry: linmod
+Aliases: linmod
+Keywords: smooth
+Description: Fit Fully Functional Linear Model
+URL: ../../../library/fda/html/linmod.html
+
+Entry: lip
+Aliases: lip lipmarks liptime
+Keywords: datasets
+Description: Lip motion
+URL: ../../../library/fda/html/lip.html
+
+Entry: lmWinsor
+Aliases: lmWinsor
+Keywords: models
+Description: Winsorized Regression
+URL: ../../../library/fda/html/lmWinsor.html
+
+Entry: lmeWinsor
+Aliases: lmeWinsor
+Keywords: models
+Description: Winsorized Regression with mixed effects
+URL: ../../../library/fda/html/lmeWinsor.html
+
+Entry: mean.fd
+Aliases: mean.fd
+Keywords: smooth
+Description: Mean of Functional Data
+URL: ../../../library/fda/html/mean.fd.html
+
+Entry: melanoma
+Aliases: melanoma
+Keywords: datasets
+Description: melanoma 1936-1972
+URL: ../../../library/fda/html/melanoma.html
+
+Entry: monomial
+Aliases: monomial
+Keywords: smooth
+Description: Evaluate Monomial Basis
+URL: ../../../library/fda/html/monomial.html
+
+Entry: monomialpen
+Aliases: monomialpen
+Keywords: smooth
+Description: Evaluate Monomial Roughness Penalty Matrix
+URL: ../../../library/fda/html/monomialpen.html
+
+Entry: nondurables
+Aliases: nondurables
+Keywords: datasets
+Description: Nondurable goods index
+URL: ../../../library/fda/html/nondurables.html
+
+Entry: norder
+Aliases: norder norder.fd norder.basisfd norder.default norder.bspline
+Keywords: smooth
+Description: Order of a B-spline
+URL: ../../../library/fda/html/norder.html
+
+Entry: objAndNames
+Aliases: objAndNames
+Keywords: attribute
+Description: Add names to an object
+URL: ../../../library/fda/html/objAndNames.html
+
+Entry: odesolv
+Aliases: odesolv
+Keywords: smooth
+Description: Numerical Solution mth Order Differential Equation System
+URL: ../../../library/fda/html/odesolv.html
+
+Entry: onechild
+Aliases: onechild
+Keywords: datasets
+Description: growth in height of one 10-year-old boy
+URL: ../../../library/fda/html/onechild.html
+
+Entry: pca.fd
+Aliases: pca.fd
+Keywords: smooth
+Description: Functional Principal Components Analysis
+URL: ../../../library/fda/html/pca.fd.html
+
+Entry: pda.fd
+Aliases: pda.fd
+Keywords: smooth
+Description: Principal Differential Analysis
+URL: ../../../library/fda/html/pda.fd.html
+
+Entry: phaseplanePlot
+Aliases: phaseplanePlot
+Keywords: smooth hplot
+Description: Phase-plane plot
+URL: ../../../library/fda/html/phaseplanePlot.html
+
+Entry: pinch
+Aliases: pinch pinchtime
+Keywords: datasets
+Description: pinch force data
+URL: ../../../library/fda/html/pinch.html
+
+Entry: plot.basisfd
+Aliases: plot.basisfd
+Keywords: smooth
+Description: Plot a Basis Object
+URL: ../../../library/fda/html/plot.basisfd.html
+
+Entry: plot.fd
+Aliases: plot.fd plot.fdSmooth
+Keywords: smooth hplot
+Description: Plot a Functional Data Object
+URL: ../../../library/fda/html/plot.fd.html
+
+Entry: plot.lmWinsor
+Aliases: plot.lmWinsor
+Keywords: hplot
+Description: lmWinsor plot
+URL: ../../../library/fda/html/plot.lmWinsor.html
+
+Entry: plot.pca.fd
+Aliases: plot.pca.fd
+Keywords: smooth
+Description: Plot Functional Principal Components
+URL: ../../../library/fda/html/plot.pca.fd.html
+
+Entry: plotfit
+Aliases: plotfit.fd plotfit.fdSmooth
+Keywords: smooth hplot
+Description: Plot a Functional Data Object With Data
+URL: ../../../library/fda/html/plotfit.fd.html
+
+Entry: plotscores
+Aliases: plotscores
+Keywords: smooth
+Description: Plot Principal Component Scores
+URL: ../../../library/fda/html/plotscores.html
+
+Entry: polyg
+Aliases: polyg
+Keywords: smooth
+Description: Polygonal Basis Function Values
+URL: ../../../library/fda/html/polyg.html
+
+Entry: polygpen
+Aliases: polygpen
+Keywords: smooth
+Description: Polygonal Penalty Matrix
+URL: ../../../library/fda/html/polygpen.html
+
+Entry: powerbasis
+Aliases: powerbasis
+Keywords: smooth
+Description: Power Basis Function Values
+URL: ../../../library/fda/html/powerbasis.html
+
+Entry: powerpen
+Aliases: powerpen
+Keywords: smooth
+Description: Power Penalty Matrix
+URL: ../../../library/fda/html/powerpen.html
+
+Entry: predict.lmWinsor
+Aliases: predict.lmWinsor
+Keywords: models
+Description: Predict method for Winsorized linear model fits
+URL: ../../../library/fda/html/predict.lmWinsor.html
+
+Entry: predict.lmeWinsor
+Aliases: predict.lmeWinsor
+Keywords: models
+Description: Predict method for Winsorized linear model fits with mixed effects
+URL: ../../../library/fda/html/predict.lmeWinsor.html
+
+Entry: project.basis
+Aliases: project.basis
+Keywords: smooth
+Description: Approximate Functional Data Using a Basis
+URL: ../../../library/fda/html/project.basis.html
+
+Entry: quadset
+Aliases: quadset
+Keywords: smooth
+Description: Quadrature points and weights for Simpson's rule
+URL: ../../../library/fda/html/quadset.html
+
+Entry: refinery
+Aliases: refinery
+Keywords: datasets
+Description: Reflux and tray level in a refinery
+URL: ../../../library/fda/html/refinery.html
+
+Entry: register.fd
+Aliases: register.fd
+Keywords: smooth
+Description: Register Functional Data Objects Using a Continuous Criterion
+URL: ../../../library/fda/html/register.fd.html
+
+Entry: sd.fd
+Aliases: sd.fd std.fd stdev.fd stddev.fd
+Keywords: smooth
+Description: Standard Deviation of Functional Data
+URL: ../../../library/fda/html/sd.html
+
+Entry: smooth.basis
+Aliases: smooth.basis
+Keywords: smooth
+Description: Smooth Data with an Indirectly Specified Roughness Penalty
+URL: ../../../library/fda/html/smooth.basis.html
+
+Entry: smooth.basisPar
+Aliases: smooth.basisPar
+Keywords: smooth
+Description: Smooth Data Using a Directly Specified Roughness Penalty
+URL: ../../../library/fda/html/smooth.basisPar.html
+
+Entry: smooth.fd
+Aliases: smooth.fd
+Keywords: smooth
+Description: Smooth a Functional Data Object Using an Indirectly Specified Roughness Penalty
+URL: ../../../library/fda/html/smooth.fd.html
+
+Entry: smooth.fdPar
+Aliases: smooth.fdPar
+Keywords: smooth
+Description: Smooth a functional data object using a directly specified roughness penalty
+URL: ../../../library/fda/html/smooth.fdPar.html
+
+Entry: smooth.monotone
+Aliases: smooth.monotone
+Keywords: smooth
+Description: Monotone Smoothing of Data
+URL: ../../../library/fda/html/smooth.monotone.html
+
+Entry: smooth.morph
+Aliases: smooth.morph
+Keywords: smooth
+Description: Estimates a Smooth Warping Function
+URL: ../../../library/fda/html/smooth.morph.html
+
+Entry: smooth.pos
+Aliases: smooth.pos
+Keywords: smooth
+Description: Smooth Data with a Positive Function
+URL: ../../../library/fda/html/smooth.pos.html
+
+Entry: sum.fd
+Aliases: sum.fd
+Keywords: smooth
+Description: Sum of Functional Data
+URL: ../../../library/fda/html/sum.fd.html
+
+Entry: summary.Lfd
+Aliases: summary.Lfd
+Keywords: smooth
+Description: Summarize a Linear Differential Operator Object
+URL: ../../../library/fda/html/summary.Lfd.html
+
+Entry: summary.basisfd
+Aliases: summary.basisfd
+Keywords: smooth
+Description: Summarize a Functional Data Object
+URL: ../../../library/fda/html/summary.basisfd.html
+
+Entry: summary.bifd
+Aliases: summary.bifd
+Keywords: smooth
+Description: Summarize a Bivariate Functional Data Object
+URL: ../../../library/fda/html/summary.bifd.html
+
+Entry: summary.fd
+Aliases: summary.fd
+Keywords: smooth
+Description: Summarize a Functional Data Object
+URL: ../../../library/fda/html/summary.fd.html
+
+Entry: summary.fdPar
+Aliases: summary.fdPar
+Keywords: smooth
+Description: Summarize a Functional Parameter Object
+URL: ../../../library/fda/html/summary.fdPar.html
+
+Entry: svd2
+Aliases: svd2
+Keywords: array
+Description: singular value decomposition with automatic error handling
+URL: ../../../library/fda/html/svd2.html
+
+Entry: tperm.fd
+Aliases: tperm.fd
+Keywords: smooth
+Description: Permutation t-test for two groups of functional data objects.
+URL: ../../../library/fda/html/tperm.fd.html
+
+Entry: var.fd
+Aliases: var.fd
+Keywords: smooth
+Description: Variance, Covariance, and Correlation Surfaces for Functional Data Object(s)
+URL: ../../../library/fda/html/var.fd.html
+
+Entry: varmx
+Aliases: varmx
+Keywords: smooth
+Description: Rotate a Matrix of Component Loadings using the VARIMAX Criterion
+URL: ../../../library/fda/html/varmx.html
+
+Entry: varmx.cca.fd
+Aliases: varmx.cca.fd
+Keywords: smooth
+Description: Rotation of Functional Canonical Components with VARIMAX
+URL: ../../../library/fda/html/varmx.cca.fd.html
+
+Entry: varmx.pca.fd
+Aliases: varmx.pca.fd
+Keywords: smooth
+Description: Rotation of Functional Principal Components with VARIMAX Criterion
+URL: ../../../library/fda/html/varmx.pca.fd.html
+
+Entry: vec2Lfd
+Aliases: vec2Lfd
+Keywords: smooth
+Description: Make a Linear Differential Operator Object from a Vector
+URL: ../../../library/fda/html/vec2Lfd.html
+
+Entry: zerofind
+Aliases: zerofind
+Keywords: logic
+Description: Does the range of the input contain 0?
+URL: ../../../library/fda/html/zerofind.html

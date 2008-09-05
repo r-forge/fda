@@ -1,0 +1,25 @@
+nondurables               package:fda               R Documentation
+
+_N_o_n_d_u_r_a_b_l_e _g_o_o_d_s _i_n_d_e_x
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     US nondurable goods index time series, January 1919 to January
+     2000.
+
+_F_o_r_m_a_t:
+
+     An object of class 'ts'.
+
+_S_o_u_r_c_e:
+
+     Ramsay, James O., and Silverman, Bernard W. (2006), _Functional
+     Data Analysis, 2nd ed._, Springer, New York. 
+
+     Ramsay, James O., and Silverman, Bernard W. (2002), _Applied
+     Functional Data Analysis_, Springer, New York, ch. 3.
+
+_E_x_a_m_p_l_e_s:
+
+     plot(nondurables, log="y")
+

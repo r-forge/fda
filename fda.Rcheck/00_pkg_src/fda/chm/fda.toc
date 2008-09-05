@@ -1,0 +1,1591 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HEAD></HEAD><HTML><BODY>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package fda:  Contents">
+<param name="Local" value="00Index.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package fda:  R objects">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fda-package">
+<param name="Local" value="fda-package.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="*.basisfd">
+<param name="Local" value="basisfd.product.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="*.fd">
+<param name="Local" value="arithmetic.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="+.fd">
+<param name="Local" value="arithmetic.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="-.fd">
+<param name="Local" value="arithmetic.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="/.fd">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="==.basisfd">
+<param name="Local" value="arithmetic.basisfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="argvalsy.swap">
+<param name="Local" value="argvalsy.swap.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="arithmetic.basisfd">
+<param name="Local" value="arithmetic.basisfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="arithmetic.fd">
+<param name="Local" value="arithmetic.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="as.array3">
+<param name="Local" value="as.array3.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="as.fd">
+<param name="Local" value="as.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="as.fd.dierckx">
+<param name="Local" value="as.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="as.fd.fdSmooth">
+<param name="Local" value="as.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="as.fd.function">
+<param name="Local" value="as.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="as.fd.smooth.spline">
+<param name="Local" value="as.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="axisIntervals">
+<param name="Local" value="axisIntervals.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="basisfd">
+<param name="Local" value="basisfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="basisfd.product">
+<param name="Local" value="basisfd.product.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="bifd">
+<param name="Local" value="bifd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="bsplinepen">
+<param name="Local" value="bsplinepen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="bsplineS">
+<param name="Local" value="bsplineS.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="c.fd">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="CanadianWeather">
+<param name="Local" value="CanadianWeather.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="cca.fd">
+<param name="Local" value="cca.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="center.fd">
+<param name="Local" value="center.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="checkDim3">
+<param name="Local" value="checkDims3.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="checkDims3">
+<param name="Local" value="checkDims3.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="checkLogical">
+<param name="Local" value="checkLogicalInteger.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="checkLogicalInteger">
+<param name="Local" value="checkLogicalInteger.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="checkNumeric">
+<param name="Local" value="checkLogicalInteger.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="coef.fd">
+<param name="Local" value="coef.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="coef.fdPar">
+<param name="Local" value="coef.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="coef.fdSmooth">
+<param name="Local" value="coef.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="coef.Taylor">
+<param name="Local" value="coef.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="coefficients.fd">
+<param name="Local" value="coef.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="coefficients.fdPar">
+<param name="Local" value="coef.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="coefficients.fdSmooth">
+<param name="Local" value="coef.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="coefficients.Taylor">
+<param name="Local" value="coef.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="cor.fd">
+<param name="Local" value="cor.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="create.bspline.basis">
+<param name="Local" value="create.bspline.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="create.constant.basis">
+<param name="Local" value="create.constant.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="create.exponential.basis">
+<param name="Local" value="create.exponential.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="create.fourier.basis">
+<param name="Local" value="create.fourier.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="create.monomial.basis">
+<param name="Local" value="create.monomial.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="create.polygonal.basis">
+<param name="Local" value="create.polygonal.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="create.polynomial.basis">
+<param name="Local" value="create.polynomial.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="create.power.basis">
+<param name="Local" value="create.power.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="CSTR">
+<param name="Local" value="CSTR.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="CSTR2">
+<param name="Local" value="CSTR.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="CSTR2in">
+<param name="Local" value="CSTR.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="CSTRfitLS">
+<param name="Local" value="CSTR.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="CSTRfn">
+<param name="Local" value="CSTR.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="CSTRres">
+<param name="Local" value="CSTR.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="CSTRres0">
+<param name="Local" value="CSTR.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="CSTRsse">
+<param name="Local" value="CSTR.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="cycleplot.fd">
+<param name="Local" value="cycleplot.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="daily">
+<param name="Local" value="CanadianWeather.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Data2fd">
+<param name="Local" value="Data2fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="data2fd">
+<param name="Local" value="data2fd.old.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="dateAccessories">
+<param name="Local" value="dateAccessories.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="day.5">
+<param name="Local" value="dateAccessories.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="dayOfYear">
+<param name="Local" value="dateAccessories.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="daysPerMonth">
+<param name="Local" value="dateAccessories.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="density.fd">
+<param name="Local" value="density.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="deriv.fd">
+<param name="Local" value="deriv.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="derivchk">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="derivs">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="df2lambda">
+<param name="Local" value="df2lambda.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="dirs">
+<param name="Local" value="dirs.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="eigchk">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Eigen">
+<param name="Local" value="Eigen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="eval.basis">
+<param name="Local" value="eval.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="eval.bifd">
+<param name="Local" value="eval.bifd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="eval.fd">
+<param name="Local" value="eval.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="eval.monfd">
+<param name="Local" value="eval.monfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="eval.penalty">
+<param name="Local" value="eval.penalty.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="eval.posfd">
+<param name="Local" value="eval.posfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="evaldiag.bifd">
+<param name="Local" value="evaldiag.bifd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="expect.phi">
+<param name="Local" value="expect.phi.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="expect.phiphit">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="expectden.phi">
+<param name="Local" value="expect.phi.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="expectden.phiphit">
+<param name="Local" value="expect.phi.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="expon">
+<param name="Local" value="expon.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="exponpen">
+<param name="Local" value="exponpen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fd">
+<param name="Local" value="fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fd2list">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fda">
+<param name="Local" value="fda-package.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fdaMatlabPath">
+<param name="Local" value="fdaMatlabPath.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fdchk">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fdPar">
+<param name="Local" value="fdPar.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="file.copy2">
+<param name="Local" value="file.copy2.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fngrad.smooth.monotone">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fngrad.smooth.morph">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fourier">
+<param name="Local" value="fourier.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fourierpen">
+<param name="Local" value="fourierpen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Fperm.fd">
+<param name="Local" value="Fperm.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fRegress">
+<param name="Local" value="fRegress.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fRegress.CV">
+<param name="Local" value="fRegress.CV.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fRegress.stderr">
+<param name="Local" value="fRegress.stderr.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Fstat.fd">
+<param name="Local" value="Fstat.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="gait">
+<param name="Local" value="gait.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="geigen">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="getbasismatrix">
+<param name="Local" value="getbasismatrix.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="getbasispenalty">
+<param name="Local" value="getbasispenalty.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="getbasisrange">
+<param name="Local" value="getbasisrange.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="growth">
+<param name="Local" value="growth.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="handwrit">
+<param name="Local" value="handwrit.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="hesscal.smooth.monotone">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="hesscal.smooth.morph">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="inprod">
+<param name="Local" value="inprod.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="inprod.bspline">
+<param name="Local" value="inprod.Bspline.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="int2Lfd">
+<param name="Local" value="int2Lfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="intensity.fd">
+<param name="Local" value="intensity.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="is.basis">
+<param name="Local" value="is.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="is.diag">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="is.eqbasis">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="is.fd">
+<param name="Local" value="is.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="is.fdPar">
+<param name="Local" value="is.fdPar.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="is.integerLfd">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="is.Lfd">
+<param name="Local" value="is.Lfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="isotone">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="knotmultchk">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="knots.basisfd">
+<param name="Local" value="knots.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="knots.fd">
+<param name="Local" value="knots.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="knots.fdSmooth">
+<param name="Local" value="knots.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="lambda2df">
+<param name="Local" value="lambda2df.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="lambda2gcv">
+<param name="Local" value="lambda2gcv.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="landmarkreg">
+<param name="Local" value="landmarkreg.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Lfd">
+<param name="Local" value="Lfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="lines.fd">
+<param name="Local" value="lines.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="lines.fdSmooth">
+<param name="Local" value="lines.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="linesearch">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="linesearch.smooth.monotone">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="linesearch.smooth.morph">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="linmod">
+<param name="Local" value="linmod.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="lip">
+<param name="Local" value="lip.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="lipmarks">
+<param name="Local" value="lip.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="liptime">
+<param name="Local" value="lip.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="lmeWinsor">
+<param name="Local" value="lmeWinsor.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="lmWinsor">
+<param name="Local" value="lmWinsor.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="loglfnden">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="loglfninten">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="loglfnpos">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="loglhesspos">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="m2ij">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="mean.fd">
+<param name="Local" value="mean.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="melanoma">
+<param name="Local" value="melanoma.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="minus.fd">
+<param name="Local" value="arithmetic.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="monfn">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="mongrad">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="monhess">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="monomial">
+<param name="Local" value="monomial.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="monomialpen">
+<param name="Local" value="monomialpen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="monthAccessories">
+<param name="Local" value="dateAccessories.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="monthBegin.5">
+<param name="Local" value="dateAccessories.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="monthEnd">
+<param name="Local" value="dateAccessories.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="monthEnd.5">
+<param name="Local" value="dateAccessories.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="monthLetters">
+<param name="Local" value="dateAccessories.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="monthMid">
+<param name="Local" value="dateAccessories.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="nondurables">
+<param name="Local" value="nondurables.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="norder">
+<param name="Local" value="norder.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="norder.basisfd">
+<param name="Local" value="norder.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="norder.bspline">
+<param name="Local" value="norder.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="norder.default">
+<param name="Local" value="norder.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="norder.fd">
+<param name="Local" value="norder.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="normalize.phi">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="normden.phi">
+<param name="Local" value="expect.phi.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="normint.phi">
+<param name="Local" value="expect.phi.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="objAndNames">
+<param name="Local" value="objAndNames.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="odesolv">
+<param name="Local" value="odesolv.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="onechild">
+<param name="Local" value="onechild.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="pca.fd">
+<param name="Local" value="pca.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="pda.fd">
+<param name="Local" value="pda.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="pendiagfn">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="phaseplanePlot">
+<param name="Local" value="phaseplanePlot.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="pinch">
+<param name="Local" value="pinch.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="pinchtime">
+<param name="Local" value="pinch.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plot.basisfd">
+<param name="Local" value="plot.basisfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plot.cca.fd">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plot.fd">
+<param name="Local" value="plot.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plot.fdSmooth">
+<param name="Local" value="plot.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plot.Lfd">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plot.lmWinsor">
+<param name="Local" value="plot.lmWinsor.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plot.pca.fd">
+<param name="Local" value="plot.pca.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plotfit.fd">
+<param name="Local" value="plotfit.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plotfit.fdSmooth">
+<param name="Local" value="plotfit.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plotscores">
+<param name="Local" value="plotscores.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plus.fd">
+<param name="Local" value="arithmetic.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="polintarray">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="polintmat">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="polyg">
+<param name="Local" value="polyg.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="polygpen">
+<param name="Local" value="polygpen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="polynom">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="polynompen">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="polyprod">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="powerbasis">
+<param name="Local" value="powerbasis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="powerpen">
+<param name="Local" value="powerpen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="ppBspline">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="ppderiv">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="predict.lmeWinsor">
+<param name="Local" value="predict.lmeWinsor.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="predict.lmWinsor">
+<param name="Local" value="predict.lmWinsor.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="print.basisfd">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="print.bifd">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="print.fd">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="print.fdPar">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="print.Lfd">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="project.basis">
+<param name="Local" value="project.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="quadset">
+<param name="Local" value="quadset.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="rangechk">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="refinery">
+<param name="Local" value="refinery.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="regfngrad">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="reghess">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="register.fd">
+<param name="Local" value="register.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="regyfn">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="rkck">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="rkqs">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="sd.fd">
+<param name="Local" value="sd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="shifty">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="smooth.basis">
+<param name="Local" value="smooth.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="smooth.basisPar">
+<param name="Local" value="smooth.basisPar.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="smooth.fd">
+<param name="Local" value="smooth.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="smooth.fdPar">
+<param name="Local" value="smooth.fdPar.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="smooth.monotone">
+<param name="Local" value="smooth.monotone.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="smooth.morph">
+<param name="Local" value="smooth.morph.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="smooth.pos">
+<param name="Local" value="smooth.pos.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="sqrt.fd">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="std.fd">
+<param name="Local" value="sd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="stddev.fd">
+<param name="Local" value="sd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="stdev.fd">
+<param name="Local" value="sd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="stepchk">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="stepit">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="sum.fd">
+<param name="Local" value="sum.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="summary.basisfd">
+<param name="Local" value="summary.basisfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="summary.bifd">
+<param name="Local" value="summary.bifd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="summary.fd">
+<param name="Local" value="summary.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="summary.fdPar">
+<param name="Local" value="summary.fdPar.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="summary.Lfd">
+<param name="Local" value="summary.Lfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="svd2">
+<param name="Local" value="svd2.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="symsolve">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="TaylorSpline">
+<param name="Local" value="TaylorSpline.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="TaylorSpline.dierckx">
+<param name="Local" value="TaylorSpline.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="TaylorSpline.fd">
+<param name="Local" value="TaylorSpline.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="TaylorSpline.fdPar">
+<param name="Local" value="TaylorSpline.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="TaylorSpline.fdSmooth">
+<param name="Local" value="TaylorSpline.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="times.fd">
+<param name="Local" value="arithmetic.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="tperm.fd">
+<param name="Local" value="tperm.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="trapzmat">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="use.proper.basis">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="var.fd">
+<param name="Local" value="var.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Varfnden">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Varfninten">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="varmx">
+<param name="Local" value="varmx.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="varmx.cca.fd">
+<param name="Local" value="varmx.cca.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="varmx.pca.fd">
+<param name="Local" value="varmx.pca.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="vec2Lfd">
+<param name="Local" value="vec2Lfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="weeks">
+<param name="Local" value="dateAccessories.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="zerofind">
+<param name="Local" value="zerofind.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="[.fd">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="^.fd">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+</UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package fda:  Titles">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="A Functional Regression Analysis of the Concurrent Type ">
+<param name="Local" value="fRegress.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Add 'fdaM' to the Matlab path  ">
+<param name="Local" value="fdaMatlabPath.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Add Lines from Functional Data to a Plot ">
+<param name="Local" value="lines.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Add names to an object  ">
+<param name="Local" value="objAndNames.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Approximate Functional Data Using a Basis ">
+<param name="Local" value="project.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Arithmatic on functional basis objects  ">
+<param name="Local" value="arithmetic.basisfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Arithmetic on functional data ('fd') objects  ">
+<param name="Local" value="arithmetic.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="B-spline Basis Function Values ">
+<param name="Local" value="bsplineS.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="B-Spline Penalty Matrix ">
+<param name="Local" value="bsplinepen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Berkeley Growth Study data  ">
+<param name="Local" value="growth.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Canadian average annual weather cycle ">
+<param name="Local" value="CanadianWeather.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Center Functional Data ">
+<param name="Local" value="center.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Compare dimensions and dimnames of arrays  ">
+<param name="Local" value="checkDims3.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Compute a Derivative of a Functional Data Object ">
+<param name="Local" value="deriv.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Compute a Probability Density Function ">
+<param name="Local" value="density.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Compute GCV Criterion ">
+<param name="Local" value="lambda2gcv.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Compute Inner Products B-spline Expansions. ">
+<param name="Local" value="inprod.Bspline.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Compute Standard errors of Coefficient Functions Estimated by Functional Regression Analysis ">
+<param name="Local" value="fRegress.stderr.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Computes Cross-validated Error Sum of Squares for a Functional Regression Model ">
+<param name="Local" value="fRegress.CV.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Confirm Object has Class "fd" ">
+<param name="Local" value="is.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Confirm Object has Class "fdPar" ">
+<param name="Local" value="is.fdPar.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Confirm Object has Class "Lfd" ">
+<param name="Local" value="is.Lfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Confirm Object is Class "Basisfd" ">
+<param name="Local" value="is.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Continuously Stirred Temperature Reactor ">
+<param name="Local" value="CSTR.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Convert a spline object to class 'fd'  ">
+<param name="Local" value="as.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Convert Degrees of Freedom to a Smoothing Parameter Value ">
+<param name="Local" value="df2lambda.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Convert Integer to Linear Differential Operator ">
+<param name="Local" value="int2Lfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Convert Smoothing Parameter to Degrees of Freedom ">
+<param name="Local" value="lambda2df.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Copy a file with a default 'to' name  ">
+<param name="Local" value="file.copy2.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Correlation matrix from functional data object(s)  ">
+<param name="Local" value="cor.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Create a B-spline Basis ">
+<param name="Local" value="create.bspline.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Create a bivariate functional data object  ">
+<param name="Local" value="bifd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Create a Constant Basis ">
+<param name="Local" value="create.constant.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Create a Fourier Basis ">
+<param name="Local" value="create.fourier.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Create a functional data object from data  ">
+<param name="Local" value="Data2fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Create a Monomial Basis ">
+<param name="Local" value="create.monomial.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Create a Polygonal Basis ">
+<param name="Local" value="create.polygonal.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Create a Polynomial Basis ">
+<param name="Local" value="create.polynomial.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Create a Power Basis Object ">
+<param name="Local" value="create.power.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Create an Exponential Basis ">
+<param name="Local" value="create.exponential.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Cursive handwriting samples  ">
+<param name="Local" value="handwrit.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Define a Functional Basis Object ">
+<param name="Local" value="basisfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Define a Functional Data Object ">
+<param name="Local" value="fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Define a Functional Parameter Object ">
+<param name="Local" value="fdPar.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Define a Linear Differential Operator Object ">
+<param name="Local" value="Lfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Depricated:  use 'Data2fd'   ">
+<param name="Local" value="data2fd.old.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Does an argument satisfy required conditions?     ">
+<param name="Local" value="checkLogicalInteger.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Does the range of the input contain 0?   ">
+<param name="Local" value="zerofind.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Eigenanalysis preserving dimnames  ">
+<param name="Local" value="Eigen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Estimates a Smooth Warping Function ">
+<param name="Local" value="smooth.morph.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Evaluate a Basis Penalty Matrix ">
+<param name="Local" value="eval.penalty.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Evaluate a Positive Functional Data Object ">
+<param name="Local" value="eval.posfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Evaluate a Roughness Penalty Matrix ">
+<param name="Local" value="getbasispenalty.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Evaluate Monomial Basis ">
+<param name="Local" value="monomial.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Evaluate Monomial Roughness Penalty Matrix ">
+<param name="Local" value="monomialpen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Evaluate the Diagonal of a Bivariate Functional Data Object ">
+<param name="Local" value="evaldiag.bifd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Expectatation of basis functions  ">
+<param name="Local" value="expect.phi.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Exponential Basis Function Values ">
+<param name="Local" value="expon.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Exponential Penalty Matrix ">
+<param name="Local" value="exponpen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Extract functional coefficients  ">
+<param name="Local" value="coef.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Extract the knots from a function basis or data object">
+<param name="Local" value="knots.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Extract the range from a basis object  ">
+<param name="Local" value="getbasisrange.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="F-statistic for functional linear regression. ">
+<param name="Local" value="Fstat.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="FDA internal functions">
+<param name="Local" value="fda-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Fit Fully Functional Linear Model ">
+<param name="Local" value="linmod.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Fourier Basis Function Values ">
+<param name="Local" value="fourier.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Fourier Penalty Matrix ">
+<param name="Local" value="fourierpen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Functional Canonical Correlation Analysis ">
+<param name="Local" value="cca.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Functional Data Analysis in R">
+<param name="Local" value="fda-package.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Functional Principal Components Analysis ">
+<param name="Local" value="pca.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Get subdirectories  ">
+<param name="Local" value="dirs.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="growth in height of one 10-year-old boy  ">
+<param name="Local" value="onechild.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Hip and knee angle while walking ">
+<param name="Local" value="gait.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Inner products of Functional Data Objects. ">
+<param name="Local" value="inprod.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Intensity Function for Point Process ">
+<param name="Local" value="intensity.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Landmark Registration of Functional Observations ">
+<param name="Local" value="landmarkreg.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Lip motion  ">
+<param name="Local" value="lip.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="lmWinsor plot  ">
+<param name="Local" value="plot.lmWinsor.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Make a Linear Differential Operator Object from a Vector ">
+<param name="Local" value="vec2Lfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Mark Intervals on a Plot Axis ">
+<param name="Local" value="axisIntervals.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Mean of Functional Data ">
+<param name="Local" value="mean.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="melanoma 1936-1972 ">
+<param name="Local" value="melanoma.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Monotone Smoothing of Data ">
+<param name="Local" value="smooth.monotone.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Nondurable goods index ">
+<param name="Local" value="nondurables.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Numeric and character vectors to facilitate working with dates  ">
+<param name="Local" value="dateAccessories.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Numerical Solution mth Order Differential Equation System ">
+<param name="Local" value="odesolv.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Order of a B-spline ">
+<param name="Local" value="norder.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Permutation F-test for functional linear regression. ">
+<param name="Local" value="Fperm.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Permutation t-test for two groups of functional data objects. ">
+<param name="Local" value="tperm.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Phase-plane plot  ">
+<param name="Local" value="phaseplanePlot.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="pinch force data ">
+<param name="Local" value="pinch.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Plot a Basis Object ">
+<param name="Local" value="plot.basisfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Plot a Functional Data Object ">
+<param name="Local" value="plot.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Plot a Functional Data Object With Data ">
+<param name="Local" value="plotfit.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Plot Cycles for a Periodic Bivariate Functional Data Object ">
+<param name="Local" value="cycleplot.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Plot Functional Principal Components ">
+<param name="Local" value="plot.pca.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Plot Principal Component Scores ">
+<param name="Local" value="plotscores.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Polygonal Basis Function Values ">
+<param name="Local" value="polyg.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Polygonal Penalty Matrix ">
+<param name="Local" value="polygpen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Power Basis Function Values ">
+<param name="Local" value="powerbasis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Power Penalty Matrix ">
+<param name="Local" value="powerpen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Predict method for Winsorized linear model fits  ">
+<param name="Local" value="predict.lmWinsor.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Predict method for Winsorized linear model fits with mixed effects  ">
+<param name="Local" value="predict.lmeWinsor.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Principal Differential Analysis ">
+<param name="Local" value="pda.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Product of two basisfd objects  ">
+<param name="Local" value="basisfd.product.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Quadrature points and weights for Simpson's rule  ">
+<param name="Local" value="quadset.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Reflux and tray level in a refinery ">
+<param name="Local" value="refinery.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Register Functional Data Objects Using a Continuous Criterion ">
+<param name="Local" value="register.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Reshape a vector or array to have 3 dimensions.   ">
+<param name="Local" value="as.array3.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Rotate a Matrix of Component Loadings using the VARIMAX Criterion ">
+<param name="Local" value="varmx.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Rotation of Functional Canonical Components with VARIMAX ">
+<param name="Local" value="varmx.cca.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Rotation of Functional Principal Components with VARIMAX Criterion ">
+<param name="Local" value="varmx.pca.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="singular value decomposition with automatic error handling  ">
+<param name="Local" value="svd2.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Smooth a functional data object using a directly specified roughness   penalty  ">
+<param name="Local" value="smooth.fdPar.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Smooth a Functional Data Object Using an Indirectly Specified   Roughness Penalty  ">
+<param name="Local" value="smooth.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Smooth Data Using a Directly Specified Roughness Penalty ">
+<param name="Local" value="smooth.basisPar.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Smooth Data with a Positive Function ">
+<param name="Local" value="smooth.pos.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Smooth Data with an Indirectly Specified Roughness Penalty  ">
+<param name="Local" value="smooth.basis.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Standard Deviation of Functional Data ">
+<param name="Local" value="sd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Sum of Functional Data ">
+<param name="Local" value="sum.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Summarize a Bivariate Functional Data Object ">
+<param name="Local" value="summary.bifd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Summarize a Functional Data Object ">
+<param name="Local" value="summary.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Summarize a Functional Parameter Object ">
+<param name="Local" value="summary.fdPar.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Summarize a Linear Differential Operator Object ">
+<param name="Local" value="summary.Lfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Swap argvals with y if the latter is simpler.   ">
+<param name="Local" value="argvalsy.swap.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Taylor representation of a B-Spline ">
+<param name="Local" value="TaylorSpline.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Values a Two-argument Functional Data Object ">
+<param name="Local" value="eval.bifd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Values of a Functional Data Object ">
+<param name="Local" value="eval.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Values of a Monotone Functional Data Object ">
+<param name="Local" value="eval.monfd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Values of Basis Functions or their Derivatives ">
+<param name="Local" value="getbasismatrix.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Variance, Covariance, and Correlation Surfaces for   Functional Data Object(s)    ">
+<param name="Local" value="var.fd.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Winsorized Regression  ">
+<param name="Local" value="lmWinsor.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Winsorized Regression with mixed effects  ">
+<param name="Local" value="lmeWinsor.html">
+</OBJECT>
+</UL>
+</UL>
+</BODY></HTML>

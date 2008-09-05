@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Values a Two-argument Functional Data Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for eval.bifd {fda}"><tr><td>eval.bifd {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Values a Two-argument Functional Data Object</h2>
+
+
+<h3>Description</h3>
+
+<p>
+A vector of argument values for the first argument <code>s</code> of the
+functional data object to be evaluated.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+eval.bifd(sevalarg, tevalarg, bifd, sLfdobj=0, tLfdobj=0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>sevalarg</code></td>
+<td>
+a vector of argument values for the first argument <code>s</code> of the 
+functional data object to be evaluated.
+</td></tr>
+<tr valign="top"><td><code>tevalarg</code></td>
+<td>
+a vector of argument values for the second argument <code>t</code> of the 
+functional data object to be evaluated.
+</td></tr>
+<tr valign="top"><td><code>bifd</code></td>
+<td>
+a two-argument functional data object.
+</td></tr>
+<tr valign="top"><td><code>sLfdobj</code></td>
+<td>
+either a nonnegative integer or a linear differential operator
+object.  If present, the derivative or the value of applying the
+operator to the object as a function of the first argument <code>s</code>
+is evaluated rather than the functions themselves.
+</td></tr>
+<tr valign="top"><td><code>tLfdobj</code></td>
+<td>
+either a nonnegative integer or a linear differential operator
+object.  If present, the derivative or the value of applying the
+operator to the object as a function of the second argument <code>t</code>
+is evaluated rather than the functions themselves.
+</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+an array of 2, 3, or 4 dimensions containing the function values.  The
+first dimension corresponds to the argument values in sevalarg, the
+second to argument values in tevalarg, the third if present to
+replications, and the fourth if present to functions.</p>
+
+<h3>Examples</h3>
+
+<pre>
+daybasis   &lt;- create.fourier.basis(c(0,365), 365)
+harmLcoef  &lt;- c(0,(2*pi/365)^2,0)
+harmLfd    &lt;- vec2Lfd(harmLcoef, c(0,365))
+templambda &lt;- 1.0
+tempfdPar  &lt;- fdPar(daybasis, harmLfd, lambda=1)
+tempfd     &lt;- smooth.basis(day.5,
+          CanadianWeather$dailyAv[,,"Temperature.C"], tempfdPar)$fd
+#    define the variance-covariance bivariate fd object
+tempvarbifd &lt;- var.fd(tempfd)
+#    evaluate the variance-covariance surface and plot
+weektime    &lt;- seq(0,365,len=53)
+tempvarmat  &lt;- eval.bifd(weektime,weektime,tempvarbifd)
+#    make a perspective plot of the variance function
+persp(tempvarmat)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

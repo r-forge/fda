@@ -1,0 +1,36 @@
+gait                   package:fda                   R Documentation
+
+_H_i_p _a_n_d _k_n_e_e _a_n_g_l_e _w_h_i_l_e _w_a_l_k_i_n_g
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Hip and knee angle in degrees through a 20 point movement cycle
+     for 39 boys
+
+_F_o_r_m_a_t:
+
+     An array of dim c(20, 39, 2) giving the "Hip Angle" and "Knee
+     Angle" for 39 repetitions of a 20 point gait cycle.
+
+_D_e_t_a_i_l_s:
+
+     The components of dimnames(gait) are as follows:
+
+     [[1]] standardized gait time = seq(from=0.025, to=0.975, by=0.05) 
+
+     [[2]] subject ID = "boy1", "boy2", ..., "boy39"  
+
+     [[3]] gait variable = "Hip Angle" or "Knee Angle"
+
+_S_o_u_r_c_e:
+
+     Ramsay, James O., and Silverman, Bernard W. (2006), _Functional
+     Data Analysis, 2nd ed._, Springer, New York.
+
+     Ramsay, James O., and Silverman, Bernard W. (2002), _Applied
+     Functional Data Analysis_, Springer, New York.
+
+_E_x_a_m_p_l_e_s:
+
+     plot(gait[,1, 1], gait[, 1, 2], type="b")
+

@@ -1,0 +1,120 @@
+<html><head><title>Create a Polynomial Basis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>create.polynomial.basis(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   create.polynomial.basis">
+<param name="keyword" value=" Create a Polynomial Basis">
+</object>
+
+
+<h2>Create a Polynomial Basis</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Creates a set of basis functions consisting of powers
+of the argument shifted by a constant.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+create.polynomial.basis(rangeval=c(0, 1), nbasis=2,
+                        ctr=midrange, dropind=NULL,
+                        quadvals=NULL, values=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>rangeval</code></td>
+<td>
+a vector of length 2 defining the range.
+</td></tr>
+<tr valign="top"><td><code>nbasis</code></td>
+<td>
+the number of basis functions. The default is 2,
+which defines a basis for straight lines.
+</td></tr>
+<tr valign="top"><td><code>ctr</code></td>
+<td>
+this value is used to shift the argument prior to taking
+its power.
+</td></tr>
+<tr valign="top"><td><code>dropind</code></td>
+<td>
+a vector of integers specifiying the basis functions to
+be dropped, if any.  For example, if it is required that
+a function be zero at the left boundary, this is achieved
+by dropping the first basis function, the only one that
+is nonzero at that point. Default value NULL.
+</td></tr>
+<tr valign="top"><td><code>quadvals</code></td>
+<td>
+a matrix with two columns and a number of rows equal to the number
+of argument values used to approximate an integral using Simpson's
+rule.  The first column contains these argument values.
+A minimum of 5 values are required for
+each inter-knot interval, and that is often enough. These
+are equally spaced between two adjacent knots.
+The second column contains the weights used for Simpson's
+rule.  These are proportional to 1, 4, 2, 4, ..., 2, 4, 1.
+</td></tr>
+<tr valign="top"><td><code>values</code></td>
+<td>
+a list containing the basis functions and their derivatives
+evaluated at the quadrature points contained in the first
+column of <code> quadvals </code>.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+The only difference between a monomial and a polynomial basis
+is the use of a shift value.  This helps to avoid rounding error
+when the argument values are a long way from zero.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+a basis object with the type <code>polynom</code>.</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="basisfd.html">basisfd</a></code>, 
+<code><a href="create.bspline.basis.html">create.bspline.basis</a></code>, 
+<code><a href="create.constant.basis.html">create.constant.basis</a></code>, 
+<code><a href="create.fourier.basis.html">create.fourier.basis</a></code>, 
+<code><a href="create.exponential.basis.html">create.exponential.basis</a></code>, 
+<code><a href="create.monomial.basis.html">create.monomial.basis</a></code>, 
+<code><a href="create.polygonal.basis.html">create.polygonal.basis</a></code>, 
+<code><a href="create.power.basis.html">create.power.basis</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  Create a polynomial basis over the years in the 20th century
+#  and center the basis functions on 1950.
+basisobj &lt;- create.polynomial.basis(c(1900, 2000), nbasis=3, ctr=1950)
+#  plot the basis
+# The following should work but doesn't;  2007.05.01
+#plot(basisobj)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

@@ -1,0 +1,120 @@
+<html><head><title>Order of a B-spline</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>norder(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   norder">
+<param name="keyword" value="R:   norder.fd">
+<param name="keyword" value="R:   norder.basisfd">
+<param name="keyword" value="R:   norder.default">
+<param name="keyword" value="R:   norder.bspline">
+<param name="keyword" value=" Order of a B-spline">
+</object>
+
+
+<h2>Order of a B-spline</h2>
+
+
+<h3>Description</h3>
+
+<p>
+norder = number of basis functions minus the number of interior
+knots.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+norder(x, ...) 
+## S3 method for class 'fd':
+norder(x, ...)
+## S3 method for class 'basisfd':
+norder(x, ...)
+## Default S3 method:
+norder(x, ...)
+norder.bspline(x, ...) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+Either a basisfd object or an object containing a basisfd object as
+a component.  
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+optional arguments currently unused</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+norder throws an error of basisfd[['type']] != 'bspline'.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+An integer giving the order of the B-spline.</p>
+
+<h3>Author(s)</h3>
+
+<p>
+Spencer Graves
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="create.bspline.basis.html">create.bspline.basis</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+bspl1.1 &lt;- create.bspline.basis(norder=1, breaks=0:1)
+
+stopifnot(norder(bspl1.1)==1)
+
+stopifnot(norder(fd(0, basisobj=bspl1.1))==1)
+
+stopifnot(norder(fd(rep(0,4)))==4)
+
+stopifnot(norder(list(fd(rep(0,4))))==4)
+## Not run: 
+norder(list(list(fd(rep(0,4)))))
+Error in norder.default(list(list(fd(rep(0, 4))))) : 
+  input is not a 'basisfd' object and does not have a 'basisfd'
+component. 
+## End(Not run)
+
+stopifnot(norder(create.bspline.basis(norder=1, breaks=c(0,.5, 1))) == 1) 
+
+stopifnot(norder(create.bspline.basis(norder=2, breaks=c(0,.5, 1))) == 2)
+
+# Defaut B-spline basis:  Cubic spline:  degree 3, order 4,
+# 21 breaks, 19 interior knots.  
+stopifnot(norder(create.bspline.basis()) == 4)
+
+## Not run: 
+norder(create.fourier.basis(c(0,12) ))
+Error in norder.bspline(x) : 
+  object x is of type = fourier;  'norder' is only defined for type = 'bsline'
+## End(Not run)
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Arithmetic on functional data ('fd') objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for arithmetic.fd {fda}"><tr><td>arithmetic.fd {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Arithmetic on functional data ('fd') objects</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Arithmetic on functional data objects
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+"+.fd"(e1, e2) 
+"-.fd"(e1, e2) 
+"*.fd"(e1, e2) 
+plus.fd(e1, e2, basisobj=basisobj1*basisobj2)
+minus.fd(e1, e2, basisobj=basisobj1*basisobj2)
+times.fd(e1, e2, basisobj=basisobj1*basisobj2)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>e1, e2</code></td>
+<td>
+object of class 'fd' or a numeric vector.  Note that 'e1+e2' will
+dispatch to plus.fd(e1, e2) only of e1 has class 'fd'.  Similarly,
+'e1-e2' or 'e1*e2' will dispatch to minus.fd(e1, e2) or time.fd(e1,
+e2), respetively, only if e1 is of class 'fd'.  
+</td></tr>
+<tr valign="top"><td><code>basisobj</code></td>
+<td>
+reference basis  
+</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+A function data object corresponding to the pointwise sum, difference
+or product of e1 and e2.  
+<br>
+If both arguments are functional data objects, the bases are the same,
+and the coefficient matrices are the same dims, the indicated
+operation is applied to the coefficient matrices of the two objects.
+In other words, e1+e2 is obtained for this case by adding the
+coefficient matrices from e1 and e2.  
+<br>
+If e1 or e2 is a numeric scalar,  that scalar is applied to the
+coefficient matrix of the functional data object.  
+<br>
+If either e1 or e2 is a numeric vector, it must be the same length as
+the number of replicated functional observations in the other
+argument.  
+<br>
+When both arguments are functional data objects, they need not have
+the same bases.  However, if they don't have the same number of
+replicates, then one of them must have a single replicate.  In the
+second case, the singleton function is replicated to match the number
+of replicates of the other function. In either case, they must have
+the same number of functions. When both arguments are functional data
+objects, and the bases are not the same, the basis used for the sum is
+constructed to be of higher dimension than the basis for either factor
+according to rules described in function TIMES for two basis objects.</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="basisfd.html">basisfd</a></code>, 
+<code><a href="basisfd.product.html">basisfd.product</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+##
+## add a parabola to itself
+##
+bspl4 &lt;- create.bspline.basis(nbasis=4)
+parab4.5 &lt;- fd(c(3, -1, -1, 3)/3, bspl4)
+str(parab4.5+parab4.5)
+# coefs = c(6, -2, -2, 6)/3
+str(parab4.5-parab4.5)
+# coefs = c(0, 0, 0, 0)
+
+##
+## Same example with interior knots at 1/3 and 1/5
+##
+bspl5.3 &lt;- create.bspline.basis(breaks=c(0, 1/3, 1))
+plot(bspl5.3)
+x. &lt;- seq(0, 1, .1)
+para4.5.3 &lt;- smooth.basis(x., 4*(x.-0.5)^2, fdParobj=bspl5.3)[['fd']]
+plot(para4.5.3)
+
+bspl5.2 &lt;- create.bspline.basis(breaks=c(0, 1/2, 1))
+plot(bspl5.2)
+para4.5.2 &lt;- smooth.basis(x., 4*(x.-0.5)^2, fdParobj=bspl5.2)[['fd']]
+plot(para4.5.2)
+
+str(para4.5.3+para4.5.2)
+str(para4.5.3-para4.5.2)
+str(para4.5.3*para4.5.2)
+# interior knots of the sum
+# = union(interior knots of the summands);
+# ditto for difference and product.  
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

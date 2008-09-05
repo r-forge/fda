@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Create a Polygonal Basis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for create.polygonal.basis {fda}"><tr><td>create.polygonal.basis {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Create a Polygonal Basis</h2>
+
+
+<h3>Description</h3>
+
+<p>
+A basis is set up for constructing polygonal lines, consisting of 
+straight line segments that join together.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+create.polygonal.basis(argvals=NULL, dropind=NULL,
+                       quadvals=NULL, values=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>argvals</code></td>
+<td>
+a strictly increasing vector of argument values at which line
+segments join to form a polygonal line.
+</td></tr>
+<tr valign="top"><td><code>dropind</code></td>
+<td>
+a vector of integers specifiying the basis functions to
+be dropped, if any.  For example, if it is required that
+a function be zero at the left boundary, this is achieved
+by dropping the first basis function, the only one that
+is nonzero at that point. Default value NULL.
+</td></tr>
+<tr valign="top"><td><code>quadvals</code></td>
+<td>
+a matrix with two columns and a number of rows equal to the number
+of argument values used to approximate an integral using Simpson's
+rule.  The first column contains these argument values.  
+A minimum of 5 values are required for
+each inter-knot interval, and that is often enough. These
+are equally spaced between two adjacent knots.
+The second column contains the weights used for Simpson's
+rule.  These are proportional to 1, 4, 2, 4, ..., 2, 4, 1.
+</td></tr>
+<tr valign="top"><td><code>values</code></td>
+<td>
+a list containing the basis functions and their derivatives
+evaluated at the quadrature points contained in the first
+column of <code> quadvals </code>.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+The actual basis functions consist of triangles, each with its apex
+over an argument value. Note that in effect the polygonal basis is
+identical to a B-spline basis of order 2 and a knot or break value at
+each argument value.  The range of the polygonal basis is set to the
+interval defined by the smallest and largest argument values.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+a basis object with the type <code>polyg</code>.</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="basisfd.html">basisfd</a></code>, 
+<code><a href="create.bspline.basis.html">create.bspline.basis</a></code>, 
+<code><a href="create.constant.basis.html">create.constant.basis</a></code>, 
+<code><a href="create.exponential.basis.html">create.exponential.basis</a></code>, 
+<code><a href="create.fourier.basis.html">create.fourier.basis</a></code>, 
+<code><a href="create.monomial.basis.html">create.monomial.basis</a></code>, 
+<code><a href="create.polynomial.basis.html">create.polynomial.basis</a></code>, 
+<code><a href="create.power.basis.html">create.power.basis</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  Create a polygonal basis over the interval [0,1]
+#  with break points at 0, 0.1, ..., 0.95, 1
+(basisobj &lt;- create.polygonal.basis(seq(0,1,0.1)))
+#  plot the basis
+plot(basisobj)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

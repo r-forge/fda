@@ -1,0 +1,117 @@
+<html><head><title>Numeric and character vectors to facilitate working with dates</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>dateAccessories(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   dateAccessories">
+<param name="keyword" value="R:   monthAccessories">
+<param name="keyword" value="R:   dayOfYear">
+<param name="keyword" value="R:   day.5">
+<param name="keyword" value="R:   daysPerMonth">
+<param name="keyword" value="R:   monthEnd">
+<param name="keyword" value="R:   monthEnd.5">
+<param name="keyword" value="R:   monthBegin.5">
+<param name="keyword" value="R:   monthMid">
+<param name="keyword" value="R:   monthLetters">
+<param name="keyword" value="R:   weeks">
+<param name="keyword" value=" Numeric and character vectors to facilitate working with dates">
+</object>
+
+
+<h2>Numeric and character vectors to facilitate working with dates</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Numeric and character vectors to simplify functional data computations
+and plotting involving dates.
+</p>
+
+
+<h3>Format</h3>
+
+<p>
+<dt>dayOfYear</dt><dd>a numeric vector = 1:365 
+</dd>
+<dt>day.5 </dt><dd>a numeric vector = dayOfYear-0.5 = 0.5, 1.5, ..., 364.5 
+</dd>
+<dt>daysPerMonth</dt><dd>a numeric vector of the days in each month (ignoring leap years)
+with names = month.abb
+</dd>
+<dt>monthEnd</dt><dd>a numeric vector of cumsum(daysPerMonth) with names = month.abb
+</dd>
+<dt>monthEnd.5</dt><dd>a numeric vector of the middle of the last day of each month with
+names = month.abb = c(Jan=30.5, Feb=58.5, ..., Dec=364.5)
+</dd>
+<dt>monthBegin.5</dt><dd>a numeric vector of the middle of the first day of each month with
+names - month.abb = c(Jan=0.5, Feb=31.5, ..., Dec=334.5) 
+</dd>
+<dt>monthMid</dt><dd>a numeric vector of the middle of the month = (monthBegin.5 +
+monthEnd.5)/2  
+</dd>
+<dt>monthLetters</dt><dd>A character vector of c("j", "F", "m", "A", "M", "J", "J", "A",
+"S", "O", "N", "D"), with 'month.abb' as the names.  
+</dd>
+<dt>weeks</dt><dd>a numeric vector of length 53 marking 52 periods of approximately 7
+days each throughout the year = c(0, 365/52, ..., 365)
+</dd>
+</p>
+
+
+<h3>Details</h3>
+
+<p>
+Miscellaneous vectors often used in 'fda' scripts.
+</p>
+
+
+<h3>Source</h3>
+
+<p>
+Ramsay, James O., and Silverman, Bernard W. (2006), <EM>Functional
+Data Analysis, 2nd ed.</EM>, Springer, New York, pp. 5, 47-53.
+</p>
+<p>
+Ramsay, James O., and Silverman, Bernard W. (2002), <EM>Applied
+Functional Data Analysis</EM>, Springer, New York
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="axisIntervals.html">axisIntervals</a></code> 
+<code><a onclick="findlink('base', 'Constants.html')" style="text-decoration: underline; color: blue; cursor: hand">month.abb</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+daybasis65 &lt;- create.fourier.basis(c(0, 365), 65)
+daytempfd &lt;- with(CanadianWeather, smooth.basisPar(day.5, 
+    dailyAv[,,"Temperature.C"]) )
+plot(daytempfd, axes=FALSE)
+axisIntervals(1) 
+# axisIntervals by default uses
+# monthBegin.5, monthEnd.5, monthMid, and month.abb
+axis(2)  
+</pre>
+
+<script Language="JScript">
+function findlink(pkg, fn) {
+var Y, link;
+Y = location.href.lastIndexOf("\\") + 1;
+link = location.href.substring(0, Y);
+link = link + "../../" + pkg + "/chtml/" + pkg + ".chm::/" + fn;
+location.href = link;
+}
+</script>
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

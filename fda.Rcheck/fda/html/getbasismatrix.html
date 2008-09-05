@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Values of Basis Functions or their Derivatives</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for getbasismatrix {fda}"><tr><td>getbasismatrix {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Values of Basis Functions or their Derivatives</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Evaluate a set of basis functions or their derivatives at
+a set of argument values.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getbasismatrix(evalarg, basisobj, nderiv=0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>evalarg</code></td>
+<td>
+a vector of arguments values.
+</td></tr>
+<tr valign="top"><td><code>basisobj</code></td>
+<td>
+a basis object.
+</td></tr>
+<tr valign="top"><td><code>nderiv</code></td>
+<td>
+a nonnegative integer specifying the derivative to be evaluated.
+</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+a matrix of basis function or derivative values.  Rows correspond
+to argument values and columns to basis functions.</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="eval.fd.html">eval.fd</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Minimal example:  a B-spline of order 1, i.e., a step function
+# with 0 interior knots:
+bspl1.1 &lt;- create.bspline.basis(norder=1, breaks=0:1)
+getbasismatrix(seq(0, 1, .2), bspl1.1)
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

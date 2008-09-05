@@ -1,0 +1,129 @@
+<html><head><title>Smooth Data with a Positive Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>smooth.pos(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   smooth.pos">
+<param name="keyword" value=" Smooth Data with a Positive Function">
+</object>
+
+
+<h2>Smooth Data with a Positive Function</h2>
+
+
+<h3>Description</h3>
+
+<p>
+A set of data is smoothed with a functional data object that only
+takes positive values.  For example, this function can be used
+to estimate a smooth variance function from a set of squared residuals.
+A function $W(t)$ is estimated such that that the smoothing
+function is $exp[W(t)]$.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+smooth.pos(argvals, y, WfdParobj, wt=rep(1,nobs),
+           conv=.0001, iterlim=20, dbglev=1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>argvals</code></td>
+<td>
+a vector of argument values.
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+a vector of data values.  This function can only smooth
+one set of data at a time.
+</td></tr>
+<tr valign="top"><td><code>WfdParobj</code></td>
+<td>
+a functional parameter object that provides an initial
+value for the coefficients defining function $W(t)$,
+and a roughness penalty on this function.
+</td></tr>
+<tr valign="top"><td><code>wt</code></td>
+<td>
+a vector of weights to be used in the smoothing.
+</td></tr>
+<tr valign="top"><td><code>conv</code></td>
+<td>
+a convergence criterion.
+</td></tr>
+<tr valign="top"><td><code>iterlim</code></td>
+<td>
+the maximum number of iterations allowed in the minimization
+of error sum of squares.
+</td></tr>
+<tr valign="top"><td><code>dbglev</code></td>
+<td>
+either 0, 1, or 2.  This controls the amount information printed out on
+each iteration, with 0 implying no output, 1 intermediate output level,
+and 2 full output.  If either level 1 or 2 is specified, it can be
+helpful to turn off the output buffering feature of S-PLUS.
+</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+a named list of length 4 containing:
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>Wfdobj</code></td>
+<td>
+a functional data object defining function $W(x)$ that that
+optimizes the fit to the data of the monotone function that it defines.
+</td></tr>
+<tr valign="top"><td><code>Flist</code></td>
+<td>
+a named list containing three results for the final converged solution:
+(1)
+<B>f</B>: the optimal function value being minimized,
+(2)
+<B>grad</B>: the gradient vector at the optimal solution,   and
+(3)
+<B>norm</B>: the norm of the gradient vector at the optimal solution.
+</td></tr>
+<tr valign="top"><td><code>iternum</code></td>
+<td>
+the number of iterations.
+</td></tr>
+<tr valign="top"><td><code>iternum</code></td>
+<td>
+the number of iterations.
+</td></tr>
+<tr valign="top"><td><code>iterhist</code></td>
+<td>
+a <code>iternum+1</code> by 5 matrix containing the iteration
+history.
+</td></tr>
+</table>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="smooth.monotone.html">smooth.monotone</a></code>, 
+<code><a href="smooth.morph.html">smooth.morph</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#See the analyses of the daily weather data for examples.
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

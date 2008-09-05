@@ -1,0 +1,182 @@
+<html><head><title>Define a Functional Parameter Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>fdPar(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   fdPar">
+<param name="keyword" value=" Define a Functional Parameter Object">
+</object>
+
+
+<h2>Define a Functional Parameter Object</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Functional parameter objects are used as arguments to functions that
+estimate functional parameters, such as smoothing functions like
+<code>smooth.basis</code>.  A functional parameter object is a functional
+data object with additional slots specifying a roughness penalty, a
+smoothing parameter and whether or not the functional parameter is to
+be estimated or held fixed.  Functional parameter objects are used as
+arguments to functions that estimate functional parameters.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+fdPar(fdobj=NULL, Lfdobj=NULL, lambda=0, estimate=TRUE, penmat=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fdobj</code></td>
+<td>
+a functional data object, functional basis object, a functional
+parameter object or a matrix.  If class(fdobj) == 'basisfd', it is
+converted to functional data objects with the identity matrix as the
+coefficient matrix.  If it a matrix, it is replaced by fd(fdobj).      
+</td></tr>
+<tr valign="top"><td><code>Lfdobj</code></td>
+<td>
+either a nonnegative integer or a linear differential operator
+object.  If NULL and fdobj[['type']] == 'bspline', Lfdobj =
+int2Lfd(max(0, norder-2)), where norder = order of fdobj.   
+</td></tr>
+<tr valign="top"><td><code>lambda</code></td>
+<td>
+a nonnegative real number specifying the amount of smoothing
+to be applied to the estimated functional parameter.
+</td></tr>
+<tr valign="top"><td><code>estimate</code></td>
+<td>
+a logical value:  if <code>TRUE</code>, the functional parameter is
+estimated, otherwise, it is held fixed.
+</td></tr>
+<tr valign="top"><td><code>penmat</code></td>
+<td>
+a roughness penalty matrix.  Including this can eliminate the need
+to compute this matrix over and over again in some types of
+calculations.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+Functional parameters are often needed to specify initial
+values for iteratively refined estimates, as is the case in
+functions <code>register.fd</code> and <code>smooth.monotone</code>.
+</p>
+<p>
+Often a list of functional parameters must be supplied to a function
+as an argument, and it may be that some of these parameters are
+considered known and must remain fixed during the analysis.  This is
+the case for functions <code>fRegress</code> and  <code>pda.fd</code>, for
+example.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+a functional parameter object</p>
+
+<h3>Source</h3>
+
+<p>
+Ramsay, James O., and Silverman, Bernard W. (2006), <EM>Functional
+Data Analysis, 2nd ed.</EM>, Springer, New York.
+</p>
+<p>
+Ramsay, James O., and Silverman, Bernard W. (2002), <EM>Applied
+Functional Data Analysis</EM>, Springer, New York
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="cca.fd.html">cca.fd</a></code>, 
+<code><a href="density.fd.html">density.fd</a></code>, 
+<code><a href="fRegress.html">fRegress</a></code>, 
+<code><a href="intensity.fd.html">intensity.fd</a></code>, 
+<code><a href="pca.fd.html">pca.fd</a></code>, 
+<code><a href="smooth.fdPar.html">smooth.fdPar</a></code>, 
+<code><a href="smooth.basis.html">smooth.basis</a></code>, 
+<code><a href="smooth.basisPar.html">smooth.basisPar</a></code>, 
+<code><a href="smooth.monotone.html">smooth.monotone</a></code>,
+<code>\line{int2Lfd}</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+##
+## Simple example
+##
+#  set up range for density
+rangeval &lt;- c(-3,3)
+#  set up some standard normal data
+x &lt;- rnorm(50)
+#  make sure values within the range
+x[x &lt; -3] &lt;- -2.99
+x[x &gt;  3] &lt;-  2.99
+#  set up basis for W(x)
+basisobj &lt;- create.bspline.basis(rangeval, 11)
+#  set up initial value for Wfdobj
+Wfd0 &lt;- fd(matrix(0,11,1), basisobj)
+WfdParobj &lt;- fdPar(Wfd0)
+
+WfdP3 &lt;- fdPar(seq(-3, 3, length=11))
+
+##
+##  smooth the Canadian daily temperature data 
+##
+#    set up the fourier basis
+nbasis   &lt;- 365
+dayrange &lt;- c(0,365)
+daybasis &lt;- create.fourier.basis(dayrange, nbasis)
+dayperiod &lt;- 365
+harmaccelLfd &lt;- vec2Lfd(c(0,(2*pi/365)^2,0), dayrange)
+#  Make temperature fd object
+#  Temperature data are in 12 by 365 matrix tempav
+#    See analyses of weather data.
+#  Set up sampling points at mid days
+daytime  &lt;- (1:365)-0.5
+#  Convert the data to a functional data object
+daybasis65 &lt;- create.fourier.basis(dayrange, nbasis, dayperiod)
+templambda &lt;- 1e1
+tempfdPar  &lt;- fdPar(fdobj=daybasis65, Lfdobj=harmaccelLfd, lambda=templambda)
+
+#FIXME
+#tempfd &lt;- smooth.basis(CanadianWeather$tempav, daytime, tempfdPar)
+#  Set up the harmonic acceleration operator
+Lbasis  &lt;- create.constant.basis(dayrange);
+Lcoef   &lt;- matrix(c(0,(2*pi/365)^2,0),1,3)
+bfdobj  &lt;- fd(Lcoef,Lbasis)
+bwtlist &lt;- fd2list(bfdobj)
+harmaccelLfd &lt;- Lfd(3, bwtlist)
+#  Define the functional parameter object for
+#  smoothing the temperature data
+lambda   &lt;- 0.01  #  minimum GCV estimate
+#tempPar &lt;- fdPar(daybasis365, harmaccelLfd, lambda)
+#  smooth the data
+#tempfd &lt;- smooth.basis(daytime, CanadialWeather$tempav, tempPar)$fd
+#  plot the temperature curves
+#plot(tempfd)
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

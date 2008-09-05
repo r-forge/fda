@@ -1,0 +1,73 @@
+<html><head><title>Reflux and tray level in a refinery</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>refinery(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   refinery">
+<param name="keyword" value=" Reflux and tray level in a refinery">
+</object>
+
+
+<h2>Reflux and tray level in a refinery</h2>
+
+
+<h3>Description</h3>
+
+<p>
+194 observations on reflux and "tray 47 level" in a distallation
+column in an oil refinery.
+</p>
+
+
+<h3>Format</h3>
+
+<p>
+A data.frame with the following components:  
+<dl>
+<dt>Time</dt><dd>observation time 0:193 
+</dd>
+<dt>Reflux</dt><dd>reflux flow centered on the mean of the first 60 observations 
+</dd>
+<dt>Tray47</dt><dd>tray 47 level centered on the mean of the first 60
+observations 
+</dd>
+</dl>
+
+<h3>Source</h3>
+
+<p>
+Ramsay, James O., and Silverman, Bernard W. (2006), <EM>Functional
+Data Analysis, 2nd ed.</EM>, Springer, New York, p. 4, Figure 1.4, and
+chapter 17.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+    attach(refinery)
+# allow space for an axis on the right 
+    op &lt;- par(mar=c(5, 4, 4, 5)+0.1)
+# plot uval 
+    plot(Time, Reflux, type="l", bty="n")
+# add yval 
+    y.u &lt;- diff(range(Tray47))/diff(range(Reflux))
+    u0 &lt;- min(Reflux)
+    y0 &lt;- min(Tray47)
+
+    lines(Time, u0+(Tray47-y0)/y.u, lty=3, lwd=1.5, col="red")
+    y.tick &lt;- pretty(range(Tray47))
+    axis(4, at=u0+(y.tick)/y.u, labels=y.tick, col="red", lty=3,
+            lwd=1.5)
+# restore previous plot margins
+    par(op)
+    detach(refinery)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

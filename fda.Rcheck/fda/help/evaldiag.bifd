@@ -1,0 +1,40 @@
+evaldiag.bifd              package:fda              R Documentation
+
+_E_v_a_l_u_a_t_e _t_h_e _D_i_a_g_o_n_a_l _o_f _a _B_i_v_a_r_i_a_t_e _F_u_n_c_t_i_o_n_a_l _D_a_t_a _O_b_j_e_c_t
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Bivariate function data objects are functions of two arguments,
+     $f(s,t)$.  It can be useful to evaluate the function for argument
+     values satisying $s=t$, such as evaluating the univariate variance
+     function given the bivariate function that defines the
+     variance-covariance function or surface.  A linear differential
+     operator can be applied to function $f(s,t)$ considered as a
+     univariate function of either object holding the other object
+     fixed.
+
+_U_s_a_g_e:
+
+     evaldiag.bifd(evalarg, bifdobj, sLfd=int2Lfd(0),
+                                     tLfd=int2Lfd(0))
+
+_A_r_g_u_m_e_n_t_s:
+
+ evalarg: a vector of values of $s = t$. 
+
+ bifdobj: a bivariate functional data object of the 'bifd' class. 
+
+    sLfd: either a nonnegative integer or a linear differential
+          operator object. 
+
+    tLfd: either a nonnegative integer or a linear differential
+          operator object. 
+
+_V_a_l_u_e:
+
+     a vector or matrix of diagonal function values.
+
+_S_e_e _A_l_s_o:
+
+     'var.fd',  'eval.bifd'
+

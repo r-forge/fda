@@ -1,0 +1,146 @@
+<html><head><title>Extract the knots from a function basis or data object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>knots.fd(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   knots.fd">
+<param name="keyword" value="R:   knots.fdSmooth">
+<param name="keyword" value="R:   knots.basisfd">
+<param name="keyword" value=" Extract the knots from a function basis or data object">
+</object>
+
+
+<h2>Extract the knots from a function basis or data object</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Extract either all or only the interior knots from an object of class
+<code>basisfd</code>, <code>fd</code>, or <code>fdSmooth</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'fd':
+knots(Fn, interior=TRUE, ...)
+## S3 method for class 'fdSmooth':
+knots(Fn, interior=TRUE, ...)
+## S3 method for class 'basisfd':
+knots(Fn, interior=TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>Fn</code></td>
+<td>
+an object of class <code>basisfd</code> or containing such an object 
+</td></tr>
+<tr valign="top"><td><code>interior</code></td>
+<td>
+logical:
+<br>
+if TRUE, the first Fn[["k"]]+1 of Fn[["knots"]] are dropped, and the
+next Fn[["g"]] are returned.
+<br>
+Otherwise, the first Fn[["n"]] of Fn[["knots"]] are returned.  
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+ignored</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+The interior knots of a <code>bspline</code> basis are stored in the
+<code>params</code> component.  The remaining knots are in the
+<code>rangeval</code> component, with mulltiplicity norder(Fn).
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+Numeric vector.  If 'interior' is TRUE, this is the <code>params</code>
+component of the <code>bspline</code> basis.  Otherwise, <code>params</code> is
+bracketed by rep(rangeval, norder(basisfd).</p>
+
+<h3>Author(s)</h3>
+
+<p>
+Spencer Graves
+</p>
+
+
+<h3>References</h3>
+
+<p>
+Dierckx, P. (1991) <EM>Curve and Surface Fitting with Splines</EM>,
+Oxford Science Publications.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="fd.html">fd</a></code>,
+<code><a href="create.bspline.basis.html">create.bspline.basis</a></code>,
+<code><a onclick="findlink('DierckxSpline', 'knots.dierckx.html')" style="text-decoration: underline; color: blue; cursor: hand">knots.dierckx</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- 0:24
+y &lt;- c(1.0,1.0,1.4,1.1,1.0,1.0,4.0,9.0,13.0,
+       13.4,12.8,13.1,13.0,14.0,13.0,13.5,
+       10.0,2.0,3.0,2.5,2.5,2.5,3.0,4.0,3.5)
+if(require(DierckxSpline)){
+   z1 &lt;- curfit(x, y, method = "ss", s = 0, k = 3)
+   knots1 &lt;- knots(z1)
+   knots1All &lt;- knots(z1, interior=FALSE) # to see all knots
+#
+   fda1 &lt;- dierckx2fd(z1)
+   fdaKnots &lt;- knots(fda1)
+   fdaKnotsA &lt;- knots(fda1, interior=FALSE)
+   stopifnot(all.equal(knots1, fdaKnots))
+   stopifnot(all.equal(knots1All, fdaKnotsA))
+}
+
+# knots.fdSmooth 
+girlGrowthSm &lt;- with(growth, smooth.basisPar(argvals=age, y=hgtf))
+
+girlKnots.fdSm &lt;- knots(girlGrowthSm) 
+girlKnots.fdSmA &lt;- knots(girlGrowthSm, interior=FALSE)
+stopifnot(all.equal(girlKnots.fdSm, girlKnots.fdSmA[5:33]))
+
+girlKnots.fd &lt;- knots(girlGrowthSm$fd) 
+girlKnots.fdA &lt;- knots(girlGrowthSm$fd, interior=FALSE)
+
+stopifnot(all.equal(girlKnots.fdSm, girlKnots.fd))
+stopifnot(all.equal(girlKnots.fdSmA, girlKnots.fdA))
+
+</pre>
+
+<script Language="JScript">
+function findlink(pkg, fn) {
+var Y, link;
+Y = location.href.lastIndexOf("\\") + 1;
+link = location.href.substring(0, Y);
+link = link + "../../" + pkg + "/chtml/" + pkg + ".chm::/" + fn;
+location.href = link;
+}
+</script>
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>
