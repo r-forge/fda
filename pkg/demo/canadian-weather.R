@@ -1274,8 +1274,8 @@ for (ilam in 1:nlam) {
 }
 
 plot(loglam, SSE.CV, type="b",
-	  xlab="log_{10} smoothing parameter lambda",
-	  ylab="Cross-validation score")
+	  xlab="log smoothing parameter lambda",
+	  ylab="Cross-validation score",cex.lab=1.5,cex.axis=1.5)
 
 #  analysis with minimum CV smoothing
 
