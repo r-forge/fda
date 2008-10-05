@@ -885,14 +885,17 @@ y2cMap <- solve(crossprod(smallbasismat), t(smallbasismat))
 #  names for climate zones
 
 zonenames <- c("Canada  ",
-               "Atlantic", "Pacific ", "Contintl", "Arctic  ")
+               "Atlantic", "Pacific ", "Contintal", "Arctic  ")
 
 #  indices for (weather stations in each of four climate zones
 
-atlindex <- c(1,2,4,8,9,13,14,15,19,22,23,24,25,28,34)
-pacindex <- c(12,17,18,30,31)
-conindex <- c(3,5,6,7,16,20,26,27,29,32,33,35)
-artindex <- c(10,11,21)
+index = 1:35
+
+
+atlindex <- index[CanadianWeather$region == "Atlantic"]
+pacindex <- index[CanadianWeather$region == "Pacific"]
+conindex <- index[CanadianWeather$region == "Continental"]
+artindex <- index[CanadianWeather$region == "Arctic"]
 
 #  Set up a design matrix having a column for (the grand mean, and
 #    a column for (each climate zone effect. Add a dummy contraint
