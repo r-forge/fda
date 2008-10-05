@@ -1024,7 +1024,7 @@ t.res = tperm.fd(tempfd[atlindex],tempfd[pacindex])
 
 # instead, we'll try a permutation F-test for the regression
 
-F.res = Fperm.fd(tempfd, xfdlist, betalist)
+F.res = Fperm.fd(tempfd, xfdlist, betalist,cex.axis=1.5,cex.lab=1.5)
 
 
 
@@ -1275,7 +1275,8 @@ for (ilam in 1:nlam) {
 
 plot(loglam, SSE.CV, type="b",
 	  xlab="log smoothing parameter lambda",
-	  ylab="Cross-validation score",cex.lab=1.5,cex.axis=1.5)
+	  ylab="Cross-validation score",cex.lab=1.5,cex.axis=1.5,
+	  lwd=2)
 
 #  analysis with minimum CV smoothing
 
@@ -1309,7 +1310,7 @@ title("Regression coefficient for temperature")
 #  plot the fit
 
 par(mfrow=c(1,1), pty="m")
-plot (annualprechat, annualprec, type="p")
+plot (annualprechat, annualprec, type="p",cex.lab=1.5,cex.axis=1.5)
 lines(annualprechat, annualprechat, lty=2)
 
 #  compute squared multiple correlation
@@ -1321,7 +1322,7 @@ Rsqrd <- covmat[1,2]^2/(covmat[1,1]*covmat[2,2])
 #  compute SigmaE
 
 resid  <- annualprec - annualprechat
-SigmaE <- mean(resid^2)
+SigmaE <- sum(resid^2)/(35-fRegressList$df)
 SigmaE <- SigmaE*diag(rep(1,35))
 
 #  recompute the analysis to get confidence limits
@@ -1347,7 +1348,8 @@ betaplotmat <- cbind(betavec, betavec+2*betastderrvec,
                               betavec-2*betastderrvec)
 
 matplot(day.5, betaplotmat, type="l", lty=c(1,4,4),
-        xlab="Day", ylab="Temperature Reg. Coeff.")
+        xlab="Day", ylab="Temperature Reg. Coeff.",lwd=2,
+	 cex.lab=1.5,cex.axis=1.5)
 lines(c(0, 365),c(0,0),lty=2)
 
 
