@@ -54,8 +54,8 @@ Fperm.fd <- function(yfdPar, xfdlist, betalist,wt=NULL, # Standard inputs to fRe
         if(is.fd(yfdPar)){
             ylims = c(min(c(Fvals,qval)),max(c(Fobs,qval)))
     
-		if( is.null(names(x1fd$fdnames)) ){ xlab = 'argvals' }
-		else{ xlab = names(x1fd$fdnames)[1] }
+		if( is.null(names(yhat$fdnames)) ){ xlab = 'argvals' }
+		else{ xlab = names(yhat$fdnames)[1] }
 
             plot(argvals,Fvals,type="l",ylim=ylims,col=2,lwd=2,
 			xlab=xlab,ylab='F-statistic',main='Permutation F-Test',...)
