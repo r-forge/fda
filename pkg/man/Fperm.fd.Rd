@@ -10,7 +10,7 @@
 }
 \usage{
 Fperm.fd(yfdPar, xfdlist, betalist,wt=NULL,
-            nperm=200,argvals=NULL,q=0.95,plotres=TRUE)
+            nperm=200,argvals=NULL,q=0.05,plotres=TRUE,...)
 }
 \arguments{
   \item{yfdPar}{
@@ -64,8 +64,7 @@ Fperm.fd(yfdPar, xfdlist, betalist,wt=NULL,
     the point-wise F-statistic.
   }
   \item{q}{
-    Critical quantile of the null distribution to compare to the observed
-    F-statistic.
+    Critical upper-tail quantile of the null distribution to compare to the observed F-statistic.
   }
   \item{plotres}{
     Argument to plot a visual display of the null distribution displaying the
