@@ -68,7 +68,7 @@ tperm.fd <- function(x1fd,x2fd,nperm=200,q=0.05,argvals=NULL,plotres=TRUE,...) #
 	  }
 	  else{ xlab = 'argvals' }
 
-        ylims = c( min(Tvals),max(Tobs,qval))
+        ylims = c( min(Tvals,qvals.pts),max(Tobs,qval))
 
         plot(argvals,Tvals,type='l',col=2,ylim=ylims,lwd=2,
 		xlab=xlab,ylab='t-statistic',main='Permutation t-Test',...)

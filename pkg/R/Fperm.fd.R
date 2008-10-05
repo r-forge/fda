@@ -52,7 +52,7 @@ Fperm.fd <- function(yfdPar, xfdlist, betalist,wt=NULL, # Standard inputs to fRe
 
     if(plotres){
         if(is.fd(yfdPar)){
-            ylims = c(min(c(Fvals,qval)),max(c(Fobs,qval)))
+            ylims = c(min(c(Fvals,qval,qvals.pts)),max(c(Fobs,qval)))
     
 		if( is.null(names(yhat$fdnames)) ){ xlab = 'argvals' }
 		else{ xlab = names(yhat$fdnames)[1] }
