@@ -8,7 +8,7 @@
   groups of functional data objects.
 }
 \usage{
- tperm.fd(x1fd, x2fd, nperm=200, q=0.95, argvals=NULL, plotres=TRUE)
+ tperm.fd(x1fd, x2fd, nperm=200, q=0.05, argvals=NULL, plotres=TRUE,...)
 }
 \arguments{
   \item{x1fd}{
@@ -26,8 +26,7 @@
     the point-wise F-statistic.
   }
   \item{q}{
-    Critical quantile of the null distribution to compare to the observed
-    F-statistic.
+    Critical upper-tail quantile of the null distribution to compare to the observed F-statistic.
   }
   \item{plotres}{
     Argument to plot a visual display of the null distribution displaying the
