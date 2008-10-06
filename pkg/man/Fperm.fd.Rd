@@ -70,8 +70,10 @@ Fperm.fd(yfdPar, xfdlist, betalist,wt=NULL,
     Argument to plot a visual display of the null distribution displaying the
     \code{q}th quantile and observed F-statistic.
   }
-}
-\details{
+  \item{...}{
+    Additional plotting arguments that can be used with \code{plot}.
+  }
+} \details{
    An F-statistic is calculated as the ratio of residual variance to predicted
   variance. The observed F-statistic is returned along with the permutation
   distribution.
@@ -116,7 +118,9 @@ Fperm.fd(yfdPar, xfdlist, betalist,wt=NULL,
   Ramsay, James O., and Silverman, Bernard W. (2006), \emph{Functional
     Data Analysis, 2nd ed.}, Springer, New York.
 }
-\seealso{
+\section{Side Effects}{
+  a plot of the functional observations
+} \seealso{
   \code{\link{fRegress}}
   \code{\link{Fstat.fd}}
 %  \code{\link{tstat.fd}}
