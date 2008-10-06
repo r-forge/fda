@@ -962,7 +962,7 @@ for (j in 1:p) {
 #  plot predicted functions
 
 yhatfdobj <- fRegressList$yhatfdobj
-plot(yhatfdobj)
+plot(yhatfdobj,main='Predicted Temperature',)
 
 #  compute residual matrix and get covariance of residuals
 
@@ -1004,7 +1004,7 @@ par(op)
 
 #  plot regression functions with confidence limits
 
-op <- par(mfrow=c(2,3))
+op <- par(mfrow=c(3,2))
 for (j in 1:p) {
 	betafdParj  <- betaestlist[[j]]
 	betafdj     <- betafdParj$fd
