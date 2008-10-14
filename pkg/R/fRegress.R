@@ -345,9 +345,10 @@ if (inherits(yfdPar, "fdPar") || inherits(yfdPar, "fd")) {
                 ncoef <- ncoef + bnbasis
             }
         }
-        else if (inherits(xfdj, "double")) {
+        else if (inherits(xfdj, "numeric")) {
             Zmatj  <- xfdj
-            Nj     <- dim(Zmatj)[1]
+		if( !is.matrix(Zmatj)){ Zmatj = as.matrix(Zmatj) }
+		Nj     <- dim(Zmatj)[1] 
             if (Nj != N) stop(
 				paste("Matrix in XFDLIST[[",j,"has the wrong number of rows."))
             Zmat   <- cbind(Zmat,Zmatj)
