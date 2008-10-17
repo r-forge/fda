@@ -37,61 +37,73 @@ fd <- function (coef=NULL, basisobj=NULL, fdnames=defaultnames)
 
   #  Returns:
   #  FD ... a functional data object
-# last modified 2008.06.28 by Spencer Graves 
-# previously modified 2007.11.28, 2008.09.18 and 2005.10.26
 
-    #  check basisobj
+  #  Last modified 2008.10.16 by Spencer Graves
+  #  Previously modified 28 September 2008 by Jim Ramsay
+
+##
+## 1.  check coef and get its dimensions
+##
+  if(is.null(coef) && is.null(basisobj)) basisobj <- basisfd()
+
+  if(is.null(coef))coef <- rep(0, basisobj[['nbasis']])
+
+  type <- basisobj$type
+
+  {
+    if (!is.numeric(coef)) stop("'coef' is not numeric.")
+    else if (is.vector(coef)) {
+      coef  <- as.matrix(coef)
+      if (identical(type, "constant")) coef <- t(coef)
+      coefd <- dim(coef)
+      ndim  <- length(coefd)
+    }
+    else if (is.matrix(coef)) {
+      coefd <- dim(coef)
+      ndim  <- length(coefd)
+    }
+    else if (is.array(coef)) {
+      coefd <- dim(coef)
+      ndim  <- length(coefd)
+    }
+    else stop("Type of 'coef' is not correct")
+  }
+
+  if (ndim > 3)
+    stop("'coef' not of dimension 1, 2 or 3")
+##
+## 2.  Check basisobj
+##
   {
     if(is.null(basisobj)){
       rc <- range(coef)
-      if(diff(rc)==0) rc <- rc+0:1 
+      if(diff(rc)==0) rc <- rc+0:1
       dimC <- dim(coef)
       nb <- {
         if(is.null(dimC)) length(coef)
         else dimC[1]
       }
-      basisobj <- create.bspline.basis(rc, nbasis=max(4, nb)) 
+      basisobj <- create.bspline.basis(rc, nbasis=max(4, nb))
+      type <- basisobj$type
     }
-    else   
+    else
       if (!(inherits(basisobj, "basisfd")))
         stop("Argument basis must be of basis class")
   }
-#  
-  type <- basisobj$type
 
-    #  check COEF and get its dimensions
-  if(is.null(coef))
-    coef <- rep(0, basisobj[['nbasis']]) 
-#
-  if (!is.numeric(coef)) stop("coef must be numerical vector or matrix")
-  else if (is.vector(coef)) {
-    coef  <- as.matrix(coef)
-    if (type == "constant") coef <- t(coef)
-    coefd <- dim(coef)
-    ndim  <- length(coefd)
-  }
-  else if (is.matrix(coef)) {
-    coefd <- dim(coef)
-    ndim  <- length(coefd)
-  }
-  else if (is.array(coef)) {
-    coefd <- dim(coef)
-    ndim  <- length(coefd)
-  }
-  else stop("argument coef is not correct")
-
-  if (ndim > 3)
-    stop("First argument not of dimension 1, 2 or 3")
+  nbasis = basisobj$nbasis
+  if (coefd[1] != nbasis)
+    stop("First dim. of 'coef' not equal to 'nbasis'.")
 
   dropind <- basisobj$dropind
 # coefd[1] should equal basisobj$nbasis - length(dropind)
 # However, fd is not yet programmed for dropind.
 # Therefore, trap it:
   if(length(dropind)>0)
-    stop("'fd' not yet programmed to handle 'dropind'") 
+    stop("'fd' not yet programmed to handle 'dropind'")
 
 # If dropind is not trapped earlier, it will generate the following
-# cryptic error message:    
+# cryptic error message:
   if (coefd[1] != basisobj$nbasis)
     stop("Number of coefficients does not match number of basis functions.")
 
@@ -185,7 +197,8 @@ plus.fd <- function(e1, e2, basisobj=basisobj1*basisobj2)
 #  coefficient matrices are the same dims, the coefficient
 #  matrices are simply added.
 
-#  last modified 3 January 2007
+#  last modified 2008.09.30 by Giles Hooker
+#  Previously modified 3 January 2007
 
 if (!(inherits(e1, "fd") || inherits(e2, "fd")))
       stop("Neither argument for + is a functional data object.")
@@ -324,7 +337,7 @@ if (inherits(e1, "fd") && inherits(e2, "fd")) {
         if (length(fac) > 1 && coefd[2] == 1) {
             fdmat <- outer(fdmat,rep(1,length(fac)))
             fac   <- t(outer(rep(neval,1),fac))
-        } 
+        }
     } else stop(paste("Dimensions of numerical factor and functional",
                        " factor cannot be reconciled."))
     fdarray <- fac + fdmat
@@ -371,7 +384,8 @@ minus.fd <- function(e1, e2, basisobj=basisobj1*basisobj2)
 #  coefficient matrices are the same dims, the coefficient
 #  matrices are simply added.
 
-#  last modified 3 January 2007
+#  last modified 2008.09.30 by Giles Hooker
+#  Previously modified 3 January 2007
 
 if (!(inherits(e1, "fd") || inherits(e2, "fd")))
       stop("Neither argument for - is a functional data object.")
@@ -509,7 +523,7 @@ if (inherits(e1, "fd") && inherits(e2, "fd")) {
         if (length(fac) > 1 && coefd[2] == 1) {
             fdmat <- outer(fdmat,rep(1,length(fac)))
             fac   <- t(outer(rep(neval,1),fac))
-        } 
+        }
     } else stop(paste("Dimensions of numerical factor and functional",
                        " factor cannot be reconciled."))
     fdarray <- fac - fdmat
@@ -531,7 +545,7 @@ return(minusfd)
 "*.fd" <- function(e1, e2){
   times.fd(e1, e2)
 }
-  
+
 times.fd <- function(e1, e2, basisobj=basisobj1*basisobj2)
 {
 #  TIMES: Pointwise product of two functional data objects,
@@ -614,7 +628,7 @@ if ( inherits(e1, "fd") & inherits(e2, "fd") ) {
         }
         coefd1       <- dim(coef1)
         e1$coefs <- coef1
-    } 
+    }
 
     #  e2 is single,  e1 has replications
 
@@ -632,7 +646,7 @@ if ( inherits(e1, "fd") & inherits(e2, "fd") ) {
         }
         coefd2       <- dim(coef2)
         e2$coefs <- coef2
-    } 
+    }
 
     #  check that numbers of replications are equal
 
@@ -756,9 +770,9 @@ return(fdprod)
 
     #  Last modified:  17 September 2005
 
-    if ((!(inherits(fdobj, "fd")))) 
+    if ((!(inherits(fdobj, "fd"))))
         stop("First argument for ^ is not a functional data object.")
-    if ((!(is.numeric(power)))) 
+    if ((!(is.numeric(power))))
         stop("Second argument for ^ is not numeric.")
     coef     <- fdobj$coefs
     coefd    <- dim(coef)
@@ -810,7 +824,7 @@ mean.fd <- function(x, ...)
 {
   if(!inherits(x, 'fd'))
     stop("'x' is not of class 'fd'")
-#   
+#
   coef      <- x$coefs
   coefd     <- dim(coef)
   ndim      <- length(coefd)
@@ -829,7 +843,7 @@ mean.fd <- function(x, ...)
   fdnames[[2]] <- "mean"
   fdnames[[3]] <- paste("mean",fdnames[[3]])
   meanfd <- fd(coefmean, basisobj, fdnames)
-#  
+#
   meanfd
 }
 
