@@ -33,10 +33,7 @@ fdPar(fdobj=NULL, Lfdobj=NULL, lambda=0, estimate=TRUE, penmat=NULL)
     a nonnegative real number specifying the amount of smoothing
     to be applied to the estimated functional parameter.
   }
-  \item{estimate}{
-    a logical value:  if \code{TRUE}, the functional parameter is
-    estimated, otherwise, it is held fixed.
-  }
+  \item{estimate}{not currently used.}
   \item{penmat}{
     a roughness penalty matrix.  Including this can eliminate the need
     to compute this matrix over and over again in some types of
@@ -69,9 +66,7 @@ fdPar(fdobj=NULL, Lfdobj=NULL, lambda=0, estimate=TRUE, penmat=NULL)
     \item{lambda}{
       a nonnegative real number
     }
-    \item{estimate}{
-      a logical:  if \code{TRUE}, the functional parameter is estimate.
-    }
+    \item{estimate}{not currently used}
     \item{penmat}{
       either NULL or a square, symmetric matrix with penmat[i, j] =
       integral over fd[['basis']][['rangeval']] of basis[i]*basis[j]
