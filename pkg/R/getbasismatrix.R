@@ -39,9 +39,9 @@ if (is.numeric(basisobj) && inherits(evalarg, "basisfd")) {
 #  check EVALARG
 
 if (!(is.numeric(evalarg)))  stop("Argument EVALARG is not numeric.")
-	
+
 #  check basisobj
-	
+
 if (!(inherits(basisobj, "basisfd"))) stop(
     "Second argument is not a basis object.")
 
@@ -54,7 +54,7 @@ if (!(length(basisobj$basisvalues) == 0 || is.null(basisobj$basisvalues))) {
     basisvalues <- basisobj$basisvalues
     nvalues     <- length(basisvalues)
     #  search for argvals match
-    N  <- length(evalargs)
+    N  <- length(evalarg)
     OK <- FALSE
     for (ivalues in 1:nvalues) {
         basisvaluesi <- basisvalues[ivalues]
@@ -134,7 +134,7 @@ if (type == "bspline") {
 } else {
    	stop("Basis type not recognizable")
 }
-	
+
 #  remove columns for bases to be dropped
 
 if (length(dropind) > 0) basismat <- basismat[,-dropind]
