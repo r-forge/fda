@@ -1,9 +1,7 @@
 \name{fda-internal}
 \title{FDA internal functions}
 \description{Internal undocumentation functions}
-\usage{
-center.fd(fdobj)
-}
+\usage{center.fd(fdobj)}
 \alias{/.fd}
 \alias{Varfnden}
 \alias{Varfninten}
@@ -72,6 +70,8 @@ center.fd(fdobj)
 \alias{fdParcheck}
 \alias{wtcheck}
 \alias{ycheck}
+% added September / October 2008 from Jim Ramsay
+\alias{c.fd}
 
 % docclass is function
 \keyword{internal}
