@@ -70,8 +70,6 @@
 \alias{fdParcheck}
 \alias{wtcheck}
 \alias{ycheck}
-% added September / October 2008 from Jim Ramsay
-\alias{c.fd}
 
 % docclass is function
 \keyword{internal}
