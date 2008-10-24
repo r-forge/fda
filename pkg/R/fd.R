@@ -224,7 +224,7 @@ if (inherits(e1, "fd") && inherits(e2, "fd")) {
     #  test to see if the two objects match completely
     if (basisobj1 == basisobj2) {
         #  the two coefficient matrices can be simply added
-        fdnames <- names(e1)
+        fdnames <- e1$fdnames
         plusfd  <- fd(coef1 + coef2, basisobj1, fdnames)
         return(plusfd)
     }
@@ -275,7 +275,7 @@ if (inherits(e1, "fd") && inherits(e2, "fd")) {
     #  check for equality of two bases
     if (basisobj1 == basisobj2) {
         #  if equal, just difference coefficient matrices
-        fdnames <- names(e1)
+        fdnames <- e1$fdnames
         plusfd <- fd(coef1 + coef2, basisobj1, fdnames)
         return(plusfd)
     } else {
@@ -411,7 +411,7 @@ if (inherits(e1, "fd") && inherits(e2, "fd")) {
     #  test to see if the two objects match completely
     if (basisobj1 == basisobj2) {
         #  the two coefficient matrices can be simply added
-        fdnames <- names(e1)
+        fdnames <- e1$fdnames
         minusfd  <- fd(coef1 - coef2, basisobj1, fdnames)
         return(minusfd)
     }
@@ -462,7 +462,7 @@ if (inherits(e1, "fd") && inherits(e2, "fd")) {
     #  check for equality of two bases
     if (basisobj1 == basisobj2) {
         #  if equal, just difference coefficient matrices
-        fdnames <- names(e1)
+        fdnames <- e1$fdnames
         minusfd <- fd(coef1 - coef2, basisobj1, fdnames)
         return(minusfd)
     } else {
