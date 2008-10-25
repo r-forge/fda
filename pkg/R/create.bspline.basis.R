@@ -140,53 +140,72 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
 #  1.1.  First check breaks is either NULL
 #        or is numeric with positive length
   if(!is.null(breaks)){
-    if(!is.numeric(breaks))
-      stop("breaks must be numeric;  class(breaks) = ", class(breaks) )
-    else
+    if(is.numeric(breaks)){
       if(length(breaks)<1)breaks <- NULL
+      if(any(is.na(breaks)))
+        stop('breaks contains NAs;  not allowed.')
+      if(any(is.infinite(breaks)))
+        stop('breaks contains Infs;  not allowed.')
+    }
+    else
+      stop("breaks must be numeric;  class(breaks) = ", class(breaks))
   }
+#
   {
     if(length(rangeval)<1) {
-      rangeval <- {
-        if(is.null(breaks))0:1
-        else range(breaks)
+      if(is.null(breaks))
+        rangeval <- 0:1
+      else{
+        rangeval <- range(breaks)
+        if(diff(rangeval)==0)
+          stop('diff(range(breaks))==0;  not allowed.')
       }
     }
     else
-      if (length(rangeval) == 1){
-        if(rangeval <= 0)
-          stop("'rangeval' a single value that is not positive, is ",
-               rangeval)
-        rangeval = c(0,rangeval)
-      }
-#  if (!rangechk(rangeval)) stop("Argument 'rangeval' is not correct.")
-    if(!is.vector(rangeval))
-      stop('rangeval is not a vector;  class(rangeval) = ',
-           class(rangeval))
-# rangeval too long ???
-    if(length(rangeval)>2){
-      if(!is.null(breaks))
-        stop('length(rangeval)>2 and breaks can not both be provided; ',
-             ' length(rangeval) = ', length(rangeval),
-             ' and length(breaks) = ', length(breaks))
-      if(!is.null(nbasis))
-        stop('length(rangeval)>2 and nbasis can not both be provided; ',
-             ' length(rangeval) = ', length(rangeval),
-             ' and nbasis = ', nbasis)
-      breaks <- rangeval
-      rangeval <- range(breaks)
+      if(!is.numeric(rangeval))
+        stop('rangeval must be numeric;  class(rangeval) = ',
+             class(rangeval) )
+    if(length(rangeval) == 1){
+      if(rangeval <= 0)
+        stop("'rangeval' a single value that is not positive, is ",
+             rangeval)
+      rangeval = c(0,rangeval)
     }
-    if(rangeval[1]>=rangeval[2])
-      stop('rangeval[1] must be less than rangeval[2];  instead ',
-           'rangeval[1] = ', rangeval[1], c('==', '>')[diff(rangeval)<0],
-           ' rangeval[2] = ', rangeval[2])
   }
+#  if (!rangechk(rangeval)) stop("Argument 'rangeval' is not correct.")
+  if(!is.vector(rangeval))
+    stop('rangeval is not a vector;  class(rangeval) = ',
+         class(rangeval))
+# rangeval too long ???
+  if(length(rangeval)>2){
+    if(!is.null(breaks))
+      stop('breaks can not be provided with length(rangeval)>2;  ',
+           ' length(rangeval) = ', length(rangeval),
+           ' and length(breaks) = ', length(breaks))
+    breaks <- rangeval
+    rangeval <- range(breaks)
+  }
+#
+  if(rangeval[1]>=rangeval[2])
+    stop('rangeval[1] must be less than rangeval[2];  instead ',
+         'rangeval[1] = ', rangeval[1], c('==', '>')[diff(rangeval)<0],
+         ' rangeval[2] = ', rangeval[2])
+#
+#  if(!is.null(nbasis))
+#    stop('length(rangeval)>2 and nbasis can not both be provided; ',
+#             ' length(rangeval) = ', length(rangeval),
+#             ' and nbasis = ', nbasis)
+#  }
 ##
 ## 2.  Check norder
 ##
   if(!is.numeric(norder))
     stop("norder must be numeric;  class(norder) = ",
          class(norder))
+#
+  if(length(norder)>1)
+    stop('norder must be a single number;  length(norder) = ',
+         length(norder))
 #
   if(norder<=0)stop("norder must be positive, is ", norder)
 #
