@@ -247,7 +247,7 @@ plot(bspl3.4)
 
 bSpl4. <- create.bspline.basis(c(-1,1))
 plot(bSpl4.)
-# Same as bSpl4.23 but over (-1,1) rather than (0,1).
+# PROBLEM ... should be 4 cubics;  is constant, linear, quad, cubic
 
 # set up the b-spline basis for the lip data, using 23 basis functions,
 #   order 4 (cubic), and equally spaced knots.
@@ -260,6 +260,12 @@ bSpl.growth <- create.bspline.basis(growth$age)
 
 bSpl.growth6 <- create.bspline.basis(growth$age,norder=6)
 # quintic spline (order 6)
+
+\dontrun{
+# This gives an error because
+# nbreaks = 4 != length(breaks)+norder-2 = 3+4-2 = 5
+create.bspline.basis(1:3, 4)
+}
 }
 % docclass is function
 \keyword{smooth}
