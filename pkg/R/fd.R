@@ -324,13 +324,13 @@ if (inherits(e1, "fd") && inherits(e2, "fd")) {
         stop("One of the arguments for + is of the wrong class.")
     coef     <- fdobj$coefs
     coefd    <- dim(coef)
-    basisobj <- fd$basis
+    basisobj <- fdobj$basis
     nbasis   <- basisobj$nbasis
     rangeval <- basisobj$rangeval
     neval    <- max(10*nbasis + 1,201)
     neval    <- min(neval,201)
     evalarg  <- seq(rangeval[1],rangeval[2], len=neval)
-    fdmat    <- eval.fd(evalarg, fd)
+    fdmat    <- eval.fd(evalarg, fdobj)
     #  If one of the objects has length 1 and the other
     #  is longer, expand the scalar object into a vector
     if (length(fac) != coefd[2] || length(fac) == 1 && coefd[2] > 1) {
@@ -510,22 +510,22 @@ if (inherits(e1, "fd") && inherits(e2, "fd")) {
         stop("One of the arguments for - is of the wrong class.")
     coef     <- fdobj$coefs
     coefd    <- dim(coef)
-    basisobj <- fd$basis
+    basisobj <- fdobj$basis
     nbasis   <- basisobj$nbasis
     rangeval <- basisobj$rangeval
     neval    <- max(10*nbasis + 1,201)
     neval    <- min(neval,201)
     evalarg  <- seq(rangeval[1],rangeval[2], len=neval)
-    fdmat    <- eval.fd(evalarg, fd)
+    fdmat    <- eval.fd(evalarg, fdobj)
     #  If one of the objects has length 1 and the other
     #  is longer, expand the scalar object into a vector
-    if (length(fac) != coefd[2] || length(fac) == 1 && coefd[2] > 1) {
+    if (length(fac) != coefd[2] || (length(fac) == 1 && coefd[2] > 1)) {
         if (length(fac) > 1 && coefd[2] == 1) {
             fdmat <- outer(fdmat,rep(1,length(fac)))
             fac   <- t(outer(rep(neval,1),fac))
-        }
-    } else stop(paste("Dimensions of numerical factor and functional",
-                       " factor cannot be reconciled."))
+        } else stop(paste("Dimensions of numerical factor and functional",
+                       "factor cannot be reconciled."))
+    } 
     fdarray <- fac - fdmat
     coefsum <- project.basis(fdarray, evalarg, basisobj)
     fdnames <- fdobj$fdnames
