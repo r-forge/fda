@@ -23,12 +23,12 @@ create.polygonal.basis <- function (argvals=NULL, dropind=NULL,
 #  Returns
 #  BASISOBJ ... a functional data basis object
 
-#  Last modified 20 November 2005
+#  Last modified 21 October 2008 by Jim Ramsay
 
 type <- "polyg"
 
 if(!is.vector(argvals) || !is.numeric(argvals))
-    stop("Argument atgvals is not correct")
+    stop("Argument 'argvals' is not correct")
 
 nbasis <- length(argvals)
 if (nbasis < 2) stop("Number of ARGVALS less than two.")
