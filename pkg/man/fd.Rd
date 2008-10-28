@@ -117,6 +117,13 @@ parab4.5 <- fd(c(3, -1, -1, 3)/3, bspl4)
 # = 4*(x-.5)^2
 plot(parab4.5)
 
+\dontshow{ 
+parab4.5+1
+plot(parab4.5[1])
+#parab4.5-1
+}
+
+
 }
 % docclass is function
 \keyword{smooth}
