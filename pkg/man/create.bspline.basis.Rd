@@ -14,7 +14,7 @@
   monomial and polynomials basis systems within them.
 }
 \usage{
-create.bspline.basis(rangeval=NULL, nbasis=NULL, norder=4,
+create.bspline.basis(rangeval=c(0,1), nbasis=NULL, norder=4,
       breaks=NULL, dropind=NULL, quadvals=NULL, values=NULL,
       basisvalues=NULL, names="bspl") 
 }

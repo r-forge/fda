@@ -55,7 +55,7 @@ if (!(length(basisobj$basisvalues) == 0 || is.null(basisobj$basisvalues))) {
     basisvalues <- basisobj$basisvalues
     nvalues     <- length(basisvalues)
     #  search for argvals match
-    N  <- length(evalargs)
+    N  <- length(evalarg)
     OK <- FALSE
     for (ivalues in 1:nvalues) {
         basisvaluesi <- basisvalues[ivalues]
