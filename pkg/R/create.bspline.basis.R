@@ -95,7 +95,7 @@ create.bspline.basis <- function (rangeval=c(0,1), nbasis=NULL,
 #  Returns
 #  BASISFD  ... a functional data basis object
 
-#  Last modified       27 October   2008 by Jim Ramsay
+#  Last modified       28 October   2008 by Jim Ramsay
 
 #  Previously modified 28 September 2008 by Jim Ramsay
 #  This modification eliminates the tolerance of previous versions for
@@ -146,12 +146,12 @@ if (nargs()==0) {
       rangeval = c(0,rangeval)
   }
 
-#  check NBASIS:  This argument is not optional
-  print(nbasis)
-  if (is.null(nbasis))         stop("Argument 'nbasis' is not supplied.")
-  if (nbasis != floor(nbasis)) stop("Argument 'nbasis' is not an integer.")
-  if (nbasis < 1)              stop("Argument 'nbasis' is not positive.")
+#  check NBASIS:  This argument is optional, and defaults to NULL
 
+  if (!is.null(nbasis)) {
+    if (nbasis != floor(nbasis)) stop("Argument 'nbasis' is not an integer.")
+    if (nbasis < 1)              stop("Argument 'nbasis' is not positive.")
+  }
 
 #  check NORDER:  This argument is optional, and defaults to 4 (cubic splines)
 
@@ -176,6 +176,7 @@ if (nargs()==0) {
     if (min(diff(breaks)) < 0) stop(
               "Values in argument 'breaks' are decreasing.")
     #  Check for consistency with NBASIS and NORDER
+    if (is.null(nbasis)) nbasis = norder + nbreaks - 2
     if (nbasis != norder + nbreaks - 2) stop(
       paste("Relation NBASIS = NORDER + LENGTH(BREAKS) - 2",
             "does not hold."))
