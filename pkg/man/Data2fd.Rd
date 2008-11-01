@@ -191,7 +191,7 @@ lines(fd1.3.5)
 ##
 ## linear spline fit 
 ##
-b2.3 <- create.bspline.basis(nbasis=3, norder=2, breaks=c(0, .5, 1))
+b2.3 <- create.bspline.basis(norder=2, breaks=c(0, .5, 1))
 # 3 bases, order 2 = degree 1 =
 # continuous, bounded, locally linear
 
@@ -223,7 +223,7 @@ par(op)
 ##
 ## quadratic spline fit
 ##
-b3.4 <- create.bspline.basis(nbasis=4, norder=3, breaks=c(0, .5, 1))
+b3.4 <- create.bspline.basis(norder=3, breaks=c(0, .5, 1))
 # 4 bases, order 3 = degree 2 =
 # continuous, bounded, locally quadratic 
 
