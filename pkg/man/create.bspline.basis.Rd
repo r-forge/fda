@@ -189,7 +189,7 @@ plot(bspl1.1)
 # 1 basis function, order 1 = degree 0 = step function:
 
 # should be the same as above:
-b1.1 <- create.bspline.basis(nbasis=1, norder=1)
+b1.1 <- create.bspline.basis(0:1, nbasis=1, norder=1, breaks=0:1)
 \dontshow{stopifnot(}
 all.equal(bspl1.1, b1.1)
 \dontshow{)}
@@ -206,7 +206,6 @@ plot(bspl3.3)
 bspl4.4 <- create.bspline.basis()
 plot(bspl4.4)
 # PROBLEM:  Should be 4 cubics;  isn't
-
 
 bspl1.2 <- create.bspline.basis(norder=1, breaks=c(0,.5, 1))
 plot(bspl1.2)
