@@ -25,7 +25,8 @@ getbasismatrix <- function(evalarg, basisobj, nderiv=0) {
 #
 #  Note that the first two arguments may be interchanged.
 #
-#  Last modified 6 January 2007
+
+#  Last modified 27 October 2008 by Jim Ramsay
 
 #  Exchange the first two arguments if the first is an BASIS.FD object
 #    and the second numeric
@@ -39,9 +40,9 @@ if (is.numeric(basisobj) && inherits(evalarg, "basisfd")) {
 #  check EVALARG
 
 if (!(is.numeric(evalarg)))  stop("Argument EVALARG is not numeric.")
-
+	
 #  check basisobj
-
+	
 if (!(inherits(basisobj, "basisfd"))) stop(
     "Second argument is not a basis object.")
 
@@ -84,12 +85,12 @@ dropind  <- basisobj$dropind
 
 if (type == "bspline") {
       if (length(params) == 0) {
-          basismat <- monomial(evalarg, 0:(nbasis-1), nderiv)
+          breaks   <- c(rangeval[1], rangeval[2])
       } else {
    	    breaks   <- c(rangeval[1], params, rangeval[2])
-   	    norder   <- nbasis - length(breaks) + 2
-   	    basismat <- bsplineS(evalarg, breaks, norder, nderiv)
       }
+   	norder   <- nbasis - length(breaks) + 2
+   	basismat <- bsplineS(evalarg, breaks, norder, nderiv)
 
 #  -----------------------------  Constant basis  --------------------
 
@@ -134,7 +135,7 @@ if (type == "bspline") {
 } else {
    	stop("Basis type not recognizable")
 }
-
+	
 #  remove columns for bases to be dropped
 
 if (length(dropind) > 0) basismat <- basismat[,-dropind]
