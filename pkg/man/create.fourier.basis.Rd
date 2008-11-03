@@ -22,8 +22,9 @@ create.fourier.basis(rangeval=c(0, 1), nbasis=3,
     up to the nearest odd integer to preserve the pairing of sine and
     cosine functions.  An even number of basis functions  only makes
     sense when there are always only an even number of observations at
-    equally spaced points;  that special case is not currently
-    supported.
+    equally spaced points;  that case can be accomodated using dropind =
+    nbasis-1 (because the bases are \code{const}, \code{sin},
+    \code{cos}, ...).
   }
   \item{period}{
     the width of any interval over which the Fourier functions repeat
