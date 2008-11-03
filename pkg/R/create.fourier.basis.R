@@ -156,14 +156,37 @@ create.fourier.basis <- function (rangeval=c(0,1), nbasis=3,
 ##
 ## 5.  set up the basis object
 ##
-  type        <- "fourier"
   params      <- period
 
   basisobj <- basisfd(type=type,     rangeval=rangeval, nbasis=nbasis,
                       params=params, dropind=dropind, quadvals=quadvals,
                       values=values, basisvalues=basisvalues)
 ##
-## 6.  Done
+## 6.  names?
+##
+  {
+    if(is.null(names)){
+      Nms <- 'const'
+      if(nbasis>1){
+        if(nbasis==3)
+          Nms <- c(Nms, 'sin', 'cos')
+        else {
+          nb2 <- floor(nbasis/2)
+          sinCos <- as.vector(outer(c('sin', 'cos'), 1:nb2,
+                                    paste, sep=''))
+          Nms <- c(Nms, sinCos)
+        }
+      }
+    }
+    else{
+      if(length(names) != nbasis)
+        stop('conflict between nbasis and names:  nbasis = ',
+             nbasis, ';  length(names) = ', length(names))
+    }
+  }
+  basisobj$names <- Nms
+##
+## 7.  done
 ##
   basisobj
 
