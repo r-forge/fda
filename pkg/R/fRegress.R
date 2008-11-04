@@ -284,7 +284,7 @@ if (inherits(yfdPar, "fdPar")) {
             mj2    <- mj2 + ncoefj
             indexj <- mj1:mj2
             coefj  <- betacoef[indexj]
-            betafdj$coefs <- coefj
+            betafdj$coefs <- as.matrix(coefj)
             betafdParj$fd <- betafdj
         }
         betaestlist[[j]] <- betafdParj
@@ -405,13 +405,13 @@ if (inherits(yfdPar, "fdPar")) {
         betacoefj <- betacoef[indexj]
         if (inherits(xfdj, "fd")) {
             betaestfdj       <- betafdj
-            betaestfdj$coefs <- betacoefj
+            betaestfdj$coefs <- as.matrix(betacoefj)
             betaestfdParj    <- betafdParj
             betaestfdParj$fd <- betaestfdj
             betaestlist[[j]] <- betaestfdParj
         }
         else{
-            betaestfdj       <- fd(t(betacoefj),onebasis)
+            betaestfdj       <- fd(as.matrix(t(betacoefj)),onebasis)
             betaestfdParj    <- betafdParj
             betaestfdParj$fd <- betaestfdj
             betaestlist[[j]] <- betaestfdParj
