@@ -144,7 +144,7 @@ WfdPar    <- fdPar(fd(basisobj=warpbasis), 2, 1e-4)
 WfdPar.    <- fdPar(fd(matrix(0,wnbasis,1), warpbasis), 2, 1e-4)
 all.equal(WfdPar, WfdPar.)
 
-lipreglist <- landmarkreg(lipfd, lipmarks, lipmeanmarks, WfdPar)
+lipreglist <- landmarkreg(lipfd, as.matrix(lipmarks), lipmeanmarks, WfdPar)
 
 lipregfd   <- lipreglist$regfd
 lipwarpfd  <- lipreglist$warpfd
