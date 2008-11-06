@@ -60,8 +60,8 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
 #  AWTLIST     list array of weights for u-variables
 #                 dimension J and K
 
-#  last modified 2007.11.28 by Spencer Graves
-#  previously modified 4 December 2005
+#  last modified 5 November 2008 by Jim Ramsay
+#  previously modified 2007.11.28 by Spencer Graves
 
 #  check dimensions of the lists
 
