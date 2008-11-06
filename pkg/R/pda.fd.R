@@ -515,7 +515,7 @@ difeordp1 <- difeorder + 1
 
 #  check the dimensions of UFDLIST and AWTLIST
 
-if (ufdlist == NULL || awtlist == NULL) {
+if ( is.null(ufdlist) || is.null(awtlist) ) {
     nforce  <- 0
     awtlist <- NULL
 } else {
