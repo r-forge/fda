@@ -20,7 +20,7 @@ Fperm.fd <- function(yfdPar, xfdlist, betalist,wt=NULL,
         print(paste('Estimated Computing time =',round(nperm*elapsed.time),'seconds.'))
     }
 
-    yhat <- fRegressList$yhatfdobj$fd
+    yhat <- fRegressList$yhatfdobj
 
     tFstat <- Fstat.fd(yfdPar,yhat,argvals)
 
@@ -38,7 +38,7 @@ Fperm.fd <- function(yfdPar, xfdlist, betalist,wt=NULL,
 
         fRegressList <- fRegress(tyfdPar, xfdlist, betalist)
 
-        yhat <- fRegressList$yhatfdobj$fd
+        yhat <- fRegressList$yhatfdobj
 
         tFstat = Fstat.fd(yfdPar,yhat,argvals)
 
