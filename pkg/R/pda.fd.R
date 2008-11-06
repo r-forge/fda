@@ -114,7 +114,7 @@ if (difeorder == 0 && nforce == 0)
 
 ncurve     <- dim(xcoef)[2]
 
-nbasmax <- 0  #  This will be the maximum number of basis functions
+nbasmax <- xbasis$nbasis  #  This will be the maximum number of basis functions
 
 #  check UFDLIST and AWTLIST
 
@@ -493,7 +493,7 @@ for (j in 1:difeorder) {
 }
 #  set up the functional data object
 resbasis <- xbasis
-resfd    <- data2fd(resmat, tx, resbasis)
+resfd    <- smooth.basis(tx, resmat, resbasis)$fd
 resfdnames      <- xfdobj$fdnames
 resfdnames[[2]] <- "Residual function"
 resfdnames[[3]] <- "Residual function value"
@@ -984,7 +984,7 @@ for (ivar in 1:nvar) {
         resmat <- resmat + bmatij*xmatij
     }
     #  set up the functional data object
-    resfdi            <- data2fd(resmat, tx, resbasis)
+    resfdi            <- smooth.basis(tx, resmat, resbasis)
     resfdnames        <- xfdi$fdnames
     resfdnames[[2]]   <- "Residual function"
     resfdnames[[3]]   <- "Residual function value"
