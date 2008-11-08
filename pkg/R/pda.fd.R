@@ -693,10 +693,10 @@ if (!(is.null(ufdlist) || is.null(awtlist))) {
           errorwrd <- TRUE
         }
         awtfdPari <- awtlist[[ivar]][[iu]]
-        if (!inherits(afdPari, "fdPar")) {
+        if (!inherits(awtfdPari, "fdPar")) {
           print(paste(
-              "AWTFDPAR[[",ivar,",",iu,"]] is not a functional data object.",
-              sep=""))
+              "AWTFDPAR[[",ivar,"]][[",iu,
+                "]] is not a functional parameter object.",sep=""))
           errorwrd <- TRUE
         }
         afdi   <- awtfdPari$fd
@@ -910,6 +910,7 @@ for (ivar in 1:nvar) {
     #  evaluate default weight functions for this variable
     
     if (nforce > 0) {
+      aarray <- matrix(0,nfine,nforce)
       for (iu in 1:nforce) {
         if (!is.null(awtlist[[ivar]][[iu]])) {
           afdPari <- awtlist[[ivar]][[iu]]
