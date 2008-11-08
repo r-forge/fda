@@ -404,7 +404,7 @@ if (nforce > 0) {
                 abasismati2 <- getbasismatrix(tx, abasisi2)
                 weighti2    <- uprod[,iu1,iu2]
                 Cprod  <- trapzmat(abasismati1, abasismati2,
-                                       deltau, weighti2)
+                                       deltax, weighti2)
                 mi21 <- mi22 + 1
                 mi22 <- mi22 + abasisi2$nbasis
                 indexi2 <- mi21:mi22
@@ -973,7 +973,7 @@ for (ivar in 1:nvar) {
                   abasismati2 <- getbasismatrix(tx, abasisi2)
                   weighti2    <- uprod[[ivar]][,iu1,iu2]
                   Cprod       <- trapzmat(abasismati1, abasismati2, 
-                                        deltau, weighti2)
+                                        deltax, weighti2)
                   mi21 <- mi22 + 1
                   mi22 <- mi22 + abasisi2$nbasis
                   indexi2 <- mi21:mi22
