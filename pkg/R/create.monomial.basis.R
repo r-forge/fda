@@ -111,7 +111,7 @@ create.monomial.basis <- function(rangeval=c(0,1), nbasis=NULL,
       else {
         if(is.numeric(exponents)){
           nbasis <- length(exponents)
-          if(length(unique(expon)) != nbasis)
+          if(length(unique(exponents)) != nbasis)
             stop('duplicates found in exponents;  not allowed.')
         }
         else
