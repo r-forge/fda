@@ -19,9 +19,8 @@ create.monomial.basis(rangeval=c(0, 1), nbasis=NULL,
     data object can be evaluated.
   }
   \item{nbasis}{
-    the number of basis functions = \code{length(exponents)}.  If
-    neither \code{nbasis} nor \code{exponents} is provided,
-    \code{nbasis} defaults to 2.
+    the number of basis functions = \code{length(exponents)}.  Default =
+    if(is.null(exponents)) 2 else length(exponents).
   }
   \item{exponents}{
     the nonnegative integer powers to be used.  By default,
