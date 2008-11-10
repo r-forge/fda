@@ -69,8 +69,8 @@ create.bspline.basis(rangeval=NULL, nbasis=NULL, norder=4,
     quadrature points, and the second column the quadrature weights.  A
     minimum of 5 values are required for each inter-knot interval, and
     that is often enough.  For Simpson's rule, these points are equally
-    spaced, and the weights are proportional to These are proportional
-    to 1, 4, 2, 4, ..., 2, 4, 1.
+    spaced, and the weights are proportional to 1, 4, 2, 4, ..., 2, 4,
+    1.
   }
   \item{values}{
     a list containing the basis functions and their derivatives
