@@ -182,9 +182,9 @@ for (ivar in 1:nvar) {
             cat("\n")
             curvetitle = paste('Results for variable',ivar)
           }
+          cat("\n")
+          cat(curvetitle)
         }
-        cat("\n")
-        cat(curvetitle)
         cat("\n")
         cat("\nIter.   PENSSE   Grad Length")
         cat("\n")
@@ -193,7 +193,7 @@ for (ivar in 1:nvar) {
         cat(round(status[2],4))
         cat("      ")
         cat(round(status[3],4))
-      }
+     }
 	#  -------  Begin iterations  -----------
 
 	MAXSTEPITER <- 10
