@@ -183,9 +183,9 @@ if (ncurve > 1 || nvar > 1)  {
     y2cMap <- vector("list",ncurve*nvar)
 } else {
     y2cMap <- NULL
-}
-
-if (dbglev == 0) cat("Progress:  Each dot is a curve\n")
+}       
+            
+if (dbglev == 0 && ncurve > 1) cat("Progress:  Each dot is a curve\n")
 
 for (ivar in 1:nvar) {
   for (icurve in 1:ncurve) {
