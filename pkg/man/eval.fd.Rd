@@ -90,15 +90,15 @@ str(predict(tempfd, day.5, harmaccelLfd))
 bspl3 <- create.bspline.basis(c(0, .5, 1))
 plot(bspl3) # 5 bases
 fd.bspl3 <- fd(c(0, 0, 1, 0, 0), bspl3)
-%\dontshow{stopifnot(}
 pred3 <- predict(fd.bspl3)
+\dontshow{stopifnot(}
 all.equal(pred3, matrix(c(0, .5, 0), 3))
-%\dontshow{)}
+\dontshow{)}
 
-%\dontshow{stopifnot(}
 pred.2 <- predict(fd.bspl3, c(.2, .8))
+\dontshow{stopifnot(}
 all.equal(pred.2, matrix(.176, 2, 1))
-%\dontshow{)}
+\dontshow{)}
 
 }
 % docclass is function
