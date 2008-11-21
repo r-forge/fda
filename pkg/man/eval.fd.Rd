@@ -1,6 +1,9 @@
 \name{eval.fd}
 \alias{eval.fd}
 \alias{predict.fd}
+\alias{predict.fdSmooth}
+\alias{fitted.fdSmooth}
+\alias{residuals.fdSmooth}
 \title{
   Values of a Functional Data Object
 }
@@ -12,6 +15,9 @@
 \usage{
 eval.fd(evalarg, fdobj, Lfdobj=0)
 \method{predict}{fd}(object, newdata=NULL, Lfdobj=0, ...)
+\method{predict}{fdSmooth}(object, newdata=NULL, Lfdobj=0, ...)
+\method{fitted}{fdSmooth}(object, ...)
+\method{residuals}{fdSmooth}(object, ...)
 }
 \arguments{
   \item{evalarg, newdata}{
@@ -40,12 +46,19 @@ eval.fd(evalarg, fdobj, Lfdobj=0)
   \code{fdobj[['basis']][['type']]} is \code{bspline}, \code{newdata} =
   \code{unique(knots(fdojb,interior=FALSE))};  otherwise, \code{newdata}
   = \code{fdobj[['basis']][['rangeval']]}.
+
+  \code{predict.fdSmooth}, \code{fitted.fdSmooth} and
+  \code{residuals.fdSmooth} are other wrapper for \code{eval.fd}.
 }
 \value{
   an array of 2 or 3 dimensions containing the function
   values.  The first dimension corresponds to the argument values in
   \code{evalarg},
   the second to replications, and the third if present to functions.
+}
+\author{
+  Soren Hosgaard wrote an initial version of \code{predict.fdSmooth},
+  \code{fitted.fdSmooth}, and \code{residuals.fdSmooth}.
 }
 \seealso{
   \code{\link{getbasismatrix}},
@@ -80,7 +93,7 @@ Ltempmat <- eval.fd(day.5, tempfd, harmaccelLfd)
 matplot(day.5, Ltempmat, type="l")
 
 ##
-## predict
+## predict.fd
 ##
 predict(tempfd) # end points only at 35 locations
 str(predict(tempfd, day.5)) # 365 x 35 matrix
@@ -98,6 +111,22 @@ all.equal(pred3, matrix(c(0, .5, 0), 3))
 pred.2 <- predict(fd.bspl3, c(.2, .8))
 \dontshow{stopifnot(}
 all.equal(pred.2, matrix(.176, 2, 1))
+\dontshow{)}
+
+##
+## predict.fdSmooth
+##
+lipSm9 <- smooth.basisPar(liptime, lip, lambda=1e-9)
+plot(lipSm9)
+
+pred.lipSm9 <- predict(lipSm9)
+\dontshow{stopifnot(}
+all.equal(pred.lipSm9, fitted(lipSm9))
+\dontshow{)}
+
+resid.lipSm9 <- resid(lipSm9)
+\dontshow{stopifnot(}
+all.equal(resid.lipSm9, residuals(lipSm9))
 \dontshow{)}
 
 }
