@@ -62,7 +62,7 @@ smooth.pos(argvals, y, WfdParobj, wtvec=rep(1,n),
 
   \item{Wfdobj}{
     a functional data object defining function $W(x)$ that that
-    optimizes the fit to the data of the monotone function that it
+    optimizes the fit to the data of the positive function that it
     defines.
   }
   \item{Flist}{

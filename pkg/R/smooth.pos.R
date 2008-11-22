@@ -352,7 +352,7 @@ for (ivar in 1:nvar) {
   posFd <- list(Wfdobj=Wfdobj, Flist=Flist,
                 argvals=argvals, y=y)
   class(posFd) <- 'posfd'
-
+  posFd
 }
 
 #  ---------------------------------------------------------------
