@@ -1,6 +1,8 @@
 \name{eval.posfd}
 \alias{eval.posfd}
-%\alias{predict.posfd}
+\alias{predict.posfd}
+\alias{fitted.posfd}
+\alias{residuals.posfd}
 \title{
   Evaluate a Positive Functional Data Object
 }
@@ -10,11 +12,12 @@
 }
 \usage{
 eval.posfd(evalarg, Wfdobj, Lfdobj=int2Lfd(0))
-%\method{predict}{fd}(object, newdata=NULL, Lfdobj=0, ...)
+\method{predict}{posfd}(object, newdata=NULL, Lfdobj=0, ...)
+\method{fitted}{posfd}(object, ...)
+\method{residuals}{posfd}(object, ...)
 }
 \arguments{
-%  \item{evalarg, newdata}{
-  \item{evalarg}{
+  \item{evalarg, newdata}{
     a vector of argument values at which the functional data object is
     to be evaluated.
   }
@@ -27,11 +30,13 @@ eval.posfd(evalarg, Wfdobj, Lfdobj=int2Lfd(0))
     this time of writing, permissible derivative values are 0, 1 or 2.
     A linear differential operator is not allowed.
   }
-}
-\value{
-  a matrix containing the positive function values.  The first dimension
-  corresponds to the argument values in \code{evalarg} and the second to
-  replications.
+  \item{object}{
+    an object of class \code{posfd} that defines the positive function
+    to be evaluated.  Only univariate functions are permitted.
+  }
+  \item{\dots}{
+    optional arguments required by \code{predict};  not currently used.
+  }
 }
 \details{
   A positive function data object $h(t)$ is defined by $h(t) =[exp
@@ -39,9 +44,37 @@ eval.posfd(evalarg, Wfdobj, Lfdobj=int2Lfd(0))
   function is usually estimated by positive smoothing function
   \code{smooth.pos}
 }
+\value{
+  a matrix containing the positive function values.  The first dimension
+  corresponds to the argument values in \code{evalarg} and the second to
+  replications.
+}
 \seealso{
   \code{\link{eval.fd}},
   \code{\link{eval.monfd}}
+}
+\examples{
+harmaccelLfd365 <- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
+smallbasis  <- create.fourier.basis(c(0, 365), 65)
+index <- (1:35)[CanadianWeather$place == "Vancouver"]
+VanPrec  <- CanadianWeather$dailyAv[,index, "Precipitation.mm"]
+lambda    <- 1e4
+dayfdPar <- fdPar(smallbasis, harmaccelLfd365, lambda)
+Van.pos <- smooth.pos(day.5, VanPrec, dayfdPar)
+
+VanPrecposvec <- eval.posfd(day.5, Van.pos$Wfdobj)
+
+VanPrecpos <- predict(Van.pos, day.5)
+\dontshow{stopifnot(}
+all.equal(VanPrecposvec, VanPrecpos)
+\dontshow{)}
+
+VanPrecFit <- fitted(Van.pos)
+VanPrecRes <- resid(Van.pos)
+\dontshow{stopifnot(}
+all.equal(VanPrecRes, Van.pos$y-VanPrecFit)
+\dontshow{)}
+
 }
 % docclass is function
 \keyword{smooth}
