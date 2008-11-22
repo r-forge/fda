@@ -73,7 +73,6 @@ smooth.pos(argvals, y, WfdParobj, wtvec=rep(1,n),
     solution.
   }
 %  \item{iternum}{the number of iterations.}
-%  \item{iternum}{the number of iterations.}
 %  \item{iterhist}{
 %    a \code{iternum+1} by 5 matrix containing the iteration history.
 %  }

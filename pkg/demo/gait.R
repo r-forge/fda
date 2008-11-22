@@ -1,8 +1,8 @@
-#  -----------------------------------------------------------------------
+#  --------------------------------------------------------------------
 #                        Gait data
-#  -----------------------------------------------------------------------
+#  --------------------------------------------------------------------
 
-#  -----------------------------------------------------------------------
+#  --------------------------------------------------------------------
 #
 #                          Overview of the analyses
 #
@@ -11,20 +11,22 @@
 #  gait cycle for 39 children.  The bivariate nature of the data implies
 #  certain displays and analyses that are not usually considered, and
 #  especially the use of canonical correlation analysis.
+#
 #  As with the daily weather data, the harmonic acceleration roughness
 #  penalty is used throughout since the data are periodic with a strong
 #  sinusoidal component of variation.
+#
 #  After setting up the data, smoothing the data using GCV (generalized
 #  cross-validation) to select a smoothing parameter, and displaying
 #  various descriptive results, the data are subjected to a principal
-#  components analysis, followed by a canonical correlation analysis of the
-#  joint variation of hip and knee angle, and finally a registration of the
-#  curves.  The registration is included here especially because the 
-#  registering of periodic data requires the estimation of a phase shift
-#  constant for each curve in addition to possible nonlinear 
+#  components analysis, followed by a canonical correlation analysis of
+#  thejoint variation of hip and knee angle, and finally a registration
+#  of the curves.  The registration is included here especially because
+#  the registering of periodic data requires the estimation of a phase
+#  shift constant for each curve in addition to possible nonlinear
 #  transformations of time.
 #
-#  -----------------------------------------------------------------------
+#  --------------------------------------------------------------------
 
 #  Last modified 21 November 2008 by Jim Ramsay
 #  Previously modified 25 February 2007 by Spencer Graves
@@ -33,11 +35,11 @@
 
 library(fda)
 
-#  Set up the argument values: equally spaced over circle of circumference 20.
-#  Earlier  analyses of the gait data used time values over [0,1], but led to
-#  singularity problems in the use of function fRegress.  In general, it is 
-#  better use a time interval that assigns roughly one time unit to each
-#  inter-knot interval.
+#  Set up the argument values: equally spaced over circle of
+#  circumference 20.  Earlier  analyses of the gait data used time
+#  values over [0,1], but led to singularity problems in the use of
+#  function fRegress.  In general, it is better use a time interval
+#  that assigns roughly one time unit to each inter-knot interval.
 
 (gaittime <- as.numeric(dimnames(gait)[[1]]))*20
 gaitrange <- c(0,20)
@@ -50,16 +52,17 @@ apply(gait, 3, range)
 
 harmaccelLfd <- vec2Lfd(c(0, 0, (2*pi/20)^2, 0), rangeval=gaitrange)
 
-#  Set up basis for representing gait data.  The basis is saturated since
-#  there are 20 data points per curve, and this set up defines 21 basis
-#  functions. Recall that a fourier basis has an odd number of basis functions.
+#  Set up basis for representing gait data.  The basis is saturated
+#  since there are 20 data points per curve, and this set up defines
+#  21 basis functions.  Recall that a fourier basis has an odd number
+#  of basis functions.
 
 gaitbasis <- create.fourier.basis(gaitrange, nbasis=21)
 
-#  ---------------------------------------------------------------------
+#  -------------------------------------------------------------------
 #                 Choose level of smoothing using
 #          the generalized cross-validation criterion
-#  ---------------------------------------------------------------------
+#  -------------------------------------------------------------------
 
 #  set up range of smoothing parameters in log_10 units
 
@@ -73,8 +76,8 @@ gaitSmoothStats[, 1] <- gaitLoglam
 #  loop through smoothing parameters
 
 for (ilam in 1:nglam) {
-	gaitSmooth <- smooth.basisPar(gaittime, gait, gaitbasis, 
-                  Lfdobj=harmaccelLfd, lambda=10^gaitLoglam[ilam])
+  gaitSmooth <- smooth.basisPar(gaittime, gait, gaitbasis,
+                   Lfdobj=harmaccelLfd, lambda=10^gaitLoglam[ilam])
   gaitSmoothStats[ilam, "df"]  <- gaitSmooth$df
   gaitSmoothStats[ilam, "gcv"] <- sum(gaitSmooth$gcv)
   # note: gcv is a matrix in this case
@@ -83,17 +86,18 @@ for (ilam in 1:nglam) {
 #  display and plot GCV criterion and degrees of freedom
 
 gaitSmoothStats
+plot(gaitSmoothStats[, 1], gaitSmoothStats[, 3])
 
-#  set up plotting arrangements for one and two panel displays allowing
-#  for larger fonts
+#  set up plotting arrangements for one and two panel displays
+#  allowing for larger fonts
 
 op <- par(mfrow=c(2,1))
 plot(gaitLoglam, gaitSmoothStats[, "gcv"], type="b",
-     xlab="Log_10 lambda", ylab="GCV Criterion", 
+     xlab="Log_10 lambda", ylab="GCV Criterion",
      main="Gait Smoothing", log="y")
 
 plot(gaitLoglam, gaitSmoothStats[, "df"], type="b",
-     xlab="Log_10 lambda", ylab="Degrees of freedom", 
+     xlab="Log_10 lambda", ylab="Degrees of freedom",
      main="Gait Smoothing")
 par(op)
 
@@ -121,11 +125,11 @@ par(op)
 op <- par(mfrow=c(2,1))
 plotfit.fd(gait, gaittime, gaitfd, cex=1.2)
 # Problem:  does not work properly;
-# ask=TRUE with appropriate choices for lty, etc., 
+# ask=TRUE with appropriate choices for lty, etc.,
 # might make it stop after each one,
 # but would not fix the overplotting
 # Need to modify plotfit.fd to accept ylim = array,
-# not just a vector of length 2.  
+# not just a vector of length 2.
 par(op)
 
 #  plot the residuals, sorting cases by residual sum of squares
@@ -138,9 +142,9 @@ plotfit.fd(gait, gaittime, gaitfd, residual=TRUE, sort=TRUE, cex=1.2)
 #par(mfrow=c(1,2), mar=c(3,4,2,1), pty="s")
 plot(gaitfd, Lfdob=1)
 
-#  -----------------------------------------------------------------   
-#            Display the mean, variance and covariance functions  
-#  -----------------------------------------------------------------   
+#  -----------------------------------------------------------------
+#            Display the mean, variance and covariance functions
+#  -----------------------------------------------------------------
 
 #  ------------  compute the mean functions  --------------------
 
@@ -167,7 +171,8 @@ gaitvararray <- eval.bifd(gaittime, gaittime, gaitvarbifd)
 
 #  plot variance and covariance functions as contours
 
-filled.contour(gaittime, gaittime, gaitvararray[,,1,1], cex=1.2,las='none')
+filled.contour(gaittime, gaittime, gaitvararray[,,1,1],
+               cex=1.2,las='none')
 title("Knee - Knee")
 
 filled.contour(gaittime, gaittime, gaitvararray[,,1,2], cex=1.2)
@@ -225,7 +230,7 @@ plot.pca.fd(gaitpca.fd, cycle=TRUE)
 par(op)
 
 #  --------------------------------------------------------------
-#           Canonical correlation analysis 
+#           Canonical correlation analysis
 #  --------------------------------------------------------------
 
 hipfd  <- gaitfd[,1]
@@ -249,7 +254,7 @@ plot(1:6, ccafd$ccacorr[1:6], type="b")
 
 
 #  --------------------------------------------------------------
-#         Register the angular acceleration of the gait data  
+#         Register the angular acceleration of the gait data
 #  --------------------------------------------------------------
 
 #  compute the acceleration and mean acceleration
@@ -282,17 +287,17 @@ hist(shift)
 #  plot warping functions
 
 par(mfrow=c(1,1), mar=c(4,4,2,1), pty="m")
-matplot(xfine, warpmat, type="l", xlab="t", ylab="h(t)", 
+matplot(xfine, warpmat, type="l", xlab="t", ylab="h(t)",
         main="Time warping functions", cex=1.2)
 
 #  plot the deformation functions, def(t) = warp(t) - t
 
 defmat <- warpmat
-for (i in 1:39) 
+for (i in 1:39)
 	defmat[,i] <- warpmat[,i] - xfine - shift[i]
 
 par(mfrow=c(1,1), mar=c(4,4,2,1), pty="m")
-matplot(xfine, defmat, type="l", xlab="t", ylab="h(t) - t", 
+matplot(xfine, defmat, type="l", xlab="t", ylab="h(t) - t",
         main="Deformation functions", cex=1.2)
 
 #  plot both the unregistered and registered versions of the curves
@@ -302,7 +307,7 @@ plot(D2gaitfd,    ask=FALSE)
 plot(D2gaitregfd, ask=FALSE)
 
 #  --------------------------------------------------------------
-#              Predict knee angle from hip angle 
+#              Predict knee angle from hip angle
 #             for angle and angular acceleration
 #  --------------------------------------------------------------
 
@@ -325,7 +330,7 @@ conbasis <- create.constant.basis(c(0,20))
 constfd  <- fd(matrix(1,1,ncurve), conbasis)
 
 #  set up the list of covariate objects
-  
+
 xfdlist  <- list(constfd, hipfd)
 
 #  fit the current functional linear model
@@ -358,7 +363,8 @@ Rsqr <- (SSE0-SSE1)/SSE0
 par(mfrow=c(1,1),ask=F)
 plot(gaitfine, Rsqr, type="l", ylim=c(0,0.4))
 
-#  for each case plot the function being fit, the fit, and the mean function
+#  for each case plot the function being fit, the fit,
+#                     and the mean function
 
 par(mfrow=c(1,1),ask=TRUE)
 for (i in 1:ncurve) {
@@ -375,7 +381,7 @@ D2hipfd      <- deriv(hipfd, 2)
 D2kneemeanfd <- mean(D2kneefd)
 
 #  set up the list of covariate objects
-  
+
 D2xfdlist  <- list(constfd,D2hipfd)
 
 #  fit the current functional linear model
