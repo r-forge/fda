@@ -14,8 +14,8 @@ smooth.pos <- function(argvals, y, WfdParobj, wtvec=rep(1,n), conv=1e-4,
 #    Wfdobj.
 
 #  Arguments:
-#  ARGVALS ...  Argument value array of length N, where N is the number of
-#               observed curve values for each curve.  It is assumed that
+#  ARGVALS ...  Argument value array of length N, where N is the number
+#               of observed curve values for each curve.  It is assumed
 #               that these argument values are common to all observed
 #               curves.  If this is not the case, you will need to
 #               run this function inside one or more loops, smoothing
@@ -25,10 +25,12 @@ smooth.pos <- function(argvals, y, WfdParobj, wtvec=rep(1,n), conv=1e-4,
 #               an N by NCURVE matrix, where N is the number of observed
 #               curve values for each curve and NCURVE is the number of
 #               curves observed.
-#               If the functional data are muliivariate, this array will be
-#               an N by NCURVE by NVAR matrix, where NVAR the number of
-#               functions observed per case.  For example, for the gait
-#               data, NVAR = 2, since we observe knee and hip angles.
+#
+#               If the functional data are muliivariate, this array will
+#               be an N by NCURVE by NVAR matrix, where NVAR the number
+#               of functions observed per case.  For example, for the
+#               gait data, NVAR = 2, since we observe knee and hip
+#               angles.
 #  WFDPAROBJ... A functional parameter or fdPar object.  This object
 #               contains the specifications for the functional data
 #               object to be estimated by smoothing the data.  See
@@ -59,8 +61,8 @@ smooth.pos <- function(argvals, y, WfdParobj, wtvec=rep(1,n), conv=1e-4,
 #  FLIST objects are indexed linear with curves varying inside
 #  variables.
 
-# last modified 21 September 2008 by Jim Ramsay
-# previously modified 3 January 2008 by Jim Ramsay
+# last modified 2008.11.22 by Spencer Graves
+# previously modified 21 September 2008 by Jim Ramsay
 
 #  check ARGVALS
 
@@ -346,7 +348,11 @@ for (ivar in 1:nvar) {
 
   Wfdobj = fd(coef, basisobj)
 
-  return( list("Wfdobj"=Wfdobj, "Flist"=Flist) )
+#  return( list("Wfdobj"=Wfdobj, "Flist"=Flist) )
+  posFd <- list(Wfdobj=Wfdobj, Flist=Flist,
+                argvals=argvals, y=y)
+  class(posFd) <- 'posfd'
+
 }
 
 #  ---------------------------------------------------------------
