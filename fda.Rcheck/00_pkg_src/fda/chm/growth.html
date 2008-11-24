@@ -1,0 +1,74 @@
+<html><head><title>Berkeley Growth Study data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>growth(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   growth">
+<param name="keyword" value=" Berkeley Growth Study data">
+</object>
+
+
+<h2>Berkeley Growth Study data</h2>
+
+
+<h3>Description</h3>
+
+<p>
+A list containing the heights of 39 boys and 54 girls from age 1 to 18
+and the ages at which they were collected.
+</p>
+
+
+<h3>Format</h3>
+
+<p>
+This list contains the following components:
+<dl>
+<dt>hgtm</dt><dd>a 31 by 39 numeric matrix giving the heights in centimeters of
+39 boys at 31 ages.    
+</dd>
+<dt>hgtf</dt><dd>a 31 by 54 numeric matrix giving the heights in centimeters of
+54 girls at 31 ages.  
+</dd>
+<dt>age</dt><dd>a numeric vector of length 31 giving the ages at which the
+heights were measured.  
+</dd>
+</dl>
+
+<h3>Details</h3>
+
+<p>
+The ages are not equally spaced.
+</p>
+
+
+<h3>Source</h3>
+
+<p>
+Ramsay, James O., and Silverman, Bernard W. (2006), <EM>Functional
+Data Analysis, 2nd ed.</EM>, Springer, New York. 
+</p>
+<p>
+Ramsay, James O., and Silverman, Bernard W. (2002), <EM>Applied
+Functional Data Analysis</EM>, Springer, New York, ch. 6. 
+</p>
+<p>
+Tuddenham, R. D., and Snyder, M. M. (1954) "Physical growth of
+California boys and girls from birth to age 18", <EM>University of
+California Publications in Child Development</EM>, 1, 183-364.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+with(growth, matplot(age, hgtf[, 1:10], type="b"))
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

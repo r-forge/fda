@@ -1,0 +1,174 @@
+<html><head><title>Predict method for Winsorized linear model fits</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>predict.lmWinsor(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   predict.lmWinsor">
+<param name="keyword" value=" Predict method for Winsorized linear model fits">
+</object>
+
+
+<h2>Predict method for Winsorized linear model fits</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Model predictions for object of class 'lmWinsor'.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'lmWinsor':
+predict(object, newdata, se.fit = FALSE,
+     scale = NULL, df = Inf, 
+     interval = c("none", "confidence", "prediction"),
+     level = 0.95, type = c("response", "terms"), 
+     terms = NULL, na.action = na.pass,
+     pred.var = res.var/weights, weights = 1, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code> object </code></td>
+<td>
+Object of class inheriting from 'lmWinsor'  
+</td></tr>
+<tr valign="top"><td><code> newdata </code></td>
+<td>
+An optional data frame in which to look for variables with which to
+predict.  If omitted, the fitted values are used. 
+</td></tr>
+<tr valign="top"><td><code> se.fit</code></td>
+<td>
+a switch indicating if standard errors of predictions are required 
+</td></tr>
+<tr valign="top"><td><code> scale </code></td>
+<td>
+Scale parameter for std.err. calculation  
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+degrees of freedom for scale 
+</td></tr>
+<tr valign="top"><td><code>interval</code></td>
+<td>
+type of prediction (response or model term) 
+</td></tr>
+<tr valign="top"><td><code> level </code></td>
+<td>
+Tolerance/confidence level </td></tr>
+<tr valign="top"><td><code> type </code></td>
+<td>
+Type of prediction (response or model term);  see
+<a onclick="findlink('stats', 'predict.lm.html')" style="text-decoration: underline; color: blue; cursor: hand">predict.lm</a> 
+</td></tr>
+<tr valign="top"><td><code>terms</code></td>
+<td>
+If 'type="terms"', which terms (default is all terms)
+</td></tr>
+<tr valign="top"><td><code>na.action</code></td>
+<td>
+function determining what should be done with missing values in
+'newdata'.  The default is to predict 'NA'. 
+</td></tr>
+<tr valign="top"><td><code> pred.var </code></td>
+<td>
+the variance(s) for future observations to be assumed for prediction
+intervals.  See <a onclick="findlink('stats', 'predict.lm.html')" style="text-decoration: underline; color: blue; cursor: hand">predict.lm</a> 'Details'.
+</td></tr>
+<tr valign="top"><td><code> weights </code></td>
+<td>
+variance weights for prediction. This can be a numeric vector or a
+one-sided model formula. In the latter case, it is interpreted as an
+expression evaluated in 'newdata'
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+additional arguments for other methods
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+1.  Identify inputs and outputs via mdly &lt;- mdlx &lt;- formula(object);
+mdly[[3]] &lt;- NULL;  mdlx[[2]] &lt;- NULL;  xNames &lt;- all.vars(mdlx);
+yNames &lt;- all.vars(mdly).  Give an error if as.character(mdly[[2]]) !=
+yNames.  
+</p>
+<p>
+2.  If 'newdata' are provided, clip all xNames to (object[["lower"]],
+object[["upper"]]). 
+</p>
+<p>
+3.  Call <a onclick="findlink('stats', 'predict.lm.html')" style="text-decoration: underline; color: blue; cursor: hand">predict.lm</a>  
+</p>
+<p>
+4.  Clip the responses to the relevant components of
+(object[["lower"]], object[["upper"]]).
+</p>
+<p>
+5.  Done.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+'predict.lmWinsor' produces a vector of predictions or a matrix of
+predictions with limits or a list, as produced by
+<a onclick="findlink('stats', 'predict.lm.html')" style="text-decoration: underline; color: blue; cursor: hand">predict.lm</a></p>
+
+<h3>Author(s)</h3>
+
+<p>
+Spencer Graves
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="lmWinsor.html">lmWinsor</a></code>
+<code><a onclick="findlink('stats', 'predict.lm.html')" style="text-decoration: underline; color: blue; cursor: hand">predict.lm</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# example from 'anscombe' 
+lm.1 &lt;- lmWinsor(y1~x1, data=anscombe)
+
+newD &lt;- data.frame(x1=seq(1, 22, .1))
+predW &lt;- predict(lm.1, newdata=newD) 
+plot(y1~x1, anscombe, xlim=c(1, 22)) 
+lines(newD[["x1"]], predW, col='blue')
+abline(h=lm.1[['lower']]['y1'], col='red', lty='dashed') 
+abline(h=lm.1[['upper']]['y1'], col='red', lty='dashed')
+abline(v=lm.1[['lower']]['x1'], col='green', lty='dashed') 
+abline(v=lm.1[['upper']]['x1'], col='green', lty='dashed') 
+
+</pre>
+
+<script Language="JScript">
+function findlink(pkg, fn) {
+var Y, link;
+Y = location.href.lastIndexOf("\\") + 1;
+link = location.href.substring(0, Y);
+link = link + "../../" + pkg + "/chtml/" + pkg + ".chm::/" + fn;
+location.href = link;
+}
+</script>
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

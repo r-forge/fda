@@ -1,0 +1,50 @@
+\HeaderA{Fstat.fd}{F-statistic for functional linear regression.}{Fstat.fd}
+\keyword{smooth}{Fstat.fd}
+\begin{Description}\relax
+Fstat.fd calculates a pointwise F-statistic for functional linear regression.
+\end{Description}
+\begin{Usage}
+\begin{verbatim} Fstat.fd(y,yhat,argvals=NULL)\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{y}] the dependent variable object.  It may be:
+\Itemize{
+\item a vector if the dependent variable is scalar.
+\item a functional data object if the dependent variable is functional.
+}
+
+\item[\code{yhat}] The predicted values corresponding to \code{y}. It must be of the same class.
+
+\item[\code{argvals}] If \code{yfdPar} is a functional data object, the points at which to evaluate
+the pointwise F-statistic.
+
+\end{ldescription}
+\end{Arguments}
+\begin{Details}\relax
+An F-statistic is calculated as the ratio of residual variance to predicted
+variance.
+
+If \code{argvals} is not specified and \code{yfdPar} is a \code{fd} object,
+it defaults to 101 equally-spaced points on the range of \code{yfdPar}.
+\end{Details}
+\begin{Value}
+A list with components
+\begin{ldescription}
+\item[\code{F}] the calculated pointwise F-statistics.
+\item[\code{argvals}] argument values for evaluating the F-statistic if \code{yfdPar} is
+a functional data object.
+
+\end{ldescription}
+
+normal-bracket21bracket-normal
+\end{Value}
+\begin{Source}\relax
+Ramsay, James O., and Silverman, Bernard W. (2006), \emph{Functional
+Data Analysis, 2nd ed.}, Springer, New York.
+\end{Source}
+\begin{SeeAlso}\relax
+\code{\LinkA{fRegress}{fRegress}}
+\code{\LinkA{Fstat.fd}{Fstat.fd}}
+\end{SeeAlso}
+

@@ -1,0 +1,151 @@
+<html><head><title>Values of Basis Functions or their Derivatives</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>eval.basis(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   eval.basis">
+<param name="keyword" value=" Values of Basis Functions or their Derivatives">
+</object>
+
+
+<h2>Values of Basis Functions or their Derivatives</h2>
+
+
+<h3>Description</h3>
+
+<p>
+A set of basis functions are evaluated at a vector of argument values.
+If a linear differential object is provided, the  values are the
+result of applying the the operator to each basis function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+eval.basis(evalarg, basisobj, Lfdobj=0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>evalarg</code></td>
+<td>
+a vector of argument values.
+</td></tr>
+<tr valign="top"><td><code>basisobj</code></td>
+<td>
+a basis object defining basis functions whose values
+are to be computed.
+</td></tr>
+<tr valign="top"><td><code>Lfdobj</code></td>
+<td>
+either a nonnegative integer or a linear differential.
+operator object.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+If a linear differential operator object is supplied, the basis must
+be such that the highest order derivative can be computed. If a
+B-spline basis is used, for example, its order must be one larger than
+the highest order of derivative required.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+a matrix of basis function values with rows corresponding
+to argument values and columns to basis functions.</p>
+
+<h3>Source</h3>
+
+<p>
+Ramsay, James O., and Silverman, Bernard W. (2006), <EM>Functional
+Data Analysis, 2nd ed.</EM>, Springer, New York.
+</p>
+<p>
+Ramsay, James O., and Silverman, Bernard W. (2002), <EM>Applied
+Functional Data Analysis</EM>, Springer, New York
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="getbasismatrix.html">getbasismatrix</a></code>, 
+<code><a href="eval.fd.html">eval.fd</a></code>, 
+<code><a href="plot.basisfd.html">plot.basisfd</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+##
+## 1.  B-splines
+## 
+# The simplest basis currently available:
+# a single step function  
+str(bspl1.1 &lt;- create.bspline.basis(norder=1, breaks=0:1))
+(eval.bspl1.1 &lt;- eval.basis(seq(0, 1, .2), bspl1.1))
+
+# The second simplest basis:
+# 2 step functions, [0, .5], [.5, 1]
+str(bspl1.2 &lt;- create.bspline.basis(norder=1, breaks=c(0,.5, 1)))
+(eval.bspl1.2 &lt;- eval.basis(seq(0, 1, .2), bspl1.2))
+
+# Second order B-splines (degree 1:  linear splines) 
+str(bspl2.3 &lt;- create.bspline.basis(norder=2, breaks=c(0,.5, 1)))
+(eval.bspl2.3 &lt;- eval.basis(seq(0, 1, .1), bspl2.3))
+# 3 bases:  order 2 = degree 1 = linear 
+# (1) line from (0,1) down to (0.5, 0), 0 after
+# (2) line from (0,0) up to (0.5, 1), then down to (1,0)
+# (3) 0 to (0.5, 0) then up to (1,1).
+
+##
+## 2.  Fourier 
+## 
+# The false Fourier series with 1 basis function
+falseFourierBasis &lt;- create.fourier.basis(nbasis=1)
+(eval.fFB &lt;- eval.basis(seq(0, 1, .2), falseFourierBasis))
+
+# Simplest real Fourier basis with 3 basis functions
+fourier3 &lt;- create.fourier.basis()
+(eval.fourier3 &lt;- eval.basis(seq(0, 1, .2), fourier3))
+
+# 3 basis functions on [0, 365]
+fourier3.365 &lt;- create.fourier.basis(c(0, 365))
+eval.F3.365 &lt;- eval.basis(day.5, fourier3.365)
+
+matplot(eval.F3.365, type="l")
+
+# The next simplest Fourier basis (5  basis functions)
+fourier5 &lt;- create.fourier.basis(nbasis=5)
+(eval.F5 &lt;- eval.basis(seq(0, 1, .1), fourier5))
+matplot(eval.F5, type="l")
+
+# A more complicated example
+dayrng &lt;- c(0, 365) 
+
+nbasis &lt;- 51
+norder &lt;- 6 
+
+weatherBasis &lt;- create.fourier.basis(dayrng, nbasis)
+basisMat &lt;- eval.basis(day.5, weatherBasis) 
+
+matplot(basisMat[, 1:5], type="l")
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

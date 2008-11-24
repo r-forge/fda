@@ -1,0 +1,64 @@
+\HeaderA{linmod}{Fit Fully Functional Linear Model}{linmod}
+\keyword{smooth}{linmod}
+\begin{Description}\relax
+A functional dependent variable is approximated by a single
+functional covariate, and the
+covariate can affect the dependent variable for all
+values of its argument.  The regression function is a bivariate function.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+linmod(xfdobj, yfdobj, wtvec=rep(1,nrep),
+       xLfdobj=int2Lfd(2), yLfdobj=int2Lfd(2),
+       xlambda=0, ylambda=0)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{xfdobj}] a functional data object for the covariate
+
+\item[\code{yfdobj}] a functional data object for the dependent variable
+
+\item[\code{wtvec}] a vector of weights for each observation.
+
+\item[\code{xLfdobj}] either a nonnegative integer or a linear differential operator
+object.  This operator is applied to the regression function's
+first argument.
+
+\item[\code{yLfdobj}] either a nonnegative integer or a linear differential operator
+object.  This operator is applied to the regression function's
+second argument.
+
+\item[\code{xlambda}] a smoothing parameter for the first argument of the regression
+function.
+
+\item[\code{ylambda}] a smoothing parameter for the second argument of the regression
+function.
+
+\end{ldescription}
+\end{Arguments}
+\begin{Value}
+a named list of length 3 with the following entries:
+
+\begin{ldescription}
+\item[\code{alphafd}] the intercept functional data object.
+
+\item[\code{regfd}] a bivariate functional data object for the regression function.
+
+\item[\code{yhatfd}] a functional data object for the approximation to the dependent variable
+defined by the linear model, if the dependent variable is functional.
+Otherwise the matrix of approximate values.
+
+\end{ldescription}
+\end{Value}
+\begin{SeeAlso}\relax
+\code{\LinkA{fRegress}{fRegress}}
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+#See the prediction of precipitation using temperature as
+#the independent variable in the analysis of the daily weather
+#data.
+\end{ExampleCode}
+\end{Examples}
+

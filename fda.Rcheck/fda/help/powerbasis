@@ -1,0 +1,48 @@
+powerbasis                package:fda                R Documentation
+
+_P_o_w_e_r _B_a_s_i_s _F_u_n_c_t_i_o_n _V_a_l_u_e_s
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Evaluates a set of power basis functions, or a derivative of these
+     functions, at a set of arguments.
+
+_U_s_a_g_e:
+
+     powerbasis(x, exponents, nderiv=0)
+
+_A_r_g_u_m_e_n_t_s:
+
+       x: a vector of argument values at which the power basis
+          functions are to evaluated. Since exponents may be negative,
+          for example after differentiation, it is required that all
+          argument values be positive. 
+
+exponents: a vector of exponents defining the power basis functions. 
+          If $y$ is such a rate value, the corresponding basis function
+          is $x$ to the power $y$.  The number of basis functions is
+          equal to the number of exponents. 
+
+  nderiv: the derivative to be evaluated.  The derivative must not
+          exceed the order.  The default derivative is 0, meaning that
+          the basis functions themselves are evaluated. 
+
+_V_a_l_u_e:
+
+     a matrix of function values.  The number of rows equals the number
+     of arguments, and the number of columns equals the number of basis
+     functions.
+
+_S_e_e _A_l_s_o:
+
+     'create.power.basis',  'powerpen'
+
+_E_x_a_m_p_l_e_s:
+
+     #  set up a set of 10 positive argument values.
+     x <- seq(0.1,1,0.1)
+     #  compute values for three power basis functions
+     exponents <- c(0, 1, 2)
+     #  evaluate the basis matrix
+     basismat <- powerbasis(x, exponents)
+

@@ -1,0 +1,62 @@
+\HeaderA{dirs}{Get subdirectories}{dirs}
+\keyword{IO}{dirs}
+\begin{Description}\relax
+If you want only subfolders and no files, use \code{dirs}.  
+With \code{recursive} = FALSE, \code{\LinkA{dir}{dir}} returns both folders
+and files.  With \code{recursive} = TRUE, it returns only files.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+dirs(path='.', pattern=NULL, exclude=NULL, all.files=FALSE,
+     full.names=FALSE, recursive=FALSE, ignore.case=FALSE) 
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{path, all.files, full.names, recursive, ignore.case}] as for \code{\LinkA{dir}{dir}}
+
+\item[\code{pattern, exclude}] optional regular expressions of filenames to include or exclude,
+respectively.  
+
+\end{ldescription}
+\end{Arguments}
+\begin{Details}\relax
+1.  mainDir <- dir(...)  without recurse 
+
+2.  Use \code{\LinkA{file.info}{file.info}} to restrict mainDir to only
+directories.
+
+3.  If !recursive, return the restricted mainDir.  Else, if
+length(mainDir) > 0, create dirList to hold the results of the
+recursion and call \code{dirs} for each component of mainDir.  Then
+\code{\LinkA{unlist}{unlist}} and return the result.
+\end{Details}
+\begin{Value}
+A character vector of the desired subdirectories.
+\end{Value}
+\begin{Author}\relax
+Spencer Graves
+\end{Author}
+\begin{SeeAlso}\relax
+\code{\LinkA{dir}{dir}},
+\code{\LinkA{file.info}{file.info}}
+\code{\LinkA{package.dir}{package.dir}}
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+path2fdaM <- system.file('Matlab/fdaM', package='fda')
+dirs(path2fdaM)
+dirs(path2fdaM, full.names=TRUE)
+dirs(path2fdaM, recursive=TRUE)
+dirs(path2fdaM, exclude='^@|^private$', recursive=TRUE)
+
+# Directories to add to Matlab path
+# for R.matlab and fda
+R.matExt <- system.file('externals', package='R.matlab')
+fdaM <- dirs(path2fdaM, exclude='^@|^private$', full.names=TRUE,
+              recursive=TRUE)  
+add2MatlabPath <- c(R.matExt, path2fdaM, fdaM) 
+
+\end{ExampleCode}
+\end{Examples}
+

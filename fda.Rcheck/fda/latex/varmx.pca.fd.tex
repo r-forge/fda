@@ -1,0 +1,37 @@
+\HeaderA{varmx.pca.fd}{Rotation of Functional Principal Components with VARIMAX
+Criterion}{varmx.pca.fd}
+\keyword{smooth}{varmx.pca.fd}
+\begin{Description}\relax
+Principal components are often easier to interpret if they are
+rotated.  Among the many possible ways in which this rotation can be
+defined, the VARIMAX criterion seems to give satisfactory results most
+of the time.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+varmx.pca.fd(pcafd, nharm=scoresd[2], nx=501)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{pcafd}] an object of class \code{pca.fd} that is produced by function
+\code{pca.fd}.
+
+\item[\code{nharm}] the number of harmonics or principal components to be
+rotated.
+
+\item[\code{nx}] the number of argument values in a fine mesh
+used to define the harmonics to be
+rotated.
+
+\end{ldescription}
+\end{Arguments}
+\begin{Value}
+a rotated principal components analysis object of class
+\code{pca.fd}.
+\end{Value}
+\begin{SeeAlso}\relax
+\code{\LinkA{varmx}{varmx}}, 
+\code{\LinkA{varmx.cca.fd}{varmx.cca.fd}}
+\end{SeeAlso}
+

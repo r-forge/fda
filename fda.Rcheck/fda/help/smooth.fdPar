@@ -1,0 +1,88 @@
+smooth.fdPar               package:fda               R Documentation
+
+_S_m_o_o_t_h _a _f_u_n_c_t_i_o_n_a_l _d_a_t_a _o_b_j_e_c_t _u_s_i_n_g _a _d_i_r_e_c_t_l_y _s_p_e_c_i_f_i_e_d _r_o_u_g_h_n_e_s_s
+_p_e_n_a_l_t_y
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Smooth data already converted to a functional data object, fdobj,
+     using directly specified criteria.
+
+_U_s_a_g_e:
+
+     smooth.fdPar(fdobj, Lfdobj=int2Lfd(0), lambda=0,
+                  estimate=TRUE, penmat=NULL) 
+
+_A_r_g_u_m_e_n_t_s:
+
+   fdobj: a functional data object to be smoothed.     
+
+  Lfdobj: either a nonnegative integer or a linear differential
+          operator object  
+
+  lambda: a nonnegative real number specifying the amount of smoothing
+          to be applied to the estimated functional parameter. 
+
+estimate: a logical value:  if 'TRUE', the functional parameter is
+          estimated, otherwise, it is held fixed. 
+
+  penmat: a roughness penalty matrix.  Including this can eliminate the
+          need to compute this matrix over and over again in some types
+          of calculations. 
+
+_D_e_t_a_i_l_s:
+
+     1.  fdPar
+
+     2.  smooth.fd
+
+_V_a_l_u_e:
+
+     a functional data object.
+
+_R_e_f_e_r_e_n_c_e_s:
+
+     Ramsay, James O., and Silverman, Bernard W. (2005), _Functional 
+     Data Analysis, 2nd ed._, Springer, New York. 
+
+     Ramsay, James O., and Silverman, Bernard W. (2002), _Applied
+     Functional Data Analysis_, Springer, New York.
+
+_S_e_e _A_l_s_o:
+
+     'smooth.fd',  'fdPar',  'smooth.basis',  'smooth.pos', 
+     'smooth.morph'
+
+_E_x_a_m_p_l_e_s:
+
+     #  Shows the effects of two levels of smoothing
+     #  where the size of the third derivative is penalized.
+     #  The null space contains quadratic functions.
+     x <- seq(-1,1,0.02)
+     y <- x + 3*exp(-6*x^2) + rnorm(rep(1,101))*0.2
+     #  set up a saturated B-spline basis
+     basisobj <- create.bspline.basis(c(-1,1),81)
+     #  convert to a functional data object that interpolates the data.
+     result <- smooth.basis(x, y, basisobj)
+     yfd  <- result$fd
+     #  set up a functional parameter object with smoothing
+     #  parameter 1e-6 and a penalty on the 2nd derivative.
+     yfdPar <- fdPar(yfd, 2, 1e-6)
+     yfd1 <- smooth.fd(yfd, yfdPar)
+
+     yfd1. <- smooth.fdPar(yfd, 2, 1e-6)
+     all.equal(yfd1, yfd1.)
+     # TRUE
+
+     #  set up a functional parameter object with smoothing
+     #  parameter 1 and a penalty on the 2nd derivative.
+     yfd2 <- smooth.fdPar(yfd, 2, 1)
+
+     #  plot the data and smooth
+     plot(x,y)           # plot the data
+     lines(yfd1, lty=1)  #  add moderately penalized smooth
+     lines(yfd2, lty=3)  #  add heavily  penalized smooth
+     legend(-1,3,c("0.000001","1"),lty=c(1,3))
+     #  plot the data and smoothing using function plotfit.fd
+     plotfit.fd(y, x, yfd1)  # plot data and smooth
+

@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Plot Functional Principal Components</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for plot.pca.fd {fda}"><tr><td>plot.pca.fd {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Plot Functional Principal Components</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Display the types of variation across a sample of functions.  Label
+with the eigenvalues that indicate the relative importance of each
+mode of variation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plot.pca.fd(x, nx = 128, pointplot = TRUE, harm = 0,
+                        expand = 0, cycle = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+a functional data object.
+</td></tr>
+<tr valign="top"><td><code>nx</code></td>
+<td>
+Number of points to plot or vector (if length &gt; 1) to use as
+<code>evalarg</code> in evaluating and plotting the functional principal
+components. 
+</td></tr>
+<tr valign="top"><td><code>pointplot</code></td>
+<td>
+logical:  If TRUE, the harmonics / principal components are plotted
+as '+' and '-'.   Otherwise lines are used.
+</td></tr>
+<tr valign="top"><td><code>harm</code></td>
+<td>
+Harmonics / principal components to plot.  If 0, plot all.
+<br>
+If length(harm) &gt; sum(par("mfrow")), the user advised, "Waiting to
+confirm page change..." and / or 'Click or hit ENTER for next page'
+for each page after the first.  
+</td></tr>
+<tr valign="top"><td><code>expand</code></td>
+<td>
+nonnegative real:  If expand == 0 then effect of +/- 2 standard
+deviations of each pc are given otherwise the factor expand is
+used.  
+</td></tr>
+<tr valign="top"><td><code>cycle</code></td>
+<td>
+logical:  If cycle=TRUE and there are 2 variables then a cycle plot
+will be drawn If the number of variables is anything else, cycle
+will be ignored. 
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+other arguments for 'plot'.  
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+Produces one plot for each principal component / harmonic to be
+plotted.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+invisible(NULL)</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="cca.fd.html">cca.fd</a></code>, 
+<code><a href="pda.fd.html">pda.fd</a></code>
+<code><a href="plot.pca.fd.html">plot.pca.fd</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+#  carry out a PCA of temperature
+#  penalize harmonic acceleration, use varimax rotation
+
+daybasis65 &lt;- create.fourier.basis(c(0, 365), nbasis=65, period=365)
+
+harmaccelLfd &lt;- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
+harmfdPar     &lt;- fdPar(daybasis65, harmaccelLfd, lambda=1e5)
+daytempfd &lt;- data2fd(CanadianWeather$dailyAv[,,"Temperature.C"],
+      day.5, daybasis65, argnames=list("Day", "Station", "Deg C"))
+
+daytemppcaobj &lt;- pca.fd(daytempfd, nharm=4, harmfdPar)
+#  plot harmonics, asking before each new page after the first:  
+plot.pca.fd(daytemppcaobj)
+
+# plot 4 on 1 page
+op &lt;- par(mfrow=c(2,2))
+plot.pca.fd(daytemppcaobj, cex.main=0.9)
+par(op)
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

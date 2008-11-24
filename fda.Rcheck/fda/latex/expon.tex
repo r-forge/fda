@@ -1,0 +1,37 @@
+\HeaderA{expon}{Exponential Basis Function Values}{expon}
+\keyword{smooth}{expon}
+\begin{Description}\relax
+Evaluates a set of exponential basis functions, or a derivative of these
+functions, at a set of arguments.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+expon(x, ratevec=1, nderiv=0)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] a vector of values at which the basis functions are to be evaluated.
+
+\item[\code{ratevec}] a vector of rate or time constants defining the exponential
+functions.  That is, if $a$ is the value of an
+element of this vector, then the corresponding basis function
+is $exp(at)$. The number of basis functions is equal
+to the length of \code{ratevec}.
+
+\item[\code{nderiv}] a nonnegative integer specifying an order of derivative to
+be computed.  The default is 0, or the basis function value.
+
+\end{ldescription}
+\end{Arguments}
+\begin{Details}\relax
+There are no restrictions on the rate constants.
+\end{Details}
+\begin{Value}
+a matrix of basis function values with rows corresponding
+to argument values and columns to basis functions.
+\end{Value}
+\begin{SeeAlso}\relax
+\code{\LinkA{exponpen}{exponpen}}
+\end{SeeAlso}
+

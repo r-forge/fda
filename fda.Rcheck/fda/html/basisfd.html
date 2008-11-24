@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Define a Functional Basis Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for basisfd {fda}"><tr><td>basisfd {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Define a Functional Basis Object</h2>
+
+
+<h3>Description</h3>
+
+<p>
+This is the constructor function for objects of the <code>basisfd</code>
+class.  Each function that sets up an object of this class must call
+this function.  This includes functions <code>create.bspline.basis</code>,
+<code>create.constant.basis</code>, <code>create.fourier.basis</code>, and so
+forth that set up basis objects of a specific type.  Ordinarily, user
+of the functional data analysis software will not need to call this
+function directly, but these notes are valuable to understanding what
+the "slots" or "members" of the <code>basisfd</code> class are.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+basisfd(type, rangeval, nbasis, params,
+        dropind=vector('list', 0),
+        quadvals=vector('list', 0),
+        values=vector("list", 0),
+        basisvalues=vector('list', 0))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>type</code></td>
+<td>
+a character string indicating the type of basis.  Currently,
+there are eight possible types:
+<br>
+<ol>
+<dt>Bspline, bspline, Bsp, bsp</dt><dd>b-spline basis</dd>
+<dt>const, con, constant</dt><dd>constant basis</dd>
+<dt>exp, expon, exponen, exponential</dt><dd>exponential basis
+</dd>
+<dt>Fourier, fourier, Fou, fou</dt><dd>Fourier basis</dd>
+<dt>mon, monom, monomial</dt><dd>monomial basis</dd>
+<dt>polyg, polygon, polygonal</dt><dd>polygonal basis</dd>
+<dt>polynom</dt><dd>polynomial basis</dd>
+<dt>power, pow</dt><dd>power basis</dd>
+</ol>
+</td></tr>
+<tr valign="top"><td><code>rangeval</code></td>
+<td>
+a vector of length 2 containing the lower and upper boundaries
+of the range over which the basis is defined
+</td></tr>
+<tr valign="top"><td><code>nbasis</code></td>
+<td>
+the number of basis functions
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+a vector of parameter values defining the basis.
+<br>
+If the basis is "fourier", this is a single number indicating the
+period.  That is, the basis functions are periodic on the interval
+(0,PARAMS) or any translation of it.
+<br>
+If the basis is "bspline", the values are interior points at which
+the piecewise polynomials join.  Note that the number of basis
+functions NBASIS is equal to the order of the Bspline functions plus
+the number of interior knots, that is the length of PARAMS.  This
+means that NBASIS must be at least 1 larger than the length of PARAMS.
+</td></tr>
+<tr valign="top"><td><code>dropind</code></td>
+<td>
+a vector of integers specifiying the basis functions to
+be dropped, if any.  For example, if it is required that
+a function be zero at the left boundary, this is achieved
+by dropping the first basis function, the only one that
+is nonzero at that point.
+</td></tr>
+<tr valign="top"><td><code>quadvals</code></td>
+<td>
+a matrix with two columns and a number of rows equal to the number
+of argument values used to approximate an integral using Simpson's
+rule.  The first column contains these argument values.  A minimum
+of 5 values are required for each inter-knot interval, and that is
+often enough. These are equally spaced between two adjacent knots.
+The second column contains the weights used for Simpson's rule.
+These are proportional to 1, 4, 2, 4, ..., 2, 4, 1.
+</td></tr>
+<tr valign="top"><td><code>values</code></td>
+<td>
+a list, with entries containing the values of the basis function
+derivatives starting with 0 and going up to the highest derivative
+needed.  The values correspond to quadrature points in
+<code>quadvals</code> and it is up to the user to decide whether or not to
+multiply the derivative values by the square roots of the quadrature
+weights so as to make numerical integration a simple matrix
+multiplication.  Values are checked against <code>quadvals</code> to
+ensure the correct number of rows, and against <code>nbasis</code> to
+ensure the correct number of columns.
+<br>
+<code>values</code> contains values of basis functions and derivatives at
+quadrature points weighted by square root of quadrature weights.
+These values are only generated as required, and only if the
+<code>quadvals</code> is not matrix("numeric",0,0).
+</td></tr>
+<tr valign="top"><td><code>basisvalues</code></td>
+<td>
+a list of lists.  This is designed to avoid evaluation of a basis
+system repeatedly at a set of argument values. Each sublist
+corresponds to a specific set of argument values, and must have at
+least two components, which may be named as you wish.  The first
+component in an element of the list vector contains the argument
+values.  The second component is a matrix of values of the basis
+functions evaluated at the arguments in the first component.
+Subsequent components, if present, are matrices of values their
+derivatives up to a maximum derivative order.  Whenever function
+<code>getbasismatrix</code> is called, it checks the first list in each
+row to see, first, if the number of argument values corresponds to
+the size of the first dimension, and if this test succeeds, checks
+that all of the argument values match.  This takes time, of course,
+but is much faster than re-evaluation of the basis system.  Even
+this time can be avoided by direct retrieval of the desired array.
+For example, you might set up a vector of argument values called
+"evalargs" along with a matrix of basis function values for these
+argument values called "basismat".  You might want too use tags like
+"args" and "values", respectively for these.  You would then assign
+them to BASISVALUES with code such as basisobj$basisvalues &lt;-
+vector("list",1);  basisobj$basisvalues[[1]] &lt;- list(args=evalargs,
+values=basismat).
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+Previous versions of the 'fda' software used the name <code>basis</code>
+for this class, and the code in Matlab still does.  However, this
+class name was already used elsewhere in the S languages, and there
+was a potential for a clash that might produce mysterious and perhaps
+disastrous consequences.
+</p>
+<p>
+To check that an object is of this class, use function
+<code><a href="is.basis.html">is.basis</a></code>.
+</p>
+<p>
+It is comparatively simple to add new basis types.  The code in
+the following functions needs to be estended to allow for the new
+type: <code><a href="basisfd.html">basisfd</a></code>, <code><a href="fda-internal.html">use.proper.basis</a></code>,
+<code><a href="getbasismatrix.html">getbasismatrix</a></code> and <code><a href="getbasispenalty.html">getbasispenalty</a></code>.
+In addition, a new "create" function should be written for the
+new type, as well as functions analogous to <code><a href="fourier.html">fourier</a></code> and
+<code><a href="fourierpen.html">fourierpen</a></code> for evaluating basis functions for basis
+penalty matrices.
+</p>
+<p>
+The "create" function names are rather long, and users who mind
+all that typing might be advised to modify these to versions with
+shorter names, such as "splbas", "conbas", and etc.  However, a
+principle of good programming practice is to keep the code readable,
+preferably by somebody other than the programmer.
+</p>
+<p>
+Normally only developers of new basis types will actually need
+to use this function, so no examples are provided.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+an object of class <code>basisfd</code>, being a list with the following
+components:
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>type</code></td>
+<td>
+type of basis</td></tr>
+<tr valign="top"><td><code>rangeval</code></td>
+<td>
+acceptable range for the argument</td></tr>
+<tr valign="top"><td><code>nbasis</code></td>
+<td>
+number of bases</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+a vector of parameter values defining the basis.
+</td></tr>
+<tr valign="top"><td><code>dropind</code></td>
+<td>
+input argument dropind</td></tr>
+<tr valign="top"><td><code>quadvals</code></td>
+<td>
+quadrature values ...</td></tr>
+<tr valign="top"><td><code>values</code></td>
+<td>
+a list of basis functions and derivatives
+</td></tr>
+<tr valign="top"><td><code>basisvalues</code></td>
+<td>
+input argument basisvalues</td></tr>
+</table>
+<p>
+
+normal-bracket69bracket-normal</p>
+
+<h3>Source</h3>
+
+<p>
+Ramsay, James O., and Silverman, Bernard W. (2006), <EM>Functional
+Data Analysis, 2nd ed.</EM>, Springer, New York.
+</p>
+<p>
+Ramsay, James O., and Silverman, Bernard W. (2002), <EM>Applied
+Functional Data Analysis</EM>, Springer, New York
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="is.basis.html">is.basis</a></code>,
+<code><a href="fda-internal.html">is.eqbasis</a></code>,
+<code><a href="plot.basisfd.html">plot.basisfd</a></code>,
+<code><a href="getbasismatrix.html">getbasismatrix</a></code>,
+<code><a href="getbasispenalty.html">getbasispenalty</a></code>,
+<code><a href="create.bspline.basis.html">create.bspline.basis</a></code>,
+<code><a href="create.constant.basis.html">create.constant.basis</a></code>,
+<code><a href="create.exponential.basis.html">create.exponential.basis</a></code>,
+<code><a href="create.fourier.basis.html">create.fourier.basis</a></code>,
+<code><a href="create.monomial.basis.html">create.monomial.basis</a></code>,
+<code><a href="create.polygonal.basis.html">create.polygonal.basis</a></code>,
+<code><a href="create.polynomial.basis.html">create.polynomial.basis</a></code>,
+<code><a href="create.power.basis.html">create.power.basis</a></code>
+</p>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

@@ -1,0 +1,113 @@
+<html><head><title>Smooth a Functional Data Object Using an Indirectly Specified
+Roughness Penalty</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>smooth.fd(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   smooth.fd">
+<param name="keyword" value=" Smooth a Functional Data Object Using an Indirectly Specified
+Roughness Penalty">
+</object>
+
+
+<h2>Smooth a Functional Data Object Using an Indirectly Specified
+Roughness Penalty</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Smooth data already converted to a functional data object, fdobj,
+using criteria consolidated in a functional data parameter object,
+fdParobj.  For example, data may have been converted to a functional
+data object using function <code>data2fd</code> using a fairly large set of
+basis functions.  This 'fdobj' is then smoothed as specified in
+'fdParobj'.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+smooth.fd(fdobj, fdParobj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fdobj</code></td>
+<td>
+a functional data object to be smoothed.
+</td></tr>
+<tr valign="top"><td><code>fdParobj</code></td>
+<td>
+a functional parameter object. This object is defined by a roughness
+penalty in slot <code>Lfd</code> and a smoothing parameter lambda in slot
+<code>lambda</code>, and this information is used to further smooth argument <code>fdobj</code>.
+</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+a functional data object.</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="smooth.basis.html">smooth.basis</a></code>, 
+<code><a href="data2fd.old.html">data2fd</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+#  Shows the effects of two levels of smoothing
+#  where the size of the third derivative is penalized.
+#  The null space contains quadratic functions.
+x &lt;- seq(-1,1,0.02)
+y &lt;- x + 3*exp(-6*x^2) + rnorm(rep(1,101))*0.2
+#  set up a saturated B-spline basis
+basisobj &lt;- create.bspline.basis(c(-1,1),81)
+#  convert to a functional data object that interpolates the data.
+result &lt;- smooth.basis(x, y, basisobj)
+yfd  &lt;- result$fd
+
+#  set up a functional parameter object with smoothing
+#  parameter 1e-6 and a penalty on the 3rd derivative.
+yfdPar &lt;- fdPar(yfd, 2, 1e-6)
+yfd1 &lt;- smooth.fd(yfd, yfdPar)
+
+## Not run: 
+# FIXME: using 3rd derivative here gave error?????
+yfdPar3 &lt;- fdPar(yfd, 3, 1e-6)
+yfd1.3 &lt;- smooth.fd(yfd, yfdPar3)
+#Error in bsplinepen(basisobj, Lfdobj, rng) : 
+#       Penalty matrix cannot be evaluated
+#  for derivative of order 3 for B-splines of order 4
+## End(Not run)
+
+#  set up a functional parameter object with smoothing
+#  parameter 1 and a penalty on the 3rd derivative.
+yfdPar &lt;- fdPar(yfd, 2, 1)
+yfd2 &lt;- smooth.fd(yfd, yfdPar)
+#  plot the data and smooth
+plot(x,y)           # plot the data
+lines(yfd1, lty=1)  #  add moderately penalized smooth
+lines(yfd2, lty=3)  #  add heavily  penalized smooth
+legend(-1,3,c("0.000001","1"),lty=c(1,3))
+#  plot the data and smoothing using function plotfit.fd
+plotfit.fd(y, x, yfd1)  # plot data and smooth
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

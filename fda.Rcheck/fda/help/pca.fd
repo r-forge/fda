@@ -1,0 +1,78 @@
+pca.fd                  package:fda                  R Documentation
+
+_F_u_n_c_t_i_o_n_a_l _P_r_i_n_c_i_p_a_l _C_o_m_p_o_n_e_n_t_s _A_n_a_l_y_s_i_s
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Functional Principal components analysis aims to display types of
+     variation across a sample of functions.  Principal components
+     analysis is an exploratory data analysis that tends to be an early
+     part of many projects.  These modes of variation are called
+     $principal components$ or $harmonics.$  This function computes
+     these harmonics, the eigenvalues that indicate how important each
+     mode of variation, and harmonic scores for individual functions.
+     If the functions are multivariate, these harmonics are combined
+     into a composite function that summarizes joint variation among
+     the several functions that make up a multivariate functional
+     observation.
+
+_U_s_a_g_e:
+
+     pca.fd(fdobj, nharm = 2, harmfdPar=fdPar(fdobj),
+            centerfns = TRUE)
+
+_A_r_g_u_m_e_n_t_s:
+
+   fdobj: a functional data object. 
+
+   nharm: the number of harmonics or principal components to compute. 
+
+harmfdPar: a functional parameter object that defines the harmonic or
+          principal component functions to be estimated. 
+
+centerfns: a logical value: if TRUE, subtract the mean function from
+          each function before computing principal components. 
+
+_V_a_l_u_e:
+
+     an object of class "pca.fd" with these named entries:
+
+harmonics: a functional data object for the harmonics or eigenfunctions 
+
+  values: the complete set of eigenvalues 
+
+  scores: s matrix of scores on the principal components or harmonics 
+
+ varprop: a vector giving the proportion of variance explained by each
+          eigenfunction 
+
+  meanfd: a functional data object giving the mean function 
+
+_S_e_e _A_l_s_o:
+
+     'cca.fd', 'pda.fd'
+
+_E_x_a_m_p_l_e_s:
+
+     #  carry out a PCA of temperature
+     #  penalize harmonic acceleration, use varimax rotation
+
+     daybasis65 <- create.fourier.basis(c(0, 365), nbasis=65, period=365)
+
+     harmaccelLfd <- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
+     harmfdPar     <- fdPar(daybasis65, harmaccelLfd, lambda=1e5)
+     daytempfd <- data2fd(CanadianWeather$dailyAv[,,"Temperature.C"],
+           day.5, daybasis65, argnames=list("Day", "Station", "Deg C"))
+
+     daytemppcaobj <- pca.fd(daytempfd, nharm=4, harmfdPar)
+     daytemppcaVarmx <- varmx.pca.fd(daytemppcaobj)
+     #  plot harmonics
+     op <- par(mfrow=c(2,2))
+     plot.pca.fd(daytemppcaobj, cex.main=0.9)
+
+     plot.pca.fd(daytemppcaVarmx, cex.main=0.9)
+     par(op)
+
+     plot(daytemppcaobj$harmonics)
+     plot(daytemppcaVarmx$harmonics)
+

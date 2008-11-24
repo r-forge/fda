@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Extract plot labels and names for replicates and variables</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for fdlabels {fda}"><tr><td>fdlabels {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Extract plot labels and names for replicates and variables</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Extract plot labels and, if available, names for each replicate and
+variable
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+fdlabels(fdnames, nrep, nvar) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fdnames</code></td>
+<td>
+a list of lenght 3 with xlabel, casenames, and ylabels.  
+</td></tr>
+<tr valign="top"><td><code>nrep</code></td>
+<td>
+integer number of cases or observations </td></tr>
+<tr valign="top"><td><code>nvar</code></td>
+<td>
+integer number of variables </td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+xlabel &lt;- if(length(fdnames[[1]])&gt;1) names(fdnames)[1] else 
+fdnames[[1]] 
+</p>
+<p>
+ylabel &lt;- if(length(fdnames[[3]])&gt;1) names(fdnames)[3] else
+fdnames[[3]] 
+</p>
+<p>
+casenames &lt;- if(length(fdnames[[2]])== nrep)fdnames[[2]] else NULL
+</p>
+<p>
+varnames &lt;- if(length(fdnames[[3]])==nvar)fdnames[[3]] else NULL
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+A list of xlabel, ylabel, casenames, and varnames</p>
+
+<h3>Author(s)</h3>
+
+<p>
+Jim Ramsay
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="plot.fd.html">plot.fd</a></code>
+</p>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

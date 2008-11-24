@@ -1,0 +1,75 @@
+<html><head><title>Create a Constant Basis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>create.constant.basis(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   create.constant.basis">
+<param name="keyword" value=" Create a Constant Basis">
+</object>
+
+
+<h2>Create a Constant Basis</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Create a constant basis object, defining a single basis function
+whose value is everywhere 1.0.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+create.constant.basis(rangeval=c(0, 1))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>rangeval</code></td>
+<td>
+a vector of length 2 containing the initial and final
+values of argument t defining the interval over which the functional
+data object can be evaluated.  However, this is seldom used 
+since the value of the basis function does not depend on the range
+or any argument values.
+</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+a basis object with type component <code>const</code>.</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="basisfd.html">basisfd</a></code>, 
+<code><a href="create.bspline.basis.html">create.bspline.basis</a></code>, 
+<code><a href="create.exponential.basis.html">create.exponential.basis</a></code>, 
+<code><a href="create.fourier.basis.html">create.fourier.basis</a></code>, 
+<code><a href="create.monomial.basis.html">create.monomial.basis</a></code>, 
+<code><a href="create.polygonal.basis.html">create.polygonal.basis</a></code>, 
+<code><a href="create.polynomial.basis.html">create.polynomial.basis</a></code>, 
+<code><a href="create.power.basis.html">create.power.basis</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+basisobj &lt;- create.constant.basis(c(-1,1))
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

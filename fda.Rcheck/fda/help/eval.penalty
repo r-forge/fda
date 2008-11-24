@@ -1,0 +1,56 @@
+eval.penalty               package:fda               R Documentation
+
+_E_v_a_l_u_a_t_e _a _B_a_s_i_s _P_e_n_a_l_t_y _M_a_t_r_i_x
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     A basis roughness penalty matrix is the matrix containing the
+     possible inner products of pairs of basis functions. These inner
+     products are typically defined in terms of the value of a
+     derivative or of a linear differential operator applied to the
+     basis function.  The basis penalty matrix plays an important role
+     in the computation of functions whose roughness is controlled by a
+     roughness penalty.
+
+_U_s_a_g_e:
+
+     eval.penalty(basisobj, Lfdobj=int2Lfd(0), rng=rangeval)
+
+_A_r_g_u_m_e_n_t_s:
+
+basisobj: a basis object.
+
+  Lfdobj: either a nonnegative integer defining an order of a
+          derivative or a linear differential operator. 
+
+     rng: a vector of length 2 defining a restricted range. Optionally,
+          the inner products can be computed over a range of argument
+          values that lies within the interval covered by the basis
+          function definition. 
+
+_D_e_t_a_i_l_s:
+
+     The inner product can be computed exactly for many types of bases
+     if $m$ is an integer.  These include B-spline, fourier,
+     exponential, monomial, polynomial and power bases. In other cases,
+     and for noninteger operators, the inner products are computed by
+     an iterative numerical integration method called Richard
+     extrapolation using the trapezoidal rule.
+
+     If the penalty matrix must be evaluated repeatedly, computation
+     can be greatly speeded up by avoiding the use of this function,
+     and instead using quadrature points and weights defined by
+     Simpson's rule.
+
+_V_a_l_u_e:
+
+     a square symmetric matrix whose order is equal to the number of
+     basis functions defined by the basis function object ' basisobj '.
+     If 'Lfdobj' is $m$ or a linear differential operator of order $m$,
+     the rank of the matrix should be at least approximately equal to
+     its order minus  $m$.
+
+_S_e_e _A_l_s_o:
+
+     'getbasispenalty',  'eval.basis',
+

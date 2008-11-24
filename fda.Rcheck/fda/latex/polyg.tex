@@ -1,0 +1,48 @@
+\HeaderA{polyg}{Polygonal Basis Function Values}{polyg}
+\keyword{smooth}{polyg}
+\begin{Description}\relax
+Evaluates a set of polygonal basis functions, or a derivative of these
+functions, at a set of arguments.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+polyg(x, argvals, nderiv=0)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] a vector of argument values at which the polygonal basis functions are to
+evaluated.
+
+\item[\code{argvals}] a strictly increasing set of argument values containing the range of x
+within it that defines the polygonal basis.  The default is x itself.
+
+\item[\code{nderiv}] the order of derivative to be evaluated.  The derivative must not exceed
+one.  The default derivative is 0, meaning that the basis functions
+themselves are evaluated.
+
+\end{ldescription}
+\end{Arguments}
+\begin{Value}
+a matrix of function values.  The number of rows equals the number of
+arguments, and the number of columns equals the number of basis
+\end{Value}
+\begin{SeeAlso}\relax
+\code{\LinkA{create.polygonal.basis}{create.polygonal.basis}}, 
+\code{\LinkA{polygpen}{polygpen}}
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+
+#  set up a set of 21 argument values
+x <- seq(0,1,0.05)
+#  set up a set of 11 argument values
+argvals <- seq(0,1,0.1)
+#  with the default period (1) and derivative (0)
+basismat <- polyg(x, argvals)
+#  plot the basis functions
+matplot(x, basismat, type="l")
+
+\end{ExampleCode}
+\end{Examples}
+

@@ -1,0 +1,25 @@
+is.fdPar                 package:fda                 R Documentation
+
+_C_o_n_f_i_r_m _O_b_j_e_c_t _h_a_s _C_l_a_s_s "_f_d_P_a_r"
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Check that an argument is a functional parameter object.
+
+_U_s_a_g_e:
+
+     is.fdPar(fdParobj)
+
+_A_r_g_u_m_e_n_t_s:
+
+fdParobj: an object to be checked. 
+
+_V_a_l_u_e:
+
+     a logical value: 'TRUE' if the class is correct, 'FALSE'
+     otherwise.
+
+_S_e_e _A_l_s_o:
+
+     'is.basis',  'is.fd',  'is.Lfd'
+

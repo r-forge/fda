@@ -1,0 +1,242 @@
+<html><head><title>Permutation F-test for functional linear regression.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>Fperm.fd(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   Fperm.fd">
+<param name="keyword" value=" Permutation F-test for functional linear regression.">
+</object>
+
+
+<h2>Permutation F-test for functional linear regression.</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Fperm.fd creates a null distribution for a test of no effect in functional
+linear regression. It makes generic use of <code>fRegress</code> and permutes the
+<code>yfdPar</code> input.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+Fperm.fd(yfdPar, xfdlist, betalist,wt=NULL,
+            nperm=200,argvals=NULL,q=0.05,plotres=TRUE,...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>yfdPar</code></td>
+<td>
+the dependent variable object.  It may be an object of
+three possible classes:
+<ul>
+<dt>vector</dt><dd>if the dependent variable is scalar.</dd>
+<dt>fd</dt><dd>a functional data object if the dependent variable is
+functional.
+</dd>
+<dt>fdPar</dt><dd>a functional parameter object if the dependent variable is
+functional, and if it is necessary to smooth the prediction of
+the dependent variable.
+</dd>
+</ul>
+</td></tr>
+<tr valign="top"><td><code>xfdlist</code></td>
+<td>
+a list of length equal to the number of independent variables. Members
+of this list are the independent variables.  They be objects of either
+of these two classes:
+<br>
+<ul>
+<li>a vector if the independent dependent variable is scalar.
+<li>a functional data object if the dependent variable is functional.
+</ul>
+<br>
+In either case, the object must have the same number of replications as
+the dependent variable object.  That is, if it is a scalar, it must be
+of the same length as the dependent variable, and if it is functional,
+it must have the same number of replications as the dependent variable.
+</td></tr>
+<tr valign="top"><td><code>betalist</code></td>
+<td>
+a list of length equal to the number of independent variables. Members
+of this list define the regression functions to be estimated.
+They are functional parameter objects.  Note that even if corresponding
+independent variable is scalar, its regression coefficient will be
+functional if the dependent variable is functional.  Each of these
+functional parameter objects defines a single functional data object,
+that is, with only one replication.
+</td></tr>
+<tr valign="top"><td><code>wt</code></td>
+<td>
+weights for weighted least squares, defaults to all 1.
+</td></tr>
+<tr valign="top"><td><code>nperm</code></td>
+<td>
+number of permutations to use in creating the null distribution.
+</td></tr>
+<tr valign="top"><td><code>argvals</code></td>
+<td>
+If <code>yfdPar</code> is a <code>fd</code> object, the points at which to evaluate
+the point-wise F-statistic.
+</td></tr>
+<tr valign="top"><td><code>q</code></td>
+<td>
+Critical upper-tail quantile of the null distribution to compare to the observed F-statistic.
+</td></tr>
+<tr valign="top"><td><code>plotres</code></td>
+<td>
+Argument to plot a visual display of the null distribution displaying the
+<code>q</code>th quantile and observed F-statistic.
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+Additional plotting arguments that can be used with <code>plot</code>.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+An F-statistic is calculated as the ratio of residual variance to predicted
+variance. The observed F-statistic is returned along with the permutation
+distribution.
+</p>
+<p>
+If <code>yfdPar</code> is a <code>fd</code> object, the maximal value of the pointwise
+F-statistic is calculated. The pointwise F-statistics are also returned.
+</p>
+<p>
+The default of setting <code>q = 0.95</code> is, by now, fairly standard. The default
+<code>nperm = 200</code> may be small, depending on the amount of computing time available.
+</p>
+<p>
+If <code>argvals</code> is not specified and <code>yfdPar</code> is a <code>fd</code> object,
+it defaults to 101 equally-spaced points on the range of <code>yfdPar</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+A list with components
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>pval</code></td>
+<td>
+the observed p-value of the permutation test.</td></tr>
+<tr valign="top"><td><code>qval</code></td>
+<td>
+the <code>q</code>th quantile of the null distribution.</td></tr>
+<tr valign="top"><td><code>Fobs</code></td>
+<td>
+the observed maximal F-statistic.</td></tr>
+<tr valign="top"><td><code>Fnull</code></td>
+<td>
+a vector of length <code>nperm</code> giving the observed values of the
+permutation distribution.
+</td></tr>
+<tr valign="top"><td><code>Fvals</code></td>
+<td>
+the pointwise values of the observed F-statistic.</td></tr>
+<tr valign="top"><td><code>Fnullvals</code></td>
+<td>
+the pointwise values of of the permutation observations.
+</td></tr>
+<tr valign="top"><td><code>pvals.pts</code></td>
+<td>
+pointwise p-values of the F-statistic.</td></tr>
+<tr valign="top"><td><code>qvals.pts</code></td>
+<td>
+pointwise <code>q</code>th quantiles of the null distribution
+</td></tr>
+<tr valign="top"><td><code>fRegressList</code></td>
+<td>
+the result of <code>fRegress</code> on the observed data
+</td></tr>
+<tr valign="top"><td><code>argvals</code></td>
+<td>
+argument values for evaluating the F-statistic if <code>yfdPar</code> is
+a functional data object.
+</td></tr>
+</table>
+<p>
+
+normal-bracket73bracket-normal</p>
+
+<h3>Side Effects</h3>
+
+<p>
+a plot of the functional observations
+</p>
+
+
+<h3>Source</h3>
+
+<p>
+Ramsay, James O., and Silverman, Bernard W. (2006), <EM>Functional
+Data Analysis, 2nd ed.</EM>, Springer, New York.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="fRegress.html">fRegress</a></code>
+<code><a href="Fstat.fd.html">Fstat.fd</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# The very simplest example is the equivalent of the permutation
+# t-test on the growth data. 
+
+# First set up a basis system to hold the smooths
+
+knots  &lt;- growth$age
+norder &lt;- 6
+nbasis &lt;- length(knots) + norder - 2
+hgtbasis &lt;- create.bspline.basis(range(knots), nbasis, norder, knots)
+
+# Now smooth with a fourth-derivative penalty and a very small smoothing
+# parameter
+
+Lfdobj &lt;- 4
+lambda &lt;- 1e-2
+growfdPar &lt;- fdPar(hgtbasis, Lfdobj, lambda)
+
+hgtfd &lt;- smooth.basis(growth$age, cbind(growth$hgtm,growth$hgtf),growfdPar)$fd
+
+# Now set up factors for fRegress:
+
+cbasis = create.constant.basis(range(knots))
+
+maleind = c(rep(1,ncol(growth$hgtm)),rep(0,ncol(growth$hgtf)))
+
+constfd = fd( matrix(1,1,length(maleind)),cbasis)
+maleindfd = fd( matrix(maleind,1,length(maleind)),cbasis)
+
+xfdlist = list(constfd,maleindfd)
+
+# The fdPar object for the coefficients and call Fperm.fd
+
+betalist = list(fdPar(hgtbasis,2,1e-6),fdPar(hgtbasis,2,1e-6))
+
+Fres = Fperm.fd(hgtfd,xfdlist,betalist)
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

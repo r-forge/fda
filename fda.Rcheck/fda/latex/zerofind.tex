@@ -1,0 +1,31 @@
+\HeaderA{zerofind}{Does the range of the input contain 0?}{zerofind}
+\keyword{logic}{zerofind}
+\begin{Description}\relax
+Returns TRUE if range of the argument includes 0 and FALSES if not.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+  zerofind(fmat)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{fmat}] An object from which 'range' returns two numbers.  
+
+\end{ldescription}
+\end{Arguments}
+\begin{Value}
+A logical value TRUE or FALSE.
+\end{Value}
+\begin{SeeAlso}\relax
+\code{\LinkA{range}{range}}
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+zerofind(1:5)
+# FALSE
+zerofind(0:3)
+# TRUE 
+\end{ExampleCode}
+\end{Examples}
+

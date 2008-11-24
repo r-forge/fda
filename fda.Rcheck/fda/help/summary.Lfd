@@ -1,0 +1,29 @@
+summary.Lfd               package:fda               R Documentation
+
+_S_u_m_m_a_r_i_z_e _a _L_i_n_e_a_r _D_i_f_f_e_r_e_n_t_i_a_l _O_p_e_r_a_t_o_r _O_b_j_e_c_t
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Provide a compact summary of the characteristics of a linear
+     differential operator object.
+
+_U_s_a_g_e:
+
+     ## S3 method for class 'Lfd':
+     summary(object, ...)
+     summary.Lfd(object, ...)
+
+_A_r_g_u_m_e_n_t_s:
+
+  object: a linear differential operator object. 
+
+     ...: Other arguments to match the generic 'summary' function
+
+_V_a_l_u_e:
+
+     a displayed summary of the linear differential operator object.
+
+_S_e_e _A_l_s_o:
+
+     'summary',
+

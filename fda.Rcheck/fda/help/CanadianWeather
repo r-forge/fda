@@ -1,0 +1,139 @@
+CanadianWeather             package:fda             R Documentation
+
+_C_a_n_a_d_i_a_n _a_v_e_r_a_g_e _a_n_n_u_a_l _w_e_a_t_h_e_r _c_y_c_l_e
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Daily temperature and precipitation at 35 different locations in
+     Canada averaged over 1960 to 1994.
+
+_U_s_a_g_e:
+
+     CanadianWeather
+     daily
+
+_F_o_r_m_a_t:
+
+     'CanadianWeather' and 'daily' are lists containing essentially the
+     same data.  'CanadianWeather' may be preferred for most purposes;
+     'daily' is included primarily for compatability with scripts
+     written before the other format became available and for
+     compatability with the Matlab 'fda' code.
+
+_C_a_n_a_d_i_a_n_W_e_a_t_h_e_r A list with the following components:
+
+   _d_a_i_l_y_A_v a three dimensional array c(365, 35, 3) summarizing data
+        collected at 35 different weather stations in Canada on the
+        following:
+
+        [,,1] = [,, 'Temperature.C']:  average daily temperature for
+        each day of the year
+
+        [,,2] = [,, 'Precipitation.mm']:  average daily rainfall for
+        each day of the year rounded to 0.1 mm.
+
+        [,,3] = [,, 'log10precip']:  base 10 logarithm of
+        Precipitation.mm after first replacing 27 zeros by 0.05 mm
+        (Ramsay and Silverman 2006, p. 248).
+
+   _p_l_a_c_e Names of the 35 different weather stations in Canada whose
+        data are summarized in 'dailyAv'.  These names vary between 6
+        and 11 characters in length.  By contrast, daily[["place"]]
+        which are all 11 characters, with names having fewer characters
+        being extended with trailing blanks.
+
+   _p_r_o_v_i_n_c_e names of the Canadian province containing each place
+
+   _c_o_o_r_d_i_n_a_t_e_s a numeric matrix giving 'N.latitude' and 'W.longitude'
+        for each place.
+
+   _r_e_g_i_o_n Which of 4 climate zones contain each place:  Atlantic,
+        Pacific, Continental, Arctic.
+
+   _m_o_n_t_h_l_y_T_e_m_p A matrix of dimensions (12, 35) giving the average
+        temperature in degrees celcius for each month of the year.
+
+   _m_o_n_t_h_l_y_P_r_e_c_i_p A matrix of dimensions (12, 35) giving the average
+        daily precipitation in milimeters for each month of the year.
+
+   _g_e_o_g_i_n_d_e_x Order the weather stations from East to West to North
+
+
+_d_a_i_l_y A list with the following components:
+
+   _p_l_a_c_e Names of the 35 different weather stations in Canada whose
+        data are summarized in 'dailyAv'.  These names are all 11
+        characters, with shorter names being extended with trailing
+        blanks.  This is different from CanadianWeather[["place"]],
+        where trailing blanks have been dropped.
+
+   _t_e_m_p_a_v a matrix of dimensions (365, 35) giving the average
+        temperature in degrees celcius for each day of the year.  This
+        is essentially the same as CanadianWeather[["dailyAv"]][,,
+        "Temperature.C"].
+
+   _p_r_e_c_i_p_a_v a matrix of dimensions (365, 35) giving the average
+        temperature in degrees celcius for each day of the year.  This
+        is essentially the same as CanadianWeather[["dailyAv"]][,,
+        "Precipitation.mm"].
+
+_S_o_u_r_c_e:
+
+     Ramsay, James O., and Silverman, Bernard W. (2006), _Functional
+     Data Analysis, 2nd ed._, Springer, New York.
+
+     Ramsay, James O., and Silverman, Bernard W. (2002), _Applied
+     Functional Data Analysis_, Springer, New York
+
+_S_e_e _A_l_s_o:
+
+     'monthAccessories'
+
+_E_x_a_m_p_l_e_s:
+
+     ##
+     ## 1.  Plot (latitude & longitude) of stations by region
+     ##
+     with(CanadianWeather, plot(-coordinates[, 2], coordinates[, 1], type='n',
+                                xlab="West Latitude", ylab="North Longitude",
+                                axes=FALSE) )
+     Wlat <- pretty(CanadianWeather$coordinates[, 2])
+     axis(1, -Wlat, Wlat)
+     axis(2)
+
+     arctic <- with(CanadianWeather, coordinates[region=='Arctic', ])
+     atl <- with(CanadianWeather, coordinates[region=='Atlantic', ])
+     contl <- with(CanadianWeather, coordinates[region=='Continental', ])
+     pac <- with(CanadianWeather, coordinates[region=='Pacific', ])
+     points(-arctic[, 2], arctic[, 1], col=1, pch=1)
+     points(-atl[, 2], atl[, 1], col=2, pch=2)
+     points(-contl[, 2], contl[, 1], col=3, pch=3)
+     points(-pac[, 2], pac[, 1], col=4, pch=4)
+
+     legend('topright', legend=c('Arctic', 'Atlantic', 'Pacific', 'Continental'),
+            col=1:4, pch=1:4)
+
+     ##
+     ## 2.  Plot dailyAv[, 'Temperature.C'] for 4 stations
+     ##
+     data(CanadianWeather)
+     # Expand the left margin to allow space for place names
+     op <- par(mar=c(5, 4, 4, 5)+.1)
+     # Plot
+     stations <- c("Pr. Rupert", "Montreal", "Edmonton", "Resolute")
+     matplot(day.5, CanadianWeather$dailyAv[, stations, "Temperature.C"],
+             type="l", axes=FALSE, xlab="", ylab="Mean Temperature (deg C)")
+     axis(2, las=1)
+     # Label the horizontal axis with the month names
+     axis(1, monthBegin.5, labels=FALSE)
+     axis(1, monthEnd.5, labels=FALSE)
+     axis(1, monthMid, monthLetters, tick=FALSE)
+     # Add the monthly averages
+     matpoints(monthMid, CanadianWeather$monthlyTemp[, stations])
+     # Add the names of the weather stations
+     mtext(stations, side=4,
+           at=CanadianWeather$dailyAv[365, stations, "Temperature.C"],
+          las=1)
+     # clean up
+     par(op)
+

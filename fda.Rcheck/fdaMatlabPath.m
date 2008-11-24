@@ -1,0 +1,16 @@
+addpath('c:/PROGRA~1/R/library/R.matlab/externals');
+addpath('C:/Users/jim/R-forge/fda.Rcheck/fda/Matlab/fdaM');
+addpath('C:/Users/jim/R-forge/fda.Rcheck/fda/Matlab/fdaM/examples');
+addpath('C:/Users/jim/R-forge/fda.Rcheck/fda/Matlab/fdaM/examples/gait');
+addpath('C:/Users/jim/R-forge/fda.Rcheck/fda/Matlab/fdaM/examples/gdp');
+addpath('C:/Users/jim/R-forge/fda.Rcheck/fda/Matlab/fdaM/examples/goodsindex');
+addpath('C:/Users/jim/R-forge/fda.Rcheck/fda/Matlab/fdaM/examples/growth');
+addpath('C:/Users/jim/R-forge/fda.Rcheck/fda/Matlab/fdaM/examples/handwrit');
+addpath('C:/Users/jim/R-forge/fda.Rcheck/fda/Matlab/fdaM/examples/lip');
+addpath('C:/Users/jim/R-forge/fda.Rcheck/fda/Matlab/fdaM/examples/mathtest');
+addpath('C:/Users/jim/R-forge/fda.Rcheck/fda/Matlab/fdaM/examples/melanoma');
+addpath('C:/Users/jim/R-forge/fda.Rcheck/fda/Matlab/fdaM/examples/pinch');
+addpath('C:/Users/jim/R-forge/fda.Rcheck/fda/Matlab/fdaM/examples/refinery');
+addpath('C:/Users/jim/R-forge/fda.Rcheck/fda/Matlab/fdaM/examples/weather');
+addpath('C:/Users/jim/R-forge/fda.Rcheck/fda/Matlab/fdaM/ftpsite');
+addpath('C:/Users/jim/R-forge/fda.Rcheck/fda/Matlab/fdaM/ftpsite/temp');

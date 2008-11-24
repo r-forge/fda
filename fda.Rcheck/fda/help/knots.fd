@@ -1,0 +1,87 @@
+knots.fd                 package:fda                 R Documentation
+
+_E_x_t_r_a_c_t _t_h_e _k_n_o_t_s _f_r_o_m _a _f_u_n_c_t_i_o_n _b_a_s_i_s _o_r _d_a_t_a _o_b_j_e_c_t
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Extract either all or only the interior knots from an object of
+     class 'basisfd', 'fd', or 'fdSmooth'.
+
+_U_s_a_g_e:
+
+     ## S3 method for class 'fd':
+     knots(Fn, interior=TRUE, ...)
+     ## S3 method for class 'fdSmooth':
+     knots(Fn, interior=TRUE, ...)
+     ## S3 method for class 'basisfd':
+     knots(Fn, interior=TRUE, ...)
+
+_A_r_g_u_m_e_n_t_s:
+
+      Fn: an object of class 'basisfd' or containing such an object  
+
+interior: logical:
+
+          if TRUE, the first Fn[["k"]]+1 of Fn[["knots"]] are dropped,
+          and the next Fn[["g"]] are returned.
+
+          Otherwise, the first Fn[["n"]] of Fn[["knots"]] are returned.             
+
+     ...: ignored
+
+_D_e_t_a_i_l_s:
+
+     The interior knots of a 'bspline' basis are stored in the 'params'
+     component.  The remaining knots are in the 'rangeval' component,
+     with mulltiplicity norder(Fn).
+
+_V_a_l_u_e:
+
+     Numeric vector.  If 'interior' is TRUE, this is the 'params'
+     component of the 'bspline' basis.  Otherwise, 'params' is
+     bracketed by rep(rangeval, norder(basisfd).
+
+_A_u_t_h_o_r(_s):
+
+     Spencer Graves
+
+_R_e_f_e_r_e_n_c_e_s:
+
+     Dierckx, P. (1991) _Curve and Surface Fitting with Splines_,
+     Oxford Science Publications.
+
+_S_e_e _A_l_s_o:
+
+     'fd', 'create.bspline.basis', 'knots.dierckx'
+
+_E_x_a_m_p_l_e_s:
+
+     x <- 0:24
+     y <- c(1.0,1.0,1.4,1.1,1.0,1.0,4.0,9.0,13.0,
+            13.4,12.8,13.1,13.0,14.0,13.0,13.5,
+            10.0,2.0,3.0,2.5,2.5,2.5,3.0,4.0,3.5)
+     if(require(DierckxSpline)){
+        z1 <- curfit(x, y, method = "ss", s = 0, k = 3)
+        knots1 <- knots(z1)
+        knots1All <- knots(z1, interior=FALSE) # to see all knots
+     #
+        fda1 <- dierckx2fd(z1)
+        fdaKnots <- knots(fda1)
+        fdaKnotsA <- knots(fda1, interior=FALSE)
+        stopifnot(all.equal(knots1, fdaKnots))
+        stopifnot(all.equal(knots1All, fdaKnotsA))
+     }
+
+     # knots.fdSmooth 
+     girlGrowthSm <- with(growth, smooth.basisPar(argvals=age, y=hgtf))
+
+     girlKnots.fdSm <- knots(girlGrowthSm) 
+     girlKnots.fdSmA <- knots(girlGrowthSm, interior=FALSE)
+     stopifnot(all.equal(girlKnots.fdSm, girlKnots.fdSmA[5:33]))
+
+     girlKnots.fd <- knots(girlGrowthSm$fd) 
+     girlKnots.fdA <- knots(girlGrowthSm$fd, interior=FALSE)
+
+     stopifnot(all.equal(girlKnots.fdSm, girlKnots.fd))
+     stopifnot(all.equal(girlKnots.fdSmA, girlKnots.fdA))
+

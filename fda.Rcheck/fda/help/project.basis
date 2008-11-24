@@ -1,0 +1,44 @@
+project.basis              package:fda              R Documentation
+
+_A_p_p_r_o_x_i_m_a_t_e _F_u_n_c_t_i_o_n_a_l _D_a_t_a _U_s_i_n_g _a _B_a_s_i_s
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     A vector or matrix of discrete data is projected into the space
+     spanned by the values of a set of basis functions.  This amounts
+     to a least squares regression of the data on to the values of the
+     basis functions.  A small penalty can be applied to deal with
+     stiautions in which the number of basis functions exceeds the
+     number of basis points. This function is used with function
+     'data2fd', and is not normally used directly in a functional data
+     analysis.
+
+_U_s_a_g_e:
+
+     project.basis(y, argvals, basisobj, penalize=FALSE)
+
+_A_r_g_u_m_e_n_t_s:
+
+       y: a vector or matrix of discrete data. 
+
+ argvals: a vector containing the argument values correspond to the
+          values in 'y'. 
+
+basisobj: a basis object. 
+
+penalize: a logical variable.  If TRUE, a small roughness penalty is
+          applied to ensure that the linear equations defining the
+          least squares solution are linearly independent or
+          nonsingular. 
+
+_V_a_l_u_e:
+
+     the matrix of coefficients defining the least squares
+     approximation. This matrix has as many rows are there are basis
+     functions, as many columns as there are curves, and if the data
+     are multivariate, as many layers as there are functions.
+
+_S_e_e _A_l_s_o:
+
+     'data2fd'
+

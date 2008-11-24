@@ -1,0 +1,230 @@
+<html><head><title>Depricated:  use 'Data2fd'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>data2fd.old(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   data2fd">
+<param name="keyword" value=" Depricated:  use 'Data2fd'">
+</object>
+
+
+<h2>Depricated:  use 'Data2fd'</h2>
+
+
+<h3>Description</h3>
+
+<p>
+This function converts an array <code>y</code> of function values
+plus an array <code>argvals</code> of argument values into a
+functional data object.  This a function that tries to
+do as much for the user as possible.  A basis function
+expansion is used to represent the curve, but no roughness
+penalty is used.  The data are fit using the least squares
+fitting criterion.  NOTE:  Interpolation with data2fd(...) can be 
+shockingly bad, as illustrated in one of the examples.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+data2fd(y, argvals=seq(0, 1, len = n), basisobj,
+        fdnames=defaultnames,
+        argnames=c("time", "reps", "values"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+an array containing sampled values of curves.
+<br>
+If <code>y</code> is a vector, only one replicate and variable are
+assumed.
+<br>
+If <code>y</code> is a matrix, rows must correspond to argument values and
+columns to replications or cases, and it will be assumed that there
+is only one variable per observation.
+<br>
+If <code>y</code> is a three-dimensional array, the first dimension (rows)
+corresponds to argument values, the second (columns) to
+replications, and the third layers) to variables within
+replications.  Missing values are permitted, and the number of
+values may vary from one replication to another.  If this is the
+case, the number of rows must equal the maximum number of argument
+values, and columns of <code>y</code> having fewer values must be padded
+out with NA's. 
+</td></tr>
+<tr valign="top"><td><code>argvals</code></td>
+<td>
+a set of argument values.
+<br>
+If this is a vector, the same set of argument values is used for all
+columns of <code>y</code>.  If <code>argvals</code> is a matrix, the columns
+correspond to the columns of <code>y</code>, and contain the argument
+values for that replicate or case.    
+</td></tr>
+<tr valign="top"><td><code>basisobj</code></td>
+<td>
+either:  A <code>basisfd</code> object created by function
+create.basis.fd(), 
+or the value NULL, in which case a <code>basisfd</code> object is set up
+by the function, using the values of the next three arguments.
+</td></tr>
+<tr valign="top"><td><code>fdnames</code></td>
+<td>
+A list of length 3, each member being a string vector containing
+labels for the levels of the corresponding dimension of the discrete
+data.  The first dimension is for argument values, and is given the
+default name "time", the second is for replications, and is given
+the default name "reps", and the third is for functions, and is
+given the default name "values".  These default names are
+assigned in function {tt data2fd}, which also assigns default
+string vectors by using the dimnames attribute of the discrete data
+array. 
+</td></tr>
+<tr valign="top"><td><code>argnames</code></td>
+<td>
+a character vector of length 3 containing:
+<br>
+<ul>
+<li>the name of the argument, e.g. "time" or "age"
+<li>a description of the cases, e.g. "weather stations"
+<li>the name of the observed function value, e.g. "temperature" 
+</ul>
+<br>
+These strings are used as names for the members of list <code>fdnames</code>.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+This function tends to be used in rather simple applications where
+there is no need to control the roughness of the resulting curve
+with any great finesse.  The roughness is essentially controlled
+by how many basis functions are used.  In more sophisticated
+applications, it would be better to use the function <code><a href="smooth.basis.html">smooth.basis</a></code>
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+an object of the <code>fd</code> class containing:
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>coefs</code></td>
+<td>
+the coefficient array
+</td></tr>
+<tr valign="top"><td><code>basis</code></td>
+<td>
+a basis object and
+</td></tr>
+<tr valign="top"><td><code>fdnames</code></td>
+<td>
+a list containing names for the arguments, function values
+and variables
+</td></tr>
+</table>
+
+<h3>See Also</h3>
+
+<p>
+<code>\line{Data2fd}</code>
+<code><a href="smooth.basis.html">smooth.basis</a></code>, 
+<code><a href="smooth.basisPar.html">smooth.basisPar</a></code>, 
+<code><a href="project.basis.html">project.basis</a></code>, 
+<code><a href="smooth.fd.html">smooth.fd</a></code>, 
+<code><a href="smooth.monotone.html">smooth.monotone</a></code>, 
+<code><a href="smooth.pos.html">smooth.pos</a></code>
+<code><a href="dateAccessories.html">day.5</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Simplest possible example
+b1.2 &lt;- create.bspline.basis(norder=1, breaks=c(0, .5, 1))
+# 2 bases, order 1 = degree 0 = step functions
+
+str(fd1.2 &lt;- data2fd(0:1, basisobj=b1.2))
+plot(fd1.2)
+# A step function:  0 to time=0.5, then 1 after 
+
+b2.3 &lt;- create.bspline.basis(norder=2, breaks=c(0, .5, 1))
+# 3 bases, order 2 = degree 1 =
+# continuous, bounded, locally linear
+
+str(fd2.3 &lt;- data2fd(0:1, basisobj=b2.3))
+round(fd2.3$coefs, 4)
+# 0, -.25, 1 
+plot(fd2.3)
+# Officially acceptable but crazy:
+# Initial negative slope from (0,0) to (0.5, -0.25),
+# then positive slope to (1,1).  
+
+b3.4 &lt;- create.bspline.basis(norder=3, breaks=c(0, .5, 1))
+# 4 bases, order 3 = degree 2 =
+# continuous, bounded, locally quadratic 
+
+str(fd3.4 &lt;- data2fd(0:1, basisobj=b3.4))
+round(fd3.4$coefs, 4)
+# 0, .25, -.5, 1 
+plot(fd3.4)
+# Officially acceptable but crazy:
+# Initial positive then swings negative
+# between 0.4 and ~0.75 before becoming positive again
+# with a steep slope running to (1,1).  
+
+
+#  Simple example 
+gaitbasis3 &lt;- create.fourier.basis(nbasis=3)
+str(gaitbasis3) # note:  'names' for 3 bases
+gaitfd3 &lt;- data2fd(gait, basisobj=gaitbasis3)
+str(gaitfd3)
+# Note: dimanes for 'coefs' + basis[['names']]
+# + 'fdnames'
+
+#    set up the fourier basis
+daybasis &lt;- create.fourier.basis(c(0, 365), nbasis=65)
+#  Make temperature fd object
+#  Temperature data are in 12 by 365 matrix tempav
+#    See analyses of weather data.
+
+#  Convert the data to a functional data object
+tempfd &lt;- data2fd(CanadianWeather$dailyAv[,,"Temperature.C"],
+                  day.5, daybasis)
+#  plot the temperature curves
+plot(tempfd)
+
+# Terrifying interpolation
+hgtbasis &lt;- with(growth, create.bspline.basis(range(age), 
+                                              breaks=age, norder=6))
+girl.data2fd &lt;- with(growth, data2fd(hgtf, age, hgtbasis))
+age2 &lt;- with(growth, sort(c(age, (age[-1]+age[-length(age)])/2)))
+girlPred &lt;- eval.fd(age2, girl.data2fd)
+range(growth$hgtf)
+range(growth$hgtf-girlPred[seq(1, by=2, length=31),])
+# 5.5e-6 0.028 &lt;
+# The predictions are consistently too small
+# but by less than 0.05 percent 
+
+matplot(age2, girlPred, type="l")
+with(growth, matpoints(age, hgtf))
+# girl.data2fd fits the data fine but goes berzerk
+# between points 
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

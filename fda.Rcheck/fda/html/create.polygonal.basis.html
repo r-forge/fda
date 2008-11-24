@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Create a Polygonal Basis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for create.polygonal.basis {fda}"><tr><td>create.polygonal.basis {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Create a Polygonal Basis</h2>
+
+
+<h3>Description</h3>
+
+<p>
+A basis is set up for constructing polygonal lines, consisting of
+straight line segments that join together.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+create.polygonal.basis(rangeval=NULL, argvals=NULL, dropind=NULL,
+        quadvals=NULL, values=NULL, basisvalues=NULL, names='polygon')
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>rangeval</code></td>
+<td>
+a numeric vector of length 2 defining the interval over which the
+functional data object can be evaluated;  default value is
+<code>if(is.null(argvals)) 0:1 else range(argvals)</code>.
+<br>
+If <code>length(rangeval) == 1</code> and <code>rangeval &lt;= 0</code>, this is an
+error.  Otherwise, if <code>length(rangeval) == 1</code>, <code>rangeval</code>
+is replaced by <code>c(0,rangeval)</code>.
+<br>
+If length(rangeval)&gt;2 and <code>argvals</code> is not provided, this extra
+long <code>rangeval</code> argument is assigned to <code>argvals</code>, and
+then <code>rangeval = range(argvale)</code>.
+</td></tr>
+<tr valign="top"><td><code>argvals</code></td>
+<td>
+a strictly increasing vector of argument values at which line
+segments join to form a polygonal line.
+</td></tr>
+<tr valign="top"><td><code>dropind</code></td>
+<td>
+a vector of integers specifiying the basis functions to
+be dropped, if any.  For example, if it is required that
+a function be zero at the left boundary, this is achieved
+by dropping the first basis function, the only one that
+is nonzero at that point.
+</td></tr>
+<tr valign="top"><td><code>quadvals</code></td>
+<td>
+a matrix with two columns and a number of rows equal to the number
+of quadrature points for numerical evaluation of the penalty
+integral.  The first column of <code>quadvals</code> contains the
+quadrature points, and the second column the quadrature weights.  A
+minimum of 5 values are required for each inter-knot interval, and
+that is often enough.  For Simpson's rule, these points are equally
+spaced, and the weights are proportional to These are proportional
+to 1, 4, 2, 4, ..., 2, 4, 1.
+</td></tr>
+<tr valign="top"><td><code>values</code></td>
+<td>
+a list containing the basis functions and their derivatives
+evaluated at the quadrature points contained in the first
+column of <code> quadvals </code>.
+</td></tr>
+<tr valign="top"><td><code>basisvalues</code></td>
+<td>
+A list of lists, allocated by code such as vector("list",1).  This
+is designed to avoid evaluation of a basis system repeatedly
+at a set of argument values.  Each sublist corresponds to a specific
+set of argument values, and must have at least two components, which
+may be named as you wish.  The first component of a sublist contains
+the argument values.  The second component contains a matrix of
+values of the basis functions evaluated at the arguments in the
+first component.  The third and subsequent components, if present,
+contain matrices of values their derivatives up to a maximum
+derivative order.  Whenever function <code>getbasismatrix</code> is
+called, it checks the first list in each row to see, first, if the
+number of argument values corresponds to the size of the first
+dimension, and if this test succeeds, checks that all of the
+argument values match.  This takes time, of course, but is much
+faster than re-evaluation of the basis system.  Even this time can
+be avoided by direct retrieval of the desired array. For example,
+you might set up a vector of argument values called "evalargs" along
+with a matrix of basis function values for these argument values
+called "basismat".  You might want too use tags like "args" and
+"values", respectively for these.  You would then assign them to
+<code>basisvalues</code> with code such as the following:
+<br>
+basisobj$basisvalues &lt;- vector("list",1)
+<br>
+basisobj$basisvalues[[1]] &lt;- list(args=evalargs, values=basismat)
+</td></tr>
+<tr valign="top"><td><code>names</code></td>
+<td>
+either a character vector of the same length as the number of basis
+functions or a single character string to which <code>1:nbasis</code> are
+appended as <code>paste(names, 1:nbasis, sep=''</code>.  For example, if
+<code>nbasis = 4</code>, this defaults to <code>c('polygon1', 'polygon2',
+      'polygon3', 'polygon4')</code>.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+The actual basis functions consist of triangles, each with its apex
+over an argument value. Note that in effect the polygonal basis is
+identical to a B-spline basis of order 2 and a knot or break value at
+each argument value.  The range of the polygonal basis is set to the
+interval defined by the smallest and largest argument values.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+a basis object with the type <code>polyg</code>.</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="basisfd.html">basisfd</a></code>,
+<code><a href="create.bspline.basis.html">create.bspline.basis</a></code>,
+<code><a href="create.basis.html">create.basis</a></code>,
+<code><a href="create.constant.basis.html">create.constant.basis</a></code>,
+<code><a href="create.exponential.basis.html">create.exponential.basis</a></code>,
+<code><a href="create.fourier.basis.html">create.fourier.basis</a></code>,
+<code><a href="create.monomial.basis.html">create.monomial.basis</a></code>,
+<code><a href="create.polynomial.basis.html">create.polynomial.basis</a></code>,
+<code><a href="create.power.basis.html">create.power.basis</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  Create a polygonal basis over the interval [0,1]
+#  with break points at 0, 0.1, ..., 0.95, 1
+(basisobj &lt;- create.polygonal.basis(seq(0,1,0.1)))
+#  plot the basis
+plot(basisobj)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

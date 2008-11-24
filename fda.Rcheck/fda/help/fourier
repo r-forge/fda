@@ -1,0 +1,55 @@
+fourier                 package:fda                 R Documentation
+
+_F_o_u_r_i_e_r _B_a_s_i_s _F_u_n_c_t_i_o_n _V_a_l_u_e_s
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Evaluates a set of Fourier basis functions, or a derivative of
+     these functions, at a set of arguments.
+
+_U_s_a_g_e:
+
+     fourier(x, nbasis=n, period=span, nderiv=0)
+
+_A_r_g_u_m_e_n_t_s:
+
+       x: a vector of argument values at which the Fourier basis
+          functions are to be evaluated. 
+
+  nbasis: the number of basis functions in the Fourier basis.  The
+          first basis function is the constant function, followed by
+          sets of  sine/cosine pairs.  Normally the number of basis
+          functions will be an odd.  The default number is the number
+          of argument values. 
+
+  period: the width of an interval over which all sine/cosine basis
+          functions repeat themselves. The default is the difference
+          between the largest and smallest argument values. 
+
+  nderiv: the derivative to be evaluated.  The derivative must not
+          exceed the order.  The default derivative is 0, meaning that
+          the basis functions themselves are evaluated. 
+
+_V_a_l_u_e:
+
+     a matrix of function values.  The number of rows equals the number
+     of arguments, and the number of columns equals the number of basis
+     functions.
+
+_S_e_e _A_l_s_o:
+
+     'fourierpen'
+
+_E_x_a_m_p_l_e_s:
+
+     #  set up a set of 11 argument values
+     x <- seq(0,1,0.1)
+     names(x) <- paste("x", 0:10, sep="")
+     #  compute values for five Fourier basis functions
+     #  with the default period (1) and derivative (0)
+     (basismat <- fourier(x, 5))
+
+     # Create a false Fourier basis, i.e., nbasis = 1
+     # = a constant function
+     fourier(x, 1)
+

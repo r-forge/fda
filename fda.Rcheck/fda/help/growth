@@ -1,0 +1,43 @@
+growth                  package:fda                  R Documentation
+
+_B_e_r_k_e_l_e_y _G_r_o_w_t_h _S_t_u_d_y _d_a_t_a
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     A list containing the heights of 39 boys and 54 girls from age 1
+     to 18 and the ages at which they were collected.
+
+_F_o_r_m_a_t:
+
+     This list contains the following components:
+
+     _h_g_t_m a 31 by 39 numeric matrix giving the heights in centimeters
+          of 39 boys at 31 ages.    
+
+     _h_g_t_f a 31 by 54 numeric matrix giving the heights in centimeters
+          of 54 girls at 31 ages.  
+
+     _a_g_e a numeric vector of length 31 giving the ages at which the
+          heights were measured.  
+
+
+_D_e_t_a_i_l_s:
+
+     The ages are not equally spaced.
+
+_S_o_u_r_c_e:
+
+     Ramsay, James O., and Silverman, Bernard W. (2006), _Functional
+     Data Analysis, 2nd ed._, Springer, New York. 
+
+     Ramsay, James O., and Silverman, Bernard W. (2002), _Applied
+     Functional Data Analysis_, Springer, New York, ch. 6. 
+
+     Tuddenham, R. D., and Snyder, M. M. (1954) "Physical growth of
+     California boys and girls from birth to age 18", _University of
+     California Publications in Child Development_, 1, 183-364.
+
+_E_x_a_m_p_l_e_s:
+
+     with(growth, matplot(age, hgtf[, 1:10], type="b"))
+
