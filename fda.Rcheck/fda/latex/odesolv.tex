@@ -1,0 +1,61 @@
+\HeaderA{odesolv}{Numerical Solution mth Order Differential Equation System}{odesolv}
+\keyword{smooth}{odesolv}
+\begin{Description}\relax
+The system of differential equations is linear, with
+possibly time-varying coefficient functions.
+The numerical solution is computed with the Runge-Kutta method.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+odesolv(bwtlist, ystart=diag(rep(1,norder)),
+        h0=width/100, hmin=width*1e-10, hmax=width*0.5,
+        EPS=1e-4, MAXSTP=1000)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{bwtlist}] a list whose members are functional parameter objects
+defining the weight functions for the linear differential
+equation.
+
+\item[\code{ystart}] a vector of initial values for the equations.  These
+are the values at time 0 of the solution and its first
+m - 1 derivatives.
+
+\item[\code{h0}] a positive initial step size.
+
+\item[\code{hmin}] the minimum allowable step size.
+
+\item[\code{hmax}] the maximum allowable step size.
+
+\item[\code{EPS}] a convergence criterion.
+
+\item[\code{MAXSTP}] the maximum number of steps allowed.
+
+\end{ldescription}
+\end{Arguments}
+\begin{Details}\relax
+This function is required to compute a set of solutions of an
+estimated linear differential equation in order compute a fit
+to the data that solves the equation.  Such a fit will be a
+linear combinations of m independent solutions.
+\end{Details}
+\begin{Value}
+a named list of length 2 containing
+
+\begin{ldescription}
+\item[\code{tp}] a vector of time values at which the system is evaluated
+
+\item[\code{yp}] a matrix of variable values corresponding to \code{tp}.
+
+\end{ldescription}
+\end{Value}
+\begin{SeeAlso}\relax
+\code{\LinkA{pda.fd}{pda.fd}},
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+#See the analyses of the lip data.
+\end{ExampleCode}
+\end{Examples}
+

@@ -1,0 +1,85 @@
+<html><head><title>Polygonal Basis Function Values</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>polyg(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   polyg">
+<param name="keyword" value=" Polygonal Basis Function Values">
+</object>
+
+
+<h2>Polygonal Basis Function Values</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Evaluates a set of polygonal basis functions, or a derivative of these
+functions, at a set of arguments.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+polyg(x, argvals, nderiv=0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+a vector of argument values at which the polygonal basis functions are to
+evaluated.
+</td></tr>
+<tr valign="top"><td><code>argvals</code></td>
+<td>
+a strictly increasing set of argument values containing the range of x
+within it that defines the polygonal basis.  The default is x itself.
+</td></tr>
+<tr valign="top"><td><code>nderiv</code></td>
+<td>
+the order of derivative to be evaluated.  The derivative must not exceed
+one.  The default derivative is 0, meaning that the basis functions
+themselves are evaluated.
+</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+a matrix of function values.  The number of rows equals the number of
+arguments, and the number of columns equals the number of basis</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="create.polygonal.basis.html">create.polygonal.basis</a></code>, 
+<code><a href="polygpen.html">polygpen</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+#  set up a set of 21 argument values
+x &lt;- seq(0,1,0.05)
+#  set up a set of 11 argument values
+argvals &lt;- seq(0,1,0.1)
+#  with the default period (1) and derivative (0)
+basismat &lt;- polyg(x, argvals)
+#  plot the basis functions
+matplot(x, basismat, type="l")
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

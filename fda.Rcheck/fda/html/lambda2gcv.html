@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Compute GCV Criterion</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for lambda2gcv {fda}"><tr><td>lambda2gcv {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Compute GCV Criterion</h2>
+
+
+<h3>Description</h3>
+
+<p>
+The generalized cross-validation or GCV criterion is often used to
+select an appropriate smoothing parameter value, by finding the
+smoothing parameter that minimizes GCV.  This function locates that
+value.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  lambda2gcv(log10lambda, argvals, y, fdParobj, wtvec=rep(1,length(argvals)))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>log10lambda</code></td>
+<td>
+the logarithm (base 10) of the smoothing parameter
+</td></tr>
+<tr valign="top"><td><code>argvals</code></td>
+<td>
+a vector of argument values.
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+the data to be smoothed.
+</td></tr>
+<tr valign="top"><td><code>fdParobj</code></td>
+<td>
+a functional parameter object defining the smooth.
+</td></tr>
+<tr valign="top"><td><code>wtvec</code></td>
+<td>
+a weight vector used in the smoothing.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+Currently, <code>lambda2gcv</code>
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+1.  <i>fdParobj[['lambda']] &lt;- 10^log10lambda</i>
+<br>
+2.  smoothlist &lt;- smooth.basks(argvals, y, fdParobj, wtvec)
+<br>
+3.  return(smoothlist[['gcv']])</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="smooth.basis.html">smooth.basis</a></code>
+<code><a href="fdPar.html">fdPar</a></code>
+</p>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

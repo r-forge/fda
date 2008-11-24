@@ -1,0 +1,56 @@
+Fstat.fd                 package:fda                 R Documentation
+
+_F-_s_t_a_t_i_s_t_i_c _f_o_r _f_u_n_c_t_i_o_n_a_l _l_i_n_e_a_r _r_e_g_r_e_s_s_i_o_n.
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Fstat.fd calculates a pointwise F-statistic for functional linear
+     regression.
+
+_U_s_a_g_e:
+
+      Fstat.fd(y,yhat,argvals=NULL)
+
+_A_r_g_u_m_e_n_t_s:
+
+       y: the dependent variable object.  It may be:
+
+             *  a vector if the dependent variable is scalar.
+
+             *  a functional data object if the dependent variable is
+                functional.
+
+    yhat: The predicted values corresponding to 'y'. It must be of the
+          same class. 
+
+ argvals: If 'yfdPar' is a functional data object, the points at which
+          to evaluate the pointwise F-statistic. 
+
+_D_e_t_a_i_l_s:
+
+     An F-statistic is calculated as the ratio of residual variance to
+     predicted variance.
+
+     If 'argvals' is not specified and 'yfdPar' is a 'fd' object, it
+     defaults to 101 equally-spaced points on the range of 'yfdPar'.
+
+_V_a_l_u_e:
+
+     A list with components 
+
+       F: the calculated pointwise F-statistics.
+
+ argvals: argument values for evaluating the F-statistic if 'yfdPar' is
+          a functional data object. 
+
+     normal-bracket21bracket-normal
+
+_S_o_u_r_c_e:
+
+     Ramsay, James O., and Silverman, Bernard W. (2006), _Functional
+     Data Analysis, 2nd ed._, Springer, New York.
+
+_S_e_e _A_l_s_o:
+
+     'fRegress' 'Fstat.fd'
+

@@ -1,0 +1,168 @@
+<html><head><title>Intensity Function for Point Process</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>intensity.fd(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   intensity.fd">
+<param name="keyword" value=" Intensity Function for Point Process">
+</object>
+
+
+<h2>Intensity Function for Point Process</h2>
+
+
+<h3>Description</h3>
+
+<p>
+The intensity $mu$ of a series of event times that obey a
+homogeneous Poisson process is the mean number of events per unit time.
+When this event rate varies over time, the process is said to be
+nonhomogeneous, and $mu(t)$, and is estimated by this function
+<code>intensity.fd</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+intensity.fd(x, WfdParobj, conv=0.0001, iterlim=20,
+             dbglev=1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+a vector containing a strictly increasing series of event times.
+These event times assume that the the events begin to be observed
+at time 0, and therefore are times since the beginning of
+observation.
+</td></tr>
+<tr valign="top"><td><code>WfdParobj</code></td>
+<td>
+a functional parameter object estimating the log-intensity function
+$W(t) = log[mu(t)]$ .
+Because the intensity function $mu(t)$ is necessarily positive,
+it is represented by <code>mu(x) = exp[W(x)]</code>.
+</td></tr>
+<tr valign="top"><td><code>conv</code></td>
+<td>
+a convergence criterion, required because the estimation
+process is iterative.
+</td></tr>
+<tr valign="top"><td><code>iterlim</code></td>
+<td>
+maximum number of iterations that are allowed.
+</td></tr>
+<tr valign="top"><td><code>dbglev</code></td>
+<td>
+either 0, 1, or 2.  This controls the amount information printed out on
+each iteration, with 0 implying no output, 1 intermediate output level,
+and 2 full output.  If levels 1 and 2 are used, turn off the output
+buffering option.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+The intensity function $I(t)$ is almost the same thing as a
+probability density function $p(t)$ estimated by function
+<code>densify.fd</code>.  The only difference is the absence of
+the normalizing constant $C$ that a density function requires
+in order to have a unit integral.
+The goal of the function is provide a smooth intensity function
+estimate that approaches some target intensity by an amount that is
+controlled by the linear differential operator <code>Lfdobj</code> and
+the penalty parameter in argument <code>WfdPar</code>.
+For example, if the first derivative of
+$W(t)$ is penalized heavily, this will force the function to
+approach a constant, which in turn will force the estimated Poisson
+process itself to be nearly homogeneous.
+To plot the intensity function or to evaluate it,
+evaluate <code>Wfdobj</code>, exponentiate the resulting vector.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+a named list of length 4 containing:
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>Wfdobj</code></td>
+<td>
+a functional data object defining function $W(x)$ that that
+optimizes the fit to the data of the monotone function that it defines.
+</td></tr>
+<tr valign="top"><td><code>Flist</code></td>
+<td>
+a named list containing three results for the final converged solution:
+(1)
+<B>f</B>: the optimal function value being minimized,
+(2)
+<B>grad</B>: the gradient vector at the optimal solution,   and
+(3)
+<B>norm</B>: the norm of the gradient vector at the optimal solution.
+</td></tr>
+<tr valign="top"><td><code>iternum</code></td>
+<td>
+the number of iterations.
+</td></tr>
+<tr valign="top"><td><code>iterhist</code></td>
+<td>
+a <code>iternum+1</code> by 5 matrix containing the iteration
+history.
+</td></tr>
+</table>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="density.fd.html">density.fd</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+#  Generate 101 Poisson-distributed event times with
+#  intensity or rate two events per unit time
+N  &lt;- 101
+mu &lt;- 2
+#  generate 101 uniform deviates
+uvec &lt;- runif(rep(0,N))
+#  convert to 101 exponential waiting times
+wvec &lt;- -log(1-uvec)/mu
+#  accumulate to get event times
+tvec &lt;- cumsum(wvec)
+tmax &lt;- max(tvec)
+#  set up an order 4 B-spline basis over [0,tmax] with
+#  21 equally spaced knots
+tbasis &lt;- create.bspline.basis(c(0,tmax), 23)
+#  set up a functional parameter object for W(t),
+#  the log intensity function.  The first derivative
+#  is penalized in order to smooth toward a constant
+lambda &lt;- 10
+WfdParobj &lt;- fdPar(tbasis, 1, lambda)
+#  estimate the intensity function
+Wfdobj &lt;- intensity.fd(tvec, WfdParobj)$Wfdobj
+#  get intensity function values at 0 and event times
+events &lt;- c(0,tvec)
+intenvec &lt;- exp(eval.fd(events,Wfdobj))
+#  plot intensity function
+plot(events, intenvec, type="b")
+lines(c(0,tmax),c(mu,mu),lty=4)
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

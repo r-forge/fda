@@ -1,0 +1,53 @@
+\HeaderA{file.copy2}{Copy a file with a default 'to' name}{file.copy2}
+\keyword{IO}{file.copy2}
+\begin{Description}\relax
+Copy a file appending a number to make the \code{to} name unique, with
+default \code{to} = \code{from}.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+file.copy2(from, to) 
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{from}] character:  name of a file to be copied 
+\item[\code{to}] character:  name of copy.  Default = \code{from} with an integer
+appended to the name.  
+
+\end{ldescription}
+\end{Arguments}
+\begin{Details}\relax
+1.  length(from) != 1:  Error:  Only one file can be copied.  
+
+2.  file.exists(from)?  If no, If no, return FALSE.
+
+3.  if(missing(to))to <- from;  else if(length(to)!=1) error.
+
+4.  file.exists(to)?  If yes, Dir <- dir(dirname(to)), find all
+\code{Dir} starting with \code{to}, and find the smallest integer to
+append to make a unique \code{to} name.  
+
+5.  file.copy(from, to)
+
+6.  Return TRUE.
+\end{Details}
+\begin{Value}
+logical:  TRUE (with a name = name of the file created);  FALSE if no
+file created.
+\end{Value}
+\begin{Author}\relax
+Spencer Graves
+\end{Author}
+\begin{SeeAlso}\relax
+\code{\LinkA{file.copy}{file.copy}},
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+## Not run: 
+file.copy2('startup.m')
+# Used by 'fdaMatlabPath' so an existing 'startup.m' is not destroyed
+## End(Not run)
+\end{ExampleCode}
+\end{Examples}
+

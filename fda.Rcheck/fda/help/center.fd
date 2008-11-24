@@ -1,0 +1,41 @@
+center.fd                package:fda                R Documentation
+
+_C_e_n_t_e_r _F_u_n_c_t_i_o_n_a_l _D_a_t_a
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Subtract the pointwise mean from each of the functions in a
+     functional data object; that is, to center them on the mean
+     function.
+
+_U_s_a_g_e:
+
+     center.fd(fdobj)
+
+_A_r_g_u_m_e_n_t_s:
+
+   fdobj: a functional data object to be centered. 
+
+_V_a_l_u_e:
+
+     a functional data object whose mean is zero.
+
+_S_e_e _A_l_s_o:
+
+     'mean.fd',  'sum.fd',  'stddev.fd',  'std.fd'
+
+_E_x_a_m_p_l_e_s:
+
+     daytime    <- (1:365)-0.5
+     daybasis   <- create.fourier.basis(c(0,365), 365)
+     harmLcoef  <- c(0,(2*pi/365)^2,0)
+     harmLfd    <- vec2Lfd(harmLcoef, c(0,365))
+     templambda <- 0.01
+     tempfdPar  <- fdPar(daybasis, harmLfd, templambda)
+     tempfd     <- smooth.basis(daytime,
+            CanadianWeather$dailyAv[,,"Temperature.C"], tempfdPar)$fd
+     tempctrfd  <- center.fd(tempfd)
+
+     plot(tempctrfd, xlab="Day", ylab="deg. C",
+          main = "Centered temperature curves")
+

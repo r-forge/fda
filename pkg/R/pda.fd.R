@@ -1158,10 +1158,10 @@ for (ivar in 1:nvar) {
   #  initialize with highest order derivative for this variable
   resmat    <- eval.fd(tx, xfdi, difeorder)
   #  add contributions from weighted u-functions
+  onesncurve <- rep(1,ncurve)
   if (!is.null(ufdlist)) {
     nforce <- length(ufdlist[[ivar]])
     if (nforce > 0) {
-	    onesncurve <- rep(1,ncurve)
     	for (iu in 1:nforce) {
     	  if (!is.null(awtlist[[ivar]][[iu]])) {
 	        afdPari  <- awtlist[[ivar]][[iu]]

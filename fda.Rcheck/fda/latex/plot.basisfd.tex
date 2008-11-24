@@ -1,0 +1,43 @@
+\HeaderA{plot.basisfd}{Plot a Basis Object}{plot.basisfd}
+\keyword{smooth}{plot.basisfd}
+\begin{Description}\relax
+Plots all the basis functions.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+plot.basisfd(x, knots=TRUE, ...)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] a basis object
+
+\item[\code{knots}] logical:  If TRUE and x[['type']] == 'bslpine', the knot locations
+are plotted using vertical dotted, red lines.  Ignored otherwise.  
+
+\item[\code{... }] additional plotting parameters passed to \code{matplot}.  
+
+\end{ldescription}
+\end{Arguments}
+\begin{Value}
+none
+\end{Value}
+\begin{Section}{Side Effects}
+a plot of the basis functions
+\end{Section}
+\begin{SeeAlso}\relax
+\code{\LinkA{plot.fd}{plot.fd}}
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+
+# set up the b-spline basis for the lip data, using 23 basis functions,
+#   order 4 (cubic), and equally spaced knots.
+#  There will be 23 - 4 = 19 interior knots at 0.05, ..., 0.95
+lipbasis <- create.bspline.basis(c(0,1), 23)
+# plot the basis functions
+plot(lipbasis)
+
+\end{ExampleCode}
+\end{Examples}
+

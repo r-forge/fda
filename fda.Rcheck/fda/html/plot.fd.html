@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Plot a Functional Data Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for plot.fd {fda}"><tr><td>plot.fd {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Plot a Functional Data Object</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Functional data observations, or a derivative of them, are plotted.
+These may be either plotted simultaneously, as <code>matplot</code> does for
+multivariate data, or one by one with a mouse click to move from one
+plot to another.  The function also accepts the other plot
+specification arguments that the regular <code>plot</code> does.  Calling
+<code>plot</code> with an <code>fdSmooth</code> object is simply plots its
+code{fd} component.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'fd':
+plot(x, y, Lfdobj=0, href=TRUE, titles=NULL,
+                    xlim=NULL, ylim=NULL, xlab=NULL,
+                    ylab=NULL, ask=FALSE, nx=NULL, ...)
+## S3 method for class 'fdSmooth':
+plot(x, y, Lfdobj=0, href=TRUE, titles=NULL,
+                    xlim=NULL, ylim=NULL, xlab=NULL,
+                    ylab=NULL, ask=FALSE, nx=NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+functional data object(s) to be plotted.
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+sequence of points at which to evaluate the functions 'x' and plot
+on the horizontal axis.  Defaults to seq(rangex[1], rangex[2],
+length = nx).
+<br>
+NOTE:  This will be the values on the horizontal axis, NOT the
+vertical axis.  
+</td></tr>
+<tr valign="top"><td><code>Lfdobj</code></td>
+<td>
+either a nonnegative integer or a linear differential operator
+object. If present, the derivative or the value of applying the
+operator is plotted rather than the functions themselves.
+</td></tr>
+<tr valign="top"><td><code>href</code></td>
+<td>
+a logical variable:  If <code>TRUE</code>, add a horizontal reference line
+at 0.  
+</td></tr>
+<tr valign="top"><td><code>titles</code></td>
+<td>
+a vector of strings for identifying curves
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+a label for the horizontal axis.
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+a label for the vertical axis.
+</td></tr>
+<tr valign="top"><td><code>xlim</code></td>
+<td>
+a vector of length 2 containing axis limits for the horizontal axis.
+</td></tr>
+<tr valign="top"><td><code>ylim</code></td>
+<td>
+a vector of length 2 containing axis limits for the vertical axis.
+</td></tr>
+<tr valign="top"><td><code>ask</code></td>
+<td>
+a logical value:  If <code>TRUE</code>, each curve is shown separately, and
+the plot advances with a mouse click
+</td></tr>
+<tr valign="top"><td><code>nx</code></td>
+<td>
+the number of points to use to define the plot.  The default is
+usually enough, but for a highly variable function more may be
+required.
+</td></tr>
+<tr valign="top"><td><code>... </code></td>
+<td>
+additional plotting arguments that can be used with function
+<code>plot</code>
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+Note that for multivariate data, a
+suitable array must first be defined using the <code>par</code> function.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+'done'</p>
+
+<h3>Side Effects</h3>
+
+<p>
+a plot of the functional observations
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="lines.fd.html">lines.fd</a></code>, <code><a href="plotfit.fd.html">plotfit.fd</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+##
+## plot.df
+##
+#daytime   &lt;- (1:365)-0.5
+#dayrange  &lt;- c(0,365)
+#dayperiod &lt;- 365
+#nbasis     &lt;- 65
+#dayrange  &lt;- c(0,365)
+
+daybasis65 &lt;- create.fourier.basis(c(0, 365), 65)
+harmaccelLfd &lt;- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
+
+harmfdPar     &lt;- fdPar(daybasis65, harmaccelLfd, lambda=1e5)
+
+daytempfd &lt;- with(CanadianWeather, Data2fd(day.5, 
+        dailyAv[,,"Temperature.C"], daybasis65)) 
+
+#  plot all the temperature functions for the monthly weather data
+plot(daytempfd, main="Temperature Functions")
+
+## Not run: 
+# To plot one at a time:  
+# The following pauses to request page changes.
+
+plot(daytempfd, ask=TRUE)
+## End(Not run)
+
+##
+## plot.fdSmooth
+##
+b3.4 &lt;- create.bspline.basis(norder=3, breaks=c(0, .5, 1))
+# 4 bases, order 3 = degree 2 =
+# continuous, bounded, locally quadratic 
+fdPar3 &lt;- fdPar(b3.4, lambda=1)
+# Penalize excessive slope Lfdobj=1;  
+# (Can not smooth on second derivative Lfdobj=2 at it is discontinuous.)
+fd3.4s0 &lt;- smooth.basis(0:1, 0:1, fdPar3)
+
+# using plot.fd directly 
+plot(fd3.4s0$fd)
+
+# same plot via plot.fdSmooth 
+plot(fd3.4s0)
+
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

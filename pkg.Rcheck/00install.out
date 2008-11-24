@@ -1,0 +1,16 @@
+installing R.css in C:/Users/jim/R-forge/pkg.Rcheck
+
+
+---------- Making package pkg ------------
+  adding build stamp to DESCRIPTION
+  installing NAMESPACE file and metadata
+  installing R files
+  installing demos
+  installing inst files
+FIND: Parameter format not correct
+make[2]: *** [C:/Users/jim/R-forge/pkg.Rcheck/pkg/inst] Error 2
+make[1]: *** [all] Error 2
+make: *** [pkg-pkg] Error 2
+*** Installation of pkg failed ***
+
+Removing 'C:/Users/jim/R-forge/pkg.Rcheck/pkg'

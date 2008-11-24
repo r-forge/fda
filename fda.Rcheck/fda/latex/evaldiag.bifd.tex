@@ -1,0 +1,40 @@
+\HeaderA{evaldiag.bifd}{Evaluate the Diagonal of a Bivariate Functional Data Object}{evaldiag.bifd}
+\keyword{smooth}{evaldiag.bifd}
+\begin{Description}\relax
+Bivariate function data objects are functions of
+two arguments, $f(s,t)$.  It can be useful to evaluate
+the function for argument values satisying $s=t$, such
+as evaluating the univariate variance function given the
+bivariate function that defines the variance-covariance
+function or surface.  A linear differential operator can
+be applied to function $f(s,t)$ considered as a univariate
+function of either object holding the other object fixed.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+evaldiag.bifd(evalarg, bifdobj, sLfd=int2Lfd(0),
+                                tLfd=int2Lfd(0))
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{evalarg}] a vector of values of $s = t$.
+
+\item[\code{bifdobj}] a bivariate functional data object of the \code{bifd} class.
+
+\item[\code{sLfd}] either a nonnegative integer or a linear differential operator
+object.
+
+\item[\code{tLfd}] either a nonnegative integer or a linear differential operator
+object.
+
+\end{ldescription}
+\end{Arguments}
+\begin{Value}
+a vector or matrix of diagonal function values.
+\end{Value}
+\begin{SeeAlso}\relax
+\code{\LinkA{var.fd}{var.fd}}, 
+\code{\LinkA{eval.bifd}{eval.bifd}}
+\end{SeeAlso}
+

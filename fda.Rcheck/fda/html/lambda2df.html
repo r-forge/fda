@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Convert Smoothing Parameter to Degrees of Freedom</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for lambda2df {fda}"><tr><td>lambda2df {fda}</td><td align="right">R Documentation</td></tr></table>
+<h2>Convert Smoothing Parameter to Degrees of Freedom</h2>
+
+
+<h3>Description</h3>
+
+<p>
+The degree of roughness of an estimated function is controlled by a
+smoothing parameter $lambda$ that directly multiplies the penalty.
+However, it can be difficult to interpret or choose this value, and it
+is often easier to determine the roughness by choosing a value that is
+equivalent of the degrees of freedom used by the smoothing procedure.
+This function converts a multipler $lambda$ into a degrees of freedom value.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lambda2df(argvals, basisobj, wtvec=rep(1, n),
+          Lfdobj=NULL, lambda=0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>argvals</code></td>
+<td>
+a vector containing the argument values used in the
+smooth of the data.
+</td></tr>
+<tr valign="top"><td><code>basisobj</code></td>
+<td>
+the basis object used in the smoothing of the data.
+</td></tr>
+<tr valign="top"><td><code>wtvec</code></td>
+<td>
+the weight vector, if any, that was used in the smoothing
+of the data.
+</td></tr>
+<tr valign="top"><td><code>Lfdobj</code></td>
+<td>
+the linear differential operator object used to defining
+the roughness penalty employed in smoothing the data.
+</td></tr>
+<tr valign="top"><td><code>lambda</code></td>
+<td>
+the smoothing parameter to be converted.
+</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+the equivalent degrees of freedom value.</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="df2lambda.html">df2lambda</a></code>
+</p>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

@@ -1,0 +1,132 @@
+<html><head><title>Functional Principal Components Analysis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>pca.fd(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   pca.fd">
+<param name="keyword" value=" Functional Principal Components Analysis">
+</object>
+
+
+<h2>Functional Principal Components Analysis</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Functional Principal components analysis aims to display types of
+variation across a sample of functions.  Principal components analysis
+is an exploratory data analysis that tends to be an early part of many
+projects.  These modes of variation are called $principal components$
+or $harmonics.$  This function computes these harmonics, the
+eigenvalues that indicate how important each mode of variation, and
+harmonic scores for individual functions. If the functions are
+multivariate, these harmonics are combined into a composite function
+that summarizes joint variation among the several functions that make
+up a multivariate functional observation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+pca.fd(fdobj, nharm = 2, harmfdPar=fdPar(fdobj),
+       centerfns = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fdobj</code></td>
+<td>
+a functional data object.
+</td></tr>
+<tr valign="top"><td><code>nharm</code></td>
+<td>
+the number of harmonics or principal components to compute.
+</td></tr>
+<tr valign="top"><td><code>harmfdPar</code></td>
+<td>
+a functional parameter object that defines the
+harmonic or principal component functions to be estimated.
+</td></tr>
+<tr valign="top"><td><code>centerfns</code></td>
+<td>
+a logical value:
+if TRUE, subtract the mean function from each function before
+computing principal components.
+</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+an object of class "pca.fd" with these named entries:
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>harmonics</code></td>
+<td>
+a functional data object for the harmonics or eigenfunctions
+</td></tr>
+<tr valign="top"><td><code>values</code></td>
+<td>
+the complete set of eigenvalues
+</td></tr>
+<tr valign="top"><td><code>scores</code></td>
+<td>
+s matrix of scores on the principal components or harmonics
+</td></tr>
+<tr valign="top"><td><code>varprop</code></td>
+<td>
+a vector giving the proportion of variance explained
+by each eigenfunction
+</td></tr>
+<tr valign="top"><td><code>meanfd</code></td>
+<td>
+a functional data object giving the mean function
+</td></tr>
+</table>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="cca.fd.html">cca.fd</a></code>,
+<code><a href="pda.fd.html">pda.fd</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+#  carry out a PCA of temperature
+#  penalize harmonic acceleration, use varimax rotation
+
+daybasis65 &lt;- create.fourier.basis(c(0, 365), nbasis=65, period=365)
+
+harmaccelLfd &lt;- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
+harmfdPar     &lt;- fdPar(daybasis65, harmaccelLfd, lambda=1e5)
+daytempfd &lt;- data2fd(CanadianWeather$dailyAv[,,"Temperature.C"],
+      day.5, daybasis65, argnames=list("Day", "Station", "Deg C"))
+
+daytemppcaobj &lt;- pca.fd(daytempfd, nharm=4, harmfdPar)
+daytemppcaVarmx &lt;- varmx.pca.fd(daytemppcaobj)
+#  plot harmonics
+op &lt;- par(mfrow=c(2,2))
+plot.pca.fd(daytemppcaobj, cex.main=0.9)
+
+plot.pca.fd(daytemppcaVarmx, cex.main=0.9)
+par(op)
+
+plot(daytemppcaobj$harmonics)
+plot(daytemppcaVarmx$harmonics)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

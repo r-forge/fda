@@ -1,0 +1,298 @@
+<html><head><title>Smooth Data with an Indirectly Specified Roughness Penalty</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>smooth.basis(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   smooth.basis">
+<param name="keyword" value=" Smooth Data with an Indirectly Specified Roughness Penalty">
+</object>
+
+
+<h2>Smooth Data with an Indirectly Specified Roughness Penalty</h2>
+
+
+<h3>Description</h3>
+
+<p>
+This is the main function for smoothing data using a roughness
+penalty.  Unlike function <code>data2fd</code>, which does not employ a
+rougness penalty, this function controls the nature and degree of
+smoothing by penalyzing a measure of rougness.  Roughness is definable
+in a wide variety of ways using either derivatives or a linear
+differential operator.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+smooth.basis(argvals, y, fdParobj, wtvec=rep(1, length(argvals)),
+             fdnames=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>argvals</code></td>
+<td>
+a vector of argument values correspond to the observations in array
+<code>y</code>.
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+an array containing values of curves at discrete sampling points or
+argument values. If the array is a matrix, the rows must correspond
+to argument values and columns to replications, and it will be
+assumed that there is only one variable per observation.  If
+<code>y</code> is a three-dimensional array, the first dimension
+corresponds to argument values, the second to replications, and the
+third to variables within replications.  If <code>y</code> is a vector,
+only one replicate and variable are assumed.
+</td></tr>
+<tr valign="top"><td><code>fdParobj</code></td>
+<td>
+a functional parameter object, a functional data object or a
+functional basis object.  If the object is a functional parameter
+object, then the linear differential operator object and the
+smoothing parameter in this object define the roughness penalty.  If
+the object is a functional data object, the basis within this object
+is used without a roughness penalty, and this is also the case if
+the object is a functional basis object.  In these latter two cases,
+<code>smooth.basis</code> is essentially the same as <code>data2fd</code>.
+</td></tr>
+<tr valign="top"><td><code>wtvec</code></td>
+<td>
+a vector of the same length as <code>argvals</code> containing weights for
+the values to be smoothed.
+</td></tr>
+<tr valign="top"><td><code>fdnames</code></td>
+<td>
+a list of length 3 containing character vectors of names for the
+following:
+<br>
+<ul>
+<dt>args</dt><dd>name for each observation or point in time at which data are
+collected for each 'rep', unit or subject.
+</dd>
+<dt>reps</dt><dd>name for each 'rep', unit or subject.
+</dd>
+<dt>fun</dt><dd>name for each 'fun' or (response) variable measured repeatedly
+(per 'args') for each 'rep'.
+</dd>
+</ul>
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+If the smoothing parameter <code>lambda</code> is zero, there is no penalty
+on roughness.  As lambda increases, usually in logarithmic terms, the
+penalty on roughness increases and the fitted curves become more and
+more smooth.  Ultimately, the curves are forced to have zero roughness
+in the sense of being in the null space of the linear differential
+operator object <code>Lfdobj</code>that is a member of the <code>fdParobj</code>.
+</p>
+<p>
+For example, a common choice of roughness penalty is the integrated
+square of the second derivative.  This penalizes curvature.  Since the
+second derivative of a straight line is zero, very large values of
+<code>lambda</code> will force the fit to become linear.  It is also
+possible to control the amount of roughness by using a degrees of
+freedom measure.  The value equivalent to <code>lambda</code> is found in
+the list returned by the function.  On the other hand, it is possible
+to specify a degrees of freedom value, and then use function
+<code>df2lambda</code> to determine the equivalent value of <code>lambda</code>.
+One should not put complete faith in any automatic method for
+selecting <code>lambda</code>, including the GCV method. There are many
+reasons for this.  For example, if derivatives are required, then the
+smoothing level that is automatically selected may give unacceptably
+rough derivatives.  These methods are also highly sensitive to the
+assumption of independent errors, which is usually dubious with
+functional data.  The best advice is to start with the value
+minimizing the <code>gcv</code> measure, and then explore <code>lambda</code>
+values a few log units up and down from this value to see what the
+smoothing function and its derivatives look like.  The function
+<code>plotfit.fd</code> was designed for this purpose.
+</p>
+<p>
+An alternative to using <code>smooth.basis</code> is to first represent
+the data in a basis system with reasonably high resolution using
+<code>data2fd</code>, and then smooth the resulting functional data object
+using function <code>smooth.fd</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+an object of class <code>fdSmooth</code>, which is a named list of length 6
+with the following components:
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>fd</code></td>
+<td>
+a functional data object containing a smooth of the data.
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+a degrees of freedom measure of the smooth
+</td></tr>
+<tr valign="top"><td><code>gcv</code></td>
+<td>
+the value of the generalized cross-validation or GCV criterion.  If
+there are multiple curves, this is a vector of values, one per
+curve.  If the smooth is multivariate, the result is a matrix of gcv
+values, with columns corresponding to variables.
+<br>
+</p><p align="center"><i>gcv = n*SSE/((n-df)^2)</i></p><p>
+</td></tr>
+<tr valign="top"><td><code>SSE</code></td>
+<td>
+the error sums of squares.  SSE is a vector or a matrix of the same
+size as GCV.
+</td></tr>
+<tr valign="top"><td><code>penmat</code></td>
+<td>
+the penalty matrix.
+</td></tr>
+<tr valign="top"><td><code>y2cMap</code></td>
+<td>
+the matrix mapping the data to the coefficients.
+</td></tr>
+<tr valign="top"><td><code>argvals, y</code></td>
+<td>
+input arguments</td></tr>
+</table>
+
+<h3>See Also</h3>
+
+<p>
+<code><a href="data2fd.old.html">data2fd</a></code>, <code><a href="df2lambda.html">df2lambda</a></code>,
+<code><a href="lambda2df.html">lambda2df</a></code>, <code><a href="lambda2gcv.html">lambda2gcv</a></code>,
+<code><a href="plot.fd.html">plot.fd</a></code>, <code><a href="project.basis.html">project.basis</a></code>,
+<code><a href="smooth.fd.html">smooth.fd</a></code>, <code><a href="smooth.monotone.html">smooth.monotone</a></code>,
+<code><a href="smooth.pos.html">smooth.pos</a></code>, <code><a href="smooth.basisPar.html">smooth.basisPar</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+##
+## Example 1:  Inappropriate smoothing
+##
+# A toy example that creates problems with
+# data2fd:  (0,0) -&gt; (0.5, -0.25) -&gt; (1,1)
+b2.3 &lt;- create.bspline.basis(norder=2, breaks=c(0, .5, 1))
+# 3 bases, order 2 = degree 1 =
+# continuous, bounded, locally linear
+fdPar2 &lt;- fdPar(b2.3, Lfdobj=2, lambda=1)
+
+## Not run: 
+# Penalize excessive slope Lfdobj=1;
+# second derivative Lfdobj=2 is discontinuous,
+# so the following generates an error:
+  fd2.3s0 &lt;- smooth.basis(0:1, 0:1, fdPar2)
+Derivative of order 2 cannot be taken for B-spline of order 2
+Probable cause is a value of the nbasis argument
+ in function create.basis.fd that is too small.
+Error in bsplinepen(basisobj, Lfdobj, rng) :
+## End(Not run)
+
+##
+## Example 2.  Better
+##
+b3.4 &lt;- create.bspline.basis(norder=3, breaks=c(0, .5, 1))
+# 4 bases, order 3 = degree 2 =
+# continuous, bounded, locally quadratic
+fdPar3 &lt;- fdPar(b3.4, lambda=1)
+# Penalize excessive slope Lfdobj=1;
+# second derivative Lfdobj=2 is discontinuous.
+fd3.4s0 &lt;- smooth.basis(0:1, 0:1, fdPar3)
+
+plot(fd3.4s0$fd)
+# same plot via plot.fdSmooth
+plot(fd3.4s0)
+
+##
+## Example 3.  lambda = 1, 0.0001, 0
+##
+#  Shows the effects of three levels of smoothing
+#  where the size of the third derivative is penalized.
+#  The null space contains quadratic functions.
+x &lt;- seq(-1,1,0.02)
+y &lt;- x + 3*exp(-6*x^2) + rnorm(rep(1,101))*0.2
+#  set up a saturated B-spline basis
+basisobj &lt;- create.bspline.basis(c(-1,1), 101)
+
+fdPar1 &lt;- fdPar(basisobj, 2, lambda=1)
+result1  &lt;- smooth.basis(x, y, fdPar1)
+with(result1, c(df, gcv, SSE))
+
+##
+## Example 4.  lambda = 0.0001
+##
+fdPar.0001 &lt;- fdPar(basisobj, 2, lambda=0.0001)
+result2  &lt;- smooth.basis(x, y, fdPar.0001)
+with(result2, c(df, gcv, SSE))
+# less smoothing, more degrees of freedom,
+# smaller gcv, smaller SSE
+
+##
+##  Example 5.  lambda = 0
+##
+fdPar0 &lt;- fdPar(basisobj, 2, lambda=0)
+result3  &lt;- smooth.basis(x, y, fdPar0)
+with(result3, c(df, gcv, SSE))
+# Saturate fit:  number of observations = nbasis
+# with no smoothing, so degrees of freedom = nbasis,
+# gcv = Inf indicating overfitting;
+# SSE = 0 (to within roundoff error)
+
+plot(x,y)           # plot the data
+lines(result1[['fd']], lty=2)  #  add heavily penalized smooth
+lines(result2[['fd']], lty=1)  #  add reasonably penalized smooth
+lines(result3[['fd']], lty=3)  #  add smooth without any penalty
+legend(-1,3,c("1","0.0001","0"),lty=c(2,1,3))
+
+plotfit.fd(y, x, result2[['fd']])  # plot data and smooth
+
+##
+## Example 6.  Supersaturated
+##
+basis104 &lt;- create.bspline.basis(c(-1,1), 104)
+
+fdPar104.0 &lt;- fdPar(basis104, 2, lambda=0)
+result104.0  &lt;- smooth.basis(x, y, fdPar104.0)
+with(result104.0, c(df, gcv, SSE))
+
+plotfit.fd(y, x, result104.0[['fd']], nfine=501)
+# perfect (over)fit
+# Need lambda &gt; 0.
+
+##
+## Example 7.  gait
+##
+gaittime  &lt;- (1:20)/21
+gaitrange &lt;- c(0,1)
+gaitbasis &lt;- create.fourier.basis(gaitrange,21)
+lambda    &lt;- 10^(-11.5)
+harmaccelLfd &lt;- vec2Lfd(c(0, 0, (2*pi)^2, 0))
+
+gaitfdPar &lt;- fdPar(gaitbasis, harmaccelLfd, lambda)
+gaitfd &lt;- smooth.basis(gaittime, gait, gaitfdPar)$fd
+## Not run: 
+# by default creates multiple plots, asking for a click between plots
+plotfit.fd(gait, gaittime, gaitfd)
+## End(Not run)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

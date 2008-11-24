@@ -1,0 +1,81 @@
+<html><head><title>singular value decomposition with automatic error handling</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>svd2(fda)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   svd2">
+<param name="keyword" value=" singular value decomposition with automatic error handling">
+</object>
+
+
+<h2>singular value decomposition with automatic error handling</h2>
+
+
+<h3>Description</h3>
+
+<p>
+The 'svd' function in R 2.5.1 occasionally throws an error
+with a cryptic message.  In some such cases, changing the
+LINPACK argument has worked.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  svd2(x, nu = min(n, p), nv = min(n, p), LINPACK = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, nu, nv, LINPACK</code></td>
+<td>
+as for the 'svd' function in the 'base' package.
+</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+In R 2.5.1, the 'svd' function sometimes stops with a cryptic error
+message for a matrix x for which a second call to 'svd' with !LINPACK
+will produce an answer.  When such conditions occur, assign 'x' with
+attributes 'nu', 'nv', and 'LINPACK' to '.svd.LINPACK.error.matrix'
+in 'env = .GlobalEnv'.
+</p>
+<p>
+Except for these rare pathologies, 'svd2' should work the same as
+'svd'.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+a list with components d, u, and v, as described in the help file for
+'svd' in the 'base' package.</p>
+
+<h3>See Also</h3>
+
+<p>
+<code><a onclick="findlink('base', 'svd.html')" style="text-decoration: underline; color: blue; cursor: hand">svd</a></code>,
+</p>
+
+<script Language="JScript">
+function findlink(pkg, fn) {
+var Y, link;
+Y = location.href.lastIndexOf("\\") + 1;
+link = location.href.substring(0, Y);
+link = link + "../../" + pkg + "/chtml/" + pkg + ".chm::/" + fn;
+location.href = link;
+}
+</script>
+
+
+<hr><div align="center">[Package <em>fda</em> version 2.0.5 <a href="00Index.html">Index]</a></div>
+
+</body></html>

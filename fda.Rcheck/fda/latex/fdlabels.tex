@@ -1,0 +1,40 @@
+\HeaderA{fdlabels}{Extract plot labels and names for replicates and variables}{fdlabels}
+\keyword{smooth}{fdlabels}
+\begin{Description}\relax
+Extract plot labels and, if available, names for each replicate and
+variable
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+fdlabels(fdnames, nrep, nvar) 
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{fdnames}] a list of lenght 3 with xlabel, casenames, and ylabels.  
+
+\item[\code{nrep}] integer number of cases or observations 
+\item[\code{nvar}] integer number of variables 
+\end{ldescription}
+\end{Arguments}
+\begin{Details}\relax
+xlabel <- if(length(fdnames[[1]])>1) names(fdnames)[1] else 
+fdnames[[1]] 
+
+ylabel <- if(length(fdnames[[3]])>1) names(fdnames)[3] else
+fdnames[[3]] 
+
+casenames <- if(length(fdnames[[2]])== nrep)fdnames[[2]] else NULL
+
+varnames <- if(length(fdnames[[3]])==nvar)fdnames[[3]] else NULL
+\end{Details}
+\begin{Value}
+A list of xlabel, ylabel, casenames, and varnames
+\end{Value}
+\begin{Author}\relax
+Jim Ramsay
+\end{Author}
+\begin{SeeAlso}\relax
+\code{\LinkA{plot.fd}{plot.fd}}
+\end{SeeAlso}
+

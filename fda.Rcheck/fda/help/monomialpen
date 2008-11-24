@@ -1,0 +1,44 @@
+monomialpen               package:fda               R Documentation
+
+_E_v_a_l_u_a_t_e _M_o_n_o_m_i_a_l _R_o_u_g_h_n_e_s_s _P_e_n_a_l_t_y _M_a_t_r_i_x
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     The roughness penalty matrix is the set of inner products of all
+     pairs of a derivative of integer powers of the argument.
+
+_U_s_a_g_e:
+
+     monomialpen(basisobj, Lfdobj=int2Lfd(2),
+                 rng=basisobj$rangeval)
+
+_A_r_g_u_m_e_n_t_s:
+
+basisobj: a monomial basis object. 
+
+  Lfdobj: either a nonnegative integer specifying an order of
+          derivative or a linear differential operator object. 
+
+     rng: the inner product may be computed over a range that is
+          contained within the range defined in the basis object.  This
+          is a vector or length two defining the range. 
+
+_V_a_l_u_e:
+
+     a symmetric matrix of order equal to the number of monomial basis
+     functions.
+
+_S_e_e _A_l_s_o:
+
+     'polynompen',  'exponpen',  'fourierpen',  'bsplinepen', 
+     'polygpen'
+
+_E_x_a_m_p_l_e_s:
+
+     # set up a monomial basis for the first five powers
+     nbasis   <- 5
+     basisobj <- create.monomial.basis(c(-1,1),nbasis)
+     #  evaluate the rougness penalty matrix for the
+     #  second derivative.
+     penmat <- monomialpen(basisobj, 2)
+

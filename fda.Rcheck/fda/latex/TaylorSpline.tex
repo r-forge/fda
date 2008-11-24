@@ -1,0 +1,103 @@
+\HeaderA{TaylorSpline}{Taylor representation of a B-Spline}{TaylorSpline}
+\methaliasA{TaylorSpline.dierckx}{TaylorSpline}{TaylorSpline.dierckx}
+\methaliasA{TaylorSpline.fd}{TaylorSpline}{TaylorSpline.fd}
+\methaliasA{TaylorSpline.fdPar}{TaylorSpline}{TaylorSpline.fdPar}
+\methaliasA{TaylorSpline.fdSmooth}{TaylorSpline}{TaylorSpline.fdSmooth}
+\keyword{smooth}{TaylorSpline}
+\keyword{manip}{TaylorSpline}
+\begin{Description}\relax
+Convert B-Spline coefficients into a local Taylor series
+representation expanded about the midpoint between each pair of
+distinct knots.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+TaylorSpline(object, ...)
+## S3 method for class 'fd':
+TaylorSpline(object, ...)
+## S3 method for class 'fdPar':
+TaylorSpline(object, ...)
+## S3 method for class 'fdSmooth':
+TaylorSpline(object, ...)
+## S3 method for class 'dierckx':
+TaylorSpline(object, ...)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{ object }] a spline object, e.g., of class 'dierckx'.
+
+\item[\code{...}] optional arguments 
+\end{ldescription}
+\end{Arguments}
+\begin{Details}\relax
+1.  Is \code{object} a spline object with a B-spline basis?  If no,
+throw an error.
+
+2.  Find \code{knots} and \code{midpoints}.
+
+3.  Obtain coef(object).
+
+4.  Determine the number of dimensions of coef(object) and create
+empty \code{coef} and \code{deriv} arrays to match.  Then fill the
+arrays.
+\end{Details}
+\begin{Value}
+a list with the following components:
+
+\begin{ldescription}
+\item[\code{knots}] a numeric vector of knots(object, interior=FALSE)
+
+\item[\code{midpoints}] midpoints of intervals defined by unique(knots)
+
+\item[\code{coef}] A matrix of dim = c(nKnots-1, norder) containing the coeffients of
+a polynomial in (x-midpoints[i]) for interval i, where nKnots =
+length(unique(knots)).
+
+\item[\code{deriv}] A matrix of dim = c(nKnots-1, norder) containing the derivatives
+of the spline evaluated at \code{midpoints}.
+
+\end{ldescription}
+
+normal-bracket38bracket-normal
+\end{Value}
+\begin{Author}\relax
+Spencer Graves
+\end{Author}
+\begin{SeeAlso}\relax
+\code{\LinkA{fd}{fd}}
+\code{\LinkA{create.bspline.basis}{create.bspline.basis}}
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+##
+## The simplest b-spline basis:  order 1, degree 0, zero interior knots:
+##       a single step function
+##
+library(DierckxSpline)
+bspl1.1 <- create.bspline.basis(norder=1, breaks=0:1)
+# ... jump to pi to check the code
+fd.bspl1.1pi <- fd(pi, basisobj=bspl1.1)
+bspl1.1pi <- TaylorSpline(fd.bspl1.1pi)
+
+
+##
+## Cubic spline:  4  basis functions
+##
+bspl4 <- create.bspline.basis(nbasis=4)
+plot(bspl4)
+parab4.5 <- fd(c(3, -1, -1, 3)/3, bspl4)
+# = 4*(x-.5)
+TaylorSpline(parab4.5)
+
+##
+## A more realistic example
+##
+data(titanium)
+#  Cubic spline with 5 interior knots (6 segments)
+titan10 <- with(titanium, curfit.free.knot(x, y))
+(titan10T <- TaylorSpline(titan10) )
+
+\end{ExampleCode}
+\end{Examples}
+

@@ -1,0 +1,53 @@
+fourierpen                package:fda                R Documentation
+
+_F_o_u_r_i_e_r _P_e_n_a_l_t_y _M_a_t_r_i_x
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Computes the matrix defining the roughness penalty for functions
+     expressed in terms of a Fourier basis.
+
+_U_s_a_g_e:
+
+     fourierpen(basisobj, Lfdobj=int2Lfd(2))
+
+_A_r_g_u_m_e_n_t_s:
+
+basisobj: a Fourier basis object. 
+
+  Lfdobj: either a nonnegative integer or a linear differential
+          operator object. 
+
+_D_e_t_a_i_l_s:
+
+     A roughness penalty for a function $x(t)$ is defined by
+     integrating the square of either the derivative of  $ x(t) $ or,
+     more generally, the result of applying a linear differential
+     operator $L$ to it.  The most common roughness penalty is the
+     integral of the square of the second derivative, and this is the
+     default. To apply this roughness penalty, the matrix of inner
+     products of the basis functions (possibly after applying the
+     linear differential operator to them) defining this function is
+     necessary. This function just calls the roughness penalty
+     evaluation function specific to the basis involved.
+
+_V_a_l_u_e:
+
+     a symmetric matrix of order equal to the number of basis functions
+     defined by the Fourier basis object.  Each element is the inner
+     product of two Fourier basis functions after applying the
+     derivative or linear differential operator defined by Lfdobj.
+
+_S_e_e _A_l_s_o:
+
+     'fourier',  'eval.penalty',  'getbasispenalty'
+
+_E_x_a_m_p_l_e_s:
+
+     #  set up a Fourier basis with 13 basis functions
+     #  and and period 1.0.
+     basisobj <- create.fourier.basis(c(0,1),13)
+     #  compute the 13 by 13 matrix of inner products
+     #  of second derivatives
+     penmat <- fourierpen(basisobj)
+
