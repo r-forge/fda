@@ -46,9 +46,9 @@ eigen.pda = function(pdaList,plotresult=TRUE,npts=501,...)
   
   if(plotresult){
      par(mfrow=c(2,1))
-     matplot(tfine,Re(eigvals),type='l',xlab=xlabstr,ylab='Real',main='Eigenvalues')
+     matplot(tfine,Re(eigvals),type='l',xlab=xlabstr,ylab='Real',main='Eigenvalues',...)
      abline(h = 0)
-     matplot(tfine,Im(eigvals),type='l',xlab=xlabstr,ylab='Imaginary')
+     matplot(tfine,Im(eigvals),type='l',xlab=xlabstr,ylab='Imaginary',...)
      abline(h = 0)
   }
   
