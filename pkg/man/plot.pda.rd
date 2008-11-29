@@ -1,7 +1,7 @@
 \name{plot.pda}
 \alias{plot.pda}
 \title{
-  Plot Prindiple Differential Analysis Components
+  Plot Principle Differential Analysis Components
 }
 \description{
   Plots the results of pda.fd, allows the user to group coefficient functions
@@ -25,7 +25,7 @@ plot.pda(pdaList,whichdim=1,npts=501,...)
     number of points to use for plotting.
   }
   \item{\dots}{
-    other arguments for 'plot'.  
+    other arguments for 'plot'.
   }
 }
 \details{
@@ -33,7 +33,7 @@ plot.pda(pdaList,whichdim=1,npts=501,...)
   analysis.
 }
 \value{
-  invisible(NULL) 
+  invisible(NULL)
 }
 \seealso{
   \code{\link{pda.fd}}
