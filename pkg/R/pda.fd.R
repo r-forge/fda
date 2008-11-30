@@ -1207,6 +1207,6 @@ for (ivar in 1:nvar) {
 }
 
   pdaList <- list(bwtlist=bwtlist, resfdlist=resfdlist, awtlist=awtlist)
-  class(pdaList) <- 'pda'
+  class(pdaList) <- 'pda.fd'
   pdaList
 }
