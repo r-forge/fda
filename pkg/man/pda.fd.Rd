@@ -126,7 +126,7 @@ pda.fd(xfdlist, bwtlist=NULL,
 }
 
 \value{
-  an object of class \code{pda}, being a list with the following
+  an object of class \code{pda.fd}, being a list with the following
   components:
 
   \item{bwtlist}{
