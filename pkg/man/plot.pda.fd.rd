@@ -1,5 +1,5 @@
-\name{plot.pda}
-\alias{plot.pda}
+\name{plot.pda.fd}
+\alias{plot.pda.fd}
 \title{
   Plot Principle Differential Analysis Components
 }
@@ -8,11 +8,12 @@
   by variable, equation, derivative or combination of them.
 }
 \usage{
-plot.pda(pdaList,whichdim=1,npts=501,...)
+%plot.pda(pdaList,whichdim=1,npts=501,...)
+\method{plot}{pda.fd}(x,whichdim=1,npts=501,...)
 }
 \arguments{
-  \item{pdaList}{
-    a list object returned by \code{pda.fd}.
+  \item{x}{
+    an object of class \code{pda.fd}.
   }
   \item{whichdim}{
     which dimension to use as grouping variables
@@ -79,15 +80,24 @@ pdaList = pda.fd(xfdlist, bwtlist)
 
 # plot the results
 
-plot.pda(pdaList,whichdim=1)
-plot.pda(pdaList,whichdim=2)
-plot.pda(pdaList,whichdim=3)
+plot(pdaList,whichdim=1)
+plot(pdaList,whichdim=2)
+plot(pdaList,whichdim=3)
 
-plot.pda(pdaList,whichdim=c(1,2))
-plot.pda(pdaList,whichdim=c(1,3))
-plot.pda(pdaList,whichdim=c(2,3))
+plot(pdaList,whichdim=c(1,2))
+plot(pdaList,whichdim=c(1,3))
+plot(pdaList,whichdim=c(2,3))
 
-plot.pda(pdaList,whichdim=1:3)
+plot(pdaList,whichdim=1:3)
+%plot.pda(pdaList,whichdim=1)
+%plot.pda(pdaList,whichdim=2)
+%plot.pda(pdaList,whichdim=3)
+
+%plot.pda(pdaList,whichdim=c(1,2))
+%plot.pda(pdaList,whichdim=c(1,3))
+%plot.pda(pdaList,whichdim=c(2,3))
+
+%plot.pda(pdaList,whichdim=1:3)
 }
 
 \keyword{smooth}
