@@ -45,26 +45,25 @@ tperm.fd(x1fd, x2fd, nperm=200, q=0.05, argvals=NULL, plotres=TRUE, ...)
 }
 \value{
   A list with the following components:
-  \itemize{
-    \item{pval}{the observed p-value of the permutation test.}
-    \item{qval}{the \code{q}th quantile of the null distribution.}
-    \item{Tobs}{the observed maximal t-statistic.}
-    \item{Tnull}{
-      a vector of length \code{nperm} giving the observed values of the
-      permutation distribution.
-    }
-    \item{Tvals}{the pointwise values of the observed t-statistic.}
-    \item{Tnullvals}{
-      the pointwise values of of the permutation observations.
-    }
-    \item{pvals.pts}{pointwise p-values of the t-statistic.}
-    \item{qvals.pts}{
-      pointwise \code{q}th quantiles of the null distribution
-    }
-    \item{argvals}{
-      argument values for evaluating the F-statistic if \code{yfdPar}is
-      a functional data object.
-    }
+
+  \item{pval}{the observed p-value of the permutation test.}
+  \item{qval}{the \code{q}th quantile of the null distribution.}
+  \item{Tobs}{the observed maximal t-statistic.}
+  \item{Tnull}{
+    a vector of length \code{nperm} giving the observed values of the
+    permutation distribution.
+  }
+  \item{Tvals}{the pointwise values of the observed t-statistic.}
+  \item{Tnullvals}{
+    the pointwise values of of the permutation observations.
+  }
+  \item{pvals.pts}{pointwise p-values of the t-statistic.}
+  \item{qvals.pts}{
+    pointwise \code{q}th quantiles of the null distribution
+  }
+  \item{argvals}{
+    argument values for evaluating the F-statistic if \code{yfdPar}is
+    a functional data object.
   }
 }
 \section{Side Effects}{
