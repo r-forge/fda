@@ -6,7 +6,7 @@
 \description{
   Performs a stability analysis of the result of \code{pda.fd}, returning
   the real and imaginary parts of the eigenfunctions associated with the linear
-  differential operator. 
+  differential operator.
 }
 \usage{
 eigen.pda(pdaList,plotresult=TRUE,npts=501,...)
@@ -22,14 +22,14 @@ eigen.pda(pdaList,plotresult=TRUE,npts=501,...)
     number of points to use for plotting.
   }
   \item{\dots}{
-    other arguments for 'plot'.  
+    other arguments for 'plot'.
   }
 }
 \details{
   Conducts an eigen decomposition of the linear differential equation implied
   by the result of \code{pda.fd}. Imaginary eigenvalues indicate instantaneous
   oscillatory behavior. Positive real eigenvalues indicate exponential increase,
-  negative real eigenvalues correspond to exponential decay. 
+  negative real eigenvalues correspond to exponential decay.
 }
 \value{
   Returns a list with elements
@@ -38,11 +38,11 @@ eigen.pda(pdaList,plotresult=TRUE,npts=501,...)
 }
 \seealso{
   \code{\link{pda.fd}}
-  \code{\link{plot.pda}}
+  \code{\link{plot.pda.fd}}
 }
 \examples{
 
-#  A pda analysis of the handwriting data 
+#  A pda analysis of the handwriting data
 
 fdaarray = handwrit
 fdatime  <- seq(0, 2.3, len=1401)
