@@ -55,22 +55,20 @@ fdPar(fdobj=NULL, Lfdobj=NULL, lambda=0, estimate=TRUE, penmat=NULL)
   a functional parameter object (i.e., an object of class \code{fdPar}),
   which is a list with the following components:
 
-  \itemize{
-    \item{fd}{
-      a functional data object (i.e., with class \code{fd})
-    }
-    \item{Lfd}{
-      a linear differential operator object (i.e., with class
-      \code{Lfd})
-    }
-    \item{lambda}{
-      a nonnegative real number
-    }
-    \item{estimate}{not currently used}
-    \item{penmat}{
-      either NULL or a square, symmetric matrix with penmat[i, j] =
-      integral over fd[['basis']][['rangeval']] of basis[i]*basis[j]
-    }
+  \item{fd}{
+    a functional data object (i.e., with class \code{fd})
+  }
+  \item{Lfd}{
+    a linear differential operator object (i.e., with class
+    \code{Lfd})
+  }
+  \item{lambda}{
+    a nonnegative real number
+  }
+  \item{estimate}{not currently used}
+  \item{penmat}{
+    either NULL or a square, symmetric matrix with penmat[i, j] =
+    integral over fd[['basis']][['rangeval']] of basis[i]*basis[j]
   }
 }
 \source{

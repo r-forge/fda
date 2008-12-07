@@ -27,45 +27,33 @@ y2cMap <- solve(crossprod(smallbasismat), t(smallbasismat))
 zonenames <- c("Canada  ",
                "Atlantic", "Pacific ", "Contintal", "Arctic  ")
 
-#  indices for (weather stations in each of four climate zones
-
-index = 1:35
-
-atlindex <- index[CanadianWeather$region == "Atlantic"]
-pacindex <- index[CanadianWeather$region == "Pacific"]
-conindex <- index[CanadianWeather$region == "Continental"]
-artindex <- index[CanadianWeather$region == "Arctic"]
-
 #  Set up a design matrix having a column for (the grand mean, and
 #    a column for (each climate zone effect. Add a dummy contraint
 #    observation
 
-zmat <- matrix(0,35,5)
-zmat[        ,1] <- 1
-zmat[atlindex,2] <- 1
-zmat[pacindex,3] <- 1
-zmat[conindex,4] <- 1
-zmat[artindex,5] <- 1
+regions <- c("Atlantic", "Pacific", "Continental", "Arctic")
+zmat. <- outer(CanadianWeather$region, regions, "==")
+dimnames(zmat.)[[2]] <- regions
+zmat1 <- cbind(ones=1, zmat.)
 
 #  attach a row of 0, 1, 1, 1, 1 to force zone
 #  effects to sum to zero, and define first regression
 #  function as grand mean for (all stations
 
-z36    <- matrix(1,1,5)
-z36[1] <- 0
-zmat   <- rbind(zmat, z36)
+zmat <- rbind(zmat1, zoneconstraint=c(0, 1, 1, 1, 1))
 
 #  revise YFDOBJ by adding a zero function
 
 coef   <- tempfd$coefs
 str(coef)
 # add a 0 column # 36 to coef
-coef36 <- cbind(coef,matrix(0,65,1))
+coef36 <- cbind(coef,zero=0)
+str(coef36)
 tempfd$coefs <- coef36
 
-p <- 5
-xfdlist <- vector("list",p)
-for (j in 1:p) xfdlist[[j]] <- zmat[,j]
+# Convert zmat to a list
+xfdlist <- as.list(as.data.frame(zmat))
+str(xfdlist)
 
 #  set up the basis for (the regression functions
 
@@ -79,7 +67,9 @@ estimate  <- TRUE
 lambda    <- 0
 betafdPar <- fdPar(betafd, harmaccelLfd365, lambda, estimate)
 
+p <- length(xfdlist)
 betalist <- vector("list",p)
+names(betalist) <- names(xfdlist)
 for (j in 1:p) betalist[[j]] <- betafdPar
 
 #  compute regression coefficient functions and
@@ -90,8 +80,8 @@ fRegressList <- fRegress(tempfd, xfdlist, betalist)
 #  plot regression functions
 
 betaestlist <- fRegressList$betaestlist
-op <- par(mfrow=c(2,2))
 
+op <- par(mfrow=c(2,2))
 ylim <- c(-25, 25)
 for (j in 2:p) {
 	betaestParfdj <- betaestlist[[j]]

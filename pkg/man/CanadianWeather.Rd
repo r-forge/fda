@@ -113,23 +113,18 @@ daily
 ## 1.  Plot (latitude & longitude) of stations by region
 ##
 with(CanadianWeather, plot(-coordinates[, 2], coordinates[, 1], type='n',
-                           xlab="West Latitude", ylab="North Longitude",
+                           xlab="West Longitude", ylab="North Latitude",
                            axes=FALSE) )
-Wlat <- pretty(CanadianWeather$coordinates[, 2])
-axis(1, -Wlat, Wlat)
+Wlon <- pretty(CanadianWeather$coordinates[, 2])
+axis(1, -Wlon, Wlon)
 axis(2)
 
-arctic <- with(CanadianWeather, coordinates[region=='Arctic', ])
-atl <- with(CanadianWeather, coordinates[region=='Atlantic', ])
-contl <- with(CanadianWeather, coordinates[region=='Continental', ])
-pac <- with(CanadianWeather, coordinates[region=='Pacific', ])
-points(-arctic[, 2], arctic[, 1], col=1, pch=1)
-points(-atl[, 2], atl[, 1], col=2, pch=2)
-points(-contl[, 2], contl[, 1], col=3, pch=3)
-points(-pac[, 2], pac[, 1], col=4, pch=4)
-
-legend('topright', legend=c('Arctic', 'Atlantic', 'Pacific', 'Continental'),
-       col=1:4, pch=1:4)
+rgns <- 1:4
+names(rgns) <- c('Arctic', 'Atlantic', 'Continental', 'Pacific')
+Rgns <- rgns[CanadianWeather$region]
+with(CanadianWeather, points(-coordinates[, 2], coordinates[, 1],
+                             col=Rgns, pch=Rgns) )
+legend('topright', legend=names(rgns), col=rgns, pch=rgns)
 
 ##
 ## 2.  Plot dailyAv[, 'Temperature.C'] for 4 stations
