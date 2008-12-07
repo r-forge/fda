@@ -143,7 +143,7 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
     if (!ask) {
       matplot(y, fdmat, type="l",
               xlim=xlim,   ylim=ylim,
-              xlab=xlabel, ylab=ylabel, ...)
+              xlab=xlab, ylab=ylab, ...)
 #   Ramsay 2008.08.26
       if (zerofind(fdmat) && href) abline(h=0,lty=2)
 #   Graves 2008.07.04
