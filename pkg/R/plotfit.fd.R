@@ -41,8 +41,8 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
 #  SORTWRD  ... sort plots by mean square error
 #  TITLES   ... vector of title strings for curves
 
-# Last modified 2008.07.09 by Spencer Graves
-# previously modified 2007.10.03 and 20 March 2006
+# Last modified 2008.12.09 by Jim Ramsay
+# previously modified 2008.07.09 by Spencer Graves
 ##
 ## 1.  Basic checks   
 ##
@@ -76,8 +76,12 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
   fdobj$coef <- subset$y
 #
   n <- dim(y)[1]
+  
   argname <- names(fdnames)[[1]]
-  if (is.null(argname)) argname <- "Argument Value"
+  if (is.null(argname)) {
+      if (is.null(fdnames[[1]])) argname <- "Argument Value"
+      else                       argname <- fdnames[[1]]
+  }
   if(is.null(xlab))xlab <- argname
   tnames <- dimnames(y)[[1]]
 #  
@@ -87,7 +91,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
   curveno <- 1:nrep
 #
   casenames <- dimnames(y)[[2]]
-  varnames <- dimnames(y)[[3]]
+  varnames  <- dimnames(y)[[3]]
 ##
 ## 2.  Computed fitted values for argvals and a fine mesh 
 ##
@@ -243,7 +247,12 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
 #  plot the data and fit
 #     ylimit <- range(c(c(y),c(yfine)))
       if(is.null(ylim))ylim <- range(c(c(y),c(yfine)))
-      if(is.null(ylab))ylab <- varnames
+      varname <- names(fdnames)[[3]]
+      if (is.null(varname)) {
+          if (is.null(fdnames[[3]])) rep("Function Value", nvar)
+          else                       varname <- fdnames[[3]]
+      }      
+      if(is.null(ylab))ylab <- varname
 #     for (i in 1:nrep) { 
       for (j in 1:nvar) {
         for (i in 1:nrepi) {
