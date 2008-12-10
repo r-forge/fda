@@ -10,7 +10,8 @@
 \usage{
 create.fourier.basis(rangeval=c(0, 1), nbasis=3,
               period=diff(rangeval), dropind=NULL, quadvals=NULL,
-              values=NULL, basisvalues=NULL, names=NULL)
+              values=NULL, basisvalues=NULL, names=NULL,
+              axes=NULL)
 }
 \arguments{
   \item{rangeval}{
@@ -87,6 +88,15 @@ create.fourier.basis(rangeval=c(0, 1), nbasis=3,
 
     If names = NA, no names are used.
   }
+  \item{axes}{
+    an optional list used by selected \code{plot} functions to create
+    custom \code{axes}.  If this \code{axes} argument is not
+    \code{NULL}, functions \code{plot.basisfd}, \code{plot.fd},
+    \code{plot.fdSmooth} \code{plotfit.fd}, \code{plotfit.fdSmooth}, and
+    \code{plot.Lfd} will create axes via \code{do.call(x$axes[[1]],
+      x$axes[-1])}.  The primary example of this is to create
+    \code{CanadianWeather} plots using \code{list("axesIntervals")}
+  }
 }
 \value{
   a basis object with the type \code{fourier}.
@@ -115,13 +125,15 @@ create.fourier.basis(rangeval=c(0, 1), nbasis=3,
 \examples{
 # Create a minimal Fourier basis for the monthly temperature data,
 #  using 3 basis functions with period 12 months.
-monthbasis3 <- create.fourier.basis(c(0,12) )
+monthbasis3 <- create.fourier.basis(c(0,12),
+                    axes=list("axesIntervals") )
 #  plot the basis
 plot(monthbasis3)
 
 # set up the Fourier basis for the monthly temperature data,
 #  using 9 basis functions with period 12 months.
-monthbasis <- create.fourier.basis(c(0,12), 9, 12.0)
+monthbasis <- create.fourier.basis(c(0,12), 9, 12.0,
+                    axes=list("axesIntervals"))
 
 #  plot the basis
 plot(monthbasis)
