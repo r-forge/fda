@@ -109,7 +109,7 @@
       }
     }
 
-    Beginning with \code{fda_2.0.3}, the last 5 arguments for all the
+    Beginning with \code{fda_2.1.0}, the last 6 arguments for all the
     \code{create.basis} functions will be as follows;  some but not all
     are available in the previous versions of \code{fda}:
 
@@ -175,6 +175,16 @@
 	'.', 1:nbreaks, sep='').
 
 	For other bases, there are crudely similar defaults.
+      }
+      \item{axes}{
+	an optional list used by selected \code{plot} functions to
+	create custom \code{axes}.  If this \code{axes} argument is not
+	NULL, functions \code{plot.basisfd}, \code{plot.fd},
+	\code{plot.fdSmooth} \code{plotfit.fd}, \code{plotfit.fdSmooth},
+	and \code{plot.Lfd} will create axes via
+	\code{do.call(x$axes[[1]], x$axes[-1])}.  The primary example of
+	this is to create \code{CanadianWeather} plots using
+	\code{list("axesIntervals")}
       }
     }
   }
