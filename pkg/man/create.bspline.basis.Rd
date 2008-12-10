@@ -107,7 +107,7 @@ create.bspline.basis(rangeval=NULL, nbasis=NULL, norder=4,
     \code{NULL}, functions \code{plot.basisfd}, \code{plot.fd},
     \code{plot.fdSmooth} \code{plotfit.fd}, \code{plotfit.fdSmooth}, and
     \code{plot.Lfd} will create axes via \code{do.call(x$axes[[1]],
-      x$axes[-1])}.  The primary example of this using
+      x$axes[-1])}.  The primary example of this uses
     \code{list("axesIntervals", ...)}, e.g., with \code{Fourier} bases
     to create \code{CanadianWeather} plots
   }
