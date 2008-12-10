@@ -19,7 +19,7 @@
 \usage{
 create.bspline.basis(rangeval=NULL, nbasis=NULL, norder=4,
       breaks=NULL, dropind=NULL, quadvals=NULL, values=NULL,
-      basisvalues=NULL, names="bspl")
+      basisvalues=NULL, names="bspl", axes=NULL)
 }
 \arguments{
   \item{rangeval}{
@@ -100,6 +100,16 @@ create.bspline.basis(rangeval=NULL, nbasis=NULL, norder=4,
     and \code{1:nbasis} are appended as \code{paste(names, norder, ".",
     1:nbasis, sep="")}.  For example, if \code{norder = 4}, this
     defaults to \code{'bspl4.1', 'bspl4.2'}, ... .
+  }
+  \item{axes}{
+    an optional list used by selected \code{plot} functions to create
+    custom \code{axes}.  If this \code{axes} argument is not
+    \code{NULL}, functions \code{plot.basisfd}, \code{plot.fd},
+    \code{plot.fdSmooth} \code{plotfit.fd}, \code{plotfit.fdSmooth}, and
+    \code{plot.Lfd} will create axes via \code{do.call(x$axes[[1]],
+      x$axes[-1])}.  The primary example of this using
+    \code{list("axesIntervals", ...)}, e.g., with \code{Fourier} bases
+    to create \code{CanadianWeather} plots
   }
 }
 \value{
