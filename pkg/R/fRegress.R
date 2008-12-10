@@ -450,7 +450,7 @@ if (inherits(yfdPar, "fdPar")) {
     yhatfdobj <- yhatmat
 
     OCV = sum( (ymat-yhatmat)^2/(1-hatvals)^2 )
-
+    GCV = sum( (ymat-yhatmat)^2 )/( (sum(1-hatvals))^2 )
 
 
 
@@ -465,7 +465,8 @@ if (inherits(yfdPar, "fdPar")) {
                  Cmatinv     = Cmatinv,
                  wt          = wt,
                  df          = df,
-		     OCV         = OCV)
+                 OCV         = OCV,
+                 GCV         = GCV)
  }
 
  class(fRegressList) <- 'fRegress'

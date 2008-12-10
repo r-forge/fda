@@ -78,7 +78,7 @@ fRegress(yfdPar, xfdlist, betalist, wt=rep(1,N))
   this function, but rather either \code{ls} or \code{lsfit}.
 }
 \value{
-  a list of class \code{fRegress} with the following 6 components:
+  a list of class \code{fRegress} with the following components:
 
   \item{yfdPar}{
     the first argument in the call to \code{fRegress}.
@@ -107,6 +107,14 @@ fRegress(yfdPar, xfdlist, betalist, wt=rep(1,N))
     This matrix is required for function \code{\link{fRegress.stderr}}
     that estimates confidence regions for the regression coefficient
     function estimates.
+  }
+  \item{OCV}{ 
+    the ordinary cross-validation score. This is returned only when \code{yfdPar}
+    is a vector. 
+  }
+  \item{GCV}{
+    the generalized cross-validation score.  This is returned only when \code{yfdPar}
+    is a vector. 
   }
 }
 \seealso{
