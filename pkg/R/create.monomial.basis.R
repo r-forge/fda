@@ -1,6 +1,7 @@
 create.monomial.basis <- function(rangeval=c(0,1), nbasis=NULL,
                 exponents=NULL, dropind=NULL, quadvals=NULL,
-                values=NULL, basisvalues=NULL, names='monomial')
+                values=NULL, basisvalues=NULL, names='monomial',
+                axes=NULL)
 {
 #  CREATE_MONOMIAL_BASIS  Creates a monomial basis:, x^i_1, x^i_2, ...
 #  The exponents in this version must be nonnegative integers
@@ -203,6 +204,9 @@ create.monomial.basis <- function(rangeval=c(0,1), nbasis=NULL,
       paste(names, 0:(nbasis-1), sep="")
     }
   }
-
+##
+## 6.  Done
+##
+  if(!is.null(axes))basisobj$axes <- axes
   basisobj
 }
