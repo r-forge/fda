@@ -2,7 +2,7 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
                                   norder=4,        breaks=NULL,
                                   dropind=NULL,    quadvals=NULL,
                                   values=NULL,     basisvalues=NULL,
-                                  names="bspl")
+                                  names="bspl", axes=NULL)
 {
 #  This function creates a bspline functional data basis.
 #  Arguments
@@ -328,7 +328,10 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
       paste(names, norder, ".", 1:nbasis, sep="")
     }
   }
-
+##
+## 9.  Done
+##
+  if(!is.null(axes))basisobj$axes <- axes
   basisobj
 
 }
