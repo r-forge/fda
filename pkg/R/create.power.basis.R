@@ -1,7 +1,8 @@
 create.power.basis <- function(rangeval  = c(0,1), nbasis = NULL,
                                exponents = NULL, dropind=NULL,
                                quadvals=NULL, values=NULL,
-                               basisvalues=NULL, names='power')
+                               basisvalues=NULL, names='power',
+                               axes=NULL)
 {
 #  This function creates an power functional data basis
 #  Arguments
@@ -204,7 +205,10 @@ create.power.basis <- function(rangeval  = c(0,1), nbasis = NULL,
       paste(names, 0:(nbasis-1), sep="")
     }
   }
-
+##
+## 6.  Done
+##
+  if(!is.null(axes))basisobj$axes <- axes
   basisobj
 
 }
