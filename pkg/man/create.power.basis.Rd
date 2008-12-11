@@ -86,7 +86,7 @@ create.power.basis(rangeval=c(0, 1), nbasis=NULL, exponents=NULL,
     either a character vector of the same length as the number of basis
     functions or a simple stem used to construct such a vector.
 
-    For \code{monomial} bases, this defaults to paste(power',
+    For \code{power} bases, this defaults to paste(power',
     0:(nbasis-1), sep='').
   }
   \item{axes}{
