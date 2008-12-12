@@ -132,7 +132,7 @@ create.polygonal.basis <- function(rangeval=NULL, argvals=NULL,
       if(length(names)>1)
         stop('length(names) = ', length(names), ';  must be either ',
              '1 or nbasis = ', nbasis)
-      basisobj$names <- paste(names, 1:nbasis, sep="")
+      basisobj$names <- basisobj$names <- paste(names, 1:nbasis, sep="")
     }
   }
 ##
