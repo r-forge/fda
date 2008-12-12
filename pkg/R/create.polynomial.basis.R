@@ -111,7 +111,7 @@ create.polynomial.basis <- function (rangeval=c(0,1), nbasis=2, ctr=0,
       if(length(names)>1)
         stop('length(names) = ', length(names), ';  must be either ',
              '1 or nbasis = ', nbasis)
-      paste(names, 0:(nbasis-1), sep="")
+      basisobj$names <- paste(names, 0:(nbasis-1), sep="")
     }
   }
 ##

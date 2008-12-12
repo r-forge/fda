@@ -325,7 +325,7 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
       if(length(names)>1)
         stop('length(names) = ', length(names), ';  must be either ',
              '1 or nbasis = ', nbasis)
-      paste(names, norder, ".", 1:nbasis, sep="")
+      basisobj$names <- paste(names, norder, ".", 1:nbasis, sep="")
     }
   }
 ##
