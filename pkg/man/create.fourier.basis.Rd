@@ -123,17 +123,16 @@ create.fourier.basis(rangeval=c(0, 1), nbasis=3,
   \code{\link{create.power.basis}}
 }
 \examples{
-# Create a minimal Fourier basis for the monthly temperature data,
-#  using 3 basis functions with period 12 months.
-monthbasis3 <- create.fourier.basis(c(0,12),
+# Create a minimal Fourier basis for annual data
+#  using 3 basis functions
+yearbasis3 <- create.fourier.basis(c(0,365),
                     axes=list("axesIntervals") )
 #  plot the basis
-plot(monthbasis3)
+plot(yearbasis3)
 
 # set up the Fourier basis for the monthly temperature data,
 #  using 9 basis functions with period 12 months.
-monthbasis <- create.fourier.basis(c(0,12), 9, 12.0,
-                    axes=list("axesIntervals"))
+monthbasis <- create.fourier.basis(c(0,12), 9, 12.0)
 
 #  plot the basis
 plot(monthbasis)
