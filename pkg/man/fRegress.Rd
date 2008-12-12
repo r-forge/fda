@@ -22,11 +22,11 @@ fRegress(yfdPar, xfdlist, betalist, wt=rep(1,N))
 
     \itemize{
       \item{scalar}{ a vector if the dependent variable is scalar.}
-      \item{fd} {
+      \item{fd}{
 	a functional data object if the dependent variable is
 	functional.
       }
-      \item{fdPar} {
+      \item{fdPar}{
 	a functional parameter object if the dependent variable is
 	functional, and if it is necessary to smooth the prediction
 	of the dependent variable.
@@ -108,13 +108,13 @@ fRegress(yfdPar, xfdlist, betalist, wt=rep(1,N))
     that estimates confidence regions for the regression coefficient
     function estimates.
   }
-  \item{OCV}{ 
+  \item{OCV}{
     the ordinary cross-validation score. This is returned only when \code{yfdPar}
-    is a vector. 
+    is a vector.
   }
   \item{GCV}{
     the generalized cross-validation score.  This is returned only when \code{yfdPar}
-    is a vector. 
+    is a vector.
   }
 }
 \seealso{

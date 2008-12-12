@@ -22,7 +22,7 @@ fRegress.CV(yfdPar, xfdlist, betalist, whichobs=NULL)
 
     \itemize{
       \item{scalar}{ a vector if the dependent variable is scalar.}
-      \item{fd} {
+      \item{fd}{
 	functional data object if the dependent variable is functional.
       }
       \item{fdPar}{
