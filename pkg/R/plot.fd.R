@@ -10,15 +10,16 @@
 
 plot.fdSmooth <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
                           xlim=NULL, ylim=NULL, xlab=NULL,
-                          ylab=NULL, ask=FALSE, nx=NULL, ...){
+                          ylab=NULL, ask=FALSE, nx=NULL, axes=NULL,
+                          ...){
   plot(x$fd, y, Lfdobj=Lfdobj, href=href, titles=titles,
        xlim=xlim, ylim=ylim, xlab=xlab,
-       ylab=ylab, ask=ask, nx=nx, ...)
+       ylab=ylab, ask=ask, nx=nx, axes=axes, ...)
 }
 
 plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
                     xlim=NULL, ylim=NULL, xlab=NULL,
-                    ylab=NULL, ask=FALSE, nx=NULL, ...)
+                    ylab=NULL, ask=FALSE, nx=NULL, axes=NULL, ...)
 {
 #  -----------------------------------------------------------------------
 #       plot for fd class
@@ -41,8 +42,8 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
   #    must be set up before calling plot by using something such as
   #    par(mfrow=c(1,nvar),pty="s")
 
-  # last modified 25 August 2008 by Jim Ramsay
-  # previously modified 3 May 2007 by Spencer Graves
+# last modified 2008.12.12 by Spencer Graves
+# previously modified 25 August 2008 by Jim Ramsay
 
   #  check fdobj
 
@@ -55,6 +56,47 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
   Lfdobj <- int2Lfd(Lfdobj)
   if (!inherits(Lfdobj, "Lfd")) stop(
       "Second argument is not a linear differential operator.")
+
+  {
+    if(is.null(axes)){
+      if(is.null(x$basis$axes)){
+        Axes <- TRUE
+        axFun <- FALSE
+      }
+      else{
+        if(!inherits(x$basis$axes, 'list'))
+          stop('x$basis$axes must be a list;  class(x$basis$axes) = ',
+               class(x$basis$axes))
+        if(!(inherits(x$basis$axes[[1]], 'character') ||
+             inherits(x$basis$axes[[1]], 'function') ) )
+          stop('x$basis$axes[[1]] must be either a function or the ',
+               'name of a function;  class(x$basis$axes[[1]]) = ',
+               class(x$basis$axes[[1]]) )
+        Axes <- FALSE
+        axFun <- TRUE
+        axList <- x$basis$axes
+      }
+    }
+    else{
+      if(is.logical(axes)){
+        Axes <- axes
+        axFun <- FALSE
+      }
+      else{
+        if(!inherits(axes, 'list'))
+          stop('axes must be a logical or a list;  class(axes) = ',
+               class(axes))
+        if(!(inherits(axes[[1]], 'character') ||
+             inherits(axes[[1]], 'function') ) )
+          stop('axes[[1]] must be either a function or the ',
+               'name of a function;  class(axes[[1]]) = ',
+               class(axes[[1]]) )
+        Axes <- FALSE
+        axFun <- TRUE
+        axList <- axes
+      }
+    }
+  }
 
   #  extract dimension information
 
@@ -132,7 +174,9 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
   # A single line?
   if (ndim < 2) {
     plot (y, fdmat, type="l", xlim=xlim, ylim=ylim,
-          xlab=xlab, ylab=ylab, ...)
+          xlab=xlab, ylab=ylab, axes=Axes, ...)
+    if(axFun)
+      do.call(axList[[1]], axList[-1])
 #   Ramsay 2008.08.26
     if (zerofind(fdmat) && href) abline(h=0,lty=2)
 #   Graves 2008.07.04
@@ -143,7 +187,9 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
     if (!ask) {
       matplot(y, fdmat, type="l",
               xlim=xlim,   ylim=ylim,
-              xlab=xlab, ylab=ylab, ...)
+              xlab=xlab, ylab=ylab, axes=Axes, ...)
+      if(axFun)
+        do.call(axList[[1]], axList[-1])
 #   Ramsay 2008.08.26
       if (zerofind(fdmat) && href) abline(h=0,lty=2)
 #   Graves 2008.07.04
@@ -160,7 +206,9 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
       for (irep in 1:nrep) {
         plot (y, fdmat[,irep], type="l",
               xlim=xlim, ylim=ylim,
-              xlab=xlab, ylab=ylab, ...)
+              xlab=xlab, ylab=ylab, axes=Axes, ...)
+        if(axFun)
+          do.call(axList[[1]], axList[-1])
         if(irep<2) par(ask=ask)
 
 #        if (zerofind(ylim) && href) abline(h=0,lty=2)
@@ -183,7 +231,9 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
       for (ivar in 1:nvar) {
         matplot (y, fdmat[,,ivar], type="l",
                  xlim=xlim, ylim=ylim,
-                 xlab=xlab, ylab=ylab, ask=FALSE, ...)
+                 xlab=xlab, ylab=ylab, ask=FALSE, axes=Axes, ...)
+        if(axFun)
+          do.call(axList[[1]], axList[-1])
         if (!is.null(varnames)) title(varnames[ivar])
         else                    title(paste("Variable",ivar))
 #        if (zerofind(fdmat[,,ivar]) && href) abline(h=0,lty=2)
@@ -200,7 +250,9 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
         for (ivar in 1:nvar) {
           plot(y,fdmat[,irep,ivar],type="l",
                xlim=xlim, ylim=ylim,
-               xlab=xlab, ylab=ylab, ...)
+               xlab=xlab, ylab=ylab, axes=Axes, ...)
+          if(axFun)
+            do.call(axList[[1]], axList[-1])
           if (!is.null(casenames)) titlestr = casenames[irep]
           else                     titlestr = paste("Case",irep)
           if (!is.null(varnames)) {
