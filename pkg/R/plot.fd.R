@@ -74,7 +74,7 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
                class(x$basis$axes[[1]]) )
         Axes <- FALSE
         axFun <- TRUE
-        axList <- x$basis$axes
+        axList <- c(x$basis$axes, ...)
       }
     }
     else{
@@ -93,7 +93,7 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
                class(axes[[1]]) )
         Axes <- FALSE
         axFun <- TRUE
-        axList <- axes
+        axList <- c(axes, ...)
       }
     }
   }
@@ -208,7 +208,7 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
               xlim=xlim, ylim=ylim,
               xlab=xlab, ylab=ylab, axes=Axes, ...)
         if(axFun)
-          do.call(axList[[1]], axList[-1])
+          do.call(axList[[1]], axList[-1] )
         if(irep<2) par(ask=ask)
 
 #        if (zerofind(ylim) && href) abline(h=0,lty=2)

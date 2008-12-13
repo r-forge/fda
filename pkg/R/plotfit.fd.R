@@ -63,7 +63,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
                class(fdobj$basis$axes[[1]]) )
         Axes <- FALSE
         axFun <- TRUE
-        axList <- fdobj$basis$axes
+        axList <- c(fdobj$basis$axes, ...)
       }
     }
     else{
@@ -82,7 +82,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
                class(axes[[1]]) )
         Axes <- FALSE
         axFun <- TRUE
-        axList <- axes
+        axList <- c(axes, ...)
       }
     }
   }
