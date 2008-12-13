@@ -130,6 +130,14 @@ yearbasis3 <- create.fourier.basis(c(0,365),
 #  plot the basis
 plot(yearbasis3)
 
+# Identify the months with letters
+plot(yearbasis3, axes=list('axesIntervals', labels=monthLetters))
+
+# The same labels as part of the basis object
+yearbasis3. <- create.fourier.basis(c(0,365),
+       axes=list("axesIntervals", labels=monthLetters) )
+plot(yearbasis3.)
+
 # set up the Fourier basis for the monthly temperature data,
 #  using 9 basis functions with period 12 months.
 monthbasis <- create.fourier.basis(c(0,12), 9, 12.0)

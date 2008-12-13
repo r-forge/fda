@@ -70,7 +70,6 @@ lambda    <- 0
 betafdPar <- fdPar(betafd, harmaccelLfd365, lambda, estimate)
 
 p <- length(xfdlist)
-betalist <- vector("list",p)
 names(betalist) <- names(xfdlist)
 for (j in 1:p) betalist[[j]] <- betafdPar
 
@@ -79,45 +78,6 @@ for (j in 1:p) betalist[[j]] <- betafdPar
 
 fRegressList <- fRegress(tempfd, xfdlist, betalist)
 
-#  plot regression functions
-
-betaestlist <- fRegressList$betaestlist
-
-op <- par(mfrow=c(2,2))
-ylim <- c(-25, 25)
-for (j in 2:p) {
-	betaestParfdj <- betaestlist[[j]]
-	plot(betaestParfdj$fd, xlab="Day", ylab="Temp.",
-	     main=zonenames[j], ylim=ylim, cex.axis=0.8)
-        abline(h=0, lty='dashed')
-}
-par(op)
-
-#  plot predicted functions
-
-yhatfdobj <- fRegressList$yhatfdobj
-plot(yhatfdobj,main='Predicted Temperature',)
-
-#  compute residual matrix and get covariance of residuals
-
-yhatmat  <- eval.fd(day.5, yhatfdobj)
-ymat     <- eval.fd(day.5, tempfd)
-temprmat <- ymat[,1:35] - yhatmat[,1:35]
-SigmaE   <- var(t(temprmat))
-
-#  plot covariance surface for errors
-
-par(mfrow=c(1,1))
-contour(SigmaE, xlab="Day", ylab="Day")
-lines(c(0, 365), c(0, 365),lty=4)
-
-#  plot standard deviation of errors
-
-par(mfrow=c(1,1), mar=c(5,5,3,2), pty="m")
-stddevE <- sqrt(diag(SigmaE))
-plot(day.5, stddevE, type="l",
-     xlab="Day", ylab="Standard error (deg C)")
-
 #  Repeat regression, this time outputting results for
 #  confidence intervals
 
@@ -125,28 +85,20 @@ stderrList <- fRegress.stderr(fRegressList, y2cMap, SigmaE)
 
 betastderrlist <- stderrList$betastderrlist
 
-#  plot regression function standard errors
-
-op <- par(mfrow=c(2,3), pty="s")
-for (j in 1:p) {
-	betastderrj <- eval.fd(day.5, betastderrlist[[j]])
-	plot(day.5, betastderrj,
-	        type="l",lty=1, xlab="Day", ylab="Reg. Coeff.",
-	        main=zonenames[j])
-}
-par(op)
-
 #  plot regression functions with confidence limits
 
+ylim <- c(-25, 25)
 op <- par(mfrow=c(2,2))
 for (j in 2:p) {
 	betafdParj  <- betaestlist[[j]]
 	betafdj     <- betafdParj$fd
 	betaj       <- eval.fd(day.5, betafdj)
 	betastderrj <- eval.fd(day.5, betastderrlist[[j]])
-	matplot(day.5, cbind(betaj, betaj+2*betastderrj, betaj-2*betastderrj),
-	        type="l",lty=c(1,4,4), xlab="Day", ylab="Reg. Coeff.",
-	        main=zonenames[j], ylim=ylim)
+        b.lims <- cbind(betaj, betaj+2*betastderrj, betaj-2*betastderrj)
+	matplot(day.5, b.lims, type="l",lty=c(1,4,4), xlab="",
+                ylab="", main=zonenames[j], ylim=ylim,
+                axes=FALSE)
+        axesIntervals(labels=monthLetters)
 }
 par(op)
 
@@ -156,12 +108,16 @@ ylim2 <- c(-30, 25)
 beta0 <- betaestlist[[1]]$fd
 for (j in 2:p) {
 	betaj <- betaestlist[[j]]$fd
-	plot(beta0+betaj, xlab="Day", ylab="Temp.",
-	     main=zonenames[j], ylim=ylim2)
+	plot(beta0+betaj, xlab="", ylab="",
+	     main=zonenames[j], ylim=ylim2, cex.axis=.8)
         lines(beta0, lty='dashed')
 }
 par(op)
 
 # p. 227
 
-sapply(fRegressList, class)
+
+
+
+
+
