@@ -37,7 +37,6 @@
 \alias{monhess}
 \alias{normalize.phi}
 \alias{pendiagfn}
-\alias{plot.Lfd}
 \alias{plot.cca.fd}
 \alias{polintarray}
 \alias{polintmat}
