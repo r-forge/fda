@@ -26,9 +26,9 @@ plot.basisfd <- function(x, knots=TRUE, axes=NULL, ...) {
           stop('x$axes[[1]] must be either a function or the ',
                'name of a function;  class(x$axes[[1]]) = ',
                class(x$axes[[1]]) )
+        axList <- c(x$axes, ...)
         dot.args$axes <- FALSE
         axFun <- TRUE
-        axList <- x$axes
       }
     }
     else{
@@ -45,9 +45,9 @@ plot.basisfd <- function(x, knots=TRUE, axes=NULL, ...) {
           stop('axes[[1]] must be either a function or the ',
                'name of a function;  class(axes[[1]]) = ',
                class(axes[[1]]) )
+        axList <- c(axes, ...)
         dot.args$axes <- FALSE
         axFun <- TRUE
-        axList <- axes
       }
     }
   }

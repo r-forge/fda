@@ -14,7 +14,8 @@ library(fda)
 ##
 #  p. 226, Figure 13.1.  Region effects for the temperature function
 harmaccelLfd365 <- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
-smallbasis  <- create.fourier.basis(c(0, 365), 65)
+smallbasis  <- create.fourier.basis(c(0, 365), 65,
+                                    axes=list('axesIntervals'))
 
 tempfd      <- smooth.basis(day.5,
                             CanadianWeather$dailyAv[,,"Temperature.C"],
@@ -58,7 +59,8 @@ str(xfdlist)
 #  set up the basis for (the regression functions
 
 nbetabasis <- 11
-betabasis  <- create.fourier.basis(c(0, 365), nbetabasis)
+betabasis  <- create.fourier.basis(c(0, 365), nbetabasis,
+                  axes=list('axesIntervals', labels=monthLetters) )
 
 #  set up the functional parameter object for (the regression fns.
 
@@ -86,7 +88,7 @@ ylim <- c(-25, 25)
 for (j in 2:p) {
 	betaestParfdj <- betaestlist[[j]]
 	plot(betaestParfdj$fd, xlab="Day", ylab="Temp.",
-	     main=zonenames[j], ylim=ylim)
+	     main=zonenames[j], ylim=ylim, cex.axis=0.8)
         abline(h=0, lty='dashed')
 }
 par(op)
