@@ -43,8 +43,8 @@ fdPar <- function(fdobj=NULL, Lfdobj=NULL, lambda=0, estimate=TRUE,
 #  Return:
 #  FDPAROBJ ... A functional parameter object
 
-#  Last modified 6 January 2008 by Jim Ramsay
-#  Previously modified 2007.09.18 by Spencer Graves
+#  Last modified 2008.12.14 by Spencer Graves
+#  Previosly modified 6 January 2008 by Jim Ramsay
 
 #  ----------------------------------------------------------------------
 #                            Default fdPar objects
@@ -80,11 +80,17 @@ fdPar <- function(fdobj=NULL, Lfdobj=NULL, lambda=0, estimate=TRUE,
 
   {
     if(is.null(Lfdobj)){
-      norder <- {
-        if(fdobj$basis$type=='bspline')norder.bspline(fdobj$basis)
-        else 2
+      if(fdobj$basis$type=='fourier'){
+        rng <- fdobj$basis$rangeval
+        Lfdobj <- vec2Lfd(c(0,(2*pi/diff(rng))^2,0), rng)
       }
-      Lfdobj <- int2Lfd(max(0, norder-2))
+      else{
+        norder <- {
+          if(fdobj$basis$type=='bspline')norder.bspline(fdobj$basis)
+          else 2
+        }
+        Lfdobj <- int2Lfd(max(0, norder-2))
+      }
     }
     else
       Lfdobj <- int2Lfd(Lfdobj)
