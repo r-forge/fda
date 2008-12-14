@@ -74,8 +74,8 @@ fRegress(yfdPar, xfdlist, betalist, wt=rep(1,N))
   functional data objects having the constant basis with coefficients
   equal to the elements of the vector.
 
-  Needless to say, if all the variables in the model are scalar, use
-  this function, but rather either \code{ls} or \code{lsfit}.
+  Needless to say, if all the variables in the model are scalar, do NOT
+  use this function.  Instead, use either \code{lm} or \code{lsfit}.
 }
 \value{
   a list of class \code{fRegress} with the following components:
@@ -124,8 +124,7 @@ fRegress(yfdPar, xfdlist, betalist, wt=rep(1,N))
 }
 \examples{
 #See the Canadian daily weather data analyses in the file
-# \code{daily.R} for
-#examples of all the cases covered by fRegress.
+# daily.R for examples of all the cases covered by fRegress.
 }
 % docclass is function
 \keyword{smooth}
