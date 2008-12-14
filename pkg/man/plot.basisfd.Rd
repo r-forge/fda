@@ -7,7 +7,7 @@
   Plots all the basis functions.
 }
 \usage{
-plot.basisfd(x, knots=TRUE, axes=NULL, ...)
+\method{plot}{basisfd}(x, knots=TRUE, axes=NULL, ...)
 }
 \arguments{
   \item{x}{
