@@ -125,7 +125,7 @@ fRegress(yfdPar, xfdlist, betalist, wt=rep(1,N))
 \examples{
 #See the Canadian daily weather data analyses in the file
 # \code{daily.R} for
-#examples of all the cases covered by \code{fRegress}.
+#examples of all the cases covered by fRegress.
 }
 % docclass is function
 \keyword{smooth}
