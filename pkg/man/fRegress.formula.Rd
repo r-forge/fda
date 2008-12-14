@@ -129,8 +129,11 @@ fRegress.formula(formula, data=NULL, betalist=NULL, weights=NULL, ...)
 \examples{
 daybasis65 <- create.fourier.basis(rangeval=c(0, 365), nbasis=65,
                   axes=list('axesIntervals'))
-harmaccelLfd365 <- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
-fRegress.formula(dailyAv ~ region, CanadianWeather)
+%harmaccelLfd365 <- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
+weatherfd <- with(CanadianWeather, smooth.basisPar(day.5, dailyAv,
+                  daybasis65)$fd)
+
+weatherRgn <- fRegress.formula(weatherfd ~ region, CanadianWeather)
 }
 % docclass is function
 \keyword{smooth}
