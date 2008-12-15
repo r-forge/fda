@@ -265,7 +265,7 @@ girlGrow12. <- with(growth, smooth.basisPar(argvals=age, y=hgtf[, 1:2],
     fdnames=list(age=age, girl=c('Carol', 'Sally'), value='height')) )
 
 ##
-## Fourier bases with harmonic acceleration operator
+## Fourier basis with harmonic acceleration operator
 ##
 daybasis65 <- create.fourier.basis(rangeval=c(0, 365), nbasis=65)
 daytemp.fdSmooth <- with(CanadianWeather, smooth.basisPar(day.5,
