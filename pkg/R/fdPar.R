@@ -83,6 +83,10 @@ fdPar <- function(fdobj=NULL, Lfdobj=NULL, lambda=0, estimate=TRUE,
       if(fdobj$basis$type=='fourier'){
         rng <- fdobj$basis$rangeval
         Lfdobj <- vec2Lfd(c(0,(2*pi/diff(rng))^2,0), rng)
+        warning("Provding default Lfdobj = harmonic acceleration ",
+                "operator on c(", rng[1], ', ', rng[2],
+                ') = vec2Lfd(c(0,(2*pi/diff(rng))^2,0), rng);\n',
+                'new with fda 2.1.0 (previously int2Lfd(0)).')
       }
       else{
         norder <- {
