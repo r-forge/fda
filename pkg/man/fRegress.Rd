@@ -57,11 +57,12 @@ fRegress(yfdPar, xfdlist, betalist, wt=rep(1,N))
   \item{betalist}{
     a list of length equal to the number of independent
     variables. Members of this list define the regression functions to
-    be estimated.  They are functional parameter objects.  Note that
-    even if corresponding independent variable is scalar, its regression
-    coefficient will be functional if the dependent variable is
-    functional.  Each of these functional parameter objects defines a
-    single functional data object, that is, with only one replication.
+    be estimated.  They are functional parameter objects (class
+    \code{fdPar}).  Note that even if corresponding independent variable
+    is scalar, its regression coefficient will be functional if the
+    dependent variable is functional.  Each of these functional
+    parameter objects defines a single functional data object, that is,
+    with only one replication.
   }
   \item{wt}{
     weights for weighted least squares

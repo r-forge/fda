@@ -14,7 +14,7 @@
   at a fixed time, or in terms of "now" behavior.
 }
 \usage{
-fRegress.formula(formula, data=NULL, betalist=NULL, weights=NULL, ...)
+fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL, ...)
 % later 'fRegress' will be made generic
 % with this being the formula method
 %\method{fRegress}{formula}(formula, data=NULL, betalist=NULL,
@@ -26,9 +26,10 @@ fRegress.formula(formula, data=NULL, betalist=NULL, weights=NULL, ...)
     that class): a symbolic description of the model to be fitted.
 
     All objects named on the right hand side must be either
-    \code{numeric} or \code{fd} (functional data).  The number of
-    replications of \code{fd} object(s) must match each other and the
-    number of observations of \code{numeric} objects named.
+    \code{numeric} or \code{fd} (functional data) or \code{fdPar}.  The
+    number of replications of \code{fd} or \code{fdPar} object(s) must
+    match each other and the number of observations of \code{numeric}
+    objects named.
   }
   \item{data}{
     an optional list containing names of objects identified in
@@ -66,18 +67,22 @@ fRegress.formula(formula, data=NULL, betalist=NULL, weights=NULL, ...)
       }
     }
   }
-  \item{weights}{
-    weights for weighted least squares
+  \item{wts}{
+    weights for weighted least squares.
   }
   \item{\dots}{
     optional arguments currently not used.
   }
 }
 \details{
-  In the computation of regression function estimates, all independent
-  variables are treated as if they are functional.  Numeric objects are
-  converted to functional data objects with a constant basis and
-  coefficients equal to the numeric values.
+  1.  Parse \code{formula}.
+
+  2.  Let \code{y} = the object on the left hand side of the formula.
+
+  3.  Pass control to \code{fRegress.numeric} if \code{y} is
+  \code{numeric} or \code{fRegress.fd} if \code{y} is \code{y} is a
+  functional data object (class \code{fd}).  If \code{y} is anything
+  else, give an error.
 }
 \value{
   a list of class \code{fRegress} with the following components:
