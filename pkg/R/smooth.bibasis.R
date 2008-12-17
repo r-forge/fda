@@ -1,19 +1,19 @@
 smooth.bibasis <- function (sarg, targ, y, fdPars, fdPart, fdnames=NULL)
 {
-#  SMOOTH_BIBASIS  Smooths discrete surface values over a rectangular 
-#  lattice to estimate a smoothing function f(s,t) 
+#  SMOOTH_BIBASIS  Smooths discrete surface values over a rectangular
+#  lattice to estimate a smoothing function f(s,t)
 #   using penalized basis functions.
 #
 #  Arguments for this function:
 #
-#  sarg     ... A set of argument values for the row dimension s. 
-#  targ     ... A set of argument values for the col dimension t. 
+#  sarg     ... A set of argument values for the row dimension s.
+#  targ     ... A set of argument values for the col dimension t.
 #  Y        ... an array containing surface values.  If two-dimensional,
-#               a single surface is assumed.  If three-dimensional, 
-#               the third dimension corresponds to replications.  
-#  FDPARS   ... A functional parameter or fdPar object for 
+#               a single surface is assumed.  If three-dimensional,
+#               the third dimension corresponds to replications.
+#  FDPARS   ... A functional parameter or fdPar object for
 #               variation along the row dimension s.
-#  FDPART   ... A functional parameter or fdPar object for 
+#  FDPART   ... A functional parameter or fdPar object for
 #               variation along the col dimension t.
 #  FDNAMES  ... A cell of length 3 with names for
 #               1. argument s
@@ -66,7 +66,7 @@ if (length(ydim) == 2) {
     nsurf = ydim(3)
     ymat = matrix(0, ns*nt, nsurf)
     for (isurf in 1:nsurf)
-        ymat[,isurf] = matrix(y[,,isurf], ns*nt, 1)        
+        ymat[,isurf] = matrix(y[,,isurf], ns*nt, 1)
 }
 
   #  check FDPARS, FDPART and BASES, LBFDOBJ"S and LAMBDA"S
@@ -122,9 +122,9 @@ if (ns*nt > snbasis*tnbasis || lambdas > 0 || lambdat > 0) {
 
     #  set up right side of equations
 
-     
+
     Dmat = crossprod(basismat,ymat)
-    
+
     #  set up regularized cross-product matrix BMAT
 
     if (lambdas > 0) {
@@ -134,7 +134,7 @@ if (ns*nt > snbasis*tnbasis || lambdas > 0 || lambdat > 0) {
       condno  = pennorm/Bnorm
       if (lambdas*condno > 1e12) {
         lambdas = 1e12/condno
-        warning(paste("lambdas reduced to",lambda,
+        warning(paste("lambdas reduced to",lambdas,
                       "to prevent overflow"))
       }
       Imat = diag(rep(nt,1))
@@ -148,7 +148,7 @@ if (ns*nt > snbasis*tnbasis || lambdas > 0 || lambdat > 0) {
       condno  = pennorm/Bnorm
       if (lambdat*condno > 1e12) {
         lambdat = 1e12/condno
-        warning(paste("lambdat reduced to",lambda,
+        warning(paste("lambdat reduced to",lambdat,
                       "to prevent overflow"))
       }
       Imat = diag(rep(ns,1))
@@ -203,7 +203,7 @@ if (ns*nt > snbasis*tnbasis || lambdas > 0 || lambdat > 0) {
     }
 
 } else {
-      stop(paste("The number of basis functions exceeds the number of ", 
+      stop(paste("The number of basis functions exceeds the number of ",
                  "points to be smoothed."))
 
 }
@@ -218,7 +218,7 @@ yhat = basismat %*% coef
 SSE  = sum((ymat - yhat)^2)
 
 #  compute  GCV index
-  
+
 N = ns*nt*nsurf
 if (df < N) {
     gcv = (SSE/N)/((N - df)/N)^2
@@ -234,7 +234,7 @@ bifdobj = bifd(coefmat, sbasis, tbasis, fdnames)
 
 smoothlist = list(bifdobj=bifdobj,  df=df,           gcv=gcv,
                   SSE=SSE,          penmats=penmats, penmatt = penmatt,
-                  y2cMap=y2cMap,    sarg=sarg,       targ=targ,     
+                  y2cMap=y2cMap,    sarg=sarg,       targ=targ,
                   y=y,              coef = coefmat)
 
 #  class(smoothlist) = "bifdSmooth"
