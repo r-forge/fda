@@ -1,5 +1,6 @@
 fRegress.formula <- function(formula, data=NULL, betalist=NULL,
-                             wts=NULL, ...){
+                             wts=NULL, y2cMap=NULL, SigmaE=NULL,
+                             ...){
 ##
 ## 1.  get y
 ##

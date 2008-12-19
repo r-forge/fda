@@ -14,7 +14,8 @@
   at a fixed time, or in terms of "now" behavior.
 }
 \usage{
-fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL, ...)
+fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
+                 y2cMap=NULL, SigmaE=NULL, ...)
 % later 'fRegress' will be made generic
 % with this being the formula method
 %\method{fRegress}{formula}(formula, data=NULL, betalist=NULL,
@@ -63,12 +64,25 @@ fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL, ...)
       }
       \item{list}{
 	Must have one component to match each independent variable in
-	\code{formula}.
+	\code{formula}.  For a categorical independent variable with
+	\code{k} levels, \code{betalist} must have \code{k-1}
+	components, one for each \code{contrast} (selected according to
+	\code{options('contrasts')}).
       }
     }
   }
   \item{wts}{
     weights for weighted least squares.
+  }
+  \item{y2cMap}{
+    the matrix mapping from the vector of observed values to the
+    coefficients for the dependent variable.  This is output by function
+    \code{smooth.basis}.  If this is supplied, confidence limits are
+    computed, otherwise not.
+  }
+  \item{SigmaE}{
+    Estimate of the covariances among the residuals.  This can only be
+    estimated after a preliminary analysis with \code{fRegress}.
   }
   \item{\dots}{
     optional arguments currently not used.

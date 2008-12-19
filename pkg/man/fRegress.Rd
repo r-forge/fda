@@ -13,7 +13,7 @@
   at a fixed time, or in terms of "now" behavior.
 }
 \usage{
-fRegress(yfdPar, xfdlist, betalist, wt=rep(1,N),
+fRegress(yfdPar, xfdlist, betalist, wt=NULL,
                      y2cMap=NULL, SigmaE=NULL)
 }
 \arguments{
@@ -93,7 +93,8 @@ fRegress(yfdPar, xfdlist, betalist, wt=rep(1,N),
   a list of class \code{fRegress} with the following components:
 
   \item{yfdPar}{
-    the first argument in the call to \code{fRegress}.
+    the first argument in the call to \code{fRegress} (coerced to
+    \code{class} \code{fdPar})
   }
   \item{xfdlist}{
     the second argument in the call to \code{fRegress}.
@@ -120,14 +121,38 @@ fRegress(yfdPar, xfdlist, betalist, wt=rep(1,N),
     that estimates confidence regions for the regression coefficient
     function estimates.
   }
-  \item{OCV}{
-    the ordinary cross-validation score. This is returned only when \code{yfdPar}
-    is a vector.
+  \item{wt}{
+    the vector of weights input or inferred
   }
-  \item{GCV}{
-    the generalized cross-validation score.  This is returned only when \code{yfdPar}
-    is a vector.
+  \item{df}{
+    equivalent degrees of freedom for the fit;  only present if
+    \code{class(yfdPar)} is \code{numeric}.
   }
+
+  The following 5 arguments are only present if \code{class(yfdPar)} is
+  either \code{fd} or \code{fdPar}:
+
+  \item{y2cMap}{ an input \code{y2cMap} }
+  \item{SigmaE}{ an input \code{SigmaE} }
+  \item{betastderrlist}{
+    an \code{fd} object estimating the standard errors of
+    \code{betaestlist}
+  }
+  \item{bvar}{
+    a covariance matrix
+  }
+  \item{c2bMap}{
+    a map
+  }
+
+%  \item{OCV}{
+%    the ordinary cross-validation score. This is returned only when \code{yfdPar}
+%    is a vector.
+%  }
+%  \item{GCV}{
+%    the generalized cross-validation score.  This is returned only when \code{yfdPar}
+%    is a vector.
+%  }
 }
 \seealso{
   \code{\link{fRegress.stderr}},
