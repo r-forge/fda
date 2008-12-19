@@ -140,10 +140,10 @@ Fperm.fd(yfdPar, xfdlist, betalist, wt=NULL, nperm=200,
 
 # First set up a basis system to hold the smooths
 
-knots  <- growth$age
+Knots  <- growth$age
 norder <- 6
-nbasis <- length(knots) + norder - 2
-hgtbasis <- create.bspline.basis(range(knots), nbasis, norder, knots)
+nbasis <- length(Knots) + norder - 2
+hgtbasis <- create.bspline.basis(range(Knots), nbasis, norder, Knots)
 
 # Now smooth with a fourth-derivative penalty and a very small smoothing
 # parameter
@@ -152,11 +152,12 @@ Lfdobj <- 4
 lambda <- 1e-2
 growfdPar <- fdPar(hgtbasis, Lfdobj, lambda)
 
-hgtfd <- smooth.basis(growth$age, cbind(growth$hgtm,growth$hgtf),growfdPar)$fd
+hgtfd <- smooth.basis(growth$age,
+                      cbind(growth$hgtm,growth$hgtf),growfdPar)$fd
 
 # Now set up factors for fRegress:
 
-cbasis = create.constant.basis(range(knots))
+cbasis = create.constant.basis(range(Knots))
 
 maleind = c(rep(1,ncol(growth$hgtm)),rep(0,ncol(growth$hgtf)))
 

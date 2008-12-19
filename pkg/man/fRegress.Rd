@@ -13,7 +13,8 @@
   at a fixed time, or in terms of "now" behavior.
 }
 \usage{
-fRegress(yfdPar, xfdlist, betalist, wt=rep(1,N))
+fRegress(yfdPar, xfdlist, betalist, wt=rep(1,N),
+                     y2cMap=NULL, SigmaE=NULL)
 }
 \arguments{
   \item{yfdPar}{
@@ -66,6 +67,16 @@ fRegress(yfdPar, xfdlist, betalist, wt=rep(1,N))
   }
   \item{wt}{
     weights for weighted least squares
+  }
+  \item{y2cMap}{
+    the matrix mapping from the vector of observed values to the
+    coefficients for the dependent variable.  This is output by function
+    \code{smooth.basis}.  If this is supplied, confidence limits are
+    computed, otherwise not.
+  }
+  \item{SigmaE}{
+    Estimate of the covariances among the residuals.  This can only be
+    estimated after a preliminary analysis with \code{fRegress}.
   }
 }
 \details{

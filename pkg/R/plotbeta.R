@@ -1,4 +1,5 @@
-plotbeta = function(betaestlist, betastderrlist, argvals=NULL, xlab="", ...)
+plotbeta = function(betaestlist, betastderrlist, argvals=NULL,
+                    xlab="", ...)
 {
 #  PLOTBETA plots a functional parameter along with confidence
 #  limits

@@ -17,10 +17,11 @@ Fperm.fd <- function(yfdPar, xfdlist, betalist,wt=NULL,
     elapsed.time <- max(proc.time()-begin,na.rm=TRUE)
 
     if( elapsed.time > 30/nperm ){
-        print(paste('Estimated Computing time =',round(nperm*elapsed.time),'seconds.'))
+        print(paste('Estimated Computing time =',
+                    round(nperm*elapsed.time),'seconds.'))
     }
 
-    yhat <- fRegressList$yhatfdobj
+    yhat <- fRegressList$yhatfdobj$fd
 
     tFstat <- Fstat.fd(yfdPar,yhat,argvals)
 
@@ -38,7 +39,7 @@ Fperm.fd <- function(yfdPar, xfdlist, betalist,wt=NULL,
 
         fRegressList <- fRegress(tyfdPar, xfdlist, betalist)
 
-        yhat <- fRegressList$yhatfdobj
+        yhat <- fRegressList$yhatfdobj$fd
 
         tFstat = Fstat.fd(yfdPar,yhat,argvals)
 
@@ -53,7 +54,6 @@ Fperm.fd <- function(yfdPar, xfdlist, betalist,wt=NULL,
 
     pvals.pts = apply(Fvals<Fnullvals,1,mean)
     qvals.pts = apply(Fnullvals,1,quantile,q)
-
 
     if(plotres){
         if(is.fd(yfdPar)){
