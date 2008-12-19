@@ -1,4 +1,4 @@
-fRegress.CV <- function(yvec, xfdlist, betalist) {
+fRegress.CV <- function(yvec, xfdlist, betalist){
 
 # FREGRESS.CV computes cross-validated error sum of squares
 # only for scalar dependent variable

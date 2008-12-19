@@ -13,22 +13,11 @@
   cross-validated error sum of squares criterion.
 }
 \usage{
-fRegress.CV(yfdPar, xfdlist, betalist, whichobs=NULL)
+fRegress.CV(yvec, xfdlist, betalist)
 }
 \arguments{
-  \item{yfdPar}{
-    the dependent variable object.  It may be an object of three
-    possible classes:
-
-    \itemize{
-      \item{scalar}{ a vector if the dependent variable is scalar.}
-      \item{fd}{
-	functional data object if the dependent variable is functional.
-      }
-      \item{fdPar}{
-	a functional parameter object
-      }
-    }
+  \item{yvec}{
+    the dependent variable object.
   }
   \item{xfdlist}{
     a list whose members are functional parameter objects specifying
@@ -39,8 +28,6 @@ fRegress.CV(yfdPar, xfdlist, betalist, whichobs=NULL)
     a list containing functional parameter objects specifying the
     regression functions and their level of smoothing.
   }
-  \item{whichobs}{ a vector giving the indeces of which observations are to be
-  left out in the cross validation. Defaults to all of them. }
 }
 \value{
   A list containing

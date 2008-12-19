@@ -7,7 +7,7 @@
   Plot a functional parameter object with confidence limits
 }
 \usage{
-plotbeta(betaestlist, betastderrlist, argvals=NULL, ...)
+plotbeta(betaestlist, betastderrlist, argvals=NULL, xlab="", ...)
 }
 \arguments{
   \item{betaestlist}{
@@ -22,6 +22,7 @@ plotbeta(betaestlist, betastderrlist, argvals=NULL, ...)
     a sequence of values at which to evaluate \code{betaestlist} and
     \code{betastderrlist}.
   }
+  \item{xlab}{ x axis label }
   \item{\dots }{
     additional plotting parameters passed to \code{plot}.
   }

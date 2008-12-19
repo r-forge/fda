@@ -138,7 +138,7 @@ daybasis65 <- create.fourier.basis(rangeval=c(0, 365), nbasis=65,
 weatherfd <- with(CanadianWeather, smooth.basisPar(day.5, dailyAv,
                   daybasis65)$fd)
 
-weatherRgn <- fRegress.formula(weatherfd ~ region, CanadianWeather)
+%weatherRgn <- fRegress.formula(weatherfd ~ region, CanadianWeather)
 }
 % docclass is function
 \keyword{smooth}

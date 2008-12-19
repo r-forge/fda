@@ -7,7 +7,7 @@
   Estimate a smoothing function f(s, t) over a rectangular lattice
 }
 \usage{
-smooth.bibasis(sarg, targ, y, fdPars, fdPars, fdPart,
+smooth.bibasis(sarg, targ, y, fdPars, fdPart,
              fdnames=NULL)
 }
 \arguments{
