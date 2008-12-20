@@ -1,22 +1,23 @@
 \name{fRegress.CV}
 \alias{fRegress.CV}
 \title{
-  Computes Cross-validated Error Sum of Integrated Squared Errors for a Functional
-  Regression Model
+  Computes Cross-validated Error Sum of Integrated Squared Errors for a
+  Functional Regression Model
 }
 \description{
-  For a functional regression model, a cross-validated error sum of squares is
-  computed.  For a functional dependent variable this is the sum of integrated
-  squared errors. For a scalar response, this function has been superceded by
-  the OCV and gcv elements returned by \code{fRegress}. This function aids
-  the choice of smoothing parameters in this model using the
-  cross-validated error sum of squares criterion.
+  For a functional regression model, a cross-validated error sum of
+  squares is computed.  For a functional dependent variable this is the
+  sum of integrated squared errors. For a scalar response, this function
+  has been superceded by the OCV and gcv elements returned by
+  \code{fRegress}. This function aids the choice of smoothing parameters
+  in this model using the cross-validated error sum of squares
+  criterion.
 }
 \usage{
-fRegress.CV(yvec, xfdlist, betalist)
+fRegress.CV(y, xfdlist, betalist, ...)
 }
 \arguments{
-  \item{yvec}{
+  \item{y}{
     the dependent variable object.
   }
   \item{xfdlist}{
@@ -27,6 +28,10 @@ fRegress.CV(yvec, xfdlist, betalist)
   \item{betalist}{
     a list containing functional parameter objects specifying the
     regression functions and their level of smoothing.
+  }
+  \item{\dots}{
+    optional arguments not used by \code{fRegress.CV} but needed for
+    superficial compatibability with \code{fRegress} methods.
   }
 }
 \value{

@@ -1,4 +1,4 @@
-fRegress.numeric <- function(yfdPar, xfdlist, betalist, wt=NULL,
+fRegress.numeric <- function(y, xfdlist, betalist, wt=NULL,
                      y2cMap=NULL, SigmaE=NULL, ...)
 {
 
@@ -52,74 +52,74 @@ fRegress.numeric <- function(yfdPar, xfdlist, betalist, wt=NULL,
 #  Last modified 11 December 2008 by Jim
 
 #  check YFDPAR and compute sample size N
+  yfdPar <- y
+  if (inherits(yfdPar, "fd")) yfdPar <- fdPar(yfdPar)
 
-if (inherits(yfdPar, "fd")) yfdPar <- fdPar(yfdPar)
+  if (!(inherits(yfdPar, "fdPar") || inherits(yfdPar, "numeric")))
+    stop("First argument is not of class 'fd', 'fdPar' or 'numeric'.")
 
-if (!(inherits(yfdPar, "fdPar") || inherits(yfdPar, "numeric"))) stop(
-  "First argument is not of class 'fd', 'fdPar' or 'numeric'.")
-
-if (inherits(yfdPar, "fdPar")) {
+  if (inherits(yfdPar, "fdPar")) {
     yfd   <- yfdPar$fd
     ycoef <- yfd$coefs
     N     <- dim(ycoef)[2]
-}
-if (inherits(yfdPar, "numeric")) {
+  }
+  if (inherits(yfdPar, "numeric")) {
     N <- length(yfdPar)
-}
+  }
 
 #  get number of independent variables p
 
-p <- length(xfdlist)
+  p <- length(xfdlist)
 
 #  check BETALIST
 
-if (inherits(betalist, "fd")) betalist <- list(betalist)
+  if (inherits(betalist, "fd")) betalist <- list(betalist)
 
-if (!inherits(betalist, "list")) stop(
-	"Argument BETALIST is not a list object.")
+  if (!inherits(betalist, "list"))
+    stop("Argument BETALIST is not a list object.")
 
-if (length(betalist) != p)  {
-	cat(paste("\nNumber of regression coefficients does not match\n",
-		       "number of independent variables."))
-	stop("")
-}
+  if (length(betalist) != p)  {
+    cat(paste("\nNumber of regression coefficients does not match\n",
+              "number of independent variables."))
+    stop("")
+  }
 
-berror <- FALSE
-for (j in 1:p) {
-	betafdParj <- betalist[[j]]
-	if (inherits(betafdParj, "fd") || inherits(betafdParj, "basisfd")) {
-		betafdParj    <- fdPar(betafdParj)
-		betalist[[j]] <- betafdParj
-	}
-	if (!inherits(betafdParj, "fdPar")) {
-		print(paste("BETALIST[[",j,"]] is not a FDPAR object."))
-		berror <- TRUE
-	}
-}
+  berror <- FALSE
+  for (j in 1:p) {
+    betafdParj <- betalist[[j]]
+    if (inherits(betafdParj, "fd") || inherits(betafdParj, "basisfd")) {
+      betafdParj    <- fdPar(betafdParj)
+      betalist[[j]] <- betafdParj
+    }
+    if (!inherits(betafdParj, "fdPar")) {
+      print(paste("BETALIST[[",j,"]] is not a FDPAR object."))
+      berror <- TRUE
+    }
+  }
 
-if (berror) stop("")
+  if (berror) stop("")
 
-betafd1    <- betalist[[1]]$fd
-betabasis1 <- betafd1$basis
-rangeval   <- betabasis1$rangeval
+  betafd1    <- betalist[[1]]$fd
+  betabasis1 <- betafd1$basis
+  rangeval   <- betabasis1$rangeval
 
 #  check XFDLIST
 
-if (inherits(xfdlist, "fd") || inherits(xfdlist, "numeric"))
+  if (inherits(xfdlist, "fd") || inherits(xfdlist, "numeric"))
     xfdlist <- list(xfdlist)
 
-if (!inherits(xfdlist, "list")) stop(
-	"Argument XFDLIST is not a list object.")
+  if (!inherits(xfdlist, "list"))
+    stop("Argument XFDLIST is not a list object.")
 
 #  check each xfdlist member.  If the object is a vector of length N,
 #  it is converted to a functional data object with a
 #  constant basis
 
-onebasis <- create.constant.basis(rangeval)
-onesfd   <- fd(1,onebasis)
+  onebasis <- create.constant.basis(rangeval)
+  onesfd   <- fd(1,onebasis)
 
-xerror <- FALSE
-for (j in 1:p) {
+  xerror <- FALSE
+  for (j in 1:p) {
     xfdj <- xfdlist[[j]]
     if (inherits(xfdj, "fd")) {
         xcoef <- xfdj$coefs
@@ -152,33 +152,34 @@ for (j in 1:p) {
       print(paste("XFDLIST[[",j,"]] is neither an FD object nor numeric."))
       xerror = TRUE
     }
-}
+  }
 
-if (xerror) stop("")
+  if (xerror) stop("")
 
 #  check weights
 
-{
+  {
     if(is.null(wt)){
-        wt <- 1:N
-        wtconstant <- TRUE
+      wt <- 1:N
+      wtconstant <- TRUE
     }
     else {
-        if (length(wt) != N) stop("Number of weights not equal to N.")
-        if (any(wt < 0))     stop("Negative weights found.")
-        wtconstant <- (var(wt) == 0)
+      if (length(wt) != N) stop("Number of weights not equal to N.")
+      if (any(wt < 0))     stop("Negative weights found.")
+      wtconstant <- (var(wt) == 0)
     }
-}
+  }
 
-#  --------------------------------------------------------------------------
-#  branch depending on whether the dependent variable is functional or scalar
-#  --------------------------------------------------------------------------
+#  --------------------------------------------------------------
+#  branch depending on whether the dependent variable
+#  is functional or scalar
+#  --------------------------------------------------------------
 
-if (inherits(yfdPar, "fdPar")) {
+  if (inherits(yfdPar, "fdPar")) {
 
-    #  ----------------------------------------------------------------
-    #           YFDPAR is a functional parameter object
-    #  ----------------------------------------------------------------
+#  ----------------------------------------------------------------
+#           YFDPAR is a functional parameter object
+#  ----------------------------------------------------------------
 
     #  extract dependent variable information
 
@@ -192,7 +193,8 @@ if (inherits(yfdPar, "fdPar")) {
     rangeval  <- ybasisobj$rangeval
     ynbasis   <- ybasisobj$nbasis
 
-    if (length(ycoefdim) > 2) stop("YFDOBJ from YFDPAR is not univariate.")
+    if (length(ycoefdim) > 2)
+      stop("YFDOBJ from YFDPAR is not univariate.")
 
     #  -----------------------------------------------------------
     #          set up the linear equations for the solution
@@ -202,11 +204,11 @@ if (inherits(yfdPar, "fdPar")) {
 
     ncoef <- 0
     for (j in 1:p) {
-        betafdParj <- betalist[[j]]
-        if (betafdParj$estimate) {
-        	ncoefj     <- betafdParj$fd$basis$nbasis
-        	ncoef      <- ncoef + ncoefj
-        }
+      betafdParj <- betalist[[j]]
+      if (betafdParj$estimate) {
+        ncoefj     <- betafdParj$fd$basis$nbasis
+        ncoef      <- ncoef + ncoefj
+      }
     }
 
     Cmat <- matrix(0,ncoef,ncoef)
@@ -216,64 +218,64 @@ if (inherits(yfdPar, "fdPar")) {
 
     mj2 <- 0
     for (j in 1:p) {
-        betafdParj <- betalist[[j]]
-        if (betafdParj$estimate) {
-            betafdj    <- betafdParj$fd
-            betabasisj <- betafdj$basis
-            ncoefj     <- betabasisj$nbasis
-            #  row indices of CMAT and DMAT to fill
-            mj1    <- mj2 + 1
-            mj2    <- mj2 + ncoefj
-            indexj <- mj1:mj2
-            #  compute right side of equation DMAT
-            xfdj <- xfdlist[[j]]
-            if (wtconstant) {
-                xyfdj <- xfdj*yfdobj
-            } else {
-                xyfdj <- (xfdj*wt)*yfdobj
-            }
-            wtfdj <- sum(xyfdj)
-            Dmatj <- inprod(betabasisj,onesfd,0,0,rangeval,wtfdj)
-            Dmat[indexj] <- Dmatj
-            #  loop through columns of CMAT
-            mk2 <- 0
-            for (k in 1:j) {
-                betafdPark <- betalist[[k]]
-                if (betafdPark$estimate) {
-                    betafdk    <- betafdPark$fd
-                    betabasisk <- betafdk$basis
-                    ncoefk     <- betabasisk$nbasis
-                    #  column indices of CMAT to fill
-                    mk1 <- mk2 + 1
-                    mk2 <- mk2 + ncoefk
-                    indexk <- mk1:mk2
-                    #  set up two weight functions
-                    xfdk <- xfdlist[[k]]
-                    if (wtconstant) {
-                        xxfdjk <- xfdj*xfdk
-                    } else {
-                        xxfdjk <- (xfdj*wt)*xfdk
-                    }
-                    wtfdjk <- sum(xxfdjk)
-                    Cmatjk <- inprod(betabasisj, betabasisk, 0, 0, rangeval,
-                                     wtfdjk)
-                    Cmat[indexj,indexk] <- Cmatjk
-                    Cmat[indexk,indexj] <- t(Cmatjk)
-                }
-            }
-            #  attach penalty term to diagonal block
-            lambda <- betafdParj$lambda
-            if (lambda > 0) {
-                Lfdj  <- betafdParj$Lfd
-                Rmatj <- eval.penalty(betafdParj$fd$basis, Lfdj)
-                Cmat[indexj,indexj] <- Cmat[indexj,indexj] + lambda*Rmatj
-            }
+      betafdParj <- betalist[[j]]
+      if (betafdParj$estimate) {
+        betafdj    <- betafdParj$fd
+        betabasisj <- betafdj$basis
+        ncoefj     <- betabasisj$nbasis
+#  row indices of CMAT and DMAT to fill
+        mj1    <- mj2 + 1
+        mj2    <- mj2 + ncoefj
+        indexj <- mj1:mj2
+#  compute right side of equation DMAT
+        xfdj <- xfdlist[[j]]
+        if (wtconstant) {
+          xyfdj <- xfdj*yfdobj
+        } else {
+          xyfdj <- (xfdj*wt)*yfdobj
         }
+        wtfdj <- sum(xyfdj)
+        Dmatj <- inprod(betabasisj,onesfd,0,0,rangeval,wtfdj)
+        Dmat[indexj] <- Dmatj
+#  loop through columns of CMAT
+        mk2 <- 0
+        for (k in 1:j) {
+          betafdPark <- betalist[[k]]
+          if (betafdPark$estimate) {
+            betafdk    <- betafdPark$fd
+            betabasisk <- betafdk$basis
+            ncoefk     <- betabasisk$nbasis
+#  column indices of CMAT to fill
+            mk1 <- mk2 + 1
+            mk2 <- mk2 + ncoefk
+            indexk <- mk1:mk2
+#  set up two weight functions
+            xfdk <- xfdlist[[k]]
+            if (wtconstant) {
+              xxfdjk <- xfdj*xfdk
+            } else {
+              xxfdjk <- (xfdj*wt)*xfdk
+            }
+            wtfdjk <- sum(xxfdjk)
+            Cmatjk <- inprod(betabasisj, betabasisk, 0, 0, rangeval,
+                             wtfdjk)
+            Cmat[indexj,indexk] <- Cmatjk
+            Cmat[indexk,indexj] <- t(Cmatjk)
+          }
+        }
+#  attach penalty term to diagonal block
+        lambda <- betafdParj$lambda
+        if (lambda > 0) {
+          Lfdj  <- betafdParj$Lfd
+          Rmatj <- eval.penalty(betafdParj$fd$basis, Lfdj)
+          Cmat[indexj,indexj] <- Cmat[indexj,indexj] + lambda*Rmatj
+        }
+      }
     }
 
     Cmat    <- (Cmat+t(Cmat))/2
 
-    #  check Cmat for singularity
+#  check Cmat for singularity
 
     eigchk(Cmat)
 
@@ -290,18 +292,18 @@ if (inherits(yfdPar, "fdPar")) {
     betaestlist <- betalist
     mj2 <- 0
     for (j in 1:p) {
-        betafdParj <- betalist[[j]]
-        if (betafdParj$estimate) {
-            betafdj    <- betafdParj$fd
-            ncoefj     <- betafdj$basis$nbasis
-            mj1    <- mj2 + 1
-            mj2    <- mj2 + ncoefj
-            indexj <- mj1:mj2
-            coefj  <- betacoef[indexj]
-            betafdj$coefs <- as.matrix(coefj)
-            betafdParj$fd <- betafdj
-        }
-        betaestlist[[j]] <- betafdParj
+      betafdParj <- betalist[[j]]
+      if (betafdParj$estimate) {
+        betafdj    <- betafdParj$fd
+        ncoefj     <- betafdj$basis$nbasis
+        mj1    <- mj2 + 1
+        mj2    <- mj2 + ncoefj
+        indexj <- mj1:mj2
+        coefj  <- betacoef[indexj]
+        betafdj$coefs <- as.matrix(coefj)
+        betafdParj$fd <- betafdj
+      }
+      betaestlist[[j]] <- betafdParj
     }
 
     #  set up fd objects for predicted values in YHATFDOBJ
@@ -310,7 +312,7 @@ if (inherits(yfdPar, "fdPar")) {
     tfine     <- seq(rangeval[1], rangeval[2], len=nfine)
     yhatmat <- matrix(0,nfine,N)
     for (j in 1:p) {
-	    xfdj       <- xfdlist[[j]]
+      xfdj       <- xfdlist[[j]]
       xmatj      <- eval.fd(tfine, xfdj)
       betafdParj <- betaestlist[[j]]
       betafdj    <- betafdParj$fd
@@ -328,70 +330,70 @@ if (inherits(yfdPar, "fdPar")) {
 
         #  check dimensions of y2cMap and SigmaE
 
-        y2cdim <- dim(y2cMap)
-        if (y2cdim[1] != ynbasis ||
-            y2cdim[2] != dim(SigmaE)[1])  stop(
-                         "Dimensions of Y2CMAP not correct.")
+      y2cdim <- dim(y2cMap)
+      if (y2cdim[1] != ynbasis ||
+          y2cdim[2] != dim(SigmaE)[1])
+        stop("Dimensions of Y2CMAP not correct.")
 
-        ybasismat <- eval.basis(tfine, ybasisobj)
+      ybasismat <- eval.basis(tfine, ybasisobj)
 
-        deltat    <- tfine[2] - tfine[1]
+      deltat    <- tfine[2] - tfine[1]
 
         #  compute BASISPRODMAT
 
-        basisprodmat <- matrix(0,ncoef,ynbasis*N)
+      basisprodmat <- matrix(0,ncoef,ynbasis*N)
 
-        mj2 <- 0
-        for (j in 1:p) {
-            betafdParj <- betalist[[j]]
-            betabasisj <- betafdParj$fd$basis
-            ncoefj     <- betabasisj$nbasis
-            bbasismatj <- eval.basis(tfine, betabasisj)
-            xfdj       <- xfdlist[[j]]
-            tempj      <- eval.fd(tfine, xfdj)
+      mj2 <- 0
+      for (j in 1:p) {
+        betafdParj <- betalist[[j]]
+        betabasisj <- betafdParj$fd$basis
+        ncoefj     <- betabasisj$nbasis
+        bbasismatj <- eval.basis(tfine, betabasisj)
+        xfdj       <- xfdlist[[j]]
+        tempj      <- eval.fd(tfine, xfdj)
             #  row indices of BASISPRODMAT to fill
-            mj1    <- mj2 + 1
-            mj2    <- mj2 + ncoefj
-            indexj <- mj1:mj2
+        mj1    <- mj2 + 1
+        mj2    <- mj2 + ncoefj
+        indexj <- mj1:mj2
             #  inner products of beta basis and response basis
             #    weighted by covariate basis functions
-            mk2 <- 0
-            for (k in 1:ynbasis) {
+        mk2 <- 0
+        for (k in 1:ynbasis) {
                 #  row indices of BASISPRODMAT to fill
-                mk1    <- mk2 + 1
-                mk2    <- mk2 + N
-                indexk <- mk1:mk2
-                tempk  <- bbasismatj*ybasismat[,k]
-                basisprodmat[indexj,indexk] <-
-                                         deltat*crossprod(tempk,tempj)
-            }
+          mk1    <- mk2 + 1
+          mk2    <- mk2 + N
+          indexk <- mk1:mk2
+          tempk  <- bbasismatj*ybasismat[,k]
+          basisprodmat[indexj,indexk] <-
+            deltat*crossprod(tempk,tempj)
         }
+      }
 
         #  compute variances of regression coefficient function values
 
-        c2bMap    <- Cmatinv %*% basisprodmat
-        VarCoef   <- y2cMap %*% SigmaE %*% t(y2cMap)
-        CVariance <- kronecker(VarCoef,diag(rep(1,N)))
-        bvar      <- c2bMap %*% CVariance %*% t(c2bMap)
-        betastderrlist <- vector("list",p)
-        mj2 <- 0
-        for (j in 1:p) {
-            betafdParj <- betalist[[j]]
-            betabasisj <- betafdParj$fd$basis
-            ncoefj     <- betabasisj$nbasis
-            mj1 	     <- mj2 + 1
-            mj2 	     <- mj2 + ncoefj
-            indexj 	   <- mj1:mj2
-            bbasismat  <- eval.basis(tfine, betabasisj)
-            bvarj      <- bvar[indexj,indexj]
-            bstderrj   <- sqrt(diag(bbasismat %*% bvarj %*% t(bbasismat)))
-            bstderrfdj <- smooth.basis(tfine, bstderrj, betabasisj)$fd
-            betastderrlist[[j]] <- bstderrfdj
-        }
+      c2bMap    <- Cmatinv %*% basisprodmat
+      VarCoef   <- y2cMap %*% SigmaE %*% t(y2cMap)
+      CVariance <- kronecker(VarCoef,diag(rep(1,N)))
+      bvar      <- c2bMap %*% CVariance %*% t(c2bMap)
+      betastderrlist <- vector("list",p)
+      mj2 <- 0
+      for (j in 1:p) {
+        betafdParj <- betalist[[j]]
+        betabasisj <- betafdParj$fd$basis
+        ncoefj     <- betabasisj$nbasis
+        mj1 	     <- mj2 + 1
+        mj2 	     <- mj2 + ncoefj
+        indexj 	   <- mj1:mj2
+        bbasismat  <- eval.basis(tfine, betabasisj)
+        bvarj      <- bvar[indexj,indexj]
+        bstderrj   <- sqrt(diag(bbasismat %*% bvarj %*% t(bbasismat)))
+        bstderrfdj <- smooth.basis(tfine, bstderrj, betabasisj)$fd
+        betastderrlist[[j]] <- bstderrfdj
+      }
     } else{
-        betastderrlist = NULL
-        bvar           = NULL
-        c2bMap         = NULL
+      betastderrlist = NULL
+      bvar           = NULL
+      c2bMap         = NULL
     }
 
     #  -------------------------------------------------------------------

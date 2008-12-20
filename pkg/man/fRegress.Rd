@@ -1,5 +1,6 @@
 \name{fRegress}
 \alias{fRegress}
+\alias{fRegress.fd}
 \alias{fRegress.fdPar}
 \alias{fRegress.numeric}
 \title{
@@ -15,16 +16,16 @@
   at a fixed time, or in terms of "now" behavior.
 }
 \usage{
-fRegress(yfdPar, xfdlist, betalist, wt=NULL,
-                     y2cMap=NULL, SigmaE=NULL)
-fRegress.fdPar(yfdPar, xfdlist, betalist, wt=NULL,
+fRegress(y, ...)
+\method{fRegress}{fd}(y, xfdlist, betalist, wt=NULL,
                      y2cMap=NULL, SigmaE=NULL, ...)
-fRegress.numeric(yfdPar, xfdlist, betalist, wt=NULL,
+\method{fRegress}{fdPar}(y, xfdlist, betalist, wt=NULL,
                      y2cMap=NULL, SigmaE=NULL, ...)
-
+\method{fRegress}{numeric}(y, xfdlist, betalist, wt=NULL,
+                     y2cMap=NULL, SigmaE=NULL, ...)
 }
 \arguments{
-  \item{yfdPar}{
+  \item{y}{
     the dependent variable object.  It may be an object of three
     possible classes:
 
@@ -102,7 +103,7 @@ fRegress.numeric(yfdPar, xfdlist, betalist, wt=NULL,
   \code{fRegress.formula} returns a list of class \code{fRegress} with
   the following components:
 
-  \item{yfdPar}{
+  \item{y}{
     the first argument in the call to \code{fRegress} (coerced to
     \code{class} \code{fdPar})
   }
@@ -136,10 +137,10 @@ fRegress.numeric(yfdPar, xfdlist, betalist, wt=NULL,
   }
   \item{df}{
     equivalent degrees of freedom for the fit;  only present if
-    \code{class(yfdPar)} is \code{numeric}.
+    \code{class(y)} is \code{numeric}.
   }
 
-  If \code{class(yfdPar)} is either \code{fd} or \code{fdPar}, the
+  If \code{class(y)} is either \code{fd} or \code{fdPar}, the
   \code{fRegress} object returned also includes 5 other components:
 
   \item{y2cMap}{ an input \code{y2cMap} }

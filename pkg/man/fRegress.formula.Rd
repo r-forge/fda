@@ -14,7 +14,7 @@
   at a fixed time, or in terms of "now" behavior.
 }
 \usage{
-fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
+\method{fRegress}{formula}(y, data=NULL, betalist=NULL, wts=NULL,
                  y2cMap=NULL, SigmaE=NULL,
                  method=c('fRegress', 'model'), sep='.', ...)
 % later 'fRegress' will be made generic
@@ -23,7 +23,7 @@ fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
 %                           weights=NULL, ...)
 }
 \arguments{
-  \item{formula}{
+  \item{y}{
     an object of class \code{formula} (or one that can be coerced to
     that class): a symbolic description of the model to be fitted.
 
@@ -34,8 +34,8 @@ fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
     objects named.
   }
   \item{data}{
-    an optional list containing names of objects identified in
-    \code{formula}.
+    an optional list containing names of objects identified in the
+    \code{formula} \code{y}.
   }
   \item{betalist}{
     Either \code{NULL}, a positive integer, functional data object
@@ -45,7 +45,7 @@ fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
 
     \itemize{
       \item{NULL}{
-	Create \code{betalist} to match the \code{formula}.  In
+	Create \code{betalist} to match the \code{formula} \code{y}.  In
 	particular, \code{betalist} will be a list with one component
 	for each object on the right hand side.  For \code{fd} objects,
 	the corresponding \code{betalist} component will have the same
@@ -66,10 +66,10 @@ fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
       }
       \item{list}{
 	Must have one component to match each independent variable in
-	\code{formula}.  For a categorical independent variable with
-	\code{k} levels, \code{betalist} must have \code{k-1}
-	components, one for each \code{contrast} (selected according to
-	\code{options('contrasts')}).
+	the \code{formula} \code{y}.  For a categorical independent
+	variable with \code{k} levels, \code{betalist} must have
+	\code{k-1} components, one for each \code{contrast} (selected
+	according to \code{options('contrasts')}).
       }
     }
   }
@@ -92,31 +92,37 @@ fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
     for functional regression estimation without running it.
   }
   \item{sep}{
-    separator for creating names for single variables in \code{formula}
-    that become multiple variables for \code{fRegress}.  This happens
-    with multidimensional \code{fd} objects as well as with categorical
-    variables.
+    separator for creating names for multiple variables for
+    \code{fRegress.fdPar} or \code{fRegress.numeric} created from single
+    variables on the right hand side of the \code{formula} \code{y}.
+    This happens with multidimensional \code{fd} objects as well as with
+    categorical variables.
   }
   \item{\dots}{
     optional arguments currently not used.
   }
 }
 \details{
-  1.  Parse \code{formula}.
+  1.  Parse the \code{formula} \code{y}.
 
   2.  Let \code{y} = the object on the left hand side of the formula.
 
-  3.  Pass control to \code{fRegress.numeric} if \code{y} is
-  \code{numeric} or \code{fRegress.fd} if \code{y} is \code{y} is a
-  functional data object (class \code{fd}).  If \code{y} is anything
-  else, give an error.
+  3.  Create \code{xfdlist0} with one component for each variable on the
+  right hand side of the formula.
+
+  4.  Create \code{fdlist} from \code{xfdlist0}.
+
+  5.  Create \code{betalist} to match \code{xfdlist}.
+
+  6.  If \code{method} = \code{model}, return.  Else, pass control to
+  \code{fRegress.fdPar} or \code{fRegress.numeric}.
 }
 \value{
   For the default \code{method} = \code{fRegress},
   \code{fRegress.formula} returns a list of class \code{fRegress} with
   the following components:
 
-  \item{yfdPar}{
+  \item{y}{
     the left hand side of the \code{formula}.
   }
   \item{xfdlist}{
@@ -147,10 +153,10 @@ fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
   }
   \item{df}{
     equivalent degrees of freedom for the fit;  only present if
-    \code{class(yfdPar)} is \code{numeric}.
+    \code{class(y)} is \code{numeric}.
   }
 
-  If \code{class(yfdPar)} is either \code{fd} or \code{fdPar}, the
+  If \code{class(y)} is either \code{fd} or \code{fdPar}, the
   \code{fRegress} object returned also includes 5 other components:
 
   \item{y2cMap}{ an input \code{y2cMap} }
@@ -176,7 +182,7 @@ fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
 %  }
 
   For \code{method} = \code{model}, \code{fRegress.formula} returns a
-  list with components \code{yfdPar}, \code{xfdlist}, \code{betalist},
+  list with components \code{y}, \code{xfdlist}, \code{betalist},
   and \code{wt}, which can be subsequently be passed as arguments for
   calling either \code{fRegress.fdPar} or \code{fRegress.numeric}.  This
   list also includes other components for diagnostic purposes:
@@ -209,6 +215,7 @@ fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
   \code{\link{linmod}}
 }
 \examples{
+
 daybasis65 <- create.fourier.basis(rangeval=c(0, 365), nbasis=65,
                   axes=list('axesIntervals'))
 %harmaccelLfd365 <- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
