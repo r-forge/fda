@@ -1,5 +1,7 @@
 \name{fRegress}
 \alias{fRegress}
+\alias{fRegress.fdPar}
+\alias{fRegress.numeric}
 \title{
   A Functional Regression Analysis of the Concurrent Type
 }
@@ -15,6 +17,11 @@
 \usage{
 fRegress(yfdPar, xfdlist, betalist, wt=NULL,
                      y2cMap=NULL, SigmaE=NULL)
+fRegress.fdPar(yfdPar, xfdlist, betalist, wt=NULL,
+                     y2cMap=NULL, SigmaE=NULL, ...)
+fRegress.numeric(yfdPar, xfdlist, betalist, wt=NULL,
+                     y2cMap=NULL, SigmaE=NULL, ...)
+
 }
 \arguments{
   \item{yfdPar}{
@@ -78,6 +85,7 @@ fRegress(yfdPar, xfdlist, betalist, wt=NULL,
     Estimate of the covariances among the residuals.  This can only be
     estimated after a preliminary analysis with \code{fRegress}.
   }
+  \item{\dots}{ optional arguments, not currently used }
 }
 \details{
   In the computation of regression function estimates, all independent
@@ -90,7 +98,9 @@ fRegress(yfdPar, xfdlist, betalist, wt=NULL,
   use this function.  Instead, use either \code{lm} or \code{lsfit}.
 }
 \value{
-  a list of class \code{fRegress} with the following components:
+  For the default \code{method} = \code{fRegress},
+  \code{fRegress.formula} returns a list of class \code{fRegress} with
+  the following components:
 
   \item{yfdPar}{
     the first argument in the call to \code{fRegress} (coerced to
@@ -129,8 +139,8 @@ fRegress(yfdPar, xfdlist, betalist, wt=NULL,
     \code{class(yfdPar)} is \code{numeric}.
   }
 
-  The following 5 arguments are only present if \code{class(yfdPar)} is
-  either \code{fd} or \code{fdPar}:
+  If \code{class(yfdPar)} is either \code{fd} or \code{fdPar}, the
+  \code{fRegress} object returned also includes 5 other components:
 
   \item{y2cMap}{ an input \code{y2cMap} }
   \item{SigmaE}{ an input \code{SigmaE} }
