@@ -1,4 +1,15 @@
-fRegress.fdPar <- function(yfdPar, xfdlist, betalist, wt=NULL,
+fRegress <- function(y, ...){
+  UseMethod('fRegress')
+}
+
+fRegress.fd <- function(y, xfdlist, betalist, wt=NULL,
+                        y2cMap=NULL, SigmaE=NULL, ...){
+  yfdPar <- fdPar(y)
+  fRegress.fdPar(yfdPar, xfdlist, betalist, wt=wt,
+                 y2cMap=y2cMap, SigmaE=SigmaE, ...)
+}
+
+fRegress.fdPar <- function(y, xfdlist, betalist, wt=NULL,
                         y2cMap=NULL, SigmaE=NULL, ...)
 {
 
@@ -53,7 +64,7 @@ fRegress.fdPar <- function(yfdPar, xfdlist, betalist, wt=NULL,
 #  Last modified 11 December 2008 by Jim
 
 #  check YFDPAR and compute sample size N
-
+  yfdPar <- y
   if (inherits(yfdPar, "fd")) yfdPar <- fdPar(yfdPar)
 
   if (!(inherits(yfdPar, "fdPar") || inherits(yfdPar, "numeric")))

@@ -1,10 +1,11 @@
-fRegress.formula <- function(formula, data=NULL, betalist=NULL,
+fRegress.formula <- function(y, data=NULL, betalist=NULL,
                              wts=NULL, y2cMap=NULL, SigmaE=NULL,
                              method=c('fRegress', 'model'),
                              sep='.', ...){
 ##
-## 1.  get y
+## 1.  get y = left had side of the formula
 ##
+  formula <- y
   yName <- formula[[2]]
   yNm <- as.character(yName)
   if((class(yName) != 'name') || (length(yNm) > 1))
@@ -299,7 +300,7 @@ fRegress.formula <- function(formula, data=NULL, betalist=NULL,
   }
   xiEnd <- cumsum(nVars)
   xiStart <- c(1, xiEnd[-1])
-  fRegressList <- list(yfdPar=y, xfdlist=xfdList, betalist=betalist,
+  fRegressList <- list(y=y, xfdlist=xfdList, betalist=betalist,
                        wts=wts, xfdlist0=xfdList0, type=type,
                        nbasis=nbasis, xVars=nVars)
 ##

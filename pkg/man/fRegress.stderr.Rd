@@ -15,10 +15,10 @@
   and not sampling covariances.
 }
 \usage{
-fRegress.stderr(fRegressList, y2cMap, SigmaE)
+fRegress.stderr(y, y2cMap, SigmaE, ...)
 }
 \arguments{
-  \item{fRegressList}{
+  \item{y}{
     the named list of length six that is returned from a call to
     function \code{fRegress}.
   }
@@ -37,6 +37,11 @@ fRegress.stderr(fRegressList, y2cMap, SigmaE)
     length of the dependent variable object.  It contains an estimate of
     the variance-covariance matrix or function for the residuals.
   }
+  \item{\dots}{
+    optional arguments not used by \code{fRegress.stderr} but needed for
+    superficial compatibability with \code{fRegress} methods.
+  }
+
 }
 \value{
 a named list of length 3 containing:
