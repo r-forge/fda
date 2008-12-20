@@ -1,6 +1,7 @@
 fRegress.formula <- function(formula, data=NULL, betalist=NULL,
                              wts=NULL, y2cMap=NULL, SigmaE=NULL,
-                             ...){
+                             method=c('fRegress', 'model'),
+                             sep='.', ...){
 ##
 ## 1.  get y
 ##
@@ -24,8 +25,8 @@ fRegress.formula <- function(formula, data=NULL, betalist=NULL,
       if(is.null(ydim) || (length(ydim)<2)) {
         y$fd$coefs <- as.matrix(y$fd$coefs)
         ydim <- dim(y$fd$coefs)
-        ny <- ydim[2]
       }
+      ny <- ydim[2]
     }
     else{
       if(inherits(y, 'numeric')){
@@ -48,7 +49,7 @@ fRegress.formula <- function(formula, data=NULL, betalist=NULL,
   Terms <- terms(formula)
   termLbls <- attr(Terms, 'term.labels')
   oops <- which(!(termLbls %in% xNms))
-  if(length(oops)>1)
+  if(length(oops)>0)
     stop('formula contains terms that fRegress can not handle; ',
          ' the first one = ', termLbls[oops[1]])
 #
@@ -62,17 +63,17 @@ fRegress.formula <- function(formula, data=NULL, betalist=NULL,
     if(!is.null(nb))nbasis[1] <- nb
   }
 ##
-## 3.  Create xfdList
+## 3.  Inventory the right hand side
 ##
-  k <- length(xNms)
-  xfdList <- vector('list', k)
-  names(xfdList) <- xNms
-  betalist <- xfdList
-  ki <- rep(NA, k)
-  names(ki) <- xNms
+  k0 <- length(xNms)
+  xfdList0 <- vector('list', k0)
+  names(xfdList0) <- xNms
+  xNames <- xfdList0
+  nVars <- rep(NA, k0)
+  names(nVars) <- xNms
   oops <- FALSE
-  for(i in 1:k){
-    xNm <- xNms
+  for(i in 1:k0){
+    xNm <- xNms[i]
     xi <- {
       if(xNm %in% dataNames)data[[xNm]]
       else get(xNm)
@@ -80,30 +81,91 @@ fRegress.formula <- function(formula, data=NULL, betalist=NULL,
     {
       if(inherits(xi, 'fd')){
         xdim <- dim(xi$coefs)
-        if(is.null(xdim) || (length(xdim)<2)){
-          xi$coefs <- as.matrix(xi$coefs)
-          xdim <- dim(xi$coefs)
-          nxi <- xdim[2]
+        {
+          if(is.null(xdim) || (length(xdim)<2)){
+            xi$coefs <- as.matrix(xi$coefs)
+            xdim <- dim(xi$coefs)
+            nxi <- xdim[2]
+            nVars[i] <- 1
+            xNames[[i]] <- xNm
+          }
+          else {
+            if(length(xdim)<3){
+              nVars[i] <- 1
+              xNames[[i]] <- xNm
+            }
+            else {
+              if(length(xdim)<4){
+                nVars[i] <- xdim[3]
+                xNmsi <- dimnames(xi$coefs)[[3]]
+                {
+                  if(is.null(xNmsi))
+                    xNames[[i]] <- paste(xNm, 1:xdim[3], sep=sep)
+                  else
+                    xNames[[i]] <- paste(xNm, xNmsi, sep=sep)
+                }
+              }
+              else
+                stop(xNm, ' has too many levels:  dim(x$coefs) = ',
+                     paste(xdim, collapse=', '))
+            }
+          }
         }
-        ki[i] <- prod(xdim[-1])
+        xfdList0[[i]] <- xi
         type[i+1] <- xi$basis$type
         nb <- xi$basis$nbasis
         if(!is.null(nb))nbasis[i+1] <- nb
       }
       else {
-        if(inherits(xi, 'numeric')) {
+        if(is.numeric(xi)) {
           xdim <- dim(xi)
           {
-            if(is.null(xdim))
+            if(is.null(xdim) || (length(xdim)<2)){
               nxi <- length(xi)
-            else
+              nVars[i] <- 1
+              xNames[[i]] <- xNm
+            }
+            else {
               nxi <- xdim[1]
+              {
+                if(length(xdim)<3){
+                  nVars[i] <- xdim[2]
+                  xNmsi <- dimnames(xi)[[2]]
+                  {
+                    if(is.null(xNmsi))
+                      xNames[[i]] <- paste(xNm, 1:xdim[2], sep=sep)
+                    else
+                      xNames[[i]] <- paste(xNm, xNmsi, sep=sep)
+                  }
+                }
+                else
+                  stop(xNm, 'has too many levels:  dim(x) = ',
+                       paste(xdim, collapse=', '))
+              }
+            }
           }
-          ki[i] <- prod(xdim)
         }
         else {
-          stop('ERROR:  variable ', xNm, ' must be of class ',
-              'fd or numeric;  is ', class(xi))
+          if(inherits(xi, 'character'))
+            xi <- factor(xi)
+          {
+            if(inherits(xi, 'factor')) {
+              f.i <- formula(paste('~', xNm))
+              Xi.df <- data.frame(xi)
+              names(Xi.df) <- xNm
+              Xi <- (model.matrix(f.i, Xi.df)[, -1])
+              nxi <- dim(Xi)[1]
+              xiNms <- dimnames(Xi)[[2]]
+              nVars[i] <- length(xiNms)
+              xNmLen <- nchar(xNm)
+              xiLvls <- substring(xiNms, xNmLen+1)
+              xNames[[i]] <- paste(xNm, xiLvls, sep=sep)
+              xfdList0[[i]] <- Xi
+            }
+            else
+              stop('ERROR:  variable ', xNm, ' must be of class ',
+                   'fd, numeric, character or factor;  is ', class(xi))
+          }
         }
       }
     }
@@ -116,38 +178,116 @@ fRegress.formula <- function(formula, data=NULL, betalist=NULL,
   }
   if(oops)stop('illegal variable on the right hand side.')
 ##
-## 4.  Create betalist
+## 4.  Create xfdList
 ##
-  betatype <- type[1]
-  if(is.na(betatype)){
-    typeTbl <- table(type[-1])
-    nType <- which(typeTbl==max(typeTbl))
-    betatype <- names(typeTbl)[nType]
-  }
-  btype <- which(type==betatype)
-  nb <- which((type==betatype) & (nbasis==min(nbasis)))
-  {
-    if(length(nb)>0) {
-      beta1 <- {
-        if(nb[1]==1) y
-        else xfdList[[nb[1]-1]]
+  xNames. <- unlist(xNames)
+  k <- sum(nVars)
+  xfdList <- vector('list', k)
+  names(xfdList) <- xNames.
+  i1 <- 0
+  for(ix in 1:k0){
+    i0 <- i1+1
+    xNm <- xNms[ix]
+    xi <- xfdList0[[ix]]
+    {
+      if(inherits(xi, 'fd')){
+        if(nVars[ix]<2){
+          i1 <- i0
+          xList[[i0]] <- xi
+        }
+        else {
+          i1 <- (i1+nVars[ix])
+          for(i in i0:i1){
+            xii <- xi
+            xii$coefs <- xi$coefs[,,i, drop=FALSE]
+            xList[[i]] <- xii
+          }
+        }
       }
+      else {
+        if(is.numeric(xi)) {
+          if(nVars[ix]<2){
+            i1 <- i0
+            xList[[i0]] <- xi
+          }
+          else{
+            i1 <- (i1+nVars[ix])
+            for(i in i0:i1)
+              xfdList[[i]] <- xi[, i]
+          }
+        }
+      }
+    }
+  }
+##
+## 5.  betalist
+##
+  {
+    if(inherits(betalist, 'list')){
+      if(length(betalist) != k)
+        stop('length(betalist) = ', length(betalist),
+             ';  must be ', k, ' to match length(xfdlist).')
+      betaclass <- sapply(betalist, class)
+      oops <- which(betaclass != 'fd')
+      if(length(oops)>0)
+        stop('If betalist is a list, all components must have class ',
+             'fd;  component ', oops[1], ' has class ',
+             betaclass[oops[1]])
     }
     else {
-      beta1 <- {
-        if(btype[1]==1) y
-        else xfdList[[btype[1]-1]]
+      blist <- betalist
+      betalist <- vector('list', k)
+      names(betalist) <- xNames.
+      beta1 <- blist
+      if(!inherits(blist, 'fd')){
+        betatype <- type[1]
+        if(is.na(betatype)){
+          typeTbl <- table(type[-1])
+          nType <- which(typeTbl==max(typeTbl))
+          betatype <- names(typeTbl)[nType]
+        }
+        btype <- which(type==betatype)[1]
+        nb <- which((type==betatype) & (nbasis==min(nbasis)))
+        {
+          if(length(nb)>0) {
+            beta1 <- {
+              if(nb[1]==1) y
+              else xfdList[[nb[1]-1]]
+            }
+          }
+          else {
+            beta1 <- {
+              if(btype[1]==1) y
+              else xfdList[[btype[1]-1]]
+            }
+          }
+        }
+        if(is.numeric(blist)){
+          if(length(blist)>1)
+            stop('If betalist is numeric, it must have length',
+                 ' 1;  is ', length(blist))
+          if((blist %%1) > .Machine$double.eps)
+            stop('If betalist is numeric, it must be an integer;',
+                 '  blist = ', blist, ';  (blist %%1) = ',
+                 blist %% 1)
+          {
+            if(betatype %in% c('fourier', 'polynomial'))
+              beta1$nbasis <- blist
+            else
+              warning('betalist numeric ignored with betatype = ',
+                      betatype)
+          }
+        }
       }
+      for(i in 1:k) betalist[[i]] <- beta1
     }
   }
-#
-  for(i in 1:k) betalist[[i]] <- beta1
 ##
-## 5.  weight?
+## 6.  weight?
 ##
   {
     if(is.null(wts))
-      wts <- 1:ny
+      wts <- rep(1, ny)
     else {
       if(length(wts) != ny)
         stop('length(wts) must match y;  length(wts) = ',
@@ -157,35 +297,27 @@ fRegress.formula <- function(formula, data=NULL, betalist=NULL,
         stop('Negative weights found;  not allowed.')
     }
   }
-  xiEnd <- cumsum(ki)
+  xiEnd <- cumsum(nVars)
   xiStart <- c(1, xiEnd[-1])
   fRegressList <- list(yfdPar=y, xfdlist=xfdList, betalist=betalist,
-                       type=type, nbasis=nbasis, xVars=ki)
+                       wts=wts, xfdlist0=xfdList0, type=type,
+                       nbasis=nbasis, xVars=nVars)
 ##
-## 6.  class(y) == 'fd' or 'fdPar'
+## 7.  class(y) == 'fd' or 'fdPar'
 ##
   if(inherits(y, 'fd'))y <- fdPar(y)
 #
+  method <- match.arg(method)
+  if(method=='model')
+    return(fRegressList)
   {
-    if(inherits(y, 'fdPar')) {
-      return(fRegressList)
-
-
-
-
-
-    }
-    else{
+    if(inherits(y, 'fdPar'))
+      do.call('fRegress.fdPar', fRegressList)
+    else
 ##
-## 7.  class(y) == 'numeric'
+## 8.  class(y) == 'numeric'
 ##
-      return(fRegressList)
-
-
-
-
-
-    }
+      do.call('fRegress.numeric', fRegressList)
   }
 }
 

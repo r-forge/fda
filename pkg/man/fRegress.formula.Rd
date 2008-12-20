@@ -15,7 +15,8 @@
 }
 \usage{
 fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
-                 y2cMap=NULL, SigmaE=NULL, ...)
+                 y2cMap=NULL, SigmaE=NULL,
+                 method=c('fRegress', 'model'), sep='.', ...)
 % later 'fRegress' will be made generic
 % with this being the formula method
 %\method{fRegress}{formula}(formula, data=NULL, betalist=NULL,
@@ -39,7 +40,8 @@ fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
   \item{betalist}{
     Either \code{NULL}, a positive integer, functional data object
     (class \code{fd}) or a list of \code{fd} objects of length equal to
-    the number of independent variables in \code{formula}.
+    the number of independent variables created in the output
+    \code{xfdlist}.
 
     \itemize{
       \item{NULL}{
@@ -55,9 +57,9 @@ fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
       \item{integer}{
 	Create \code{betalist} as with \code{betalist = NULL}, but
 	adjust \code{nbasis} to this integer where feasible.  This is
-	trivial for \code{fourier} and \code{polynomial} bases.  Adjust
-	\code{bspline} bases to this number using evenly spaced knots.
-	Ignore this integer for all other bases types.
+	trivial for \code{fourier} and \code{polynomial} bases.  Not
+	currently available for \code{bspline}, \code{polygonal} or
+	\code{constant} bases.
       }
       \item{fd}{
 	Use to match all components on the right hand side
@@ -84,6 +86,17 @@ fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
     Estimate of the covariances among the residuals.  This can only be
     estimated after a preliminary analysis with \code{fRegress}.
   }
+  \item{method}{
+    a character string matching either \code{fRegress} for functional
+    regression estimation or \code{mode} to create the argument lists
+    for functional regression estimation without running it.
+  }
+  \item{sep}{
+    separator for creating names for single variables in \code{formula}
+    that become multiple variables for \code{fRegress}.  This happens
+    with multidimensional \code{fd} objects as well as with categorical
+    variables.
+  }
   \item{\dots}{
     optional arguments currently not used.
   }
@@ -99,7 +112,9 @@ fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
   else, give an error.
 }
 \value{
-  a list of class \code{fRegress} with the following components:
+  For the default \code{method} = \code{fRegress},
+  \code{fRegress.formula} returns a list of class \code{fRegress} with
+  the following components:
 
   \item{yfdPar}{
     the left hand side of the \code{formula}.
@@ -130,13 +145,61 @@ fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
     that estimates confidence regions for the regression coefficient
     function estimates.
   }
-  \item{OCV}{
-    the ordinary cross-validation score. This is returned only when \code{yfdPar}
-    is a vector.
+  \item{df}{
+    equivalent degrees of freedom for the fit;  only present if
+    \code{class(yfdPar)} is \code{numeric}.
   }
-  \item{GCV}{
-    the generalized cross-validation score.  This is returned only when \code{yfdPar}
-    is a vector.
+
+  If \code{class(yfdPar)} is either \code{fd} or \code{fdPar}, the
+  \code{fRegress} object returned also includes 5 other components:
+
+  \item{y2cMap}{ an input \code{y2cMap} }
+  \item{SigmaE}{ an input \code{SigmaE} }
+  \item{betastderrlist}{
+    an \code{fd} object estimating the standard errors of
+    \code{betaestlist}
+  }
+  \item{bvar}{
+    a covariance matrix
+  }
+  \item{c2bMap}{
+    a map
+  }
+
+%  \item{OCV}{
+%    the ordinary cross-validation score. This is returned only when \code{yfdPar}
+%    is a vector.
+%  }
+%  \item{GCV}{
+%    the generalized cross-validation score.  This is returned only when \code{yfdPar}
+%    is a vector.
+%  }
+
+  For \code{method} = \code{model}, \code{fRegress.formula} returns a
+  list with components \code{yfdPar}, \code{xfdlist}, \code{betalist},
+  and \code{wt}, which can be subsequently be passed as arguments for
+  calling either \code{fRegress.fdPar} or \code{fRegress.numeric}.  This
+  list also includes other components for diagnostic purposes:
+
+  \item{xfdlist0}{
+    a list of the objects named on the right hand side of
+    \code{formula}.  The will differ from from \code{xfdlist} for any
+    categorical or multivariate right hand side object.
+  }
+  \item{type}{
+    the \code{type} component of any \code{fd} object on the right hand
+    side of \code{formula}.
+  }
+  \item{nbasis}{
+    a vector containing the \code{nbasis} components of variables named
+    in \code{formula} having such components
+  }
+  \item{xVars}{
+    an integer vector with all the variable names on the right hand side
+    of \code{formula} containing the corresponding number of variables
+    in \code{xfdlist}.  This can exceed 1 for any multivariate object on
+    the right hand side of class either \code{numeric} or \code{fd} as
+    well as any categorical variable.
   }
 }
 \seealso{
@@ -149,10 +212,10 @@ fRegress.formula(formula, data=NULL, betalist=NULL, wts=NULL,
 daybasis65 <- create.fourier.basis(rangeval=c(0, 365), nbasis=65,
                   axes=list('axesIntervals'))
 %harmaccelLfd365 <- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
-weatherfd <- with(CanadianWeather, smooth.basisPar(day.5, dailyAv,
-                  daybasis65)$fd)
+Temp.fd <- with(CanadianWeather, smooth.basisPar(day.5,
+                dailyAv[,,'Temperature.C'], daybasis65)$fd)
 
-%weatherRgn <- fRegress.formula(weatherfd ~ region, CanadianWeather)
+TempRgn <- fRegress.formula(Temp.fd ~ region, CanadianWeather)
 }
 % docclass is function
 \keyword{smooth}
