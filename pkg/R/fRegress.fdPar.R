@@ -618,6 +618,7 @@ if (inherits(yfdPar, "fdPar")) {
              df          = df)
  }
 
+ class(fRegressList) <- 'fRegress'
  return(fRegressList)
 
 }
