@@ -120,10 +120,10 @@ fRegress(y, ...)
     regression coefficient functions.
   }
   \item{yhatfdobj}{
-    a functional data object if the dependent variable is functional or
-    a vector if the dependent variable is scalar.  This is the set of
-    predicted by the functional regression model for the dependent
-    variable.
+    a functional parameter object (class \code{fdPar}) if the dependent
+    variable is functional or a vector if the dependent variable is
+    scalar.  This is the set of predicted by the functional regression
+    model for the dependent variable.
   }
   \item{Cmatinv}{
     a matrix containing the inverse of the coefficient matrix for the
@@ -172,8 +172,13 @@ fRegress(y, ...)
   \code{\link{linmod}}
 }
 \examples{
-#See the Canadian daily weather data analyses in the file
-# daily.R for examples of all the cases covered by fRegress.
+#See the following demos:
+
+#demo('canadian-weather', package='fda')
+#demo('gait', package='fda')
+#demo('refinery', package='fda')
+#demo('weatherANOVA', package='fda')
+#demo('weatherlm', package='fda')
 }
 % docclass is function
 \keyword{smooth}

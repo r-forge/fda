@@ -135,6 +135,46 @@ Fperm.fd(yfdPar, xfdlist, betalist, wt=NULL, nperm=200,
 %  \code{\link{tstat.fd}}
 }
 \examples{
+##
+## 1.  yfdPar = vector
+##
+annualprec <- log10(apply(
+    CanadianWeather$dailyAv[,,"Precipitation.mm"], 2,sum))
+
+#  set up a smaller basis using only 65 Fourier basis functions
+#  to save some computation time
+
+smallnbasis <- 65
+smallbasis  <- create.fourier.basis(c(0, 365), smallnbasis)
+tempfd      <- smooth.basis(day.5, CanadianWeather$dailyAv[,,"Temperature.C"],
+                       smallbasis)$fd
+constantfd <- fd(matrix(1,1,35), create.constant.basis(c(0, 365)))
+
+xfdlist <- vector("list",2)
+xfdlist[[1]] <- constantfd
+xfdlist[[2]] <- tempfd[1:35]
+
+betalist   <- vector("list",2)
+#  set up the first regression function as a constant
+betabasis1 <- create.constant.basis(c(0, 365))
+betafd1    <- fd(0, betabasis1)
+betafdPar1 <- fdPar(betafd1)
+betalist[[1]] <- betafdPar1
+
+nbetabasis  <- 35
+betabasis2  <- create.fourier.basis(c(0, 365), nbetabasis)
+betafd2     <- fd(matrix(0,nbetabasis,1), betabasis2)
+
+lambda        <- 10^12.5
+harmaccelLfd365 <- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
+betafdPar2    <- fdPar(betafd2, harmaccelLfd365, lambda)
+betalist[[2]] <- betafdPar2
+
+F.res2 = Fperm.fd(annualprec, xfdlist, betalist)
+
+##
+## 2.  yfdpar = Functional data object (class fd)
+##
 # The very simplest example is the equivalent of the permutation
 # t-test on the growth data.
 

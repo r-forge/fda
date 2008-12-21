@@ -607,6 +607,7 @@ fRegress.numeric <- function(y, xfdlist, betalist, wt=NULL,
              df          = df)
  }
 
+ class(fRegressList) <- 'fRegress'
  return(fRegressList)
 
 }
