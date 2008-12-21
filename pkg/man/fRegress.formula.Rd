@@ -1,8 +1,7 @@
 \name{fRegress.formula}
 \alias{fRegress.formula}
 \title{
-  Coming soon:  Formula interface for Functional Regression Analysis;
-  not yet working.
+  Formula interface for Functional Regression Analysis
 }
 \description{
   This function carries out a functional regression analysis, where

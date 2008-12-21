@@ -166,6 +166,7 @@ fRegress(y, ...)
 %  }
 }
 \seealso{
+  \code{\link{fRegress.formula}},
   \code{\link{fRegress.stderr}},
   \code{\link{fRegress.CV}},
   \code{\link{linmod}}
