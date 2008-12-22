@@ -67,7 +67,6 @@
 \alias{PENSSEhess}
 \alias{argcheck}
 \alias{fdParcheck}
-\alias{wtcheck}
 \alias{ycheck}
 
 % docclass is function

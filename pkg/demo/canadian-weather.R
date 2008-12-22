@@ -1544,7 +1544,7 @@ legend(100, 8, c("Weighted", "Unweighted"),
 
      daytempfd <- smooth.basis(day.5,
          CanadianWeather$dailyAv[,,"Temperature.C"],
-         daybasis65, argnames=list("Day", "Station", "Deg C"))$fd
+         daybasis65, fdnames=list("Day", "Station", "Deg C"))$fd
 
      with(CanadianWeather, plotfit.fd(y=dailyAv[,,"Temperature.C"],
             argvals=day.5, daytempfd, index=1, titles=place) )
@@ -1553,3 +1553,22 @@ legend(100, 8, c("Weighted", "Unweighted"),
      with(CanadianWeather, plotfit.fd(y=dailyAv[,,"Temperature.C"],
             argvals=day.5, daytempfd, index=c(2, 35), titles=place,
                col=c("black", "blue") ) )
+###################################
+
+
+
+
+smallbasis  <- create.fourier.basis(c(0, 365), 65)
+
+VanPrec <- with(CanadianWeather,
+                dailyAv[, place='Vancouver', 'Precipitation.mm'])
+harmaccelLfd365 <- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
+dayfdPar <- fdPar(smallbasis, harmaccelLfd365, 1000)
+Wfd1 <- smooth.pos(day.5, VanPrec, dayfdPar)$Wfdobj
+VanPrecposvec <- eval.posfd(day.5, Wfd1)
+VanPrecres <- VanPrec - VanPrecposvec
+
+Wfd <- smooth.pos(day.5, VanPrecres^2, dayfdPar)$Wfdobj
+VanPrecvarhat <- eval.posfd(day.5, Wfd)
+wtvec <- wtcheck(length(VanPrecvarhat), 1/VanPrecvarhat)
+Wfd2 <- smooth.pos(day.5, VanPrec, dayfdPar, wtvec)$Wfdobj

@@ -174,7 +174,7 @@ fRegress(y, ...)
 \examples{
 #See the following demos:
 
-#demo('canadian-weather', package='fda')
+demo('canadian-weather', package='fda')
 #demo('gait', package='fda')
 #demo('refinery', package='fda')
 #demo('weatherANOVA', package='fda')
