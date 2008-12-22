@@ -171,8 +171,7 @@ gaitvararray <- eval.bifd(gaittime, gaittime, gaitvarbifd)
 
 #  plot variance and covariance functions as contours
 
-filled.contour(gaittime, gaittime, gaitvararray[,,1,1],
-               cex=1.2,las='none')
+filled.contour(gaittime, gaittime, gaitvararray[,,1,1], cex=1.2)
 title("Knee - Knee")
 
 filled.contour(gaittime, gaittime, gaitvararray[,,1,2], cex=1.2)
@@ -345,7 +344,7 @@ betaestlist <- fRegressout$betaestlist
 alphafd   <- betaestlist[[1]]$fd
 hipbetafd <- betaestlist[[2]]$fd
 
-par(mfrow=c(2,1), ask=F)
+par(mfrow=c(2,1), ask=FALSE)
 plot(alphafd,   ylab="Intercept")
 plot(hipbetafd, ylab="Hip coefficient")
 
@@ -360,7 +359,7 @@ SSE0 <- apply((kneemat - outer(kneemeanvec, rep(1,ncurve)))^2, 1, sum)
 SSE1 <- apply((kneemat - kneehatmat)^2, 1, sum)
 Rsqr <- (SSE0-SSE1)/SSE0
 
-par(mfrow=c(1,1),ask=F)
+par(mfrow=c(1,1),ask=FALSE)
 plot(gaitfine, Rsqr, type="l", ylim=c(0,0.4))
 
 #  for each case plot the function being fit, the fit,
@@ -396,7 +395,7 @@ D2betaestlist <- D2fRegressout$betaestlist
 D2alphafd   <- D2betaestlist[[1]]$fd
 D2hipbetafd <- D2betaestlist[[2]]$fd
 
-par(mfrow=c(2,1), ask=F)
+par(mfrow=c(2,1), ask=FALSE)
 plot(D2alphafd,   ylab="D2Intercept")
 plot(D2hipbetafd, ylab="D2Hip coefficient")
 
@@ -410,7 +409,7 @@ D2SSE0 <- apply((D2kneemat - outer(D2kneemeanvec, rep(1,ncurve)))^2, 1, sum)
 D2SSE1 <- apply((D2kneemat - D2kneehatmat)^2, 1, sum)
 D2Rsqr <- (D2SSE0-D2SSE1)/D2SSE0
 
-par(mfrow=c(1,1),ask=F)
+par(mfrow=c(1,1),ask=FALSE)
 plot(gaitfine, D2Rsqr, type="l", ylim=c(0,0.5))
 
 #  for each case plot the function being fit, the fit, and the mean function
