@@ -1,9 +1,18 @@
+fRegress.character <- function(y, data=NULL, betalist=NULL,
+                             wt=NULL, y2cMap=NULL, SigmaE=NULL,
+                             method=c('fRegress', 'model'),
+                             sep='.', ...){
+  fRegress.formula(y=y, data=data, betalist=betalist,
+                             wt=wt, y2cMap=y2cMap, SigmaE=SigmaE,
+                             method=method, sep=sep, ...)
+}
+
 fRegress.formula <- function(y, data=NULL, betalist=NULL,
-                             wts=NULL, y2cMap=NULL, SigmaE=NULL,
+                             wt=NULL, y2cMap=NULL, SigmaE=NULL,
                              method=c('fRegress', 'model'),
                              sep='.', ...){
 ##
-## 1.  get y = left had side of the formula
+## 1.  get y = left hand side of the formula
 ##
   formula <- y
   yName <- formula[[2]]
@@ -287,21 +296,21 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
 ## 6.  weight?
 ##
   {
-    if(is.null(wts))
-      wts <- rep(1, ny)
+    if(is.null(wt))
+      wt <- rep(1, ny)
     else {
-      if(length(wts) != ny)
-        stop('length(wts) must match y;  length(wts) = ',
-             length(wts), ' != number of y observations = ',
+      if(length(wt) != ny)
+        stop('length(wt) must match y;  length(wt) = ',
+             length(wt), ' != number of y observations = ',
              ny)
-      if(any(wts<0))
+      if(any(wt<0))
         stop('Negative weights found;  not allowed.')
     }
   }
   xiEnd <- cumsum(nVars)
   xiStart <- c(1, xiEnd[-1])
   fRegressList <- list(y=y, xfdlist=xfdList, betalist=betalist,
-                       wts=wts, xfdlist0=xfdList0, type=type,
+                       wt=wt, xfdlist0=xfdList0, type=type,
                        nbasis=nbasis, xVars=nVars)
 ##
 ## 7.  class(y) == 'fd' or 'fdPar'
