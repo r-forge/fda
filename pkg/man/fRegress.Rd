@@ -162,11 +162,33 @@ fRegress(y, ...)
   \item{\dots}{ optional arguments, not currently used }
 }
 \details{
-  In the computation of regression function estimates, all independent
-  variables are treated as if they are functional.  If argument
-  \code{xfdlist} contains one or more vectors, these are converted to
-  functional data objects having the constant basis with coefficients
-  equal to the elements of the vector.
+  Alternative forms of functional regression can be categorized with
+  traditional least squares using the following 2 x 2 table:
+
+  \tabular{lcc}{
+    \tab explanatory \tab variable \cr
+    response \tab vector \tab function \cr
+    \tab \tab \cr
+    numeric vector \tab lm \tab fRegress.numeric \cr
+    function \tab fRegress.fd or .fdPar \tab  fRegress.fd or
+      .fdPar or linmod \cr
+  }
+
+  For \code{fRegress.numeric}, the numeric response is assumed to be the
+  sum of integrals of xfd * beta for all functional xfd terms.
+
+  \code{fRegress.fd or .fdPar} produces a concurrent regression with
+  each \code{beta} being also a (univariate) function.
+
+  \code{linmod} predicts a functional response from a convolution
+  integral, estimating a bivariate regression function.
+
+
+  In the computation of regression function estimates in
+  \code{fRegress}, all independent variables are treated as if they are
+  functional.  If argument \code{xfdlist} contains one or more vectors,
+  these are converted to functional data objects having the constant
+  basis with coefficients equal to the elements of the vector.
 
   Needless to say, if all the variables in the model are scalar, do NOT
   use this function.  Instead, use either \code{lm} or \code{lsfit}.
@@ -281,13 +303,46 @@ fRegress(y, ...)
   \code{\link{linmod}}
 }
 \examples{
+##
+## vector response and explanatory variable
+##   ... to compare fRegress and lm
+##
+
+
+
+
+##
+## vector response with functional explanatory variable
+##
+
+
+
+
+##
+## functional response with vector explanatory variables
+##
+
 daybasis65 <- create.fourier.basis(rangeval=c(0, 365), nbasis=65,
                   axes=list('axesIntervals'))
-%harmaccelLfd365 <- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
 Temp.fd <- with(CanadianWeather, smooth.basisPar(day.5,
                 dailyAv[,,'Temperature.C'], daybasis65)$fd)
-
 TempRgn <- fRegress.formula(Temp.fd ~ region, CanadianWeather)
+
+
+
+##
+## functional response with functional explanatory variable
+##
+
+
+
+
+
+
+
+
+
+
 
 #See the following demos:
 
