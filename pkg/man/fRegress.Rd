@@ -184,7 +184,7 @@ fRegress(y, ...)
   \tabular{lcccc}{
     \tab \tab explanatory \tab variable \tab \cr
     response \tab | \tab vector \tab | \tab function \cr
-    \tab \tab | \tab | \tab \cr
+    \tab | \tab \tab | \tab \cr
     numeric vector \tab | \tab lm \tab | \tab fRegress.numeric \cr
     function \tab | \tab fRegress.fd or .fdPar \tab | \tab fRegress.fd
     or .fdPar or linmod \cr
