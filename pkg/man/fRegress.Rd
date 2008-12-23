@@ -39,7 +39,7 @@ fRegress(y, ...)
 
     \itemize{
       \item{character or formula}{
-	a \code{formula} object or a character object that can be
+	a \code{formula} object or a \code{character} object that can be
 	coerced into a \code{formula} providing a symbolic description
 	of the model to be fitted satisfying the following rules:
 
@@ -48,16 +48,22 @@ fRegress(y, ...)
 	The number of replications of \code{fd} or \code{fdPar}
 	object(s) must match each other and the number of observations
 	of \code{numeric} objects named.
+
       }
-      \item{scalar}{ a vector if the dependent variable is scalar.}
+      \item{scalar}{
+	a vector if the dependent variable is scalar.
+
+      }
       \item{fd}{
 	a functional data object if the dependent variable is
 	functional.
+
       }
       \item{fdPar}{
 	a functional parameter object if the dependent variable is
 	functional, and if it is necessary to smooth the prediction
 	of the dependent variable.
+
       }
     }
   }
@@ -65,6 +71,7 @@ fRegress(y, ...)
     an optional \code{list} or \code{data.frame} containing names of
     objects identified in the \code{formula} or \code{character}
     \code{y}.
+
   }
   \item{xfdlist}{
     a list of length equal to the number of independent
@@ -74,18 +81,20 @@ fRegress(y, ...)
     \itemize{
       \item{scalar}{
 	a vector if the independent dependent variable is scalar.
+
       }
       \item{fd}{
 	a functional data object if the dependent variable is
 	functional.
+
       }
     }
-
     In either case, the object must have the same number of replications
     as the dependent variable object.  That is, if it is a scalar, it
     must be of the same length as the dependent variable, and if it is
     functional, it must have the same number of replications as the
     dependent variable.
+
   }
   \item{betalist}{
     For the \code{fd}, \code{fdPar}, and \code{numeric} methods,
@@ -113,6 +122,7 @@ fRegress(y, ...)
 	\code{arrays}, the corresponding \code{betalist} component will
 	match the left hand side if it is \code{fd} or the most frequent
 	\code{fd} type on the right hand side.
+
       }
       \item{integer}{
 	Create \code{betalist} as with \code{betalist = NULL}, but
@@ -120,9 +130,11 @@ fRegress(y, ...)
 	trivial for \code{fourier} and \code{polynomial} bases.  Not
 	currently available for \code{bspline}, \code{polygonal} or
 	\code{constant} bases.
+
       }
       \item{fd}{
 	Use to match all components on the right hand side
+
       }
       \item{list}{
 	Must have one component to match each independent variable in
@@ -132,25 +144,28 @@ fRegress(y, ...)
 	according to \code{options('contrasts')}).
       }
     }
-
   }
   \item{wt}{
     weights for weighted least squares
+
   }
   \item{y2cMap}{
     the matrix mapping from the vector of observed values to the
     coefficients for the dependent variable.  This is output by function
     \code{smooth.basis}.  If this is supplied, confidence limits are
     computed, otherwise not.
+
   }
   \item{SigmaE}{
     Estimate of the covariances among the residuals.  This can only be
     estimated after a preliminary analysis with \code{fRegress}.
+
   }
   \item{method}{
     a character string matching either \code{fRegress} for functional
     regression estimation or \code{mode} to create the argument lists
     for functional regression estimation without running it.
+
   }
   \item{sep}{
     separator for creating names for multiple variables for
@@ -158,20 +173,21 @@ fRegress(y, ...)
     variables on the right hand side of the \code{formula} \code{y}.
     This happens with multidimensional \code{fd} objects as well as with
     categorical variables.
+
   }
-  \item{\dots}{ optional arguments, not currently used }
+  \item{\dots}{ optional arguments }
 }
 \details{
   Alternative forms of functional regression can be categorized with
   traditional least squares using the following 2 x 2 table:
 
-  \tabular{lcc}{
-    \tab explanatory \tab variable \cr
-    response \tab vector \tab function \cr
-    \tab \tab \cr
-    numeric vector \tab lm \tab fRegress.numeric \cr
-    function \tab fRegress.fd or .fdPar \tab  fRegress.fd or
-      .fdPar or linmod \cr
+  \tabular{lcccc}{
+    \tab \tab explanatory \tab variable \tab \cr
+    response \tab | \tab vector \tab | \tab function \cr
+    \tab \tab | \tab | \tab \cr
+    numeric vector \tab | \tab lm \tab | \tab fRegress.numeric \cr
+    function \tab | \tab fRegress.fd or .fdPar \tab | \tab fRegress.fd
+    or .fdPar or linmod \cr
   }
 
   For \code{fRegress.numeric}, the numeric response is assumed to be the
@@ -192,6 +208,9 @@ fRegress(y, ...)
 
   Needless to say, if all the variables in the model are scalar, do NOT
   use this function.  Instead, use either \code{lm} or \code{lsfit}.
+
+  These functions provide a partial implementation of Ramsay and
+  Silverman (2005, chapters 12-20).
 }
 \value{
   These functions return either a standard \code{fRegress} fit object or
@@ -204,24 +223,29 @@ fRegress(y, ...)
       \item{y}{
 	the first argument in the call to \code{fRegress} (coerced to
 	\code{class} \code{fdPar})
+
       }
       \item{xfdlist}{
 	the second argument in the call to \code{fRegress}.
+
       }
       \item{betalist}{
 	the third argument in the call to \code{fRegress}.
+
       }
       \item{betaestlist}{
 	a list of length equal to the number of independent variables
 	and with members having the same functional parameter structure
 	as the corresponding members of \code{betalist}.  These are the
 	estimated regression coefficient functions.
+
       }
       \item{yhatfdobj}{
 	a functional parameter object (class \code{fdPar}) if the
 	dependent variable is functional or a vector if the dependent
 	variable is scalar.  This is the set of predicted by the
 	functional regression model for the dependent variable.
+
       }
       \item{Cmatinv}{
 	a matrix containing the inverse of the coefficient matrix for
@@ -229,9 +253,11 @@ fRegress(y, ...)
 	problem.  This matrix is required for function
 	\code{\link{fRegress.stderr}} that estimates confidence regions
 	for the regression coefficient function estimates.
+
       }
       \item{wt}{
 	the vector of weights input or inferred
+
       }
       \item{df}{
 	equivalent degrees of freedom for the fit;  only present if
@@ -241,14 +267,22 @@ fRegress(y, ...)
       If \code{class(y)} is either \code{fd} or \code{fdPar}, the
       \code{fRegress} object returned also includes 5 other components:
 
-      \item{y2cMap}{ an input \code{y2cMap} }
-      \item{SigmaE}{ an input \code{SigmaE} }
+      \item{y2cMap}{
+	an input \code{y2cMap}
+
+      }
+      \item{SigmaE}{
+	an input \code{SigmaE}
+
+      }
       \item{betastderrlist}{
 	an \code{fd} object estimating the standard errors of
 	\code{betaestlist}
+
       }
       \item{bvar}{
 	a covariance matrix
+
       }
       \item{c2bMap}{
 	a map
@@ -276,14 +310,17 @@ fRegress(y, ...)
 	a list of the objects named on the right hand side of
 	\code{formula}.  The will differ from from \code{xfdlist} for
 	any categorical or multivariate right hand side object.
+
       }
       \item{type}{
 	the \code{type} component of any \code{fd} object on the right
 	hand side of \code{formula}.
+
       }
       \item{nbasis}{
 	a vector containing the \code{nbasis} components of variables
 	named in \code{formula} having such components
+
       }
       \item{xVars}{
 	an integer vector with all the variable names on the right
@@ -292,9 +329,17 @@ fRegress(y, ...)
 	any multivariate object on the right hand side of class either
 	\code{numeric} or \code{fd} as well as any categorical
 	variable.
+
       }
     }
   }
+}
+\author{
+  J. O. Ramsay, Giles Hooker, and Spencer Graves
+}
+\references{
+  Ramsay, James O., and Silverman, Bernard W. (2005), \emph{Functional
+    Data Analysis, 2nd ed.}, Springer, New York.
 }
 \seealso{
   \code{\link{fRegress.formula}},

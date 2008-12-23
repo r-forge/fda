@@ -190,16 +190,6 @@
   }
 }
 
-\seealso{
-  \code{\link{create.bspline.basis}}
-  \code{\link{create.constant.basis}}
-  \code{\link{create.exponential.basis}}
-  \code{\link{create.fourier.basis}}
-  \code{\link{create.monomial.basis}}
-  \code{\link{create.polygonal.basis}}
-  \code{\link{create.polynomial.basis}}
-  \code{\link{create.power.basis}}
-}
 \author{
   J. O. Ramsay and Spencer Graves
 }
@@ -209,6 +199,16 @@
 
   Ramsay, James O., and Silverman, Bernard W. (2002), \emph{Applied
     Functional Data Analysis}, Springer, New York.
+}
+\seealso{
+  \code{\link{create.bspline.basis}}
+  \code{\link{create.constant.basis}}
+  \code{\link{create.exponential.basis}}
+  \code{\link{create.fourier.basis}}
+  \code{\link{create.monomial.basis}}
+  \code{\link{create.polygonal.basis}}
+  \code{\link{create.polynomial.basis}}
+  \code{\link{create.power.basis}}
 }
 %\examples{}
 \keyword{smooth}
