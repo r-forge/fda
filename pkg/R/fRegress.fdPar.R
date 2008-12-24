@@ -173,7 +173,7 @@ if (xerror) stop("")
 
 {
     if(is.null(wt)){
-        wt <- 1:N
+        wt <- rep(1, N)
         wtconstant <- TRUE
     }
     else {

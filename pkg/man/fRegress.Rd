@@ -348,36 +348,91 @@ fRegress(y, ...)
   \code{\link{linmod}}
 }
 \examples{
+###
+###
+### vector response and explanatory variable
+###   ... to compare fRegress and lm
+###
+###
+
+
+
+
+###
+###
+### vector response with functional explanatory variable
+###
+###
+
+
+
+
+###
+###
+### functional response with vector explanatory variables
+###
+###
+
 ##
-## vector response and explanatory variable
-##   ... to compare fRegress and lm
+## simplest:  formula interface
 ##
-
-
-
-
-##
-## vector response with functional explanatory variable
-##
-
-
-
-
-##
-## functional response with vector explanatory variables
-##
-
 daybasis65 <- create.fourier.basis(rangeval=c(0, 365), nbasis=65,
                   axes=list('axesIntervals'))
 Temp.fd <- with(CanadianWeather, smooth.basisPar(day.5,
                 dailyAv[,,'Temperature.C'], daybasis65)$fd)
-TempRgn <- fRegress.formula(Temp.fd ~ region, CanadianWeather)
-
-
+TempRgn.f <- fRegress(Temp.fd ~ region, CanadianWeather)
 
 ##
-## functional response with functional explanatory variable
+## Get the default setup and possibly modify it
 ##
+TempRgn.mdl <- fRegress(Temp.fd ~ region, CanadianWeather, method='m')
+names(TempRgn.mdl)
+# make desired modifications here
+# then run
+TempRgn.m <- do.call('fRegress', TempRgn.mdl)
+
+# no change, so match the first run
+\dontshow{stopifnot(}
+all.equal(TempRgn.m, TempRgn.f)
+\dontshow{)}
+
+##
+## More detailed set up
+##
+str(TempRgn.mdl$xfdlist)
+
+region.contrasts <- (model.matrix(~factor(
+                     CanadianWeather$region))[, -1])
+rgnContr3 <- region.contrasts
+dim(rgnContr3) <- c(1, 35, 3)
+dimnames(rgnContr3) <- list('', CanadianWeather$place,
+   paste('region', c('Atlantic', 'Continental', 'Pacific'), sep='.') )
+
+const365 <- create.constant.basis(c(0, 365))
+region.fd.Atlantic <- fd(matrix(rgnContr3[,,1], 1), const365)
+str(region.fd.Atlantic)
+region.fd.Continental <- fd(matrix(rgnContr3[,,2], 1), const365)
+region.fd.Pacific <- fd(matrix(rgnContr3[,,3], 1), const365)
+region.fdlist <- list(region.Atlantic=region.fd.Atlantic,
+     region.Continental=region.fd.Continental,
+     region.Pacific=region.fd.Pacific)
+
+str(TempRgn.mdl$betalist)
+
+betalist <- list(region.Atlantic=Temp.fd,
+             region.Continental=Temp.fd, region.Pacific=Temp.fd)
+
+TempRgn <- fRegress(Temp.fd, region.fdlist, betalist)
+
+\dontshow{stopifnot(}
+all.equal(TempRgn, TempRgn.f)
+\dontshow{)}
+
+###
+###
+### functional response with functional explanatory variable
+###
+###
 
 
 
