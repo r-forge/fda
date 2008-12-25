@@ -60,8 +60,19 @@ fdPar <- function(fdobj=NULL, Lfdobj=NULL, lambda=0, estimate=TRUE,
        #  a default FD object with an empty coefficient matrix.
         nbasis  <- fdobj$nbasis
         dropind <- fdobj$dropind
-        coef    <- matrix(0,nbasis-length(dropind),1)
-        fdobj   <- fd(coef, fdobj)
+        coefs   <- matrix(0,nbasis-length(dropind),1)
+        fdnames <- list('time', 'reps 1', 'values')
+        if(!is.null(fdobj$names)){
+          nms <- {
+            if(length(dropind)>1)
+              fdobj$names[-dropind]
+            else
+              fdobj$names
+          }
+          dimnames(coefs) <- list(nms, NULL)
+          fdnames[[1]] <- nms
+        }
+        fdobj   <- fd(coefs, fdobj)
       }
 #    else if (inherits(fdobj,"fd")) {
 #      #  if the first object is a FD object, do nothing

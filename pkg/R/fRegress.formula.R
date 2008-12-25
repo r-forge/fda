@@ -14,12 +14,12 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
 ##
 ## 1.  get y = left hand side of the formula
 ##
-  formula <- y
-  yName <- formula[[2]]
+  Formula <- y
+  yName <- Formula[[2]]
   yNm <- as.character(yName)
   if((class(yName) != 'name') || (length(yNm) > 1))
     stop('The left hand side of formula must be a simple object; ',
-         ' instead, LHS = ', as.character(formula)[2],
+         ' instead, LHS = ', as.character(Formula)[2],
          ', which has class = ', class(yName))
 #
   dataNames <- names(data)
@@ -29,6 +29,7 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
   }
   if(inherits(y, 'fd'))y <- fdPar(y)
 #
+  trng <- NULL
   {
     if(inherits(y, 'fdPar')){
       ydim <- dim(y$fd$coefs)
@@ -37,6 +38,7 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
         ydim <- dim(y$fd$coefs)
       }
       ny <- ydim[2]
+      trng <- y$fd$basis$rangeval
     }
     else{
       if(inherits(y, 'numeric')){
@@ -54,9 +56,9 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
 ##
 ## 2.  check the formula for excessive complexity
 ##
-  allVars <- all.vars(formula)
+  allVars <- all.vars(Formula)
   xNms <- allVars[allVars != yNm]
-  Terms <- terms(formula)
+  Terms <- terms(Formula)
   termLbls <- attr(Terms, 'term.labels')
   oops <- which(!(termLbls %in% xNms))
   if(length(oops)>0)
@@ -90,6 +92,18 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
     }
     {
       if(inherits(xi, 'fd')){
+        xrng <- xi$basis$rangeval
+        {
+          if(is.null(trng))
+            trng <- xrng
+          else
+            if(any(xrng != trng)){
+              oops <- TRUE
+              stop('incompatible rangeval found in ', xNm,
+                   '$rangeval = ', paste(xrng, collapse=', '),
+                   ' != previous = ', paste(trng, collapse=', ') )
+            }
+        }
         xdim <- dim(xi$coefs)
         {
           if(is.null(xdim) || (length(xdim)<2)){
@@ -101,11 +115,13 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
           }
           else {
             if(length(xdim)<3){
+              nxi <- xdim[2]
               nVars[i] <- 1
               xNames[[i]] <- xNm
             }
             else {
               if(length(xdim)<4){
+                nxi <- xdim[2]
                 nVars[i] <- xdim[3]
                 xNmsi <- dimnames(xi$coefs)[[3]]
                 {
@@ -188,13 +204,16 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
   }
   if(oops)stop('illegal variable on the right hand side.')
 ##
-## 4.  Create xfdList
+## 5.  Create xfdList
 ##
-  xNames. <- unlist(xNames)
-  k <- sum(nVars)
+  xNames. <- c('const', unlist(xNames))
+  k <- 1+sum(nVars)
   xfdList <- vector('list', k)
   names(xfdList) <- xNames.
-  i1 <- 0
+#  create constfd for the intercept
+#  xfdList[[1]] <- create.constant.basis(trng)
+  xfdList[[1]] <- rep(1, ny)
+  i1 <- 1
   for(ix in 1:k0){
     i0 <- i1+1
     xNm <- xNms[ix]
@@ -203,14 +222,15 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
       if(inherits(xi, 'fd')){
         if(nVars[ix]<2){
           i1 <- i0
-          xList[[i0]] <- xi
+          xfdList[[i0]] <- xi
         }
         else {
-          i1 <- (i1+nVars[ix])
-          for(i in i0:i1){
+#          i1 <- (i1+nVars[ix])
+          for(i in 1:nVars[ix]){
+            i1 <- i1+1
             xii <- xi
             xii$coefs <- xi$coefs[,,i, drop=FALSE]
-            xList[[i]] <- xii
+            xfdList[[i1]] <- xii
           }
         }
       }
@@ -218,19 +238,20 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
         if(is.numeric(xi)) {
           if(nVars[ix]<2){
             i1 <- i0
-            xList[[i0]] <- xi
+            xfdList[[i0]] <- xi
           }
           else{
-            i1 <- (i1+nVars[ix])
-            for(i in i0:i1)
-              xfdList[[i]] <- xi[, i]
+            for(i in 1:nVars[ix]){
+              i1 <- i1+1
+              xfdList[[i1]] <- xi[, i]
+            }
           }
         }
       }
     }
   }
 ##
-## 5.  betalist
+## 6.  betalist
 ##
   {
     if(inherits(betalist, 'list')){
@@ -238,10 +259,10 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
         stop('length(betalist) = ', length(betalist),
              ';  must be ', k, ' to match length(xfdlist).')
       betaclass <- sapply(betalist, class)
-      oops <- which(betaclass != 'fd')
+      oops <- which(betaclass != 'fdPar')
       if(length(oops)>0)
         stop('If betalist is a list, all components must have class ',
-             'fd;  component ', oops[1], ' has class ',
+             'fdPar;  component ', oops[1], ' has class ',
              betaclass[oops[1]])
     }
     else {
@@ -249,11 +270,11 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
       betalist <- vector('list', k)
       names(betalist) <- xNames.
       beta1 <- blist
-      if(!inherits(blist, 'fd')){
+      if(!inherits(blist, 'fdPar')){
         betatype <- type[1]
         if(is.na(betatype)){
           typeTbl <- table(type[-1])
-          nType <- which(typeTbl==max(typeTbl))
+          nType <- which(typeTbl==max(typeTbl))[1]
           betatype <- names(typeTbl)[nType]
         }
         btype <- which(type==betatype)[1]
@@ -289,11 +310,24 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
           }
         }
       }
-      for(i in 1:k) betalist[[i]] <- beta1
+      Coefs <- coef(beta1)
+      if(length(dim(Coefs))>2) Coefs <-  Coefs[,,1]
+      Coefs <- {
+        if(length(dim(Coefs))<2) matrix(Coefs)
+        else Coefs[, 1, drop=FALSE]
+      }
+      if(!is.null(dimnames(Coefs))) dimnames(Coefs)[[2]] <- NULL
+      Coefs[] <- 0
+#      coef(beta1) <- coefs
+      beta0 <- with(beta1, fdPar(fd(Coefs, fd$basis), Lfd,
+                                 lambda, estimate, penmat) )
+#      beta1$fd$coefs <- coefs
+#      for(i in 1:k) betalist[[i]] <- beta1
+      for(i in 1:k) betalist[[i]] <- beta0
     }
   }
 ##
-## 6.  weight?
+## 7.  weight?
 ##
   {
     if(is.null(wt))
@@ -313,7 +347,7 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
                        wt=wt, xfdlist0=xfdList0, type=type,
                        nbasis=nbasis, xVars=nVars)
 ##
-## 7.  class(y) == 'fd' or 'fdPar'
+## 8.  class(y) == 'fd' or 'fdPar'
 ##
   if(inherits(y, 'fd'))y <- fdPar(y)
 #
@@ -325,7 +359,7 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
       do.call('fRegress.fdPar', fRegressList)
     else
 ##
-## 8.  class(y) == 'numeric'
+## 9.  class(y) == 'numeric'
 ##
       do.call('fRegress.numeric', fRegressList)
   }
