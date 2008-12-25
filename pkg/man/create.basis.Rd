@@ -31,7 +31,7 @@
   \code{create.basis} functions:
 
   \itemize{
-    \item{rangevals}{
+    \item{rangeval}{
       a vector of length 2 giving the lower and upper limits of the
       range of permissible values for the function argument.
 
@@ -70,7 +70,7 @@
       For \code{polynomial} bases, \code{nbasis} defaults to 2.
     }
 
-    In addition to \code{rangevals} and \code{nbasis}, all but
+    In addition to \code{rangeval} and \code{nbasis}, all but
     \code{constant} bases have one or two parameters unique to that
     basis type or shared with one other:
 
@@ -82,15 +82,15 @@
 
 	Argument \code{breaks} = the locations of the break or join
 	points;  also called \code{knots}.  This defaults to
-	seq(rangevals[1], rangevals[2], nbasis-norder+2).
+	seq(rangeval[1], rangeval[2], nbasis-norder+2).
       }
       \item{polygonal}{
 	Argument \code{argvals} = the locations of the break or join
 	points;  also called \code{knots}.  This defaults to
-	seq(rangevals[1], rangevals[2], nbasis).
+	seq(rangeval[1], rangeval[2], nbasis).
       }
       \item{fourier}{
-	Argument \code{period} defaults to diff(rangevals).
+	Argument \code{period} defaults to diff(rangeval).
       }
       \item{exponential}{
 	Argument \code{ratevec}.  In \code{fda_2.0.2}, this defaulted to
@@ -194,7 +194,7 @@
   J. O. Ramsay and Spencer Graves
 }
 \references{
-  Ramsay, James O., and Silverman, Bernard W. (2005), \emph{Functional
+  Ramsay, James O., and Silverman, Bernard W. (2006), \emph{Functional
     Data Analysis, 2nd ed.}, Springer, New York.
 
   Ramsay, James O., and Silverman, Bernard W. (2002), \emph{Applied

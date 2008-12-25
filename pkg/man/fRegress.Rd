@@ -338,7 +338,7 @@ fRegress(y, ...)
   J. O. Ramsay, Giles Hooker, and Spencer Graves
 }
 \references{
-  Ramsay, James O., and Silverman, Bernard W. (2005), \emph{Functional
+  Ramsay, James O., and Silverman, Bernard W. (2006), \emph{Functional
     Data Analysis, 2nd ed.}, Springer, New York.
 }
 \seealso{
@@ -386,7 +386,7 @@ TempRgn.f <- fRegress(Temp.fd ~ region, CanadianWeather)
 ## Get the default setup and possibly modify it
 ##
 TempRgn.mdl <- fRegress(Temp.fd ~ region, CanadianWeather, method='m')
-names(TempRgn.mdl)
+%names(TempRgn.mdl)
 # make desired modifications here
 # then run
 TempRgn.m <- do.call('fRegress', TempRgn.mdl)
@@ -399,28 +399,32 @@ all.equal(TempRgn.m, TempRgn.f)
 ##
 ## More detailed set up
 ##
-str(TempRgn.mdl$xfdlist)
-
-region.contrasts <- (model.matrix(~factor(
-                     CanadianWeather$region))[, -1])
+%str(TempRgn.mdl$xfdlist)
+region.contrasts <- model.matrix(~factor(CanadianWeather$region))
 rgnContr3 <- region.contrasts
-dim(rgnContr3) <- c(1, 35, 3)
-dimnames(rgnContr3) <- list('', CanadianWeather$place,
-   paste('region', c('Atlantic', 'Continental', 'Pacific'), sep='.') )
+dim(rgnContr3) <- c(1, 35, 4)
+dimnames(rgnContr3) <- list('', CanadianWeather$place, c('const',
+   paste('region', c('Atlantic', 'Continental', 'Pacific'), sep='.')) )
 
 const365 <- create.constant.basis(c(0, 365))
-region.fd.Atlantic <- fd(matrix(rgnContr3[,,1], 1), const365)
-str(region.fd.Atlantic)
-region.fd.Continental <- fd(matrix(rgnContr3[,,2], 1), const365)
-region.fd.Pacific <- fd(matrix(rgnContr3[,,3], 1), const365)
-region.fdlist <- list(region.Atlantic=region.fd.Atlantic,
+region.fd.Atlantic <- fd(matrix(rgnContr3[,,2], 1), const365)
+%str(region.fd.Atlantic)
+region.fd.Continental <- fd(matrix(rgnContr3[,,3], 1), const365)
+region.fd.Pacific <- fd(matrix(rgnContr3[,,4], 1), const365)
+region.fdlist <- list(const=rep(1, 35),
+     region.Atlantic=region.fd.Atlantic,
      region.Continental=region.fd.Continental,
      region.Pacific=region.fd.Pacific)
+%str(TempRgn.mdl$betalist)
 
-str(TempRgn.mdl$betalist)
-
-betalist <- list(region.Atlantic=Temp.fd,
-             region.Continental=Temp.fd, region.Pacific=Temp.fd)
+beta1 <- fdPar(Temp.fd)
+Coefs <- coef(beta1)[, 1, drop=FALSE]
+dimnames(Coefs)[[2]] <- NULL
+Coefs[] <- 0
+beta0 <- with(beta1, fdPar(fd(Coefs, fd$basis), Lfd,
+                           lambda, estimate, penmat) )
+betalist <- list(const=beta0, region.Atlantic=beta0,
+             region.Continental=beta0, region.Pacific=beta0)
 
 TempRgn <- fRegress(Temp.fd, region.fdlist, betalist)
 
@@ -430,21 +434,46 @@ all.equal(TempRgn, TempRgn.f)
 
 ###
 ###
-### functional response with functional explanatory variable
+### functional response with (concurrent) functional explanatory variable
 ###
 ###
 
+##
+##  predict knee angle from hip angle;  from demo('gait', package='fda')
+##
+## formula interface
+##
+(gaittime <- as.numeric(dimnames(gait)[[1]])*20)
+gaitrange <- c(0,20)
+gaitbasis <- create.fourier.basis(gaitrange, nbasis=21)
+harmaccelLfd <- vec2Lfd(c(0, (2*pi/20)^2, 0), rangeval=gaitrange)
+gaitfd <- smooth.basisPar(gaittime, gait,
+       gaitbasis, Lfdobj=harmaccelLfd, lambda=1e-2)$fd
+hipfd  <- gaitfd[,1]
+kneefd <- gaitfd[,2]
 
+knee.hip.f <- fRegress(kneefd ~ hipfd)
+%knee.hip.mdl <- fRegress(kneefd ~ hipfd, method='m')
 
+##
+## manual set-up
+##
+#  set up the list of covariate objects
+conbasis <- create.constant.basis(c(0,20))
+const  <- rep(1, dim(kneefd))
+xfdlist  <- list(const=const, hipfd=hipfd)
 
+betafdPar <- fdPar(gaitbasis, harmaccelLfd)
 
+betalist  <- list(const=betafdPar, hipfd=betafdPar)
 
+fRegressout <- fRegress(kneefd, xfdlist, betalist)
 
+\dontshow{stopifnot(}
+all.equal(fRegressout, knee.hip.f)
+\dontshow{)}
 
-
-
-
-#See the following demos:
+#See also the following demos:
 
 #demo('canadian-weather', package='fda')
 #demo('gait', package='fda')
