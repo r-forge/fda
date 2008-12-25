@@ -204,7 +204,7 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
   }
   if(oops)stop('illegal variable on the right hand side.')
 ##
-## 5.  Create xfdList
+## 4.  Create xfdList
 ##
   xNames. <- c('const', unlist(xNames))
   k <- 1+sum(nVars)
@@ -251,7 +251,7 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
     }
   }
 ##
-## 6.  betalist
+## 5.  betalist
 ##
   {
     if(inherits(betalist, 'list')){
@@ -278,18 +278,19 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
           betatype <- names(typeTbl)[nType]
         }
         btype <- which(type==betatype)[1]
-        nb <- which((type==betatype) & (nbasis==min(nbasis)))
+        nb <- which((type==betatype) &
+                    (nbasis==min(nbasis, na.rm=TRUE)))
         {
           if(length(nb)>0) {
             beta1 <- {
               if(nb[1]==1) y
-              else xfdList[[nb[1]-1]]
+              else fdPar(xfdList[[nb[1]]])
             }
           }
           else {
             beta1 <- {
-              if(btype[1]==1) y
-              else xfdList[[btype[1]-1]]
+              if(btype==1) y
+              else fdPar(xfdList[[btype]])
             }
           }
         }
@@ -302,8 +303,10 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
                  '  blist = ', blist, ';  (blist %%1) = ',
                  blist %% 1)
           {
-            if(betatype %in% c('fourier', 'polynomial'))
-              beta1$nbasis <- blist
+            if(betatype %in% c('fourier', 'polynomial')){
+              beta1$fd$basis$nbasis <- blist
+
+            }
             else
               warning('betalist numeric ignored with betatype = ',
                       betatype)
@@ -324,10 +327,17 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
 #      beta1$fd$coefs <- coefs
 #      for(i in 1:k) betalist[[i]] <- beta1
       for(i in 1:k) betalist[[i]] <- beta0
+#     if the response is a scalar,
+#     make the intercept a scalar
+      if(is.numeric(y)) {
+        bbase <- create.constant.basis(trng)
+        bfd <- fd(0, bbase)
+        betalist[[1]] <- fdPar(bfd)
+      }
     }
   }
 ##
-## 7.  weight?
+## 6.  weight?
 ##
   {
     if(is.null(wt))
@@ -347,7 +357,7 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
                        wt=wt, xfdlist0=xfdList0, type=type,
                        nbasis=nbasis, xVars=nVars)
 ##
-## 8.  class(y) == 'fd' or 'fdPar'
+## 7.  class(y) == 'fd' or 'fdPar'
 ##
   if(inherits(y, 'fd'))y <- fdPar(y)
 #
@@ -359,7 +369,7 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
       do.call('fRegress.fdPar', fRegressList)
     else
 ##
-## 9.  class(y) == 'numeric'
+## 8.  class(y) == 'numeric'
 ##
       do.call('fRegress.numeric', fRegressList)
   }
