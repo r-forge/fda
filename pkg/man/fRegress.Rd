@@ -6,7 +6,7 @@
 \alias{fRegress.formula}
 \alias{fRegress.character}
 \title{
-  A Functional Regression Analysis of the Concurrent Type
+  Functional Regression Analysis
 }
 \description{
   This function carries out a functional regression analysis, where
@@ -103,14 +103,15 @@ fRegress(y, ...)
     functions to be estimated.  They are functional parameter objects
     (class \code{fdPar}).  Even if a corresponding independent variable
     is scalar, its regression coefficient will be functional if the
-    dependent variable is functional.  Each of these functional
-    parameter objects defines a single functional data object, that is,
-    with only one replication.
+    dependent variable is functional (though the intercept will be a
+    scalar).  Each of these functional parameter objects defines a
+    single functional data object, that is, with only one replication.
 
     For the \code{formula} and \code{character} methods, \code{betalist}
     can be a \code{list}, as for the other methods.  It can also be
     \code{NULL}, a positive integer, single functional data object
-    (class \code{fd}) that can be used to construct such a list:
+    (class \code{fd}) or functional parameter object that can be used to
+    construct such a list:
 
     \itemize{
       \item{NULL}{
@@ -133,6 +134,11 @@ fRegress(y, ...)
 
       }
       \item{fd}{
+	Coerce to a functional parameter object (\code{fdPar}) and use
+	to match all components on the right hand side
+
+      }
+      \item{fdPar}{
 	Use to match all components on the right hand side
 
       }
@@ -363,6 +369,76 @@ fRegress(y, ...)
 ### vector response with functional explanatory variable
 ###
 ###
+
+##
+## set up
+##
+annualprec <- log10(apply(CanadianWeather$dailyAv[,,"Precipitation.mm"],
+                          2,sum))
+# The simplest 'fRegress' call is singular with more bases
+# than observations, so we use a small basis for this example
+smallbasis  <- create.fourier.basis(c(0, 365), 25)
+# There are other ways to handle this,
+# but we will not discuss them here
+tempfd <- smooth.basis(day.5,
+          CanadianWeather$dailyAv[,,"Temperature.C"], smallbasis)$fd
+
+##
+## formula interface
+##
+
+precip.Temp.f <- fRegress(annualprec ~ tempfd)
+
+##
+## Get the default setup and modify it
+##
+
+precip.Temp.mdl <- fRegress(annualprec ~ tempfd, method='m')
+
+#  set up a smaller basis than for temperature
+nbetabasis  <- 21
+betabasis2.  <- create.fourier.basis(c(0, 365), nbetabasis)
+betafd2.     <- fd(rep(0, nbetabasis), betabasis2.)
+# add smoothing
+betafdPar2.  <- fdPar(betafd2., lambda=10)
+
+# precip.Temp.mdl$betalist$tempfd <- betafdPar2.
+
+# New do it.
+precip.Temp.m <- do.call('fRegress', precip.Temp.mdl)
+
+# With the change in betalist, the answers may be different
+# Without that change, the answes will be the same.
+\dontshow{stopifnot(}
+all.equal(precip.Temp.m, precip.Temp.f)
+\dontshow{)}
+
+##
+## Manual construction of xfdlist and betalist
+##
+
+xfdlist <- list(const=rep(1, 35), tempfd=tempfd)
+
+# The intercept must be constant for a scalar response
+betabasis1 <- create.constant.basis(c(0, 365))
+betafd1    <- fd(0, betabasis1)
+betafdPar1 <- fdPar(betafd1)
+
+nbetabasis  <- 25
+betabasis2  <- create.fourier.basis(c(0, 365), nbetabasis)
+betafd2     <- fd(rep(0, nbetabasis), betabasis2)
+# add smoothing
+betafdPar2  <- fdPar(betafd2)
+
+betalist <- list(const=betafdPar1, tempfd=betafdPar2)
+
+precip.Temp <- fRegress(annualprec, xfdlist, betalist)
+\dontshow{stopifnot(}
+all.equal(precip.Temp[-3], precip.Temp.f[-3])
+\dontshow{)}
+
+
+
 
 
 
