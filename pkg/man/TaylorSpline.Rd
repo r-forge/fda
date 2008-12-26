@@ -84,8 +84,8 @@ fd.bspl1.1pi <- fd(pi, basisobj=bspl1.1)
 bspl1.1pi <- TaylorSpline(fd.bspl1.1pi)
 \dontshow{
 bsp1.1ref <- list(knots=0:1, midpoints=0.5,
-      coef=array(pi, dim=rep(1, 3), dimnames=list(NULL, 'b0', NULL)),
-      deriv=array(pi, dim=rep(1, 3), dimnames=list(NULL, 'D0', NULL)) )
+  coef=array(pi, dim=rep(1, 3), dimnames=list(NULL, 'b0', 'reps 1')),
+  deriv=array(pi, dim=rep(1, 3), dimnames=list(NULL, 'D0', 'reps 1')) )
 class(bsp1.1ref) <- "Taylor"
 stopifnot(all.equal(bspl1.1pi, bsp1.1ref))
 }

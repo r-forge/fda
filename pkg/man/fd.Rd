@@ -14,7 +14,7 @@
   understanding the components of a \code{list} of class \code{fd}.
 }
 \usage{
-fd(coef=NULL, basisobj=NULL, fdnames=defaultnames)
+fd(coef=NULL, basisobj=NULL, fdnames=NULL)
 }
 \arguments{
   \item{coef}{
