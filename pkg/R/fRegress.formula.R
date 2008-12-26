@@ -27,7 +27,7 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
     if(yNm %in% dataNames)data[[yNm]]
     else get(yNm)
   }
-  if(inherits(y, 'fd'))y <- fdPar(y)
+  if(inherits(y, 'fd'))y <- fdPar(y, ...)
 #
   trng <- NULL
   {
@@ -91,24 +91,29 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
       else get(xNm)
     }
     {
-      if(inherits(xi, 'fd')){
-        xrng <- xi$basis$rangeval
+      if(class(xi) %in% c('fd', 'fdPar')){
+        xj <- {
+          if(class(xi) == 'fd') xi
+          else xi$fd
+        }
+        xrng <- xj$basis$rangeval
         {
           if(is.null(trng))
             trng <- xrng
           else
             if(any(xrng != trng)){
               oops <- TRUE
-              stop('incompatible rangeval found in ', xNm,
+              cat('incompatible rangeval found in ', xNm,
                    '$rangeval = ', paste(xrng, collapse=', '),
-                   ' != previous = ', paste(trng, collapse=', ') )
+                   ' != previous = ', paste(trng, collapse=', '),
+                  sep='')
             }
         }
-        xdim <- dim(xi$coefs)
+        xdim <- dim(xj$coefs)
         {
           if(is.null(xdim) || (length(xdim)<2)){
-            xi$coefs <- as.matrix(xi$coefs)
-            xdim <- dim(xi$coefs)
+            xj$coefs <- as.matrix(xj$coefs)
+            xdim <- dim(xj$coefs)
             nxi <- xdim[2]
             nVars[i] <- 1
             xNames[[i]] <- xNm
@@ -123,7 +128,7 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
               if(length(xdim)<4){
                 nxi <- xdim[2]
                 nVars[i] <- xdim[3]
-                xNmsi <- dimnames(xi$coefs)[[3]]
+                xNmsi <- dimnames(xj$coefs)[[3]]
                 {
                   if(is.null(xNmsi))
                     xNames[[i]] <- paste(xNm, 1:xdim[3], sep=sep)
@@ -131,19 +136,21 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
                     xNames[[i]] <- paste(xNm, xNmsi, sep=sep)
                 }
               }
-              else
-                stop(xNm, ' has too many levels:  dim(x$coefs) = ',
+              else {
+                oops <- TRUE
+                cat(xNm, 'has too many levels:  dim(x$coefs) =',
                      paste(xdim, collapse=', '))
+              }
             }
           }
         }
-        xfdList0[[i]] <- xi
-        type[i+1] <- xi$basis$type
-        nb <- xi$basis$nbasis
+        type[i+1] <- xj$basis$type
+        nb <- xj$basis$nbasis
         if(!is.null(nb))nbasis[i+1] <- nb
+        xfdList0[[i]] <- xi
       }
       else {
-        if(is.numeric(xi)) {
+        if(is.numeric(xi)){
           xdim <- dim(xi)
           {
             if(is.null(xdim) || (length(xdim)<2)){
@@ -164,12 +171,15 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
                       xNames[[i]] <- paste(xNm, xNmsi, sep=sep)
                   }
                 }
-                else
-                  stop(xNm, 'has too many levels:  dim(x) = ',
+                else{
+                  oops <- TRUE
+                  cat(xNm, 'has too many levels:  dim(x) =',
                        paste(xdim, collapse=', '))
+                }
               }
             }
           }
+          xfdList0[[i]] <- xi
         }
         else {
           if(inherits(xi, 'character'))
@@ -188,17 +198,19 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
               xNames[[i]] <- paste(xNm, xiLvls, sep=sep)
               xfdList0[[i]] <- Xi
             }
-            else
-              stop('ERROR:  variable ', xNm, ' must be of class ',
-                   'fd, numeric, character or factor;  is ', class(xi))
+            else{
+              oops <- TRUE
+              cat('ERROR:  variable', xNm, 'must be of class',
+                   'fd, numeric, character or factor;  is', class(xi))
+            }
           }
         }
       }
     }
     if(nxi != ny){
-      cat('ERROR:  variable ', xNm, ' has only ',
-          nxi, ' observations != ', ny,
-          ' = the number of observations of y.')
+      cat('ERROR:  variable', xNm, 'has only',
+          nxi, 'observations !=', ny,
+          '= the number of observations of y.')
       oops <- TRUE
     }
   }
@@ -206,6 +218,7 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
 ##
 ## 4.  Create xfdList
 ##
+  xL.L0 <- rep(1:k0, nVars)
   xNames. <- c('const', unlist(xNames))
   k <- 1+sum(nVars)
   xfdList <- vector('list', k)
@@ -266,73 +279,44 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
              betaclass[oops[1]])
     }
     else {
-      blist <- betalist
       betalist <- vector('list', k)
       names(betalist) <- xNames.
-      beta1 <- blist
-      if(!inherits(blist, 'fdPar')){
-        betatype <- type[1]
-        if(is.na(betatype)){
-          typeTbl <- table(type[-1])
-          nType <- which(typeTbl==max(typeTbl))[1]
-          betatype <- names(typeTbl)[nType]
-        }
-        btype <- which(type==betatype)[1]
-        nb <- which((type==betatype) &
-                    (nbasis==min(nbasis, na.rm=TRUE)))
-        {
-          if(length(nb)>0) {
-            beta1 <- {
-              if(nb[1]==1) y
-              else fdPar(xfdList[[nb[1]]])
-            }
+      for(i in 1:k){
+        if(is.numeric(xfdList[[i]])){
+          if(is.numeric(y)){
+            bbasis <- create.constant.basis(trng)
+            bfd <- fd(basisobj=bbasis)
+            betalist[[i]] <- fdPar(bfd, ...)
           }
           else {
-            beta1 <- {
-              if(btype==1) y
-              else fdPar(xfdList[[btype]])
+            if(inherits(y, 'fd')){
+              bfd <- with(y, fd(basisobj=basis, fdnames=fdnames))
+              betalist[[i]] <- fdPar(bfd, ...)
+            }
+            else {
+              bfd <- with(y$fd, fd(basisobj=basis, fdnames=fdnames))
+              betalist[[i]] <- with(y, fdPar(bfd, Lfd, lambda,
+                                     estimate, penmat))
             }
           }
         }
-        if(is.numeric(blist)){
-          if(length(blist)>1)
-            stop('If betalist is numeric, it must have length',
-                 ' 1;  is ', length(blist))
-          if((blist %%1) > .Machine$double.eps)
-            stop('If betalist is numeric, it must be an integer;',
-                 '  blist = ', blist, ';  (blist %%1) = ',
-                 blist %% 1)
-          {
-            if(betatype %in% c('fourier', 'polynomial')){
-              beta1$fd$basis$nbasis <- blist
-
-            }
-            else
-              warning('betalist numeric ignored with betatype = ',
-                      betatype)
+        else {
+          xfdi <- {
+            if(i>1) xfdList0[[xL.L0[i-1]]]
+            else xfdList[[1]]
+          }
+          if(inherits(xfdi, 'fd')){
+            bfd <- with(xfdi, fd(basisobj=basis,
+                                 fdnames=fdnames))
+            betalist[[i]] <- fdPar(bfd, ...)
+          }
+          else{
+            bfd <- with(xfdi$fd, fd(basisobj=basis,
+                                    fdnames=fdnames))
+            betalist[[i]] <- with(xfdi, fdPar(bfd, Lfd, lambda,
+                                              estimate, penmat))
           }
         }
-      }
-      Coefs <- coef(beta1)
-      if(length(dim(Coefs))>2) Coefs <-  Coefs[,,1]
-      Coefs <- {
-        if(length(dim(Coefs))<2) matrix(Coefs)
-        else Coefs[, 1, drop=FALSE]
-      }
-      if(!is.null(dimnames(Coefs))) dimnames(Coefs)[[2]] <- NULL
-      Coefs[] <- 0
-#      coef(beta1) <- coefs
-      beta0 <- with(beta1, fdPar(fd(Coefs, fd$basis), Lfd,
-                                 lambda, estimate, penmat) )
-#      beta1$fd$coefs <- coefs
-#      for(i in 1:k) betalist[[i]] <- beta1
-      for(i in 1:k) betalist[[i]] <- beta0
-#     if the response is a scalar,
-#     make the intercept a scalar
-      if(is.numeric(y)) {
-        bbase <- create.constant.basis(trng)
-        bfd <- fd(0, bbase)
-        betalist[[1]] <- fdPar(bfd)
       }
     }
   }
@@ -374,4 +358,3 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
       do.call('fRegress.numeric', fRegressList)
   }
 }
-

@@ -4,7 +4,7 @@ fRegress <- function(y, ...){
 
 fRegress.fd <- function(y, xfdlist, betalist, wt=NULL,
                         y2cMap=NULL, SigmaE=NULL, ...){
-  yfdPar <- fdPar(y)
+  yfdPar <- fdPar(y, ...)
   fRegress.fdPar(yfdPar, xfdlist, betalist, wt=wt,
                  y2cMap=y2cMap, SigmaE=SigmaE, ...)
 }
@@ -93,11 +93,9 @@ fRegress.fdPar <- function(y, xfdlist, betalist, wt=NULL,
   if (!inherits(betalist, "list"))
     stop("Argument BETALIST is not a list object.")
 
-  if (length(betalist) != p)  {
-    cat(paste("\nNumber of regression coefficients does not match\n",
-              "number of independent variables."))
-    stop("")
-  }
+  if (length(betalist) != p)
+    stop("Number of regression coefficients does not match\n",
+              "  the number of independent variables.")
 
   berror <- FALSE
   for (j in 1:p) {

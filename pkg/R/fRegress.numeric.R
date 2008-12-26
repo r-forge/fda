@@ -78,11 +78,9 @@ fRegress.numeric <- function(y, xfdlist, betalist, wt=NULL,
   if (!inherits(betalist, "list"))
     stop("Argument BETALIST is not a list object.")
 
-  if (length(betalist) != p)  {
-    cat(paste("\nNumber of regression coefficients does not match\n",
-              "number of independent variables."))
-    stop("")
-  }
+  if (length(betalist) != p)
+    stop("Number of regression coefficients does not match\n",
+              "  the number of independent variables.")
 
   berror <- FALSE
   for (j in 1:p) {
