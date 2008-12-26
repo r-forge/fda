@@ -43,11 +43,25 @@ fRegress(y, ...)
 	coerced into a \code{formula} providing a symbolic description
 	of the model to be fitted satisfying the following rules:
 
+	The left hand side, \code{formula} \code{y}, must be either a
+	numeric vector or a univariate object of class \code{fd} or
+	\code{fdPar}.  If the former, it is replaced by \code{fdPar(y,
+	...)}.
+
 	All objects named on the right hand side must be either
 	\code{numeric} or \code{fd} (functional data) or \code{fdPar}.
 	The number of replications of \code{fd} or \code{fdPar}
 	object(s) must match each other and the number of observations
-	of \code{numeric} objects named.
+	of \code{numeric} objects named.  The right hand side of this
+	\code{formula} is translated into \code{xfdlist}, then passed to
+	another method for fitting (unless \code{method} = 'model').
+	Multivariate independent variables are allowed in a
+	\code{formula} and are split into univariate indpendent
+	variables in the resulting \code{xfdlist}.  Similarly,
+	categorical independent variables with \code{k} levels are
+	translated into \code{k-1} contrasts in \code{xfdlist}.  Any
+	smoothing information is passed to the corresponding component
+	of \code{betalist}.
 
       }
       \item{scalar}{
@@ -56,7 +70,8 @@ fRegress(y, ...)
       }
       \item{fd}{
 	a functional data object if the dependent variable is
-	functional.
+	functional.  A \code{y} of this class is replaced by fdPar(y,
+	...) and passed to \code{fRegress.fdPar}.
 
       }
       \item{fdPar}{
@@ -71,21 +86,20 @@ fRegress(y, ...)
     an optional \code{list} or \code{data.frame} containing names of
     objects identified in the \code{formula} or \code{character}
     \code{y}.
-
   }
   \item{xfdlist}{
     a list of length equal to the number of independent
-    variables. Members of this list are the independent variables.  They
-    be objects of either of these two classes:
+    variables (including any intercept). Members of this list are the
+    independent variables.  They can be objects of either of these two
+    classes:
 
     \itemize{
       \item{scalar}{
-	a vector if the independent dependent variable is scalar.
+	a numeric vector if the independent variable is scalar.
 
       }
       \item{fd}{
-	a functional data object if the dependent variable is
-	functional.
+	a (univariate) functional data object.
 
       }
     }
@@ -93,85 +107,53 @@ fRegress(y, ...)
     as the dependent variable object.  That is, if it is a scalar, it
     must be of the same length as the dependent variable, and if it is
     functional, it must have the same number of replications as the
-    dependent variable.
-
+    dependent variable.  (Only univariate independent variables are
+    currently allowed in \code{xfdlist}.)
   }
   \item{betalist}{
     For the \code{fd}, \code{fdPar}, and \code{numeric} methods,
-    \code{betalist} must be a list of length equal to the number of
-    independent variables.  Members of this list define the regression
-    functions to be estimated.  They are functional parameter objects
-    (class \code{fdPar}).  Even if a corresponding independent variable
-    is scalar, its regression coefficient will be functional if the
-    dependent variable is functional (though the intercept will be a
-    scalar).  Each of these functional parameter objects defines a
-    single functional data object, that is, with only one replication.
+    \code{betalist} must be a list of length equal to
+    \code{length(xfdlist)}.  Members of this list are functional
+    parameter objects (class \code{fdPar}) defining the regression
+    functions to be estimated.  Even if a corresponding independent
+    variable is scalar, its regression coefficient must be functional if
+    the dependent variable is functional.  (If the dependent variable is
+    a scalar, the coefficients of scalar independent variables,
+    including the intercept, must be constants, but the coefficients of
+    functional independent variables must be functional.)  Each of these
+    functional parameter objects defines a single functional data
+    object, that is, with only one replication.
 
     For the \code{formula} and \code{character} methods, \code{betalist}
-    can be a \code{list}, as for the other methods.  It can also be
-    \code{NULL}, a positive integer, single functional data object
-    (class \code{fd}) or functional parameter object that can be used to
-    construct such a list:
-
-    \itemize{
-      \item{NULL}{
-	Create \code{betalist} to match the \code{formula} \code{y}.  In
-	particular, \code{betalist} will be a list with one component
-	for each object on the right hand side.  For \code{fd} objects,
-	the corresponding \code{betalist} component will have the same
-	\code{type}.  For \code{numeric} \code{vectors} or
-	\code{arrays}, the corresponding \code{betalist} component will
-	match the left hand side if it is \code{fd} or the most frequent
-	\code{fd} type on the right hand side.
-
-      }
-      \item{integer}{
-	Create \code{betalist} as with \code{betalist = NULL}, but
-	adjust \code{nbasis} to this integer where feasible.  This is
-	trivial for \code{fourier} and \code{polynomial} bases.  Not
-	currently available for \code{bspline}, \code{polygonal} or
-	\code{constant} bases.
-
-      }
-      \item{fd}{
-	Coerce to a functional parameter object (\code{fdPar}) and use
-	to match all components on the right hand side
-
-      }
-      \item{fdPar}{
-	Use to match all components on the right hand side
-
-      }
-      \item{list}{
-	Must have one component to match each independent variable in
-	the \code{formula} \code{y}.  For a categorical independent
-	variable with \code{k} levels, \code{betalist} must have
-	\code{k-1} components, one for each \code{contrast} (selected
-	according to \code{options('contrasts')}).
-      }
-    }
+    can be either a \code{list}, as for the other methods, or
+    \code{NULL}, in which case a list is created.  If \code{betalist} is
+    created, it will use the bases from the corresponding component of
+    \code{xfdlist} if it is function or from the response variable.
+    Smoothing information (arguments \code{Lfdobj}, \code{lambda},
+    code{estimate}, and \code{penmat} of function \code{fdPar}) will
+    come from the corresponding component of \code{xfdlist} if it is of
+    class \code{fdPar} (or for scalar independent variables from the
+    response variable if it is of class \code{fdPar}) or from optional
+    \code{\dots} arguments if the reference variable is not of class
+    \code{fdPar}.
   }
   \item{wt}{
     weights for weighted least squares
-
   }
   \item{y2cMap}{
     the matrix mapping from the vector of observed values to the
     coefficients for the dependent variable.  This is output by function
     \code{smooth.basis}.  If this is supplied, confidence limits are
     computed, otherwise not.
-
   }
   \item{SigmaE}{
     Estimate of the covariances among the residuals.  This can only be
     estimated after a preliminary analysis with \code{fRegress}.
-
   }
   \item{method}{
     a character string matching either \code{fRegress} for functional
     regression estimation or \code{mode} to create the argument lists
     for functional regression estimation without running it.
-
   }
   \item{sep}{
     separator for creating names for multiple variables for
@@ -179,7 +161,6 @@ fRegress(y, ...)
     variables on the right hand side of the \code{formula} \code{y}.
     This happens with multidimensional \code{fd} objects as well as with
     categorical variables.
-
   }
   \item{\dots}{ optional arguments }
 }
@@ -402,9 +383,7 @@ betafd2.     <- fd(rep(0, nbetabasis), betabasis2.)
 # add smoothing
 betafdPar2.  <- fdPar(betafd2., lambda=10)
 
-# precip.Temp.mdl$betalist$tempfd <- betafdPar2.
-
-# New do it.
+# Now do it.
 precip.Temp.m <- do.call('fRegress', precip.Temp.mdl)
 
 # With the change in betalist, the answers may be different
@@ -424,24 +403,16 @@ betabasis1 <- create.constant.basis(c(0, 365))
 betafd1    <- fd(0, betabasis1)
 betafdPar1 <- fdPar(betafd1)
 
-nbetabasis  <- 25
-betabasis2  <- create.fourier.basis(c(0, 365), nbetabasis)
-betafd2     <- fd(rep(0, nbetabasis), betabasis2)
-# add smoothing
+betafd2     <- with(tempfd, fd(basisobj=basis, fdnames=fdnames))
+# convert to an fdPar object
 betafdPar2  <- fdPar(betafd2)
 
 betalist <- list(const=betafdPar1, tempfd=betafdPar2)
 
 precip.Temp <- fRegress(annualprec, xfdlist, betalist)
 \dontshow{stopifnot(}
-all.equal(precip.Temp[-3], precip.Temp.f[-3])
+all.equal(precip.Temp, precip.Temp.f)
 \dontshow{)}
-
-
-
-
-
-
 
 ###
 ###
@@ -493,12 +464,8 @@ region.fdlist <- list(const=rep(1, 35),
      region.Pacific=region.fd.Pacific)
 %str(TempRgn.mdl$betalist)
 
-beta1 <- fdPar(Temp.fd)
-Coefs <- coef(beta1)[, 1, drop=FALSE]
-dimnames(Coefs)[[2]] <- NULL
-Coefs[] <- 0
-beta0 <- with(beta1, fdPar(fd(Coefs, fd$basis), Lfd,
-                           lambda, estimate, penmat) )
+beta1 <- with(Temp.fd, fd(basisobj=basis, fdnames=fdnames))
+beta0 <- fdPar(beta1)
 betalist <- list(const=beta0, region.Atlantic=beta0,
              region.Continental=beta0, region.Pacific=beta0)
 
@@ -535,13 +502,14 @@ knee.hip.f <- fRegress(kneefd ~ hipfd)
 ## manual set-up
 ##
 #  set up the list of covariate objects
-conbasis <- create.constant.basis(c(0,20))
+%conbasis <- create.constant.basis(c(0,20))
 const  <- rep(1, dim(kneefd))
 xfdlist  <- list(const=const, hipfd=hipfd)
 
-betafdPar <- fdPar(gaitbasis, harmaccelLfd)
+beta0 <- with(kneefd, fd(basisobj=basis, fdnames=fdnames))
+beta1 <- with(hipfd, fd(basisobj=basis, fdnames=fdnames))
 
-betalist  <- list(const=betafdPar, hipfd=betafdPar)
+betalist  <- list(const=fdPar(beta0), hipfd=fdPar(beta1))
 
 fRegressout <- fRegress(kneefd, xfdlist, betalist)
 
