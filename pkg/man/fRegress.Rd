@@ -170,9 +170,9 @@ fRegress(y, ...)
 
   \tabular{lcccc}{
     \tab \tab explanatory \tab variable \tab \cr
-    response \tab | \tab vector \tab | \tab function \cr
+    response \tab | \tab scalar \tab | \tab function \cr
     \tab | \tab \tab | \tab \cr
-    numeric vector \tab | \tab lm \tab | \tab fRegress.numeric \cr
+    scalar \tab | \tab lm \tab | \tab fRegress.numeric \cr
     function \tab | \tab fRegress.fd or .fdPar \tab | \tab fRegress.fd
     or .fdPar or linmod \cr
   }
@@ -337,13 +337,26 @@ fRegress(y, ...)
 \examples{
 ###
 ###
-### vector response and explanatory variable
+### scalar response and explanatory variable
 ###   ... to compare fRegress and lm
 ###
 ###
+# example from help('lm')
+     ctl <- c(4.17,5.58,5.18,6.11,4.50,4.61,5.17,4.53,5.33,5.14)
+     trt <- c(4.81,4.17,4.41,3.59,5.87,3.83,6.03,4.89,4.32,4.69)
+     group <- gl(2,10,20, labels=c("Ctl","Trt"))
+     weight <- c(ctl, trt)
+lm.D9 <- lm(weight ~ group)
 
+fRegress.D9 <- fRegress(weight ~ group)
 
+(lm.D9.coef <- coef(lm.D9))
 
+(fRegress.D9.coef <- sapply(fRegress.D9$betaestlist, coef))
+
+\dontshow{stopifnot(}
+all.equal(as.numeric(lm.D9.coef), as.numeric(fRegress.D9.coef))
+\dontshow{)}
 
 ###
 ###

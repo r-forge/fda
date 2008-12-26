@@ -125,8 +125,8 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
               xNames[[i]] <- xNm
             }
             else {
+              nxi <- xdim[2]
               if(length(xdim)<4){
-                nxi <- xdim[2]
                 nVars[i] <- xdim[3]
                 xNmsi <- dimnames(xj$coefs)[[3]]
                 {
@@ -189,7 +189,7 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
               f.i <- formula(paste('~', xNm))
               Xi.df <- data.frame(xi)
               names(Xi.df) <- xNm
-              Xi <- (model.matrix(f.i, Xi.df)[, -1])
+              Xi <- (model.matrix(f.i, Xi.df)[, -1, drop=FALSE])
               nxi <- dim(Xi)[1]
               xiNms <- dimnames(Xi)[[2]]
               nVars[i] <- length(xiNms)
@@ -202,6 +202,7 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
               oops <- TRUE
               cat('ERROR:  variable', xNm, 'must be of class',
                    'fd, numeric, character or factor;  is', class(xi))
+              nxi <- length(xi)
             }
           }
         }
@@ -215,6 +216,11 @@ fRegress.formula <- function(y, data=NULL, betalist=NULL,
     }
   }
   if(oops)stop('illegal variable on the right hand side.')
+# If no functions found:
+  if(is.null(trng)){
+    warning("No functions found;  setting rangeval to 0:1")
+    trng <- 0:1
+  }
 ##
 ## 4.  Create xfdList
 ##

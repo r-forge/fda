@@ -49,7 +49,8 @@ fRegress.numeric <- function(y, xfdlist, betalist, wt=NULL,
 #    wt          ... weights for observations
 #    df          ... degrees of freedom for fit
 
-#  Last modified 11 December 2008 by Jim
+# Last modified 2008.12.26 by Spencer
+# previously modified 11 December 2008 by Jim
 
 #  check YFDPAR and compute sample size N
   yfdPar <- y
@@ -95,7 +96,7 @@ fRegress.numeric <- function(y, xfdlist, betalist, wt=NULL,
     }
   }
 
-  if (berror) stop("")
+  if (berror) stop("bad betalist.")
 
   betafd1    <- betalist[[1]]$fd
   betabasis1 <- betafd1$basis
@@ -120,39 +121,39 @@ fRegress.numeric <- function(y, xfdlist, betalist, wt=NULL,
   for (j in 1:p) {
     xfdj <- xfdlist[[j]]
     if (inherits(xfdj, "fd")) {
-        xcoef <- xfdj$coefs
-        if (length(dim(xcoef)) > 2) stop(
-            paste("Covariate",j,"is not univariate."))
+      xcoef <- xfdj$coefs
+      if (length(dim(xcoef)) > 2)
+        stop(paste("Covariate",j,"is not univariate."))
         #  check size of coefficient array
-        Nj    <- dim(xcoef)[2]
-        if (Nj != N) {
-            print(
-               paste("Incorrect number of replications in XFDLIST",
-                     "for covariate",j))
-            xerror = TRUE
-        }
+      Nj    <- dim(xcoef)[2]
+      if (Nj != N) {
+        print(paste("Incorrect number of replications in XFDLIST",
+                    "for covariate",j))
+        xerror = TRUE
+      }
     }
-    if (inherits(xfdj, "numeric")) {
-        if (!is.matrix(xfdj)) xfdj = as.matrix(xfdj)
-	  Zdimj <- dim(xfdj)
-        if (Zdimj[1] != N) {
-            print(paste("Vector in XFDLIST[[",j,"]] has wrong length."))
-				    xerror = TRUE
-		    }
-        if (Zdimj[2] != 1) {
-            print(paste("Matrix in XFDLIST[[",j,"]] has more than one column."))
-				    xerror = TRUE
-		    }
-        xfdlist[[j]] <- fd(matrix(xfdj,1,N), onebasis)
+    if (is.numeric(xfdj)) {
+      if (!is.matrix(xfdj)) xfdj = as.matrix(xfdj)
+      Zdimj <- dim(xfdj)
+      if (Zdimj[1] != N) {
+        print(paste("Vector in XFDLIST[[",j,"]] has wrong length."))
+        xerror = TRUE
+      }
+      if (Zdimj[2] != 1) {
+        print(paste("Matrix in XFDLIST[[", j,
+                    "]] has more than one column."))
+        xerror = TRUE
+      }
+      xfdlist[[j]] <- fd(matrix(xfdj,1,N), onebasis)
     }
-    if (!(inherits(xfdlist[[j]], "fd") ||
-          inherits(xfdlist[[j]], "numeric"))) {
-      print(paste("XFDLIST[[",j,"]] is neither an FD object nor numeric."))
+    if(!(inherits(xfdlist[[j]], "fd") || is.numeric(xfdlist[[j]]))){
+      print(paste("XFDLIST[[", j,
+                  "]] is neither an FD object nor numeric."))
       xerror = TRUE
     }
   }
 
-  if (xerror) stop("")
+  if (xerror) stop("bad xfdlist")
 
 #  check weights
 
