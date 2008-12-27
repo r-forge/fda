@@ -617,18 +617,19 @@ times.fd <- function(e1, e2, basisobj=basisobj1*basisobj2)
 #  Returns:
 #  FDAPROD  ...  A functional data object that is e1 times e2
 
-#  Last modified:  3 January 2007
+#  Last modified 2008.12.26 by Spencer Graves
+#  previously modified:  3 January 2007
 
 # Check if at least one argument is a functional data object
 
-if ((!(inherits(e1, "fd") | inherits(e2, "fd")))) stop(
-   "Neither argument for * is a functional data object.")
+  if ((!(inherits(e1, "fd") | inherits(e2, "fd"))))
+    stop("Neither argument for * is a functional data object.")
 
 #  Determine which of two cases hold:
 #   1.  both variables are functional
 #   2.  only one of them is functional
 
-if ( inherits(e1, "fd") & inherits(e2, "fd") ) {
+  if ( inherits(e1, "fd") & inherits(e2, "fd") ) {
 
     #  --------------------------------------------------------
     #       both arguments are functional data objects
@@ -647,8 +648,8 @@ if ( inherits(e1, "fd") & inherits(e2, "fd") ) {
     #  check that the two coefficient arrays have the same
     #  number of dimensions
 
-    if (length(coefd1) != length(coefd2)) stop(
-        "Number of dimensions of coefficient arrays do not match.")
+    if (length(coefd1) != length(coefd2))
+      stop("Number of dimensions of coefficient arrays do not match.")
 
     #  allow for one function having a single replicate,
     #  and if so, copy it as many times as there are replicates
@@ -658,36 +659,36 @@ if ( inherits(e1, "fd") & inherits(e2, "fd") ) {
     #  e1 is single,  e2 has replications
 
     if (coefd1[2] == 1 && coefd2[2] > 1) {
-        if     (ndim1 == 2) {
-           coef1 <- matrix(coef1,coefd1[1],coefd2[2])
-         } else if (ndim1 == 3) {
-            temp <- array(0,coefd2)
-            for (j in 1:coefd1[3])
-                temp[,,j] <- outer(coef1[,1,j],rep(1,coefd2[2]))
-            coef1 <- temp
-        } else {
-            stop("Dimensions of coefficient matrices not compatible.")
-        }
-        coefd1       <- dim(coef1)
-        e1$coefs <- coef1
+      if     (ndim1 == 2) {
+        coef1 <- matrix(coef1,coefd1[1],coefd2[2])
+      } else if (ndim1 == 3) {
+        temp <- array(0,coefd2)
+        for (j in 1:coefd1[3])
+          temp[,,j] <- outer(coef1[,1,j],rep(1,coefd2[2]))
+        coef1 <- temp
+      } else {
+        stop("Dimensions of coefficient matrices not compatible.")
+      }
+      coefd1       <- dim(coef1)
+      e1$coefs <- coef1
     }
 
     #  e2 is single,  e1 has replications
 
     if (coefd1[2] >  1 && coefd2[2] == 1) {
 
-        if      (ndim2 == 2) {
-            coef2 <- matrix(coef2,coefd2[1],coefd1[2])
-        } else if (ndim1 == 3) {
-            temp <- array(0,coefd1)
-            for (j in 1:coefd2[3])
-                temp[,,j] <- outer(coef2[,1,j],rep(1,coefd1[2]))
-            coef2 <- temp
-        } else {
-            stop("Dimensions of coefficient matrices not compatible.")
-        }
-        coefd2       <- dim(coef2)
-        e2$coefs <- coef2
+      if      (ndim2 == 2) {
+        coef2 <- matrix(coef2,coefd2[1],coefd1[2])
+      } else if (ndim1 == 3) {
+        temp <- array(0,coefd1)
+        for (j in 1:coefd2[3])
+          temp[,,j] <- outer(coef2[,1,j],rep(1,coefd1[2]))
+        coef2 <- temp
+      } else {
+        stop("Dimensions of coefficient matrices not compatible.")
+      }
+      coefd2       <- dim(coef2)
+      e2$coefs <- coef2
     }
 
     #  check that numbers of replications are equal
@@ -698,9 +699,9 @@ if ( inherits(e1, "fd") & inherits(e2, "fd") ) {
     #  check for matching in the multivariate case
 
     if (ndim1 > 2 && ndim2 > 2 && ndim1 != ndim2)
-        stop(paste("Both arguments multivariate, ",
-                   "but involve different numbers ",
-                   "of functions."))
+      stop(paste("Both arguments multivariate, ",
+                 "but involve different numbers ",
+                 "of functions."))
 
     #  extract the two bases
 
@@ -708,14 +709,18 @@ if ( inherits(e1, "fd") & inherits(e2, "fd") ) {
     basisobj2 <- e2$basis
     nbasis1   <- basisobj1$nbasis
     nbasis2   <- basisobj2$nbasis
-    if (basisobj1 == basisobj2) basisobj = basisobj1
+
+    basisobj <- {
+      if (basisobj1 == basisobj2) basisobj1
+      else basisobj1*basisobj2
+    }
 
     #  check that the ranges match if a range not supplied
 
     rangeval1 <- basisobj1$rangeval
     rangeval2 <- basisobj2$rangeval
-    if (any(rangeval1 != rangeval2)) stop(
-        "The ranges of the arguments are not equal.")
+    if (any(rangeval1 != rangeval2))
+      stop("The ranges of the arguments are not equal.")
 
     #  set up a fine mesh for evaluating the product
 
@@ -731,19 +736,19 @@ if ( inherits(e1, "fd") & inherits(e2, "fd") ) {
 
     if ((ndim1 <= 2 && ndim2 <= 2) || (ndim1 > 2 && ndim2 > 2)) {
         #  product array where the number of dimensions match
-        fdarray = fdarray1*fdarray2
+      fdarray = fdarray1*fdarray2
     } else {
         #  product array where the number of dimensions don't match
-        if (ndim1 == 2 && ndim2 > 2) {
-            fdarray = array(0,coefd2)
-            for (ivar in 1:coefd2[3])
-                fdarray[,,ivar] <- fdarray1*fdarray2[,,ivar]
-        }
-        if (ndim1 > 2 && ndim2 == 2) {
-            fdarray = array(0,coefd1)
-            for (ivar in 1:coefd1[3])
-                fdarray[,,ivar] <- fdarray1[,,ivar]*fdarray2
-        }
+      if (ndim1 == 2 && ndim2 > 2) {
+        fdarray = array(0,coefd2)
+        for (ivar in 1:coefd2[3])
+          fdarray[,,ivar] <- fdarray1*fdarray2[,,ivar]
+      }
+      if (ndim1 > 2 && ndim2 == 2) {
+        fdarray = array(0,coefd1)
+        for (ivar in 1:coefd1[3])
+          fdarray[,,ivar] <- fdarray1[,,ivar]*fdarray2
+      }
     }
 
     #  set up the coefficient by projecting on to the
@@ -758,21 +763,21 @@ if ( inherits(e1, "fd") & inherits(e2, "fd") ) {
     fdnames  <- fdnames1
     fdnames[[3]] <- paste(fdnames1[[3]],"*",fdnames2[[3]])
 
-} else {
+  } else {
 
     #  --------------------------------------------------------
     #    one argument is numeric and the other is functional
     #  --------------------------------------------------------
 
-    if ((!(is.numeric(e1) || is.numeric(e2)))) stop(
-        "Neither argument for * is numeric.")
+    if ((!(is.numeric(e1) || is.numeric(e2))))
+      stop("Neither argument for * is numeric.")
     #  make the numerical factor the first objec
     if        (is.numeric(e1) && inherits(e2, "fd")) {
-        fac   <- e1
-        fdobj <- e2
+      fac   <- e1
+      fdobj <- e2
     } else if (is.numeric(e2) && inherits(e1, "fd")) {
-        fac   <- e2
-        fdobj <- e1
+      fac   <- e2
+      fdobj <- e1
     } else stop("One of the arguments for * is of the wrong class.")
     coef     <- fdobj$coefs
     coefd    <- dim(coef)
@@ -789,13 +794,13 @@ if ( inherits(e1, "fd") & inherits(e2, "fd") ) {
     fdnames  <- fdobj$fdnames
     fdnames[[3]] <- paste(as.character(fac),"*",fdnames[[3]])
 
-}
+  }
 
 #  set up the functional data object
 
-fdprod   <- fd(coefprod, basisobj, fdnames)
+  fdprod   <- fd(coefprod, basisobj, fdnames)
 
-return(fdprod)
+  return(fdprod)
 
 }
 
