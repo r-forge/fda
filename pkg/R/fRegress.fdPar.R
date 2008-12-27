@@ -110,7 +110,7 @@ fRegress.fdPar <- function(y, xfdlist, betalist, wt=NULL,
     }
   }
 
-  if (berror) stop("")
+  if (berror) stop("bad betalist.")
 
   betafd1    <- betalist[[1]]$fd
   betabasis1 <- betafd1$basis
