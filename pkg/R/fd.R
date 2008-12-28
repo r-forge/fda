@@ -191,7 +191,7 @@ summary.fd <- function(object,...)
   plus.fd(e1, e2)
 }
 
-plus.fd <- function(e1, e2, basisobj=basisobj1*basisobj2)
+plus.fd <- function(e1, e2, basisobj=NULL)
 {
 #  PLUS: Pointwise sum of two functional data objects,
 #    the sum of a scalar and a functional data object,
@@ -215,8 +215,8 @@ plus.fd <- function(e1, e2, basisobj=basisobj1*basisobj2)
 #  coefficient matrices are the same dims, the coefficient
 #  matrices are simply added.
 
-#  last modified 2008.09.30 by Giles Hooker
-#  Previously modified 3 January 2007
+# Last modified 2008.12.26 by Spencer Graves
+# Previously modified 2008.09.30 by Giles Hooker
 
   if (!(inherits(e1, "fd") || inherits(e2, "fd")))
       stop("Neither argument for + is a functional data object.")
@@ -246,6 +246,7 @@ plus.fd <- function(e1, e2, basisobj=basisobj1*basisobj2)
       plusfd  <- fd(coef1 + coef2, basisobj1, fdnames)
       return(plusfd)
     }
+    basisobj <- basisobj1 * basisobj2
     #  check to see if (the number of dimensions match
     ndim1  <- length(coefd1)
     ndim2  <- length(coefd2)
@@ -385,7 +386,7 @@ plus.fd <- function(e1, e2, basisobj=basisobj1*basisobj2)
   minus.fd(e1, e2)
 }
 
-minus.fd <- function(e1, e2, basisobj=basisobj1*basisobj2)
+minus.fd <- function(e1, e2, basisobj=NULL)
 {
 #  MINUS: Pointwise difference two functional data objects,
 #    the between a scalar and a functional data object,
@@ -409,8 +410,8 @@ minus.fd <- function(e1, e2, basisobj=basisobj1*basisobj2)
 #  coefficient matrices are the same dims, the coefficient
 #  matrices are simply added.
 
-#  last modified 2008.09.30 by Giles Hooker
-#  Previously modified 3 January 2007
+# Last modified 2008.12.27 by Spencer Graved
+# Previously modified 2008.09.30 by Giles Hooker
 
   if(missing(e2)){
     if(!inherits(e1, 'fd'))
@@ -449,6 +450,7 @@ if (inherits(e1, "fd") && inherits(e2, "fd")) {
         minusfd  <- fd(coef1 - coef2, basisobj1, fdnames)
         return(minusfd)
     }
+    basisobj <-  basisobj1 * basisobj2
     #  check to see if (the number of dimensions match
     ndim1  <- length(coefd1)
     ndim2  <- length(coefd2)
@@ -588,7 +590,7 @@ return(minusfd)
   times.fd(e1, e2)
 }
 
-times.fd <- function(e1, e2, basisobj=basisobj1*basisobj2)
+times.fd <- function(e1, e2, basisobj=NULL)
 {
 #  TIMES: Pointwise product of two functional data objects,
 #    the product of a scalar and a functional data object,
@@ -617,7 +619,7 @@ times.fd <- function(e1, e2, basisobj=basisobj1*basisobj2)
 #  Returns:
 #  FDAPROD  ...  A functional data object that is e1 times e2
 
-#  Last modified 2008.12.26 by Spencer Graves
+#  Last modified 2008.12.27 by Spencer Graves
 #  previously modified:  3 January 2007
 
 # Check if at least one argument is a functional data object
@@ -710,10 +712,11 @@ times.fd <- function(e1, e2, basisobj=basisobj1*basisobj2)
     nbasis1   <- basisobj1$nbasis
     nbasis2   <- basisobj2$nbasis
 
-    basisobj <- {
-      if (basisobj1 == basisobj2) basisobj1
-      else basisobj1*basisobj2
-    }
+    if(is.null(basisobj))
+       basisobj <- {
+         if (basisobj1 == basisobj2) basisobj1
+         else basisobj1*basisobj2
+       }
 
     #  check that the ranges match if a range not supplied
 
