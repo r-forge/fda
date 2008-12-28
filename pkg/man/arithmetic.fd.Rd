@@ -16,9 +16,9 @@
 "+.fd"(e1, e2)
 "-.fd"(e1, e2)
 "*.fd"(e1, e2)
-plus.fd(e1, e2, basisobj=basisobj1*basisobj2)
-minus.fd(e1, e2, basisobj=basisobj1*basisobj2)
-times.fd(e1, e2, basisobj=basisobj1*basisobj2)
+plus.fd(e1, e2, basisobj=NULL)
+minus.fd(e1, e2, basisobj=NULL)
+times.fd(e1, e2, basisobj=NULL)
 }
 \arguments{
   \item{e1, e2}{
@@ -28,7 +28,8 @@ times.fd(e1, e2, basisobj=basisobj1*basisobj2)
     e2), respetively, only if e1 is of class 'fd'.
   }
   \item{basisobj}{
-    reference basis
+    reference basis;  defaults to e1[['basis']] * e2[['basis']];
+    ignored for \code{plus.fd} and \code{minus.fd}.
   }
 }
 
