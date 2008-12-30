@@ -11,11 +11,28 @@
 \description{
   This function carries out a functional regression analysis, where
   either the dependent variable or one or more independent variables are
-  functional.  Non-functional variables may be included on either side
-  of the equation.  In a concurrent functional linear model all function
+  functional.  Non-functional variables may be used on either side
+  of the equation.  In a simple problem where there is a single scalar independent
+  covariate with values \eqn{z_i, i=1,\ldots,N} and a single functional covariate
+  with values \eqn{x_i(t)}, the two versions of the model fit by \code{fRegress} are
+  the \emph{scalar} dependent variable model
+    \deqn{y_i = \beta_1 z_i + \int x_i(t) \beta_2(t) \, dt + e_i}
+  and the \emph{concurrent} functional dependent variable model
+    \deqn{y_i(t) = \beta_1(t) z_i + \beta_2(t) x_i(t) + e_i(t)}.
+  In these models, the final term \eqn{e_i} or \eqn{e_i(t)} is a residual, lack
+  of fit or error term.
+
+  In the concurrent functional linear model for a functional dependent variable, all functional
   variables are all evaluated at a common time or argument value $t$.
   That is, the fit is defined in terms of the behavior of all variables
   at a fixed time, or in terms of "now" behavior.
+
+  All regression coefficient functions \eqn{\beta_j(t)} are considered to be functional.
+  In the case of a scalar dependent variable, the regression coefficient for
+  a scalar covariate is converted to a functional variable with a constant basis.   All
+  regression coefficient functions can be forced to be \emph{smooth} through the use
+  of roughness penalties, and consequently are specified in the argument list as
+  functional parameter objects.
 }
 \usage{
 fRegress(y, ...)
@@ -52,11 +69,12 @@ fRegress(y, ...)
 	\code{numeric} or \code{fd} (functional data) or \code{fdPar}.
 	The number of replications of \code{fd} or \code{fdPar}
 	object(s) must match each other and the number of observations
-	of \code{numeric} objects named.  The right hand side of this
+	of \code{numeric} objects named, as well as the number of replications
+of the dependent variable object.  The right hand side of this
 	\code{formula} is translated into \code{xfdlist}, then passed to
 	another method for fitting (unless \code{method} = 'model').
 	Multivariate independent variables are allowed in a
-	\code{formula} and are split into univariate indpendent
+	\code{formula} and are split into univariate independent
 	variables in the resulting \code{xfdlist}.  Similarly,
 	categorical independent variables with \code{k} levels are
 	translated into \code{k-1} contrasts in \code{xfdlist}.  Any
@@ -130,7 +148,7 @@ fRegress(y, ...)
     created, it will use the bases from the corresponding component of
     \code{xfdlist} if it is function or from the response variable.
     Smoothing information (arguments \code{Lfdobj}, \code{lambda},
-    code{estimate}, and \code{penmat} of function \code{fdPar}) will
+    \code{estimate}, and \code{penmat} of function \code{fdPar}) will
     come from the corresponding component of \code{xfdlist} if it is of
     class \code{fdPar} (or for scalar independent variables from the
     response variable if it is of class \code{fdPar}) or from optional
@@ -516,7 +534,7 @@ knee.hip.f <- fRegress(kneefd ~ hipfd)
 ##
 #  set up the list of covariate objects
 %conbasis <- create.constant.basis(c(0,20))
-const  <- rep(1, dim(kneefd))
+const  <- rep(1, dim(kneefd$coef)[2])
 xfdlist  <- list(const=const, hipfd=hipfd)
 
 beta0 <- with(kneefd, fd(basisobj=basis, fdnames=fdnames))
