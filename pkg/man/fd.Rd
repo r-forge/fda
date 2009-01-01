@@ -38,13 +38,15 @@ fd(coef=NULL, basisobj=NULL, fdnames=NULL)
   \item{basisobj}{
     a functional basis object defining the basis
 
-    if(is.null(basisobj)){
-      if(is.null(coef)) basisobj <- basisfd()
-      else {
-	rc <- range(coef)
-	if(diff(rc)==0) rc <- rc+0:1
-	nb <- max(4, nrow(coef))
-	basisobj <- create.bspline.basis(rc, nbasis = nb)
+    \code{
+      if(is.null(basisobj)){
+	if(is.null(coef)) basisobj <- basisfd()
+	else {
+	  rc <- range(coef)
+	  if(diff(rc)==0) rc <- rc+0:1
+	  nb <- max(4, nrow(coef))
+	  basisobj <- create.bspline.basis(rc, nbasis = nb)
+	}
       }
     }
   }
