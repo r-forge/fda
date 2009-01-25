@@ -3,6 +3,11 @@ second edition (2006) and 'Applied Functional Data Analysis'
 (2002), both by James O. Ramsay and Bernard W. Silverman
 (Springer).
 
+Release 2.1.0 made 'fRegress' much easier to use by adding
+a formula interface to handle the laborious setup.  To do
+this and maintain backward compatibility, 'fRegres' is now
+a generic function with a 'formula' and other methods.
+
 Release 2.0.5 introduced 'predict', 'fitted', and 'residual'
 methods as wrappers for various 'eval.*' functions where
 that seemed appropriate.  This was suggested by Soren
