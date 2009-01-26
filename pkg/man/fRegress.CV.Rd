@@ -14,11 +14,19 @@
   criterion.
 }
 \usage{
-fRegress.CV(y, xfdlist, betalist, ...)
+fRegress.CV(yfdPar, xfdlist, betalist, whichobs=NULL,...)
 }
 \arguments{
-  \item{y}{
-    the dependent variable object.
+  \item{yfdPar}{
+    the dependent variable object.  It may be an object of three
+    possible classes:
+
+    \itemize{
+      \item{scalar}{ a vector if the dependent variable is scalar.}
+      \item{fd} { functional data object if the dependent variable is
+	     functional.
+      }
+	 }
   }
   \item{xfdlist}{
     a list whose members are functional parameter objects specifying
@@ -29,6 +37,10 @@ fRegress.CV(y, xfdlist, betalist, ...)
     a list containing functional parameter objects specifying the
     regression functions and their level of smoothing.
   }
+  \item{whichobs}{
+    a vector giving the indeces of which observations are to be
+    left out in the cross validation. Defaults to all of them.
+  }
   \item{\dots}{
     optional arguments not used by \code{fRegress.CV} but needed for
     superficial compatibability with \code{fRegress} methods.
@@ -38,7 +50,7 @@ fRegress.CV(y, xfdlist, betalist, ...)
   A list containing
   \item{SSE.CV}{ The sum of squared errors, or integrated squared errors}
   \item{errfd.cv}{ Either a vector or a functional data object giving the
-    cross-validated errors }
+    cross-validated errors. }
 }
 \seealso{
 \code{\link{fRegress}},
