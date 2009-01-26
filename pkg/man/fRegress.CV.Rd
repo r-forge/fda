@@ -14,10 +14,10 @@
   criterion.
 }
 \usage{
-fRegress.CV(yfdPar, xfdlist, betalist, whichobs=NULL,...)
+fRegress.CV(y, xfdlist, betalist, whichobs=NULL,...)
 }
 \arguments{
-  \item{yfdPar}{
+  \item{y}{
     the dependent variable object.  It may be an object of three
     possible classes:
 
@@ -26,7 +26,7 @@ fRegress.CV(yfdPar, xfdlist, betalist, whichobs=NULL,...)
       \item{fd} { functional data object if the dependent variable is
 	     functional.
       }
-	 }
+    }
   }
   \item{xfdlist}{
     a list whose members are functional parameter objects specifying
