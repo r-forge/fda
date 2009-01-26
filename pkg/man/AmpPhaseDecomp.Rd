@@ -19,7 +19,7 @@ AmpPhaseDecomp(xfd, yfd, wfd)
     a functional data object containing the unregistered curves.
   }
   \item{yfd}{
-    a functional data object containing the unregistered curves.
+    a functional data object containing the registered curves.
   }
   \item{wfd}{
     a functional data object defining the functions $w(t)$ that define
