@@ -264,10 +264,20 @@ of the dependent variable object.  The right hand side of this
 	the vector of weights input or inferred
 
       }
+
+
+   If \code{class(y)} is numeric, the \code{fRegress} object also includes:
+   
       \item{df}{
-	equivalent degrees of freedom for the fit;  only present if
-	\code{class(y)} is \code{numeric}.
+	equivalent degrees of freedom for the fit.
       }
+      \item{OCV}{
+      the leave-one-out cross validation score for the model.
+      }
+      \item{gcv}{
+      the generalized cross validation score.
+      }
+
 
       If \code{class(y)} is either \code{fd} or \code{fdPar}, the
       \code{fRegress} object returned also includes 5 other components:
@@ -289,8 +299,7 @@ of the dependent variable object.  The right hand side of this
 	a covariance matrix
 
       }
-      \item{c2bMap}{
-	a map
+      \item{c2bMap}{	a map
       }
     }
   }

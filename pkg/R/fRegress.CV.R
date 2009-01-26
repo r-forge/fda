@@ -1,20 +1,32 @@
-fRegress.CV <- function(y, xfdlist, betalist, ...){
+fRegress.CV <- function(yfdPar, xfdlist, betalist,whichobs=NULL, ...){
 
 # FREGRESS.CV computes cross-validated error sum of squares
-# only for scalar dependent variable
+# for scalar or functional responses. NOTE: ordinary and
+# generalized cross validation scores are now returned by fRegress
+# when scalar responses are used.
 
-# last modified 2008.12.19 by Spencer
-# Previously modified 15 December 2008 by Jim
-  yvec <- y
-  if (!inherits(yvec, "numeric"))
+# last modified 2009.01.26 by Giles
+# previously modified 2008.12.19 by Spencer
+
+if (inherits(yfdPar, "fd")) yfdPar <- fdPar(yfdPar)
+
+
+#  yvec <- y
+if (inherits(yfdPar, "numeric"))  {
     stop("Dependent variable is not scalar.")
 
+    yvec <- yfdPar
   N <- length(yvec)
   p <- length(xfdlist)
+  
+  if(is.null(whichobs)) whichobs<-1:N
+  N <- length(whichobs)
+  
   betafdPar <- betalist[[2]]
   betarange <- betafdPar$fd$basis$rangeval
   SSE.CV    <- 0
-  for (i in 1:N) {
+  for (m in 1:N) {
+    i = whichobs[m]
     xfdlisti <- vector("list",p)
     for (j in 1:p) {
         xfdj   <- xfdlist[[j]]
@@ -49,10 +61,52 @@ fRegress.CV <- function(y, xfdlist, betalist, ...){
                           0.5*( xveci[1]    *betavec[1] +
                           xveci[nfine]*betavec[nfine] ))
     }
-    SSE.CV <- SSE.CV + (yvec[i] - yhati)^2
+    errfd[i] = yfdPar[i] - yhati;
+    SSE.CV <- SSE.CV + errfd[i]^2
+#    SSE.CV <- SSE.CV + (yvec[i] - yhati)^2
   }
-
-  return(SSE.CV)
-
+#  return(SSE.CV)
 }
+else if (inherits(yfdPar,"fdPar")){
+   yfd <- yfdPar$fd
+   ycoef <- yfd$coefs
+   N <- dim(ycoef)[2]
+   if(is.null(whichobs)) whichobs<-1:N
+   N <- length(whichobs)
+   p <- length(xfdlist)
+
+   SSE.CV = 0
+   errcoefs = c()
+
+   for(m in 1:N){
+      i =  whichobs[m]
+      if(m == 2)
+           print(paste('Estimated Computing time =',round(N*elapsed.time),'seconds.'))
+
+      begin <- proc.time()
+      txfdlist = xfdlist              # First of all, leave one out
+  		for(k in 1:p){
+  			txfdlist[[k]] = xfdlist[[k]][-i]
+  		}
+  		tres = fRegress(yfd[-i],txfdlist,betalist)
+
+  		yhat = 0                        # Now we predict
+  		for(k in 1:p){
+  			yhat = yhat + xfdlist[[k]][i]*tres$betaestlist[[k]]$fd
+  		}
+  		err = yfd[i] - yhat
+
+      errcoefs = cbind(errcoefs,err$coefs)
+
+  		SSE.CV = SSE.CV + inprod(err,err)
+  		elapsed.time <- max(proc.time()-begin,na.rm=TRUE)
+  }
+  errfd = fd(errcoefs,err$basis)
+  names(errfd$fdnames)[[3]] = "Xval Errors"
+}
+else stop("Dependent variable is not functional or scalar.")
+
+return(list(SSE.CV=SSE.CV,errfd.cv=errfd))
+}
+
 
