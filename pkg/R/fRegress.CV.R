@@ -1,4 +1,4 @@
-fRegress.CV <- function(y, xfdlist, betalist,whichobs=NULL, ...){
+fRegress.CV <- function(y, xfdlist, betalist,CVobs=NULL, ...){
 
 # FREGRESS.CV computes cross-validated error sum of squares
 # for scalar or functional responses. NOTE: ordinary and
@@ -19,15 +19,15 @@ fRegress.CV <- function(y, xfdlist, betalist,whichobs=NULL, ...){
     N <- length(yvec)
     p <- length(xfdlist)
 
-    if(is.null(whichobs)) whichobs<-1:N
-    N <- length(whichobs)
+    if(is.null(CVobs)) CVobs<-1:N
+    N <- length(CVobs)
 
     betafdPar <- betalist[[2]]
     betarange <- betafdPar$fd$basis$rangeval
     SSE.CV    <- 0
     errfd = c()
     for (m in 1:N) {
-      i = whichobs[m]
+      i = CVobs[m]
       xfdlisti <- vector("list",p)
       for (j in 1:p) {
         xfdj   <- xfdlist[[j]]
@@ -72,15 +72,15 @@ fRegress.CV <- function(y, xfdlist, betalist,whichobs=NULL, ...){
     yfd <- yfdPar$fd
     ycoef <- yfd$coefs
     N <- dim(ycoef)[2]
-    if(is.null(whichobs)) whichobs<-1:N
-    N <- length(whichobs)
+    if(is.null(CVobs)) CVobs<-1:N
+    N <- length(CVobs)
     p <- length(xfdlist)
 
     SSE.CV = 0
     errcoefs = c()
 
     for(m in 1:N){
-      i =  whichobs[m]
+      i =  CVobs[m]
       if(m == 2)
         print(paste('Estimated Computing time =',round(N*elapsed.time),'seconds.'))
 
