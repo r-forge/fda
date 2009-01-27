@@ -14,7 +14,7 @@
   criterion.
 }
 \usage{
-fRegress.CV(y, xfdlist, betalist, whichobs=NULL, ...)
+fRegress.CV(y, xfdlist, betalist, CVobs=NULL, ...)
 }
 \arguments{
   \item{y}{
@@ -42,10 +42,10 @@ fRegress.CV(y, xfdlist, betalist, whichobs=NULL, ...)
     a list containing functional parameter objects specifying the
     regression functions and their level of smoothing.
   }
-  \item{whichobs}{
+  \item{CVobs}{
     a vector giving the indices of observations to be deleted one at a
     time in the cross validation. Defaults to all of them.
-    Observations not in \code{whichobs} will be included in all
+    Observations not in \code{CVobs} will be included in all
     bootstrap / cross validation samples.
   }
   \item{\dots}{
