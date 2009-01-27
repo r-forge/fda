@@ -1,4 +1,4 @@
-fRegress.CV <- function(yfdPar, xfdlist, betalist,whichobs=NULL, ...){
+fRegress.CV <- function(y, xfdlist, betalist,whichobs=NULL, ...){
 
 # FREGRESS.CV computes cross-validated error sum of squares
 # for scalar or functional responses. NOTE: ordinary and
@@ -8,11 +8,12 @@ fRegress.CV <- function(yfdPar, xfdlist, betalist,whichobs=NULL, ...){
 # last modified 2009.01.26 by Giles
 # previously modified 2008.12.19 by Spencer
 
+  yfdPar <- y
   if (inherits(yfdPar, "fd")) yfdPar <- fdPar(yfdPar)
 
 #  yvec <- y
   if (inherits(yfdPar, "numeric"))  {
-    stop("Dependent variable is not scalar.")
+#    stop("Dependent variable is not scalar.")
 
     yvec <- yfdPar
     N <- length(yvec)
@@ -24,6 +25,7 @@ fRegress.CV <- function(yfdPar, xfdlist, betalist,whichobs=NULL, ...){
     betafdPar <- betalist[[2]]
     betarange <- betafdPar$fd$basis$rangeval
     SSE.CV    <- 0
+    errfd = c()
     for (m in 1:N) {
       i = whichobs[m]
       xfdlisti <- vector("list",p)
