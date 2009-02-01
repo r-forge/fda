@@ -51,7 +51,7 @@ fRegress(y, ...)
 }
 \arguments{
   \item{y}{
-    the dependent variable object.  It may be an object of four
+    the dependent variable object.  It may be an object of five
     possible classes:
 
     \itemize{
@@ -69,11 +69,11 @@ fRegress(y, ...)
 	\code{numeric} or \code{fd} (functional data) or \code{fdPar}.
 	The number of replications of \code{fd} or \code{fdPar}
 	object(s) must match each other and the number of observations
-	of \code{numeric} objects named, as well as the number of replications
-of the dependent variable object.  The right hand side of this
-	\code{formula} is translated into \code{xfdlist}, then passed to
-	another method for fitting (unless \code{method} = 'model').
-	Multivariate independent variables are allowed in a
+	of \code{numeric} objects named, as well as the number of
+	replications of the dependent variable object.  The right hand
+	side of this \code{formula} is translated into \code{xfdlist},
+	then passed to another method for fitting (unless \code{method}
+	= 'model'). Multivariate independent variables are allowed in a
 	\code{formula} and are split into univariate independent
 	variables in the resulting \code{xfdlist}.  Similarly,
 	categorical independent variables with \code{k} levels are
@@ -94,7 +94,7 @@ of the dependent variable object.  The right hand side of this
       }
       \item{fdPar}{
 	a functional parameter object if the dependent variable is
-	functional, and if it is necessary to smooth the prediction
+	functional, and if it is desired to smooth the prediction
 	of the dependent variable.
 
       }
@@ -267,7 +267,7 @@ of the dependent variable object.  The right hand side of this
 
 
    If \code{class(y)} is numeric, the \code{fRegress} object also includes:
-   
+
       \item{df}{
 	equivalent degrees of freedom for the fit.
       }
@@ -312,7 +312,6 @@ of the dependent variable object.  The right hand side of this
     this list is then used to call the appropriate other
     \code{fRegress} function.
 
-
     Alternatively, to see how the \code{formula} is translated, use
     the alternative 'model' value for the argument \code{method}.  In
     that case, the function returns a list with the arguments
@@ -322,7 +321,7 @@ of the dependent variable object.  The right hand side of this
     \itemize{
       \item{xfdlist0}{
 	a list of the objects named on the right hand side of
-	\code{formula}.  The will differ from from \code{xfdlist} for
+	\code{formula}.  This will differ from \code{xfdlist} for
 	any categorical or multivariate right hand side object.
 
       }
