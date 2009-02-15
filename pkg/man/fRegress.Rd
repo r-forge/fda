@@ -12,27 +12,34 @@
   This function carries out a functional regression analysis, where
   either the dependent variable or one or more independent variables are
   functional.  Non-functional variables may be used on either side
-  of the equation.  In a simple problem where there is a single scalar independent
-  covariate with values \eqn{z_i, i=1,\ldots,N} and a single functional covariate
-  with values \eqn{x_i(t)}, the two versions of the model fit by \code{fRegress} are
-  the \emph{scalar} dependent variable model
-    \deqn{y_i = \beta_1 z_i + \int x_i(t) \beta_2(t) \, dt + e_i}
+  of the equation.  In a simple problem where there is a single scalar
+  independent covariate with values \eqn{z_i, i=1,\ldots,N} and a single
+  functional covariate with values \eqn{x_i(t)}, the two versions of the
+  model fit by \code{fRegress} are the \emph{scalar} dependent variable
+  model
+
+  \deqn{y_i = \beta_1 z_i + \int x_i(t) \beta_2(t) \, dt + e_i}
+
   and the \emph{concurrent} functional dependent variable model
-    \deqn{y_i(t) = \beta_1(t) z_i + \beta_2(t) x_i(t) + e_i(t)}.
-  In these models, the final term \eqn{e_i} or \eqn{e_i(t)} is a residual, lack
-  of fit or error term.
 
-  In the concurrent functional linear model for a functional dependent variable, all functional
-  variables are all evaluated at a common time or argument value $t$.
-  That is, the fit is defined in terms of the behavior of all variables
-  at a fixed time, or in terms of "now" behavior.
+  \deqn{y_i(t) = \beta_1(t) z_i + \beta_2(t) x_i(t) + e_i(t).}
 
-  All regression coefficient functions \eqn{\beta_j(t)} are considered to be functional.
-  In the case of a scalar dependent variable, the regression coefficient for
-  a scalar covariate is converted to a functional variable with a constant basis.   All
-  regression coefficient functions can be forced to be \emph{smooth} through the use
-  of roughness penalties, and consequently are specified in the argument list as
-  functional parameter objects.
+  In these models, the final term \eqn{e_i} or \eqn{e_i(t)} is a
+  residual, lack of fit or error term.
+
+  In the concurrent functional linear model for a functional dependent
+  variable, all functional   variables are all evaluated at a common
+  time or argument value $t$.  That is, the fit is defined in terms of
+  the behavior of all variables at a fixed time, or in terms of "now"
+  behavior.
+
+  All regression coefficient functions \eqn{\beta_j(t)} are considered
+  to be functional.  In the case of a scalar dependent variable, the
+  regression coefficient for a scalar covariate is converted to a
+  functional variable with a constant basis.   All regression
+  coefficient functions can be forced to be \emph{smooth} through the
+  use of roughness penalties, and consequently are specified in the
+  argument list as functional parameter objects.
 }
 \usage{
 fRegress(y, ...)
@@ -88,8 +95,8 @@ fRegress(y, ...)
       }
       \item{fd}{
 	a functional data object if the dependent variable is
-	functional.  A \code{y} of this class is replaced by fdPar(y,
-	...) and passed to \code{fRegress.fdPar}.
+	functional.  A \code{y} of this class is replaced by
+	\code{fdPar(y, ...)} and passed to \code{fRegress.fdPar}.
 
       }
       \item{fdPar}{
@@ -191,8 +198,9 @@ fRegress(y, ...)
     response \tab | \tab scalar \tab | \tab function \cr
     \tab | \tab \tab | \tab \cr
     scalar \tab | \tab lm \tab | \tab fRegress.numeric \cr
-    function \tab | \tab fRegress.fd or .fdPar \tab | \tab fRegress.fd
-    or .fdPar or linmod \cr
+    function \tab | \tab fRegress.fd or \tab | \tab fRegress.fd
+    or \cr
+    \tab | \tab fRegress.fdPar \tab | \tab fRegress.fdPar or linmod \cr
   }
 
   For \code{fRegress.numeric}, the numeric response is assumed to be the
