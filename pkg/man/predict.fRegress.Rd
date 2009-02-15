@@ -16,8 +16,14 @@
     Object of class inheriting from \code{lmWinsor}
   }
   \item{ newdata }{
-    An optional vector of argument values for which predictions are
-    desired.  If omitted, the fitted values are used.
+    Either NULL or a list matching object\$xfdlist.
+
+    If(is.null(newdata)) predictions <- object\$yhatfdobj
+
+    If newdata is a list, predictions = the sum of either newdata[i] *
+    betaestfdlist[i] if object\$yfdobj has class \code{fd} or inprod(
+    newdata[i], betaestfdlist[i]) if class(object\$yfdobj) =
+    \code{numeric}.
   }
   \item{ se.fit}{
     a switch indicating if standard errors of predictions are required
@@ -33,24 +39,31 @@
 \details{
   1.  Without \code{newdata}, fit <- object\$yhatfdobj.
 
-  2.  With \code{newdata}, first call \code{predict.fd} with each
-  element of \code{object\$xfdlist} and \code{newdata}, then combine the
-  results using \code{object\$betaestlist} to get \code{fit}.  Repeat
-  for \code{object$betaestlist}.
+  2.  With \code{newdata}, if(class(object\$y) == 'numeric'), fit <- sum
+  over i of inprod(betaestlist[i], newdata[i]).  Otherwise, fit <- sum
+  over i of betaestlist[i] * newdata[i].
 
   3.  If(se.fit | (interval != 'none')) compute \code{se.fit}, then
   return whatever is desired.
 }
 \value{
-  \code{predict.fRegress} produces a vector of predictions or a matrix
-  of predictions and bounds with column names \code{lwr} and
-  \code{upr} if \code{interval} is not "none".
+  The predictions produced by \code{predict.fRegress} are either a
+  vector or a functional parameter (class \code{fdPar}) object, matching
+  the class of \code{object\$y}.
+
+  If \code{interval} is not "none", the predictions will be
+  multivariate for \code{object\$y} and the requested \code{lwr} and
+  \code{upr} bounds.  If \code{object\$y} is a scalar, these predictions
+  are returned as a matrix;  otherwise, they are a multivariate
+  functional parameter object (class \code{fdPar}).
 
   If \code{se.fit} is \code{TRUE}, \code{predict.fRegress} returns a
   list with the following components:
 
   \item{fit}{
-    vector or matrix depending on the value of \code{interval}.
+    vector or matrix or univariate or multivariate functional parameter
+    object depending on the value of \code{interval} and the class of
+    \code{object\$y}.
   }
   \item{se.fit}{standard error of predicted means}
 }
@@ -77,18 +90,36 @@ pred.lm.D9 <- predict(lm.D9)
 \dontshow{stopifnot(}
 all.equal(as.vector(pred.fR.D9), as.vector(pred.lm.D9))
 \dontshow{)}
+
+##
+## vector response with functional explanatory variable
+##
+annualprec <- log10(apply(CanadianWeather$dailyAv[,,"Precipitation.mm"],
+                          2,sum))
+smallbasis  <- create.fourier.basis(c(0, 365), 25)
+tempfd <- smooth.basis(day.5,
+          CanadianWeather$dailyAv[,,"Temperature.C"], smallbasis)$fd
+precip.Temp.f <- fRegress(annualprec ~ tempfd)
+
+#precip.Temp.p <- predict(precip.Temp.f, interval='confidence')
+\dontshow{stopifnot(}
+#class(precip.Temp.p) == 'matrix'
+\dontshow{)}
+
+## ***** not yet implemented *****
+
 ##
 ## Example using se.fit
 ##
 
-# Coming soon
+#precip.Temp.p <- predict(precip.Temp.f, se.fit=TRUE)
 
+\dontshow{stopifnot(}
+#class(precip.Temp.p) == 'list'
+\dontshow{)}
 
-##
-## Example using interval
-##
+## ***** not yet implemented *****
 
-# Coming soon
 
 
 }

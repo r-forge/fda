@@ -535,8 +535,8 @@ fRegress.numeric <- function(y, xfdlist, betalist, wt=NULL,
             betafdj    <- betafdParj$fd
             betamat    <- eval.fd(tfine, betafdj)
             fitj       <- deltat*(crossprod(xmat,betamat) -
-						                 0.5*(outer(xmat[1,    ],betamat[1,    ]) +
-				                          outer(xmat[nfine,],betamat[nfine,])))
+                                  0.5*(outer(xmat[1,    ],betamat[1,    ]) +
+                                       outer(xmat[nfine,],betamat[nfine,])))
             yhatmat    <- yhatmat + fitj
         } else{
 	          betaestfdParj <- betaestlist[[j]]
@@ -547,10 +547,10 @@ fRegress.numeric <- function(y, xfdlist, betalist, wt=NULL,
     yhatfdobj <- yhatmat
 
     # Calculate OCV and GCV scores
-    
+
     OCV = sum( (ymat-yhatmat)^2/(1-hatvals)^2 )
     GCV = sum( (ymat-yhatmat)^2 )/( (sum(1-hatvals))^2 )
-    
+
 
 
     #  -----------------------------------------------------------------------
