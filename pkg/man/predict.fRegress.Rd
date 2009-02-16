@@ -94,11 +94,11 @@ all.equal(as.vector(pred.fR.D9), as.vector(pred.lm.D9))
 ##
 ## vector response with functional explanatory variable
 ##
-annualprec <- log10(apply(CanadianWeather$dailyAv[,,"Precipitation.mm"],
-                          2,sum))
+annualprec <- log10(apply(CanadianWeather$dailyAv[,,
+                             "Precipitation.mm"], 2,sum))
 smallbasis  <- create.fourier.basis(c(0, 365), 25)
 tempfd <- smooth.basis(day.5,
-          CanadianWeather$dailyAv[,,"Temperature.C"], smallbasis)$fd
+       CanadianWeather$dailyAv[,,"Temperature.C"], smallbasis)$fd
 precip.Temp.f <- fRegress(annualprec ~ tempfd)
 
 #precip.Temp.p <- predict(precip.Temp.f, interval='confidence')

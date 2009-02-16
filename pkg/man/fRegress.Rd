@@ -198,6 +198,7 @@ fRegress(y, ...)
     response \tab | \tab scalar \tab | \tab function \cr
     \tab | \tab \tab | \tab \cr
     scalar \tab | \tab lm \tab | \tab fRegress.numeric \cr
+    \tab | \tab \tab | \tab \cr
     function \tab | \tab fRegress.fd or \tab | \tab fRegress.fd
     or \cr
     \tab | \tab fRegress.fdPar \tab | \tab fRegress.fdPar or linmod \cr
