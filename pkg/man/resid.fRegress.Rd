@@ -51,6 +51,22 @@ resid.lm.D9 <- resid(lm.D9)
 all.equal(as.vector(resid.fR.D9), as.vector(resid.lm.D9))
 \dontshow{)}
 
+##
+##  resid from knee angle prediciton from hip angle;
+##
+(gaittime <- as.numeric(dimnames(gait)[[1]])*20)
+gaitrange <- c(0,20)
+gaitbasis <- create.fourier.basis(gaitrange, nbasis=21)
+harmaccelLfd <- vec2Lfd(c(0, (2*pi/20)^2, 0), rangeval=gaitrange)
+gaitfd <- smooth.basisPar(gaittime, gait,
+       gaitbasis, Lfdobj=harmaccelLfd, lambda=1e-2)$fd
+hipfd  <- gaitfd[,1]
+kneefd <- gaitfd[,2]
+knee.hip.f <- fRegress(kneefd ~ hipfd)
+
+#knee.hip.e <- resid(knee.hip.f)
+#plot(knee.hip.e)
+
 
 
 }

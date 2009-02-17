@@ -145,6 +145,7 @@ kneefd <- gaitfd[,2]
 knee.hip.f <- fRegress(kneefd ~ hipfd)
 
 knee.hip.pred <- predict(knee.hip.f)
+plot(knee.hip.pred)
 }
 \keyword{ models }
 
