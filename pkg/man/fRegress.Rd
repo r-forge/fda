@@ -525,7 +525,8 @@ all.equal(TempRgn, TempRgn.f)
 
 ###
 ###
-### functional response with (concurrent) functional explanatory variable
+### functional response with
+###            (concurrent) functional explanatory variable
 ###
 ###
 

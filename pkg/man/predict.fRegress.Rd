@@ -73,6 +73,11 @@
   \code{\link[stats]{predict}}
 }
 \examples{
+###
+###
+### vector response with functional explanatory variable
+###
+###
 ##
 ## example from help('lm')
 ##
@@ -120,8 +125,26 @@ precip.Temp.f <- fRegress(annualprec ~ tempfd)
 
 ## ***** not yet implemented *****
 
+###
+###
+### functional response with
+###            (concurrent) functional explanatory variable
+###
+###
+##
+##  predict knee angle from hip angle;  from demo('gait', package='fda')
+##
+(gaittime <- as.numeric(dimnames(gait)[[1]])*20)
+gaitrange <- c(0,20)
+gaitbasis <- create.fourier.basis(gaitrange, nbasis=21)
+harmaccelLfd <- vec2Lfd(c(0, (2*pi/20)^2, 0), rangeval=gaitrange)
+gaitfd <- smooth.basisPar(gaittime, gait,
+       gaitbasis, Lfdobj=harmaccelLfd, lambda=1e-2)$fd
+hipfd  <- gaitfd[,1]
+kneefd <- gaitfd[,2]
+knee.hip.f <- fRegress(kneefd ~ hipfd)
 
-
+knee.hip.pred <- predict(knee.hip.f)
 }
 \keyword{ models }
 
