@@ -25,3 +25,7 @@ predict.fRegress <- function(object, newdata=NULL, se.fit = FALSE,
 #
   stop('Need se.fit;  not implemented yet')
 }
+
+residuals.fRegress <- function(object, ...){
+  object$yfdPar - predict(object, ...)
+}
