@@ -22,8 +22,9 @@
   sample required about 6 seconds to produce, and for simplicity, time
   was normalized to this interval for all 50 records.  The script
   requires 50 strokes, with an average time of 120 milliseconds per
-  stroke.  These raw data were transformed using principal components to
-  produce this \code{StatSciChinese} data set.
+  stroke.  These raw data were shifted and rotated so the numbers more
+  accruately reflected \code{x} and \code{y} coordinates relative to the
+  drawn characters plus vertical distance from the paper.
 }
 %\source{}
 \references{
@@ -34,10 +35,14 @@
 \examples{
 data(StatSciChinese)
 
-plot(StatSciChinese[, 1, 3], type='l')
-sel1 <- (StatSciChinese[, 1, 3] <
-         quantile(StatSciChinese[, 1, 3], .9) )
-plot(StatSciChinese[sel1, 1, 1], StatSciChinese[sel1, 1, 2],
-     type='l')
+StatSci1 <- StatSciChinese[, 1, ]
+# Where does the pen leave the paper?
+plot(StatSci1[, 3], type='l')
+thresh <- quantile(StatSci1[, 3], .8)
+abline(h=thresh)
+
+sel1 <- (StatSci1[, 3] < thresh)
+StatSci1[!sel1, 1:2] <- NA
+plot(StatSci1[, 1:2], type='l')
 }
 \keyword{datasets}
