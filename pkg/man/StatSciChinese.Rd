@@ -5,13 +5,13 @@
 \description{
   (x, y, z) coordinates of the location of the tip of a pen during fifty
   replications of writing 'Statistical Science' in simplified Chinese at
-  10 milisecond intervals
+  10 millisecond intervals
 }
 \usage{data(StatSciChinese)}
 \format{
   a 3-dimensional array of dimensions (601, 50, 3) containing 601
   observations of (x, y, z) coordinates of the tip of a pen at 2.5
-  milisecond intervals for each of 50 repitions of writing 'Statistical
+  millisecond intervals for each of 50 repitions of writing 'Statistical
   Science' in simplified Chinese.
 }
 \details{
