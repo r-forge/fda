@@ -22,7 +22,7 @@ pinchtime
       pinch force every 2 milliseconds for 300 milliseconds.  The
       original data included 300 observations.  \code{pinchraw} consists
       of the first 151 of the 300 observations.  \code{pinch} selected
-      151 observations so the maximum of each curve occurred at 0.075
+      151 observations so the maximum of each curve occurred at 0.076
       seconds.
     }
     \item{pinchtime}{
