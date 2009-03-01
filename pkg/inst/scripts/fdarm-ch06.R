@@ -62,6 +62,15 @@ contour(day5time, day5time, logprec.varmat,
 ##
 
 # xifd, xfd = ??? ... need an example
+
+
+
+
+
+
+
+
+
 probeval = inprod(xifd, xfd)
 # see section 6.5 below?
 
@@ -69,29 +78,63 @@ probeval = inprod(xifd, xfd)
 ##
 ## Section 6.4 Phase-plane Plots of Periodic Effects
 ##
+goodsbasis  = create.bspline.basis(rangeval=c(1919,2000),
+                                   nbasis=979, norder=8)
+LfdobjNonDur= int2Lfd(4)
+logNondurSm = smooth.basisPar(argvals=index(nondurables),
+                y=log10(coredata(nondurables)), fdobj=goodsbasis,
+                Lfdobj=LfdobjNonDur, lambda=1e-11)
 
 # Fig. 6.3 The log nondurable goods index for 1964 to 1967
 
-# copy from script for fda or afda
+sel64.67 = ((1964<=index(nondurables)) &
+             (index(nondurables)<=1967) )
+plot(index(nondurables)[sel64.67],
+     log10(nondurables[sel64.67]), xlab='Year',
+     ylab='Log10 Nondurable Goods Index', las=1)
+abline(v=1965:1966, lty='dashed')
 
+t64.67 = seq(1964, 1967, len=601)
+lines(t64.67, predict(logNondurSm, t64.67))
 
-# section 6.4.1 Phase-plane Plots Show Energy Transfer
-# Fig. 6.4 A phase-plane plot of the simple harmonic function sin(2pt).
-# copy from script for fda or afda
+# Section 6.4.1.  Phase-plane Plots Show Energy Transfer
+# Figure 6.4.  Phase-plane plot for a simple harmonic function
 
+sin. <- expression(sin(2*pi*x))
+D.sin <- D(sin., "x")
+D2.sin <- D(D.sin, "x")
 
+with(data.frame(x=seq(0, 1, length=46)),
+     plot(eval(D.sin), eval(D2.sin), type="l",
+          xlim=c(-10, 10), ylim=c(-50, 50),
+          xlab="Velocity", ylab="Acceleration"), las=1 )
+pi.2  = (2*pi)
+#lines(x=c(-pi.2,pi.2), y=c(0,0), lty=3)
+pi.2.2= pi.2^2
+lines(x=c(0,0), y=c(-pi.2.2, pi.2.2), lty="dashed")
+lines(x=c(-pi.2, pi.2), y=c(0,0), lty="dashed")
+text(c(0,0), c(-47, 47), rep("Max. potential energy", 2))
+text(c(-8.5,8.5), c(0,0), rep("Max\nkinetic\nenergy", 2))
 
-# section 6.4.2 The Nondurable Goods Cycles
-# Fig. 6.5 Phase-plane plot of the first and second
-# derivatoves of the smoothed log nondurable goods index for 1964.
+# Section 6.4.2 The Nondurable Goods Cycles
+# Figure 6.5
 
-# copy from script for fda or afda
-
-
+phaseplanePlot(1964, logNondurSm$fd)
 
 # sec. 6.4.3.  Phase-Plane Plotting the Growth of Girls
-agefine  = linspace(1,18,101);
-velffine = eval_fd(agefine, hgtfmonfd(1:10), 1);
+
+
+
+
+
+
+
+
+
+
+
+agefine  = seq(1, 18, len=101)
+velffine = eval.fd(agefine, hgtfmonfd[1:10], 1);
 accffine = eval_fd(agefine, hgtfmonfd(1:10), 2);
 phdl = plot(velffine, accffine, 'k-', ...
             [1,18], [0,0], 'k:');

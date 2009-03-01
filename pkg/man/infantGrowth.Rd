@@ -12,13 +12,15 @@
 \format{
   A matrix with three columns:
 
-  \item{day}{age in days}
-  \item{tibiaLength}{
-    The average of five measurements of tibia length in millimeters
-  }
-  \item{sd.length}{
-    The standard deviation of five measurements of tibia length in
-    millimeters
+  \itemize{
+    \item{day}{age in days}
+    \item{tibiaLength}{
+      The average of five measurements of tibia length in millimeters
+    }
+    \item{sd.length}{
+      The standard deviation of five measurements of tibia length in
+      millimeters
+    }
   }
 }
 %\details{}
