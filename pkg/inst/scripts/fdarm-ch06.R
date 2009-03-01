@@ -24,24 +24,24 @@ fdParobj = fdPar(daybasis, harmaccelLfd, lambda)
 logprec.fit = smooth.basis(day.5, logprecav, fdParobj)
 logprec.fd = logprec.fit$fd
 
-  meanlogprec   = mean(logprec.fd)
-  stddevlogprec = std.fd(logprec.fd)
+meanlogprec   = mean(logprec.fd)
+stddevlogprec = std.fd(logprec.fd)
 
 # Section 6.1.1 The Bivariate Covariance Function v(s; t)
-  logprecvar.bifd = var.fd(logprec.fd)
+logprecvar.bifd = var.fd(logprec.fd)
 
-  weektime        = seq(0,365,length=53)
-  logprecvar_mat  = eval.bifd(weektime, weektime,
+weektime        = seq(0,365,length=53)
+logprecvar_mat  = eval.bifd(weektime, weektime,
                               logprecvar.bifd)
 # Figure 6.1
-  persp(weektime, weektime, logprecvar_mat,
-        theta=-45, phi=25, r=3, expand = 0.5,
-        ticktype='detailed',
-        xlab="Day (July 1 to June 30)",
-        ylab="Day (July 1 to June 30)",
-        zlab="variance(log10 precip)")
+persp(weektime, weektime, logprecvar_mat,
+      theta=-45, phi=25, r=3, expand = 0.5,
+      ticktype='detailed',
+      xlab="Day (July 1 to June 30)",
+      ylab="Day (July 1 to June 30)",
+      zlab="variance(log10 precip)")
 
-  contour(weektime, weektime, logprecvar_mat)
+contour(weektime, weektime, logprecvar_mat)
 
 # Figure 6.2
 day5time = seq(0,365,5)
