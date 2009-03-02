@@ -123,33 +123,45 @@ phaseplanePlot(1964, logNondurSm$fd)
 
 # sec. 6.4.3.  Phase-Plane Plotting the Growth of Girls
 
+gr.basis = create.bspline.basis(norder=6, breaks=growth$age)
+children= 1:10
+ncasef  = length(children)
+cvecf          = matrix(0, gr.basis$nbasis, ncasef)
+dimnames(cvecf)= list(gr.basis$names,
+              dimnames(growth$hgtf)[[2]][children])
 
+gr.fd0  = fd(cvecf, gr.basis)
+gr.fdPar1.5= fdPar(gr.fd0, Lfdobj=3, lambda=10^(-1.5))
+hgtfmonfd  = with(growth, smooth.monotone(age, hgtf[,children],
+                                           gr.fdPar1.5) )
 
-
-
-
-
-
-
-
+(i11.7 = which(abs(agefine-11.7) == min(abs(agefine-11.7)))[1])
 
 agefine  = seq(1, 18, len=101)
-velffine = eval.fd(agefine, hgtfmonfd[1:10], 1);
-accffine = eval_fd(agefine, hgtfmonfd(1:10), 2);
-phdl = plot(velffine, accffine, 'k-', ...
-            [1,18], [0,0], 'k:');
-set(phdl, 'LineWidth', 1)
-hold on
-phdl = plot(velffine(:,6), accffine(:,6), ...
-            'k--', [0,12], [0,0], 'k:');
-set(phdl, 'LineWidth', 2)
-phdl=plot(velffine(64,index), accffine(64,index), ...
-          'ko');
-set(phdl, 'LineWidth', 2)
-hold off
-xlabel('\fontsize{13} Velocity (cm/yr)')
-ylabel('\fontsize{13} Acceleration (cm/yr^2)')
-axis([0,12,-5,2])
+velffine = predict(hgtfmonfd, agefine, 1);
+accffine = predict(hgtfmonfd, agefine, 2);
+
+plot(velffine, accffine, type='n', xlim=c(0, 12), ylim=c(-5, 2),
+     xlab='Velocity (cm/yr)', ylab=expression(Acceleration (cm/yr^2)),
+     las=1)
+for(i in 1:10){
+  lines(velffine[, i], accffine[, i])
+  points(velffine[i11.7, i], accffine[i11.7, i])
+}
+abline(h=0, lty='dotted')
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ##
 ## Section 6.5 Confidence Intervals for Curves and their Derivatives
@@ -161,7 +173,8 @@ xivec   = exp(20*cos(2*pi*(dayvec-197)/365))
 xibasis = create.bspline.basis(c(0,365),13)
 xifd    = smooth.basis(dayvec, xivec, xibasis)$fd
 
-# tempbasis????
+tempbasis = create.fourier.basis(c(0,365),65)
+precbasis = create.fourier.basis(c(0,365),365)
 
 tempLmat = inprod(tempbasis, xifd)
 precLmat = inprod(precbasis, xifd)
@@ -171,17 +184,17 @@ logprecav = CanadianWeather$dailyAv[
          dayOfYearShifted, , 'log10precip']
 
 # as in section 5.3
-lambda    = 1e6
 
 dayrange  = c(0,365)
 daybasis  = create.fourier.basis(dayrange, 365)
 Lcoef        = c(0,(2*pi/diff(dayrange))^2,0)
 harmaccelLfd = vec2Lfd(Lcoef, dayrange)
 
-fdParobj  = fdPar(daybasis, harmaccelLfd, lambda)
+lambda     = 1e6
+fdParobj   = fdPar(daybasis, harmaccelLfd, lambda)
 logprecList= smooth.basis(day.5, logprecav, fdParobj)
 logprec.fd = logprecList$fd
-fdnames = list("Day (July 1 to June 30)",
+fdnames    = list("Day (July 1 to June 30)",
                "Weather Station" = CanadianWeather$place,
                "Log10 Precipitation (mm)")
 logprec.fd$fdnames = fdnames
@@ -197,12 +210,12 @@ logvar.fd   = logvar.fit$fd
 varvec      = exp(eval.fd(day.5, logvar.fd))
 SigmaE      = diag(as.vector(varvec))
 
-y2cMap = logprecList$y2cMap
-c2rMap = eval.basis(day.5, daybasis)
-Sigmayhat = c2rMap %*% y2cMap %*% SigmaE %*%
-           t(y2cMap) %*% t(c2rMap)
-logprec.stderr = sqrt(diag(Sigmayhat))
-logprec29 = eval.fd(day.5, logprec.fd[29])
+y2cMap        = logprecList$y2cMap
+c2rMap        = eval.basis(day.5, daybasis)
+Sigmayhat     = c2rMap %*% y2cMap %*% SigmaE %*%
+                t(y2cMap) %*% t(c2rMap)
+logprec.stderr= sqrt(diag(Sigmayhat))
+logprec29     = eval.fd(day.5, logprec.fd[29])
 plot(logprec.fd[29], lwd=2, ylim=c(0.2, 1.3))
 lines(day.5, logprec29 + 2*logprec.stderr,
         lty=2, lwd=2)
