@@ -16,11 +16,12 @@ library(fda)
 ##
 ## Section 7.2 PCA with Function pca.fd
 ##
-#  Create logprec.fd, copy from chapter 6
 
 # Section 7.2.1 PCA of the Log Precipitation Data
+
+#  Create logprec.fd, copy from chapter 6
 logprecav = CanadianWeather$dailyAv[
-         dayOfYearShifted, , 'log10precip']
+              dayOfYearShifted, , 'log10precip']
 dayrange  = c(0,365)
 daybasis  = create.fourier.basis(dayrange, 365)
 
@@ -33,7 +34,7 @@ logprec.fit = smooth.basis(day.5, logprecav, fdParobj)
 logprec.fd = logprec.fit$fd
 
 logprec.pcalist = pca.fd(logprec.fd, 2)
-print(logprec.pcalist$values)
+print(logprec.pcalist$values[1:4])
 
 # Figure 7.1
 plot.pca.fd(logprec.pcalist)
