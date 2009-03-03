@@ -1,6 +1,6 @@
 Package: fda
-Version: 2.1.1
-Date: 2008-10-03
+Version: 2.1.2
+Date: 2009-03-02
 Title: Functional Data Analysis
 Author: J. O. Ramsay <ramsay@psych.mcgill.ca>,
 	Hadley Wickham <h.wickham@gmail.com>,
@@ -13,11 +13,9 @@ Description: These functions were developed to support
    functional data analysis as described in Ramsay, J. O.
    and Silverman, B. W. (2005) Functional Data Analysis.
    New York: Springer.  They were ported from earlier
-   versions in Matlab and S-PLUS.  A manual that describes
-   the use of these functions is available in this
-   library. The library also contains a number of the
-   data sets used in the book along with R code for the
-   analyses that produced many of the figures in the book.
+   versions in Matlab and S-PLUS.  The library also contains
+   a number of the data sets used in the book along with R code
+   for the analyses that produced many of the figures in the book.
 License: GPL (>= 2)
 URL: http://www.functionaldata.org
 LazyData: true
