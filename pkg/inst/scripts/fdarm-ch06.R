@@ -19,10 +19,10 @@ daybasis  = create.fourier.basis(dayrange, 365)
 Lcoef        = c(0,(2*pi/diff(dayrange))^2,0)
 harmaccelLfd = vec2Lfd(Lcoef, dayrange)
 
-lambda   = 1e6
-fdParobj = fdPar(daybasis, harmaccelLfd, lambda)
+lambda      = 1e6
+fdParobj    = fdPar(daybasis, harmaccelLfd, lambda)
 logprec.fit = smooth.basis(day.5, logprecav, fdParobj)
-logprec.fd = logprec.fit$fd
+logprec.fd  = logprec.fit$fd
 
 meanlogprec   = mean(logprec.fd)
 stddevlogprec = std.fd(logprec.fd)
@@ -100,9 +100,9 @@ lines(t64.67, predict(logNondurSm, t64.67))
 # Section 6.4.1.  Phase-plane Plots Show Energy Transfer
 # Figure 6.4.  Phase-plane plot for a simple harmonic function
 
-sin. <- expression(sin(2*pi*x))
-D.sin <- D(sin., "x")
-D2.sin <- D(D.sin, "x")
+sin.   = expression(sin(2*pi*x))
+D.sin  = D(sin.,  "x")
+D2.sin = D(D.sin, "x")
 
 with(data.frame(x=seq(0, 1, length=46)),
      plot(eval(D.sin), eval(D2.sin), type="l",
@@ -124,20 +124,19 @@ phaseplanePlot(1964, logNondurSm$fd)
 # sec. 6.4.3.  Phase-Plane Plotting the Growth of Girls
 
 gr.basis = create.bspline.basis(norder=6, breaks=growth$age)
-children= 1:10
-ncasef  = length(children)
-cvecf          = matrix(0, gr.basis$nbasis, ncasef)
-dimnames(cvecf)= list(gr.basis$names,
+children = 1:10
+ncasef   = length(children)
+cvecf           = matrix(0, gr.basis$nbasis, ncasef)
+dimnames(cvecf) = list(gr.basis$names,
               dimnames(growth$hgtf)[[2]][children])
 
-gr.fd0  = fd(cvecf, gr.basis)
-gr.fdPar1.5= fdPar(gr.fd0, Lfdobj=3, lambda=10^(-1.5))
-hgtfmonfd  = with(growth, smooth.monotone(age, hgtf[,children],
+gr.fd0      = fd(cvecf, gr.basis)
+gr.fdPar1.5 = fdPar(gr.fd0, Lfdobj=3, lambda=10^(-1.5))
+hgtfmonfd   = with(growth, smooth.monotone(age, hgtf[,children],
                                            gr.fdPar1.5) )
+agefine = seq(1,18,len=101)
+(i11.7  = which(abs(agefine-11.7) == min(abs(agefine-11.7)))[1])
 
-(i11.7 = which(abs(agefine-11.7) == min(abs(agefine-11.7)))[1])
-
-agefine  = seq(1, 18, len=101)
 velffine = predict(hgtfmonfd, agefine, 1);
 accffine = predict(hgtfmonfd, agefine, 2);
 
@@ -149,19 +148,6 @@ for(i in 1:10){
   points(velffine[i11.7, i], accffine[i11.7, i])
 }
 abline(h=0, lty='dotted')
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ##
 ## Section 6.5 Confidence Intervals for Curves and their Derivatives
