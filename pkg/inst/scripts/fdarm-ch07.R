@@ -38,10 +38,14 @@ print(logprec.pcalist$values[1:4])
 
 # Figure 7.1
 plot.pca.fd(logprec.pcalist)
-plot(logprec.pcalist, expand=.5)
+
+op <- par(mfrow=c(2,1))
+plot(logprec.pcalist, expand=.5, xlab='')
+par(op)
 
 # Figure 7.2
 logprec.rotpcalist = varmx.pca.fd(logprec.pcalist)
+
 plot.pca.fd(logprec.rotpcalist, expand=.5)
 
 # Figure 7.3
