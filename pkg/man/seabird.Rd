@@ -43,7 +43,12 @@
   Data provided by the Kodiak National Wildlife Refuge
 }
 \source{
-  Zweihofer, et al. (2008) ------?????????
+  Zwiefelhofer, D., Reynolds, J. H., and Keim, M. (2008) Population
+  trends and annual density estimates for select wintering seabird
+  species on Kodiak Island, Alaska, \emph{U.S. Fish and Wildlife
+    Service, Kodiak National Wildlife Refuge}, Technical Report,
+  no. 08-00x
+  }
 }
 \references{
   Ramsay, James O., Hooker, Giles, and Graves, Spencer B. (2009)
