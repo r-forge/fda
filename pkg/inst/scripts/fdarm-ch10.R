@@ -11,58 +11,64 @@ library(fda)
 ## Section 10.1  Functional Responses and an Analysis of Variance Model
 ##
 #  Section 10.1.1 Climate Region Effects on Temperature
-regions = unique(CanadianWeather$region)
-p = length(regions) + 1
-regionList = vector("list", p)
-regionList[[1]] = c(rep(1,35),0)
+regions.          = unique(CanadianWeather$region)
+p                = length(regions.) + 1
+regionList       = vector("list", p)
+names(regionList)= regions.
+regionList[[1]]  = c(rep(1,35),0)
 for (j in 2:p) {
-  xj = CanadianWeather$region == regions[j-1]
-  regionList[[j]] = c(xj,1)
+  xj             = (CanadianWeather$region == regions.[j-1])
+  regionList[[j]]= c(xj,1)
 }
 
 # tempfd from chapter 9
 
+Lcoef       = c(0,(2*pi/365)^2,0)
+harmaccelLfd= vec2Lfd(Lcoef, c(0,365))
+tempbasis   = create.fourier.basis(c(0, 365), 65)
+lambda      = 1e6
+tempfdPar65 = fdPar(tempbasis, harmaccelLfd, lambda)
+tempShifted = daily$tempav[dayOfYearShifted, ]
+tempSmooth65= smooth.basis(day.5, tempShifted, tempfdPar65)
+tempfd      = tempSmooth65$fd
 
-Lcoef = c(0,(2*pi/365)^2,0)
-harmaccelLfd = vec2Lfd(Lcoef, c(0,365))
-daybasis365=create.fourier.basis(c(0, 365), 365)
-lambda =1e6
-tempfdPar365 =fdPar(daybasis365, harmaccelLfd, lambda)
-tempSmooth365 <- smooth.basis(day.5, daily$tempav,
-                              tempfdPar365)
-tempfd = tempSmooth365$fd
+coef    = tempfd$coef
+coef36  = cbind(coef,matrix(0,65,1))
+temp36fd= fd(coef36,tempbasis,tempfd$fdnames)
 
-
-
-# None of the code in the rest of section 10.1.1 has been tested
-
-coef = tempfd$coef
-coef36 = cbind(coef,matrix(0,65,1))
-temp36fd = fd(coef36,tempbasis,tempfd$fdnames)
-
-betabasis = create.fourier.basis(c(0, 365), 11)
-betafdPar = fdPar(betabasis)
-betaList = vector("list",p)
+betabasis      = create.fourier.basis(c(0, 365), 11)
+betafdPar      = fdPar(betabasis)
+betaList       = vector("list",p)
+names(betaList)= regions.
 for (j in 1:p) betaList[[j]] = betafdPar
 
-fRegressList = fRegress(temp36fd, regionList,
-betaList)
+fRegressList= fRegress(temp36fd, regionList, betaList)
 betaestList = fRegressList$betaestlist
-regionFit = fRegressList$yhatfd
-regions = c("Canada", regions)
-par(mfrow=c(2,3),cex=1)
+regionFit   = fRegressList$yhatfd
+regions     = c("Canada", regions.)
+op          = par(mfrow=c(2,3),cex=1)
 for (j in 1:p) plot(betaestList[[j]]$fd, lwd=2,
                     xlab="Day (July 1 to June 30)",
                     ylab="", main=regions[j])
 plot(regionFit, lwd=2, col=1, lty=1,
-     xlab="Day", ylab="", main="Prediction")
-
-
-
+     xlab="Day (July 1 to June 30)", ylab="", main="Prediction")
+par(op)
 
 # 10.1.2 Trends in Sea Bird Populations on Kodiak Island
 
-# Need the data
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Figure 10.2
 
