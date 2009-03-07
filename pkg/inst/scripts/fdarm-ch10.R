@@ -56,34 +56,160 @@ par(op)
 
 # 10.1.2 Trends in Sea Bird Populations on Kodiak Island
 
+#  select only the data for sites Uyak and Uganik, which have data
+#  from 1986 to 2005, except for 1998
+sel = (seabird$Bay %in% c('Uganik', 'Uyak'))
+UU  = seabird[sel,]
 
+#  select the columns with counts and
+#  the years on which counts were taken
 
+UyakUganik= as.matrix(UU[, 1:16])
 
+# Drop 2 species with many NAs
 
+NAs  = sapply(UU, function(x)sum(is.na(x)))
+NAs. = which(NAs > 2)
+birdindex= (1:15)[-NAs.]
 
+birdlabels= colnames(UyakUganik)[birdindex]
+nbird     = length(birdlabels)
 
+# Specific plots of ground at which counts were taken.
+transect  = unique(UU$Transect)
 
+#  indices for years except for 1998, for which all data are missing
+no98     = c(1:12,14:20)
+birdtime = no98 - 1;
 
+#  set up a basis for smoothing the counts.
+#  this basis is for order 4 (cubic) B-splines, with a knot at
+#  each year, except for 1998 when there were no observations
 
+birdbasis  = create.bspline.basis(breaks=birdtime)
+nbirdbasis = birdbasis$nbasis
 
+#  set up arrays for accumulated coefficients and counts
+
+birdcoefmat  = matrix(0,nbirdbasis,2*nbird)
+birdcountmat = matrix(0,20,2*nbird)
+birdnmat     = birdcountmat
+
+# Smooth on curvature with lambda = 10
+
+birdfdPar = fdPar(birdbasis, Lfdobj=2, lambda=1e1)
+
+#  accumulate coefficients and counts for Uyak
+
+Uyak       = (UU$Bay %in% 'Uyak')
+tUy        = (transect %in% UU$Transect[Uyak])
+transUyak  = transect[tUy]
+transUganik= transect[!tUy]
+
+for (i in transUyak) {
+    #  select the data and count years for this transect
+    index    = UU$Transect == i
+    Seabirdi = UU[index,c(birdindex,16)]
+    timei    = Seabirdi[,nbird+1]
+    #  loop through the birds to be used, smoothing each in turn
+    for (j in 1:nbird) {
+#  select times corresponding to non-missing count data
+        indexj        = !is.na(Seabirdi[,j])
+        onesj         = rep(1,19)
+        onesj[is.na(Seabirdi[,j])] = 0
+        timeij        = timei[indexj]-1986
+        Seabirdij     = Seabirdi[indexj,j]
+#  smooth the data, selecting the functional data object to output
+        Seabirdfdij   =
+            smooth.basis(timeij, Seabirdij, birdfdPar)$fd
+        birdcoefmat[         ,j] =
+           birdcoefmat[         ,j] + Seabirdfdij$coef
+        birdcountmat[timeij+1,j] =
+           birdcountmat[timeij+1,j] + Seabirdij
+        birdnmat[no98,j]         =
+           birdnmat[no98,j]         + onesj
+    }
+}
+
+#  accumulate coefficients and counts for Uganik
+
+for (i in transUganik) {
+    #  select the data and count years for this transect
+    index    = UU$Transect == i
+    Seabirdi = UU[index,c(birdindex,16)]
+    timei    = Seabirdi[,nbird+1]
+    #  loop through the birds to be used, smoothing each in turn
+    for (j in 1:nbird) {
+#  select times corresponding to non-missing count data
+        indexj      = !is.na(Seabirdi[,j])
+        onesj       = rep(1,19)
+        onesj[is.na(Seabirdi[,j])] = 0
+        timeij      = timei[indexj]-1986
+        Seabirdij   = Seabirdi[indexj,j]
+#  smooth the data, selecting the functional data object to output
+        Seabirdfdij   =
+            smooth.basis(timeij, Seabirdij, birdfdPar)$fd
+        birdcoefmat[         ,j+nbird] =
+        birdcoefmat[         ,j+nbird] + Seabirdfdij$coef
+        birdcountmat[timeij+1,j+nbird] =
+        birdcountmat[timeij+1,j+nbird] + Seabirdij
+        birdnmat[        no98,j+nbird] =
+        birdnmat[        no98,j+nbird] + onesj
+    }
+}
+
+#  normalize coefficients and counts by dividing by number of transects
+
+ind1 = 1:nbird
+ind2 = ind1 + nbird
+birdcoefmat[,ind1]  = birdcoefmat[,ind1]/79
+birdcoefmat[,ind2]  = birdcoefmat[,ind2]/50
+birdcountmat[,ind1] = birdcountmat[,ind1]/79
+birdcountmat[,ind2] = birdcountmat[,ind2]/50
+
+#  get total counts
+
+birdtotalcount = birdcountmat[,ind1] +  birdcountmat[,ind2]
+
+# Figure 10.1
+
+op <- par(cex=1.2)
+matplot(birdtime+1986, log10(birdtotalcount[c(1:12,14:20),]),
+        type="b", lty=1, col=1, lwd=2, xlab="Year",
+        ylab="log10(Mean count)")
+par(op)
+
+#  replace 0 counts in 1998 by NA's
+
+birdcountmat[13,] = NA
+
+birdfdnames = list("Year", "Birds and sites", "Mean count per transect")
+birdfd      = fd(birdcoefmat, birdbasis, birdfdnames)
+
+plot(birdfd)
+
+plotyear = seq(0,19,len=101)
+birdmat  = eval.fd(plotyear, birdfd)
 
 
 
 
 # Figure 10.2
 
-fooddummy = matrix(0,13,1)
+fooddummy1 = matrix(0,13,1)
 foodindex = c(1,2,5,6,12,13)
-fooddummy[foodindex] = 1
-fooddummy = rbind(fooddummy, fooddummy)
+fooddummy1[foodindex] = 1
+fooddummy = rbind(fooddummy1, fooddummy1)
 birddummy = diag(rep(1,13))
 
-Zmat = matrix(0,28,15)
+Zmat         = matrix(0,28,15)
 Zmat[1:26,1] = rep(1,26)
 Zmat[1:26,2] = fooddummy
+
 Zmat[ 1:13,3:15] = birddummy
 Zmat[14:26,3:15] = birddummy
-Zmat[27, foodindex+2 ] = 1
+
+Zmat[27,  foodindex+2 ] = 1
 Zmat[28,-(foodindex+2)] = 1
 
 logbirdcoef = logbirdfd$coefs
