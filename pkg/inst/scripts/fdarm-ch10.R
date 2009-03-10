@@ -150,11 +150,11 @@ for (i in transUganik) {
         Seabirdfdij   =
             smooth.basis(timeij, Seabirdij, birdfdPar)$fd
         birdcoefmat[         ,j+nbird] =
-        birdcoefmat[         ,j+nbird] + Seabirdfdij$coef
+          birdcoefmat[         ,j+nbird] + Seabirdfdij$coef
         birdcountmat[timeij+1,j+nbird] =
-        birdcountmat[timeij+1,j+nbird] + Seabirdij
+          birdcountmat[timeij+1,j+nbird] + Seabirdij
         birdnmat[        no98,j+nbird] =
-        birdnmat[        no98,j+nbird] + onesj
+          birdnmat[        no98,j+nbird] + onesj
     }
 }
 

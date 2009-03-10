@@ -37,7 +37,7 @@ logprec.pcalist = pca.fd(logprec.fd, 2)
 print(logprec.pcalist$values[1:4])
 
 # Figure 7.1
-plot.pca.fd(logprec.pcalist)
+# plot.pca.fd(logprec.pcalist)
 
 op <- par(mfrow=c(2,1))
 plot(logprec.pcalist, expand=.5, xlab='')
@@ -46,11 +46,43 @@ par(op)
 # Figure 7.2
 logprec.rotpcalist = varmx.pca.fd(logprec.pcalist)
 
+# plot.pca.fd(logprec.rotpcalist, expand=.5)
+
+op <- par(mfrow=c(2,1))
 plot.pca.fd(logprec.rotpcalist, expand=.5)
+par(op)
 
 # Figure 7.3
 
-#  plot.pca.fd(..., type='scores')???
+plot(logprec.rotpcalist$scores, xlim=c(-15, 15),
+     xlab='Rotated Harmonic I', ylab='Rotated Harmonic II')
+
+labRt <- c("Quebec", "Montreal",
+           "Toronto", "Winnipeg", "Edmonton",
+           "Pr. George", "Vancouver", "Iqaluit",
+           "Uranium Cty", "Dawson", "Victoria",
+           "Kamloops", "Resolute")
+labLft <- c("Pr. Rupert", "Halifax",
+           "Thunderbay",
+           "Calgary",
+           "Regina",
+           "Whitehorse")
+chRt <- (labRt %in% CanadianWeather$place)
+labRt[!chk]
+chLft <- (labLft %in% CanadianWeather$place)
+labLft[!chLft]
+
+selRt <- (CanadianWeather$place %in% labRt)
+selLft <- (CanadianWeather$place %in% labLft)
+sum(selRt)
+sum(selLft)
+
+text(logprec.rotpcalist$scores[selRt,],
+     labels=CanadianWeather$place[selRt], pos=4)
+text(logprec.rotpcalist$scores[selLft,],
+     labels=CanadianWeather$place[selLft], pos=2)
+
+
 
 
 
