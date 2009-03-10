@@ -49,13 +49,10 @@ logprec.rotpcalist = varmx.pca.fd(logprec.pcalist)
 # plot.pca.fd(logprec.rotpcalist, expand=.5)
 
 op <- par(mfrow=c(2,1))
-plot.pca.fd(logprec.rotpcalist, expand=.5)
+plot.pca.fd(logprec.rotpcalist, expand=.5, xlab='')
 par(op)
 
 # Figure 7.3
-
-plot(logprec.rotpcalist$scores, xlim=c(-15, 15),
-     xlab='Rotated Harmonic I', ylab='Rotated Harmonic II')
 
 labRt <- c("Quebec", "Montreal",
            "Toronto", "Winnipeg", "Edmonton",
@@ -63,12 +60,12 @@ labRt <- c("Quebec", "Montreal",
            "Uranium Cty", "Dawson", "Victoria",
            "Kamloops", "Resolute")
 labLft <- c("Pr. Rupert", "Halifax",
-           "Thunderbay",
+           "Thunder Bay",
            "Calgary",
            "Regina",
            "Whitehorse")
 chRt <- (labRt %in% CanadianWeather$place)
-labRt[!chk]
+labRt[!chRt]
 chLft <- (labLft %in% CanadianWeather$place)
 labLft[!chLft]
 
@@ -77,16 +74,12 @@ selLft <- (CanadianWeather$place %in% labLft)
 sum(selRt)
 sum(selLft)
 
+plot(logprec.rotpcalist$scores, xlim=c(-15, 15),
+     xlab='Rotated Harmonic I', ylab='Rotated Harmonic II')
 text(logprec.rotpcalist$scores[selRt,],
      labels=CanadianWeather$place[selRt], pos=4)
 text(logprec.rotpcalist$scores[selLft,],
      labels=CanadianWeather$place[selLft], pos=2)
-
-
-
-
-
-
 
 # Section 7.2.2 PCA of Log Precipitation Residuals
 # logprecres = residuals from
@@ -95,15 +88,15 @@ text(logprec.rotpcalist$scores[selLft,],
 logprecav = CanadianWeather$dailyAv[
          dayOfYearShifted, , 'log10precip']
 
-dayrange  = c(0,365)
-daybasis  = create.fourier.basis(dayrange, 365)
-Lcoef        = c(0,(2*pi/diff(dayrange))^2,0)
-harmaccelLfd = vec2Lfd(Lcoef, dayrange)
-lambda   = 1e6
-fdParobj = fdPar(daybasis, harmaccelLfd, lambda)
+dayrange    = c(0,365)
+daybasis    = create.fourier.basis(dayrange, 365)
+Lcoef       = c(0,(2*pi/diff(dayrange))^2,0)
+harmaccelLfd= vec2Lfd(Lcoef, dayrange)
+lambda      = 1e6
+fdParobj    = fdPar(daybasis, harmaccelLfd, lambda)
 logprec.fit = smooth.basis(day.5, logprecav, fdParobj)
-logprec.fd = logprec.fit$fd
-fdnames = list("Day (July 1 to June 30)",
+logprec.fd  = logprec.fit$fd
+fdnames     = list("Day (July 1 to June 30)",
                "Weather Station" = CanadianWeather$place,
                "Log 10 Precipitation (mm)")
 logprec.fd$fdnames = fdnames
@@ -114,13 +107,14 @@ logprecres = logprecav - logprecmat
 # Figure 7.4
 logprecres.fd = smooth.basis(day.5, logprecres,
     fdParobj)$fd
-plot(logprecres.fd, lwd=2, col=4, lty=1, cex=1.2,
+plot(logprecres.fd, lwd=2, col=1, lty=1, cex=1.2,
      xlim=c(0,365), ylim=c(-0.07, 0.07),
-     xlab="Day", ylab="Residual (log 10 mm)")
+     xlab="Day (July 1 to June 30)",
+     ylab="Residual (log 10 mm)")
 
 # Figure 7.5
 logprec.pca1 = pca.fd(logprecres.fd, 1)
-plot(logprec.pca1, expand=0.01)
+plot(logprec.pca1, expand=0.01, xlab="Day (July 1 to June 30)")
 # ???????????????
 
 
