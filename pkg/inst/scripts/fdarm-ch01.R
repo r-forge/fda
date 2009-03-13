@@ -80,8 +80,10 @@ par(op)
 ## Section 1.2.  Multivariate functional data
 ##
 
+# Section 1.2.1.  Data on How Children Walk
 # Figure 1.6
-Time = c(0, as.numeric(dimnames(gait)[[1]]), 1)
+
+Time          = c(0, as.numeric(dimnames(gait)[[1]]), 1)
 # Interpolate a common value for 0 & 1
 gait01        = 0.5*(gait[20,,]+gait[1,,])
 Gait          = array(NA, dim=c(22, 39, 2))
@@ -127,6 +129,7 @@ i4 = seq(4, 20, 4)
 text(gait[i4, 1, ], labels=LETTERS[c(2:5, 1)])
 text(gaitMean[i4, ], labels=LETTERS[c(2:5, 1)])
 
+# Section 1.2.2 Data on Handwriting
 # Figure 1.8
 matplot(100*handwrit[, , 1], 100*handwrit[, , 2], type="l",
         lty='solid', las=1, xlab='', ylab='')
