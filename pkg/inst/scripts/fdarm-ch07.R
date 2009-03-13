@@ -115,8 +115,6 @@ plot(logprecres.fd, lwd=2, col=1, lty=1, cex=1.2,
 # Figure 7.5
 logprec.pca1 = pca.fd(logprecres.fd, 1)
 plot(logprec.pca1, expand=0.01, xlab="Day (July 1 to June 30)")
-# ???????????????
-
 
 ##
 ## Section 7.3 More Functional PCA Features
@@ -128,34 +126,64 @@ plot(logprec.pca1, expand=0.01, xlab="Day (July 1 to June 30)")
 ##
 nharm = 3
 
-# Need 'fdafd' created in Section 1.2
+fdatime  = seq(0, 2300, len=1401)
+fdabasis= create.bspline.basis(range(fdatime), nbasis=143, norder=4)
+fdaPar  = fdPar(fdabasis, 2, lambda=1e-4)
+fdafd   = smooth.basis(fdatime, handwrit, fdaPar)$fd
+
 fdapcaList = pca.fd(fdafd, nharm)
 plot.pca.fd(fdapcaList)
+
 fdarotpcaList = varmx.pca.fd(fdapcaList)
 plot.pca.fd(fdarotpcaList)
 
 fdaeig = fdapcaList$values
-neig = 12
-x = matrix(1,neig-nharm,2)
-x[,2] = nharm:neig
-y = log10(fdaeig[nharm:neig])
-c = lsfit(x,y,int=FALSE)$coef
+neig   = 12
+x      = matrix(1,neig-nharm,2)
+x[,2]  = (nharm+1):neig
+y      = log10(fdaeig[(nharm+1):neig])
+c.     = lsfit(x,y,int=FALSE)$coef
 
 # Figure 7.6
+
 op <- par(mfrow=c(1,1),cex=1.2)
 plot(1:neig, log10(fdaeig[1:neig]), "b",
      xlab="Eigenvalue Number",
      ylab="Log10 Eigenvalue")
-lines(1:neig, c[1]+ c[2]*(1:neig), lty=2)
+lines(1:neig, c.[1]+ c.[2]*(1:neig), lty=2)
 par(op)
 
 # Figure 7.7 varimax rotation ...
 
+npts         = 501
+fda.time <- seq(0, 2300, length=npts)
 
+fdawrit.pred = predict(fdarotpcaList$meanfd, fda.time)
+fdawrit.pred2 <- fdawrit.pred[, 1, ]
 
+fda1 = (fdawrit.pred2 - outer(rep(1, npts), c(.035, 0)))
+fda2 = (fdawrit.pred2 + outer(rep(1, npts), c(.035, 0)))
 
+fdaharm.pred <- predict(fdarotpcaList$harmonics, fda.time)
 
+z <- .1
+fda1u <- fda1+z*fdaharm.pred[, 3, ]
+fda1l <- fda1-z*fdaharm.pred[, 3, ]
 
+fda2u <- fda2+z*fdaharm.pred[, 2, ]
+fda2l <- fda2-z*fdaharm.pred[, 2, ]
+
+xlim <- range(fda1[, 1], fda2[, 1], fda1u[, 1], fda1l[, 1],
+              fda2u[, 1], fda2l[, 1])
+ylim <- range(fda1u[, 2], fda1l[, 2], fda2u[, 2], fda2l[, 2])
+plot(fda1, type='l', xlim=xlim, ylim=ylim, xlab='', ylab='')
+lines(fda2)
+
+lines(fda1u, lty='dashed', lwd=1)
+lines(fda1l, lty='dotted', lwd=1)
+
+lines(fda2u, lty='dashed', lwd=1)
+lines(fda2l, lty='dotted', lwd=1)
 
 ##
 ## Section 7.5 Exploring Functional Covariation
@@ -163,6 +191,16 @@ par(op)
 ##
 
 ccabasis = create.fourier.basis(dayrange, 3)
+
+
+
+
+
+
+
+
+
+
 
 #  need tempfd ???
 
