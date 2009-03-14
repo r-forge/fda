@@ -31,9 +31,9 @@ harmaccelLfd = vec2Lfd(Lcoef, dayrange)
 lambda   = 1e6
 fdParobj = fdPar(daybasis, harmaccelLfd, lambda)
 logprec.fit = smooth.basis(day.5, logprecav, fdParobj)
-logprec.fd = logprec.fit$fd
+logprec.fd. = logprec.fit$fd
 
-logprec.pcalist = pca.fd(logprec.fd, 2)
+logprec.pcalist = pca.fd(logprec.fd., 2)
 print(logprec.pcalist$values[1:4])
 
 # Figure 7.1

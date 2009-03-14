@@ -61,16 +61,59 @@ par(op)
 sel = (seabird$Bay %in% c('Uganik', 'Uyak'))
 UU  = seabird[sel,]
 
-#  select the columns with counts and
-#  the years on which counts were taken
-
-UyakUganik= as.matrix(UU[, 1:16])
-
 # Drop 2 species with many NAs
 
 NAs  = sapply(UU, function(x)sum(is.na(x)))
 NAs. = which(NAs > 2)
 birdindex= (1:15)[-NAs.]
+birds = names(UU)[birdindex]
+
+#  select the columns with counts and
+#  the years on which counts were taken
+
+meanCounts = matrix(NA, 20, 13)
+dimnames(meanCounts) = list(1986:2005, birds)
+
+for(i in 1:20){
+  sel <- (UU$Year == rownames(meanCounts)[i])
+  meanCounts[i, ] <- sapply(UU[sel, birds], mean, na.rm=TRUE)
+}
+
+selYear <- !is.na(meanCounts[, 1])
+logCounts <- log10(meanCounts[selYear,])
+yearObs <- as.numeric(rownames(logCounts))
+yearCode <- (1:20)[selYear]
+
+op <- par(cex=1.3)
+matplot(yearObs, logCounts, type='b', xlab='Year',
+        ylab='log10(Mean count)', col=1, lty=1)
+par(op)
+
+birdSmooth <- Data2fd(yearCode, logCounts)
+
+shellfish = as.numeric((1:13) %in% c(1,2,5,6,12,13))
+
+fitShellfish <- fRegress(birdSmooth~shellfish)
+
+betaestlist <- fitShellfish$betaestlist
+
+sapply(betaestlist, class)
+
+op <- par(mfrow=c(2,1))
+plot(betaestlist$const$fd)
+plot(betaestlist$shellfish$fd)
+par(op)
+
+
+
+
+
+
+
+
+birdSmooth <- smooth.basisPar(yearCode, logCounts)
+
+
 
 birdlabels= colnames(UyakUganik)[birdindex]
 nbird     = length(birdlabels)
