@@ -11,42 +11,93 @@ library(fda)
 ##
 ## Section 8.1 Amplitude and Phase Variation
 ##
-age  = growth$age
-nage <- length(age)
-ageRng <- range(age)
-agefine <- seq(ageRng[1], ageRng[2], length=101)
+age    = growth$age
+ageRng = range(age)
 
-hgtf = growth$hgtf
-ncasef <- dim(hgtf)[2]
+# Monotone smooth (see section 5.4.2)
+# B-spline of order 6 = quintic polynomials
+# so the acceleration will be cubic
+wbasis = create.bspline.basis(norder=6, breaks=age)
 
-norder <- 6
-nbasis <- nage + norder - 2
-wbasis <- create.bspline.basis(ageRng, nbasis, norder, age)
+# Consider only the first 10 girls
+children= 1:10
+ncasef  = length(children)
+hgtf   = growth$hgtf[, children]
 
-Lfdobj    <- 3          #  penalize curvature of acceleration
-lambda    <- 10^(-0.5)  #  smoothing parameter
-cvecf     <- matrix(0, nbasis, ncasef)
-Wfd0      <- fd(cvecf, wbasis)
-growfdPar <- fdPar(Wfd0, Lfdobj, lambda)
+# starting values for coeficients
+cvecf          = matrix(0, wbasis$nbasis, ncasef)
+dimnames(cvecf)= list(wbasis$names, dimnames(hgtf)[[2]])
 
-growthMon <- smooth.monotone(age, hgtf, growfdPar)
-# (wait for an interative fit to each of 54 girls)
+# Create initial functional data and functional parameter objects
+Wfd0      = fd(cvecf, wbasis)
+growfdPar = fdPar(Wfd0, Lfdobj=3, lambda=10^(-1.5))
+# Lfdobj = 3:  penalize rate of change of acceleration
+# lambda = 10^(-1.5) used for Figure 1.1, 1.15, etc.
 
-Wfd        <- growthMon$Wfd
-betaf      <- growthMon$beta
-hgtfhatfd  <- growthMon$yhatfd
+# Estimate monotone smooths:
+growthMon = smooth.monotone(age, hgtf, growfdPar)
+#***WAIT for individual interative fits to 10 girls
 
-children <- 10
+Wfd       = growthMon$Wfd
+betaf     = growthMon$beta
+hgtfhatfd = growthMon$yhatfd
 
 # Figure 8.1
-op <- par(mfrow=c(2,1))
+op = par(mfrow=c(2,1))
+
+agefine= seq(ageRng[1], ageRng[2], length=201)
+accfvec1.5 = predict(growthMon, agefine, Lfdobj=2)
+matplot(agefine, accfvec1.5, type='l', lty=1, ylim=c(-4, 2),
+        xlab='Age (years)', ylab=expression(Acceleration (cm/yr^2)),
+        xlim=c(1, 18), col=1, las=1)
+abline(h=0, lty='dotted')
+lines(agefine, rowMeans(accfvec1.5), lty='dashed', lwd=2)
+
+accfvec1.5y = predict(growthMon$yhatfd, agefine, Lfdobj=2)
+matplot(agefine, accfvec1.5y, type='l', lty=1, ylim=c(-4, 2),
+        xlab='Age (years)', ylab=expression(Acceleration (cm/yr^2)),
+        xlim=c(1, 18), col=1, las=1)
+abline(h=0, lty='dotted')
+lines(agefine, rowMeans(accfvec1.5[, children]), lty='dashed', lwd=2)
 
 
-# Need plot.monfd?
-plot(growthMon[1:children])
-# Error in xy.coords(x, y, xlabel, ylabel, log) :
 
-# *****
+
+
+
+
+(i11.7 = which(abs(agefine-11.7) == min(abs(agefine-11.7)))[1])
+
+# Use the fit from Figure 1.1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+hgtf.vel1.5 = predict(hgtfmonfd$yhatfd, agefine, 1)
+hgtf.acc1.5 = predict(hgtfmonfd$yhatfd, agefine, 2)
+
+plot(hgtf.vel1.5, hgtf.acc1.5, type='n', xlim=c(0, 12), ylim=c(-5, 2),
+     xlab='Velocity (cm/yr)', ylab=expression(Acceleration (cm/yr^2)),
+     las=1)
+for(i in 1:10){
+  lines(hgtf.vel1.5[, i], hgtf.acc1.5[, i])
+  points(hgtf.vel1.5[i11.7, i], hgtf.acc1.5[i11.7, i])
+}
+abline(h=0, lty='dotted')
+
+
+
+
 
 
 
