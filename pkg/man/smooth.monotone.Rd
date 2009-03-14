@@ -1,5 +1,6 @@
 \name{smooth.monotone}
 \alias{smooth.monotone}
+\alias{monfd}
 \title{
   Monotone Smoothing of Data
 }
@@ -166,6 +167,7 @@ smooth.monotone(argvals, y, WfdParobj, wtvec=rep(1,n),
   \code{\link{smooth.basis}},
   \code{\link{smooth.pos}},
   \code{\link{smooth.morph}}
+  \code{\link{predict.monfd}}
 }
 \examples{
 

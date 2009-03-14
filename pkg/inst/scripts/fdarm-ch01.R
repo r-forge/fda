@@ -17,21 +17,18 @@ agefine = seq(age.rng[1], age.rng[2], length=501)
 # Monotone smooth (see section 5.4.2)
 # B-spline of order 6 = quintic polynomials
 # so the acceleration will be cubic
-gr.basis = create.bspline.basis(norder=6, breaks=growth$age)
+gr.basis = create.bspline.basis(norder=6, breaks=age)
 
 # Consider only the first 10 girls
 children= 1:10
 ncasef  = length(children)
+hgtf   = growth$hgtf[, children]
 
 # starting values for coeficients
 cvecf          = matrix(0, gr.basis$nbasis, ncasef)
-dimnames(cvecf)= list(gr.basis$names,
-              dimnames(growth$hgtf)[[2]][children])
+dimnames(cvecf)= list(gr.basis$names, dimnames(hgtf)[[2]] )
 # Create an initial functional data object
 gr.fd0  = fd(cvecf, gr.basis)
-# Create an initial functional parameter object
-gr.fdPar= fdPar(gr.fd0, Lfdobj=3, lambda=1/sqrt(10))
-# Lfdobj = 3 to penalize the rate of change of acceleration
 
 #  -----------------  Now smooth the female data  --------------------
 
@@ -41,12 +38,14 @@ gr.fdPar= fdPar(gr.fd0, Lfdobj=3, lambda=1/sqrt(10))
 # Figure 1.1
 
 gr.fdPar1.5= fdPar(gr.fd0, Lfdobj=3, lambda=10^(-1.5))
-hgtfmonfd  = with(growth, smooth.monotone(age, hgtf[,children],
-                                           gr.fdPar1.5) )
+# Lfdobj = 3 to penalize the rate of change of acceleration
 
-with(growth, matplot(age, hgtf[, children], pch='o',
-                     xlab='Age (years)', ylab='Height (cm)',
-                     ylim=c(60, 183)) )
+hgtfmonfd  = smooth.monotone(age, growth$hgtf[,children],
+                                           gr.fdPar1.5)
+
+matplot(age, growth$hgtf[, children], pch='o',
+        xlab='Age (years)', ylab='Height (cm)',
+        ylim=c(60, 183))
 hgtf.vec1.5 = predict(hgtfmonfd$yhatfd, agefine)
 matlines(agefine, hgtf.vec1.5, lty=1)
 
