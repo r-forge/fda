@@ -197,6 +197,18 @@ temp.fd  = temp.fit$fd
 temp.fd$fdnames = fdnames
 
 ccalist = cca.fd(temp.fd, logprec.fd, 3, ccabasis, ccabasis)
+
+#Error in cca.fd(temp.fd, logprec.fd, 3, ccabasis, ccabasis) :
+#  ccafdParobj1 is not a fdPar object.
+
+
+## ??????
+
+
+
+
+
+
 #  Figure 7.8 & 7.9
 
 
