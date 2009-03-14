@@ -192,19 +192,11 @@ lines(fda2l, lty='dotted', lwd=1)
 
 ccabasis = create.fourier.basis(dayrange, 3)
 
+temp.fit = smooth.basis(day.5, daily$tempav, fdParobj)
+temp.fd  = temp.fit$fd
+temp.fd$fdnames = fdnames
 
-
-
-
-
-
-
-
-
-
-#  need tempfd ???
-
-ccalist = cca.fd(tempfd, logprecfd, 3, ccabasis, ccabasis)
+ccalist = cca.fd(temp.fd, logprec.fd, 3, ccabasis, ccabasis)
 #  Figure 7.8 & 7.9
 
 
