@@ -48,22 +48,12 @@ op = par(mfrow=c(2,1))
 agefine= seq(ageRng[1], ageRng[2], length=201)
 accfvec1.5 = predict(growthMon, agefine, Lfdobj=2)
 matplot(agefine, accfvec1.5, type='l', lty=1, ylim=c(-4, 2),
-        xlab='Age (years)', ylab=expression(Acceleration (cm/yr^2)),
+        xlab='Age (years)', ylab=expression(Accel.  (cm/yr^2)),
         xlim=c(1, 18), col=1, las=1)
 abline(h=0, lty='dotted')
 lines(agefine, rowMeans(accfvec1.5), lty='dashed', lwd=2)
 
-accfvec1.5y = predict(growthMon$yhatfd, agefine, Lfdobj=2)
-matplot(agefine, accfvec1.5y, type='l', lty=1, ylim=c(-4, 2),
-        xlab='Age (years)', ylab=expression(Acceleration (cm/yr^2)),
-        xlim=c(1, 18), col=1, las=1)
-abline(h=0, lty='dotted')
-lines(agefine, rowMeans(accfvec1.5[, children]), lty='dashed', lwd=2)
-
-
-
-
-
+# Landmark registration to
 
 
 (i11.7 = which(abs(agefine-11.7) == min(abs(agefine-11.7)))[1])

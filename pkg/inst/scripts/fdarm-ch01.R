@@ -12,7 +12,6 @@ library(fda)
 # Prep for Figure 1.1
 age     = growth$age
 age.rng = range(age)
-agefine = seq(age.rng[1], age.rng[2], length=501)
 
 # Monotone smooth (see section 5.4.2)
 # B-spline of order 6 = quintic polynomials
@@ -46,12 +45,13 @@ hgtfmonfd  = smooth.monotone(age, growth$hgtf[,children],
 matplot(age, growth$hgtf[, children], pch='o',
         xlab='Age (years)', ylab='Height (cm)',
         ylim=c(60, 183))
-hgtf.vec1.5 = predict(hgtfmonfd$yhatfd, agefine)
+agefine = seq(age.rng[1], age.rng[2], length=501)
+hgtf.vec1.5 = predict(hgtfmonfd, agefine)
 matlines(agefine, hgtf.vec1.5, lty=1)
 
 # Figure 1.2
 
-accfvec1.5 = predict(hgtfmonfd$yhatfd, agefine, Lfdobj=2)
+accfvec1.5 = predict(hgtfmonfd, agefine, Lfdobj=2)
 matplot(agefine, accfvec1.5, type='l', lty=1, ylim=c(-4, 2),
         xlab='Age (years)', ylab=expression(Acceleration (cm/yr^2)),
         xlim=c(1, 18), col=1, las=1)

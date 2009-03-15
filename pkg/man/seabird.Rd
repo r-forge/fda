@@ -48,7 +48,6 @@
   species on Kodiak Island, Alaska, \emph{U.S. Fish and Wildlife
     Service, Kodiak National Wildlife Refuge}, Technical Report,
   no. 08-00x
-  }
 }
 \references{
   Ramsay, James O., Hooker, Giles, and Graves, Spencer B. (2009)
