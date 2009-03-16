@@ -84,28 +84,97 @@ logCounts <- log10(meanCounts[selYear,])
 yearObs <- as.numeric(rownames(logCounts))
 yearCode <- (1:20)[selYear]
 
+# Figure 10.2
+
 op <- par(cex=1.3)
 matplot(yearObs, logCounts, type='b', xlab='Year',
         ylab='log10(Mean count)', col=1, lty=1)
 par(op)
 
-birdSmooth <- Data2fd(yearCode, logCounts)
+birdSmooth  = Data2fd(yearCode, logCounts)
 
-shellfish = as.numeric((1:13) %in% c(1,2,5,6,12,13))
+shellfish   = as.numeric((1:13) %in% c(1,2,5,6,12,13))
 
-fitShellfish <- fRegress(birdSmooth~shellfish)
+fitShellfish= fRegress(birdSmooth~shellfish)
 
-betaestlist <- fitShellfish$betaestlist
+xfdlist     = fitShellfish$xfdlist
+betaestlist = fitShellfish$betaestlist
 
-sapply(betaestlist, class)
+# Section 10.1.3 Choosing Smoothing Parameters
+
+loglam = seq(-2,0,0.25)
+loglam = seq(-9, 9, 2)
+loglam = seq(1, 3, .25)
+SSE.CV = rep(NA,length(loglam))
+names(SSE.CV) = loglam
+betalisti = betaestlist
+for(i in 1:length(loglam)){
+  for(j in 1:2)
+    betalisti[[j]]$lambda = 10^loglam[i]
+  CVi = fRegress.CV(birdSmooth, xfdlist, betalisti)
+  cat(i, loglam[i], CVi$SSE.CV, '; ')
+  SSE.CV[i] = CVi$SSE.CV
+}
+
+sapply(xfdlist, class)
+sapply(betalisti, class)
+
+#loglam. <- loglam
+#SSE.CV. <- SSE.CV
+#loglam1 <- loglam
+#SSE.CV1 <- SSE.CV
+#loglam2 <- loglam
+#SSE.CV2 <- SSE.CV
+
+SSE.CV3 <- c(SSE.CV, SSE.CV., SSE.CV1, SSE.CV2)
+ylim <- range(SSE.CV, SSE.CV., SSE.CV1, SSE.CV2)
+
+plot(loglam, SSE.CV, type='b', ylim=ylim, xlim=c(-9, 9))
+lines(loglam., SSE.CV., type='b', col='red')
+lines(loglam1, SSE.CV1, type='b', col='green')
+lines(loglam2, SSE.CV2, type='b', col='blue')
+
+# best = 1.5
+o <- order(as.numeric(names(SSE.CV3)))
+
+SSE.CV3[o]
+plot(names(SSE.CV3[o]), SSE.CV3[o], type='b')
+abline(v=-1.25)
+abline(v=-2)
+abline(v=1.5)
 
 op <- par(mfrow=c(2,1))
 plot(betaestlist$const$fd)
 plot(betaestlist$shellfish$fd)
 par(op)
 
+for(j in 1:2)betalisti[[j]]$lambda = 10^1.5
+fitShellfish1.5 = fRegress(birdSmooth, xfdlist, betalisti)
 
+beta1.5 = fitShellfish1.5$betaestlist
 
+op = par(mfrow=c(2,1))
+plot(beta1.5$const$fd)
+plot(beta1.5$shellfish$fd)
+par(op)
+
+loglam4       = seq(1.5, -2, -0.25)
+SSE.CV4       = rep(NA,length(loglam4))
+names(SSE.CV4)= loglam4
+fiti          = fitShellfish1.5
+betai = fiti$betaestlist
+for(i in 1:length(loglam4)){
+  lami  = 10^loglam4[i]
+  for(j in 1:2)
+    betai[[j]]$lambda = lami
+  fiti = fRegress(birdSmooth, xfdlist, betai)
+  betai= fiti$betaestlist
+  CVi = fRegress.CV(birdSmooth, xfdlist, betai)
+  cat(i, loglam4[i], CVi$SSE.CV, '; ')
+  SSE.CV4[i] = CVi$SSE.CV
+}
+
+lines(loglam4, SSE.CV4, col='red')
 
 
 
@@ -274,10 +343,7 @@ fRegressList = fRegress(logbirdfd0,xfdlist,betalist)
 betaestlist = fRegressList$betaestlist
 yhatfdobj = fRegressList$yhatfdobj
 
-# Figure 10.3 ???
-
-
-
+# Figure 10.3:  After determining the smoothing paramter
 
 # Section 10.1.3 Choosing Smoothing Parameters
 
