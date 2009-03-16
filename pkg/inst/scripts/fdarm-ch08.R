@@ -43,81 +43,8 @@ betaf     = growthMon$beta
 hgtfhatfd = growthMon$yhatfd
 
 # Figure 8.1
-op = par(mfrow=c(2,1))
 
-agefine= seq(ageRng[1], ageRng[2], length=201)
-accfvec1.5 = predict(growthMon, agefine, Lfdobj=2)
-matplot(agefine, accfvec1.5, type='l', lty=1, ylim=c(-4, 2),
-        xlab='Age (years)', ylab=expression(Accel.  (cm/yr^2)),
-        xlim=c(1, 18), col=1, las=1)
-abline(h=0, lty='dotted')
-lines(agefine, rowMeans(accfvec1.5), lty='dashed', lwd=2)
-
-# Landmark registration to
-
-
-(i11.7 = which(abs(agefine-11.7) == min(abs(agefine-11.7)))[1])
-
-# Use the fit from Figure 1.1
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-hgtf.vel1.5 = predict(hgtfmonfd$yhatfd, agefine, 1)
-hgtf.acc1.5 = predict(hgtfmonfd$yhatfd, agefine, 2)
-
-plot(hgtf.vel1.5, hgtf.acc1.5, type='n', xlim=c(0, 12), ylim=c(-5, 2),
-     xlab='Velocity (cm/yr)', ylab=expression(Acceleration (cm/yr^2)),
-     las=1)
-for(i in 1:10){
-  lines(hgtf.vel1.5[, i], hgtf.acc1.5[, i])
-  points(hgtf.vel1.5[i11.7, i], hgtf.acc1.5[i11.7, i])
-}
-abline(h=0, lty='dotted')
-
-
-
-
-
-
-
-
-accelFit <- predict(growthMon, agefine, 2)
-str(accelFit)
-
-# *** lambda = 10^(-.5) was too big
-
-
-
-matplot(agefine, accelFit[, 1:children], type='l',
-        ylim=c(-4, 2))
-lines(agefine, apply(accelFit[, 1:children], 1, mean),
-      lty='dashed', lwd=2)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-par(op)
+#**** Plot AFTER the code in  section 8.3
 
 # Figure 8.2
 
@@ -184,12 +111,12 @@ PGSctr = rep(0,10)
 agefine = seq(1,18,len=101)
 par(mfrow=c(1,1), ask=TRUE)
 for (icase in 1:10) {
-accveci = predict(accfd[icase], agefine)
-plot(agefine,accveci,"l", ylim=c(-6,4),
-xlab="Year", ylab="Height Accel.",
-main=paste("Case",icase))
-lines(c(1,18),c(0,0),lty=2)
-PGSctr[icase] = locator(1)$x
+  accveci = predict(accfd[icase], agefine)
+  plot(agefine,accveci,"l", ylim=c(-6,4),
+       xlab="Year", ylab="Height Accel.",
+       main=paste("Case",icase))
+  lines(c(1,18),c(0,0),lty=2)
+  PGSctr[icase] = locator(1)$x
 }
 
 PGSctrmean = mean(PGSctr)
@@ -197,11 +124,36 @@ wbasisLM = create.monomial.basis(c(1,18), 3)
 WfdParLM = fdPar(wbasisLM)
 
 landmarkList = landmarkreg(accfd, PGSctr, PGSctrmean,
-WfdParLM, TRUE)
+    WfdParLM, TRUE)
 accregfdLM = landmarkList$regfd
 warpfdLM = landmarkList$warpfd
 
-# -> bottom pannel of Figure 8.1
+
+
+
+op = par(mfrow=c(2,1))
+
+agefine= seq(ageRng[1], ageRng[2], length=201)
+accfvec1.5 = predict(growthMon, agefine, Lfdobj=2)
+matplot(agefine, accfvec1.5, type='l', lty=1, ylim=c(-4, 2),
+        xlab='Age (years)', ylab=expression(Accel.  (cm/yr^2)),
+        xlim=c(1, 18), col=1, las=1)
+abline(h=0, lty='dotted')
+lines(agefine, rowMeans(accfvec1.5), lty='dashed', lwd=2)
+
+
+
+# -> bottom pannel of Figure 8.1?????
+
+
+
+
+
+
+
+
+
+par(op)
 
 
 ##
