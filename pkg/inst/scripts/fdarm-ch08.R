@@ -48,9 +48,14 @@ hgtfhatfd = growthMon$yhatfd
 
 # Figure 8.2
 
-# transfer from fda or afda?  ?????
+# 2009.03.16:  Asked Jim & Giles for the formula ... ???
 
+# ... if they don't reply, I could do this any time
+# by reading points off the graph for one of the curves,
+# fitting a spline to it, then shifting & scaling it
+# to get the other curves ...
 
+# ... AFTER everything else is working ...
 
 
 
@@ -64,41 +69,7 @@ hgtfhatfd = growthMon$yhatfd
 
 # Figure 8.3
 
-par(mfrow=c(2,2),pty="m",ask=TRUE)
-for (i in children) {
-    hgtffit <- eval.fd(age,     hgtfhatfd[i])
-    hgtfvec <- eval.fd(agefine, hgtfhatfd[i])
-    velfvec <- eval.fd(agefine, hgtfhatfd[i], 1)
-    accfvec <- eval.fd(agefine, hgtfhatfd[i], 2)
-    plot(age, hgtf[,i], xlim=c(1,18), ylim=c(60,200),
-         xlab="", ylab=paste("Height for female",i))
-    lines(agefine, hgtfvec)
-    resi <- hgtf[,i] - hgtffit
-    ind  <- resi >= -.7 & resi <= .7
-    plot(age[ind], resi[ind], type="b", xlim=c(1,18), ylim=c(-.7,.7),
-         xlab="", ylab="Residuals")
-    abline(h=0, lty=2)
-    plot(agefine, velfvec, type="l", xlim=c(1,18), ylim=c(0,15),
-         xlab="Years", ylab="Velocity")
-    plot(agefine, accfvec, type="l", xlim=c(1,18), ylim=c(-4,2),
-         xlab="Years", ylab="Acceleration")
-    abline(h=0, lty=2)
-}
-
-# ???????????
-
-
-
-
-
-
-
-
-
-
-
-
-
+#**** Plot AFTER the code in  section 8.3
 
 ##
 ## Section 8.3 Time-Warping Functions and Registration
@@ -108,8 +79,11 @@ for (i in children) {
 # of the center of the pubertal growth spurt
 # for the first 10 girls
 PGSctr = rep(0,10)
-agefine = seq(1,18,len=101)
-par(mfrow=c(1,1), ask=TRUE)
+agefine= seq(1,18,len=101)
+
+accfd = deriv(growthMon$yhatfd, 2)
+
+op = par(mfrow=c(1,1), ask=TRUE)
 for (icase in 1:10) {
   accveci = predict(accfd[icase], agefine)
   plot(agefine,accveci,"l", ylim=c(-6,4),
@@ -117,16 +91,30 @@ for (icase in 1:10) {
        main=paste("Case",icase))
   lines(c(1,18),c(0,0),lty=2)
   PGSctr[icase] = locator(1)$x
+# *** Click once to change the graph
+# *** Then click where acceleration = 0 closest to age 11.7
 }
+par(op)
 
 PGSctrmean = mean(PGSctr)
-wbasisLM = create.monomial.basis(c(1,18), 3)
-WfdParLM = fdPar(wbasisLM)
+wbasisLM   = create.monomial.basis(c(1,18), 3)
+WfdParLM   = fdPar(wbasisLM)
 
 landmarkList = landmarkreg(accfd, PGSctr, PGSctrmean,
-    WfdParLM, TRUE)
-accregfdLM = landmarkList$regfd
-warpfdLM = landmarkList$warpfd
+                           WfdParLM, TRUE)
+# Progress:  Each dot is a curve
+# .Error in chol.default(Asym) :
+#   the leading minor of order 1 is not positive definite
+
+
+
+
+accregfdLM   = landmarkList$regfd
+warpfdLM     = landmarkList$warpfd
+
+
+
+
 
 
 
@@ -144,6 +132,7 @@ lines(agefine, rowMeans(accfvec1.5), lty='dashed', lwd=2)
 
 
 # -> bottom pannel of Figure 8.1?????
+#  ... & Figure 8.3 ... ???
 
 
 
@@ -154,6 +143,9 @@ lines(agefine, rowMeans(accfvec1.5), lty='dashed', lwd=2)
 
 
 par(op)
+
+
+
 
 
 ##
