@@ -14,7 +14,7 @@ predict.monfd <- function(object, newdata=NULL, Lfdobj=0, ...){
   {
     if(length(dim(beta))<2){
       if(length(dim(evalMon))<2){
-        be <- beta[2]*evalmon
+        be <- beta[2]*evalMon
         if(Lfdobj<1)
           be <- beta[1]+be
         return(be)
