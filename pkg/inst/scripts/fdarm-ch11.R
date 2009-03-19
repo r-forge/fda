@@ -11,7 +11,23 @@ library(fda)
 ## Section 11.1  Introduction to Dynamics
 ##
 #  Figure 11.1
-
+x = seq(-1, 1, length=201)
+x2 <- x^2
+op = par(xpd=TRUE)
+plot(x, x2, xlim=c(-1,1), axes=FALSE, lwd=2, type='l', xlab='', ylab='')
+axis(1, 0)
+axis(2, 0, las=1)
+lines(c(-1, 1), c(0, 0), lty='dashed')
+lines(c(0, 0), c(0, 1), lty='dashed')
+text(-1.2, .5, expression(beta[0]), cex=2 )
+text(0, -0.2, expression(beta[1]), cex=2)
+text(-0.4, 0.8, "Increasing\nOscillations", cex=2)
+text(0.4, 0.8, "Increasing\nOscillations", cex=2)
+text(-0.7, 0.005, 'Exponential\nGrowth', cex=2)
+text(0.7, 0.005, 'Exponential\nDecay', cex=2)
+arrows(-0.3, 0.2, -0.4, 0.16, length=0.1, lwd=2)
+text(-0.29, 0.2, "d=0", adj=0, cex=2)
+par(op)
 
 
 
@@ -26,7 +42,7 @@ library(fda)
 ##
 # Figure 11.2
 bwtlist = list(fdPar(lipbasis,2,0),
-    fdPar(lipbasis,2,0))
+    fdPar(lipbasis,2,0) )
 pdaList = pda.fd(lipfd,bwtlist)
 
 plot.pda(pdaList)
