@@ -10,7 +10,10 @@ library(fda)
 ##
 ## Section 11.1  Introduction to Dynamics
 ##
+
+# section 11.1.2 Interpreting Second Order Linear Dynamics
 #  Figure 11.1
+
 x = seq(-1, 1, length=201)
 x2 <- x^2
 op = par(xpd=TRUE)
@@ -29,9 +32,6 @@ arrows(-0.3, 0.2, -0.4, 0.16, length=0.1, lwd=2)
 text(-0.29, 0.2, "d=0", adj=0, cex=2)
 par(op)
 
-
-
-
 ##
 ## Section 11.2 Principal Differential Analysis for Linear Dynamics
 ##
@@ -41,11 +41,22 @@ par(op)
 ## Section 11.3 Principal Differential Analysis of the Lip Data
 ##
 # Figure 11.2
-bwtlist = list(fdPar(lipbasis,2,0),
-    fdPar(lipbasis,2,0) )
-pdaList = pda.fd(lipfd,bwtlist)
+matplot(liptime, lip, type = 'l',
+        xlab='Normalized Time', ylab='lip position (mm)')
 
-plot.pda(pdaList)
+lipbasis = create.bspline.basis(breaks=liptime)
+lipfd    = Data2fd(liptime, lip, lipbasis)
+bwtlist  = list(fdPar(lipbasis,2,0),
+                fdPar(lipbasis,2,0) )
+pdaList  = pda.fd(lipfd,bwtlist)
+
+plot.pda.fd(pdaList)
+# ????
+
+
+## ***???
+
+
 dfd <- 0.25*pdaList$bwtlist[[2]]$fd^2
              - pdaList$bwtlist[[1]]$fd
 dfd$fdnames = list(’time’,’rep’,’discriminant’)
