@@ -82,24 +82,6 @@ par(op)
 
 
 
-lipbasis = create.bspline.basis(breaks=liptime)
-lipfd    = Data2fd(liptime, lip, lipbasis)
-bwtlist  = list(fdPar(lipbasis,2,0),
-                fdPar(lipbasis,2,0) )
-pdaList  = pda.fd(lipfd,bwtlist)
-
-plot.pda.fd(pdaList)
-# ????
-
-
-## ***???
-
-
-dfd <- 0.25*pdaList$bwtlist[[2]]$fd^2
-             - pdaList$bwtlist[[1]]$fd
-dfd$fdnames = list(’time’,’rep’,’discriminant’)
-
-# Figure 11.3 ????
 
 
 
