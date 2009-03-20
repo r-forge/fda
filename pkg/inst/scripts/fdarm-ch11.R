@@ -62,11 +62,14 @@ bwtestlist[[2]]$fd$fdnames = list('time','rep','beta1')
 dfd = 0.25*bwtestlist[[2]]$fd^2 - bwtestlist[[1]]$fd
 dfd$fdnames = list('time','rep','discriminant')
 
-op = par(mfrow=c(3,1))
-plot(bwtestlist[[1]]$fd,cex.lab=1.5,cex.axis=1.5,lwd=2,main="beta 0")
-plot(bwtestlist[[2]]$fd,cex.lab=1.5,cex.axis=1.5,lty=2,lwd=2,main="beta 1")
+plot.pda.fd(pdaList,whichdim=3,cex.axis=1.5,cex.lab=1.5,lwd=2)
 plot(dfd,cex.lab=1.5,cex.axis=1.5,lwd=2,main="discriminant")
-par(op)
+
+#op = par(mfrow=c(3,1))
+#plot(bwtestlist[[1]]$fd,cex.lab=1.5,cex.axis=1.5,lwd=2,main="beta 0")
+#plot(bwtestlist[[2]]$fd,cex.lab=1.5,cex.axis=1.5,lty=2,lwd=2,main="beta 1")
+#plot(dfd,cex.lab=1.5,cex.axis=1.5,lwd=2,main="discriminant")
+#par(op)
 
 
 
