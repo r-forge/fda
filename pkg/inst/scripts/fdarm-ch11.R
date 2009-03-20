@@ -44,6 +44,44 @@ par(op)
 matplot(liptime, lip, type = 'l',
         xlab='Normalized Time', ylab='lip position (mm)')
 
+lipfd = smooth.basisPar(liptime, lip, 6, Lfdobj=int2Lfd(4),
+                         lambda=1e-12)$fd
+names(lipfd$fdnames) = c("time(seconds)", "replications", "mm")
+
+lipbasis = lipfd$basis
+bwtlist = list(fdPar(lipbasis,2,0.0000),fdPar(lipbasis,2,0.0000))
+
+xfdlist <- list(lipfd)
+
+pdaList <- pda.fd(xfdlist, bwtlist)
+bwtestlist <- pdaList$bwtlist
+
+bwtestlist[[1]]$fd$fdnames = list('time','rep','beta0')
+bwtestlist[[2]]$fd$fdnames = list('time','rep','beta1')
+
+dfd = 0.25*bwtestlist[[2]]$fd^2 - bwtestlist[[1]]$fd
+dfd$fdnames = list('time','rep','discriminant')
+
+op = par(mfrow=c(3,1))
+plot(bwtestlist[[1]]$fd,cex.lab=1.5,cex.axis=1.5,lwd=2,main="beta 0")
+plot(bwtestlist[[2]]$fd,cex.lab=1.5,cex.axis=1.5,lty=2,lwd=2,main="beta 1")
+plot(dfd,cex.lab=1.5,cex.axis=1.5,lwd=2,main="discriminant")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 lipbasis = create.bspline.basis(breaks=liptime)
 lipfd    = Data2fd(liptime, lip, lipbasis)
 bwtlist  = list(fdPar(lipbasis,2,0),
