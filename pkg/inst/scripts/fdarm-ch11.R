@@ -84,6 +84,12 @@ pda.overlay(pdaList)
 ##
 ## Section 11.4 PDA of the Handwriting Data
 ##
+
+fdafd0 = fd(array(0, c(nbasis,20,2)), fdabasis)
+lambda = 1e8
+fdaPar = fdPar(fdafd0, 5, lambda)
+
+
 xfdlist = list(fdafd[,1],fdafd[,2],fdafd[,3])
 
 pdaPar = fdPar(fdabasis,2,0)
