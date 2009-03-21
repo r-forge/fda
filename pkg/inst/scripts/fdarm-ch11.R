@@ -84,32 +84,39 @@ pda.overlay(pdaList)
 ##
 ## Section 11.4 PDA of the Handwriting Data
 ##
+fdabasis= create.bspline.basis(norder=7, breaks=handwritTime)
 
-fdafd0 = fd(array(0, c(nbasis,20,2)), fdabasis)
+fdafd0 = fd(array(0, c(fdabasis$nbasis, dim(handwrit)[-1])), fdabasis)
 lambda = 1e8
 fdaPar = fdPar(fdafd0, 5, lambda)
 
+smoothList= smooth.basis(handwritTime, handwrit, fdaPar)
+fdafd     = smoothList$fd
+df        = smoothList$df
+gcv       = smoothList$gcv
 
-xfdlist = list(fdafd[,1],fdafd[,2],fdafd[,3])
+#  Add suitable names for the dimensions of the data.
 
-pdaPar = fdPar(fdabasis,2,0)
-pdaParlist = list(pdaPar, pdaPar)
-bwtlist = list( list(pdaParlist,pdaParlist),
-    list(pdaParlist,pdaParlist) )
-pdaList = pda.fd(xfdlist, bwtlist)
+fdafd$fdnames[[1]] <- "Milliseconds"
+fdafd$fdnames[[2]] <- "Replications"
+fdafd$fdnames[[3]] <- "Metres"
 
+xfdlist = list(fdafd[,1],fdafd[,2])
 
-eigen.pda(pdaList)
+pdaPar    = fdPar(fdabasis,2,1)
+pdaParlist= list(pdaPar, pdaPar)
+bwtlist   = list( list(pdaParlist,pdaParlist),
+                  list(pdaParlist,pdaParlist) )
+
+# This can take some time to compute, so time it:
+pdaTime   = system.time({
+pdaList   = pda.fd(xfdlist, bwtlist)} )
+pdaTime/60
+# 20 minutes on a dual core;  2009.03.21
 
 # Figure 11.5
 
-
-
-
-
-
-
-
+eigenres = eigen.pda(pdaList)
 
 ##
 ## Section 11.5 Registration and PDA
