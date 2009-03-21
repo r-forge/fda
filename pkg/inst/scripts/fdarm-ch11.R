@@ -51,11 +51,11 @@ lipfd = smooth.basisPar(liptime, lip, 6, Lfdobj=int2Lfd(4),
 names(lipfd$fdnames) = c("time(seconds)", "replications", "mm")
 
 lipbasis  = lipfd$basis
-bwtlist   = list(fdPar(lipbasis,2,0.0000),fdPar(lipbasis,2,0.0000))
+bwtlist   = list(fdPar(lipbasis,2,0),fdPar(lipbasis,2,0))
 
-xfdlist   = list(lipfd)
+xfdlist1   = list(lipfd)
 
-pdaList   = pda.fd(xfdlist, bwtlist)
+pdaList   = pda.fd(xfdlist1, bwtlist)
 bwtestlist= pdaList$bwtlist
 
 bwtestlist[[1]]$fd$fdnames = list('time','rep','beta0')
@@ -121,16 +121,33 @@ eigenres = eigen.pda(pdaList)
 ##
 ## Section 11.5 Registration and PDA
 ##
-lipreglist = landmarkreg(lipfd, as.matrix(lipmarks),
-    lipmeanmarks, WfdPar)
-Dlipregfd = register.newfd(deriv.fd(lipfd,1),
-    lipreglist$warpfd)
-D2lipregfd = register.newfd(deriv.fd(lipfd,2),
-    lipreglist$warpfd)
-xfdlist = list(-Dlipregfd,-lipreglist$regfd)
-lipregpda = fRegress( D2lipregfd, xfdlist, bwtlist)
 
+WfdPar = fdPar(lipfd$basis,2,1e-16)
+lipmeanmarks= mean(lipmarks)
 
+lipreglist  = landmarkreg(lipfd, as.matrix(lipmarks),
+                         lipmeanmarks, WfdPar)
+Dlipregfd   = register.newfd(deriv.fd(lipfd,1),
+                         lipreglist$warpfd, type='direct')
+D2lipregfd  = register.newfd(deriv.fd(lipfd,2),
+                         lipreglist$warpfd, type='direct')
+xfdlist2     = list(-Dlipregfd,-lipreglist$regfd)
+lipregpda   = fRegress(D2lipregfd, xfdlist2, bwtlist)
+
+pdalist3 = pda.fd(lipreglist$regfd,bwtlist)
+
+bwtestlist2 = lipregpda$betaestlist
+
+# Figure 11.6
+
+op = par(mfrow=c(2,1))
+plot(bwtestlist[[1]]$fd,lwd=2,cex.lab=1.5,cex.axis=1.5,
+     ylim=c(-200, 1300))
+lines(pdalist3$bwtlist[[1]]$fd,lwd=2,lty=3)
+
+plot(bwtestlist[[2]]$fd,lwd=2,cex.lab=1.5,cex.axis=1.5)
+lines(pdalist3$bwtlist[[2]]$fd,lwd=2,lty=3)
+par(op)
 
 ##
 ## Section 11.6 Details for pda.fd, eigen.fd, pda.overlay
