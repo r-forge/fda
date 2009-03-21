@@ -25,7 +25,7 @@ lines(c(0, 0), c(0, 1), lty='dashed')
 text(-1.2, .5, expression(beta[0]), cex=2 )
 text(0, -0.2, expression(beta[1]), cex=2)
 text(-0.4, 0.8, "Increasing\nOscillations", cex=2)
-text(0.4, 0.8, "Increasing\nOscillations", cex=2)
+text(0.4, 0.8, "Decreasing\nOscillations", cex=2)
 text(-0.7, 0.005, 'Exponential\nGrowth', cex=2)
 text(0.7, 0.005, 'Exponential\nDecay', cex=2)
 arrows(-0.3, 0.2, -0.4, 0.16, length=0.1, lwd=2)
@@ -44,25 +44,32 @@ par(op)
 matplot(liptime, lip, type = 'l',
         xlab='Normalized Time', ylab='lip position (mm)')
 
+# Prep for Figure 11.3
+
 lipfd = smooth.basisPar(liptime, lip, 6, Lfdobj=int2Lfd(4),
                          lambda=1e-12)$fd
 names(lipfd$fdnames) = c("time(seconds)", "replications", "mm")
 
-lipbasis = lipfd$basis
-bwtlist = list(fdPar(lipbasis,2,0.0000),fdPar(lipbasis,2,0.0000))
+lipbasis  = lipfd$basis
+bwtlist   = list(fdPar(lipbasis,2,0.0000),fdPar(lipbasis,2,0.0000))
 
-xfdlist <- list(lipfd)
+xfdlist   = list(lipfd)
 
-pdaList <- pda.fd(xfdlist, bwtlist)
-bwtestlist <- pdaList$bwtlist
+pdaList   = pda.fd(xfdlist, bwtlist)
+bwtestlist= pdaList$bwtlist
 
 bwtestlist[[1]]$fd$fdnames = list('time','rep','beta0')
 bwtestlist[[2]]$fd$fdnames = list('time','rep','beta1')
 
-dfd = 0.25*bwtestlist[[2]]$fd^2 - bwtestlist[[1]]$fd
-dfd$fdnames = list('time','rep','discriminant')
+dfd        = 0.25*bwtestlist[[2]]$fd^2 - bwtestlist[[1]]$fd
+dfd$fdnames= list('time','rep','discriminant')
+
+# The top two panels of Figure 11.3
 
 plot.pda.fd(pdaList,whichdim=3,cex.axis=1.5,cex.lab=1.5,lwd=2)
+plot(pdaList,whichdim=3,cex.axis=1.5,cex.lab=1.5,lwd=2)
+
+# Figure 11.3
 
 op = par(mfrow=c(3,1))
 plot(bwtestlist[[1]]$fd,cex.lab=1.5,cex.axis=1.5,lwd=2,main="beta 0")
@@ -70,27 +77,9 @@ plot(bwtestlist[[2]]$fd,cex.lab=1.5,cex.axis=1.5,lty=2,lwd=2,main="beta 1")
 plot(dfd,cex.lab=1.5,cex.axis=1.5,lwd=2,main="discriminant")
 par(op)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Figure 11.4
+
 pda.overlay(pdaList)
-
-
 
 ##
 ## Section 11.4 PDA of the Handwriting Data
