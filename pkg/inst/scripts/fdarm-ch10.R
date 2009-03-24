@@ -46,6 +46,9 @@ fRegressList= fRegress(temp36fd, regionList, betaList)
 betaestList = fRegressList$betaestlist
 regionFit   = fRegressList$yhatfd
 regions     = c("Canada", regions.)
+
+# Figure 10.1
+
 op          = par(mfrow=c(2,3),cex=1)
 for (j in 1:p) plot(betaestList[[j]]$fd, lwd=2,
                     xlab="Day (July 1 to June 30)",
