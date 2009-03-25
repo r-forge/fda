@@ -11,7 +11,7 @@ library(fda)
 ## Section 10.1  Functional Responses and an Analysis of Variance Model
 ##
 #  Section 10.1.1 Climate Region Effects on Temperature
-regions.          = unique(CanadianWeather$region)
+regions.         = unique(CanadianWeather$region)
 p                = length(regions.) + 1
 regionList       = vector("list", p)
 names(regionList)= regions.
@@ -105,19 +105,64 @@ betaestlist = fitShellfish$betaestlist
 
 # Section 10.1.3 Choosing Smoothing Parameters
 
-loglam = seq(-2,0,0.25)
-loglam = seq(-9, 9, 2)
-loglam = seq(1, 3, .25)
-SSE.CV = rep(NA,length(loglam))
-names(SSE.CV) = loglam
+#  First test a coarse grid for loglam:
+loglam1 = seq(-9, 9, 2)
+SSE.CV1 = rep(NA,length(loglam1))
+names(SSE.CV1) = loglam1
 betalisti = betaestlist
-for(i in 1:length(loglam)){
+for(i in 1:length(loglam1)){
   for(j in 1:2)
-    betalisti[[j]]$lambda = 10^loglam[i]
+    betalisti[[j]]$lambda = 10^loglam1[i]
   CVi = fRegress.CV(birdSmooth, xfdlist, betalisti)
-  cat(i, loglam[i], CVi$SSE.CV, '; ')
-  SSE.CV[i] = CVi$SSE.CV
+  cat(i, loglam1[i], CVi$SSE.CV, '; ')
+  SSE.CV1[i] = CVi$SSE.CV
 }
+
+plot(loglam1, SSE.CV1, type='b')
+
+# Try a medium grid over half the range
+loglam2 = seq(-4.5, 4.5)
+SSE.CV2 = rep(NA,length(loglam2))
+names(SSE.CV2) = loglam2
+for(i in 1:length(loglam2)){
+  for(j in 1:2)
+    betalisti[[j]]$lambda = 10^loglam2[i]
+  CVi = fRegress.CV(birdSmooth, xfdlist, betalisti)
+  cat(i, loglam2[i], CVi$SSE.CV, '; ')
+  SSE.CV2[i] = CVi$SSE.CV
+}
+
+loglam. <- c(loglam1, loglam2)
+SSE.CV. <- c(SSE.CV1, SSE.CV2)
+o. <- order(loglam.)
+plot(loglam.[o.], SSE.CV.[o.], type='b')
+
+# Refine it further near the two local minima
+loglam3 <- c(seq(-2.4, -1.6, .1), seq(0.6, 1.4, .1),
+             seq(1.6, 2.4, .1) )
+SSE.CV3 = rep(NA,length(loglam3))
+names(SSE.CV3) = loglam3
+for(i in 1:length(loglam3)){
+  for(j in 1:2)
+    betalisti[[j]]$lambda = 10^loglam3[i]
+  CVi = fRegress.CV(birdSmooth, xfdlist, betalisti)
+  cat(i, loglam3[i], CVi$SSE.CV, '; ')
+  SSE.CV3[i] = CVi$SSE.CV
+}
+
+loglam <- c(loglam1, loglam2, loglam3)
+SSE.CV <- c(SSE.CV1, SSE.CV2, SSE.CV3)
+o <- order(loglam)
+plot(loglam[o], SSE.CV[o], type='b')
+
+
+
+#######################
+##
+## Giles, Jim:  What do you think of the above?
+
+
+
 
 sapply(xfdlist, class)
 sapply(betalisti, class)
@@ -131,6 +176,17 @@ sapply(betalisti, class)
 
 SSE.CV3 <- c(SSE.CV, SSE.CV., SSE.CV1, SSE.CV2)
 ylim <- range(SSE.CV, SSE.CV., SSE.CV1, SSE.CV2)
+
+
+
+
+
+
+
+
+
+
+
 
 plot(loglam, SSE.CV, type='b', ylim=ylim, xlim=c(-9, 9))
 lines(loglam., SSE.CV., type='b', col='red')
