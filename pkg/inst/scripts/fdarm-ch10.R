@@ -78,8 +78,8 @@ meanCounts = matrix(NA, 20, 13)
 dimnames(meanCounts) = list(1986:2005, birds)
 
 for(i in 1:20){
-  sel <- (UU$Year == rownames(meanCounts)[i])
-  meanCounts[i, ] <- sapply(UU[sel, birds], mean, na.rm=TRUE)
+  sel = (UU$Year == rownames(meanCounts)[i])
+  meanCounts[i, ] = sapply(UU[sel, birds], mean, na.rm=TRUE)
 }
 
 selYear <- !is.na(meanCounts[, 1])
@@ -89,7 +89,7 @@ yearCode <- (1:20)[selYear]
 
 # Figure 10.2
 
-op <- par(cex=1.3)
+op = par(cex=1.3)
 matplot(yearObs, logCounts, type='b', xlab='Year',
         ylab='log10(Mean count)', col=1, lty=1)
 par(op)
@@ -99,8 +99,8 @@ birdSmooth  = Data2fd(yearCode, logCounts)
 lambdas = seq(-9,9,0.5)
 gcvs = rep(0,length(lambdas))
 for(ilam in 1:length(lambdas)){
-  sfdPar = fdPar(birdSmooth$basis,2,exp(lambdas[ilam]))
-  ifd =  smooth.basis(yearCode,logCounts,sfdPar)
+  sfdPari = fdPar(birdSmooth$basis,2,exp(lambdas[ilam]))
+  ifd =  smooth.basis(yearCode,logCounts,sfdPari)
   gcvs[ilam] = sum(ifd$gcv)
 }
 
@@ -110,8 +110,6 @@ lambda = lambdas[which.min(gcvs)]
 sfdPar = fdPar(birdSmooth$basis,2,exp(lambda))
 birdSmooth =  smooth.basis(yearCode,logCounts,sfdPar)$fd
 
-
-
 shellfish   = as.numeric((1:13) %in% c(1,2,5,6,12,13))
 
 fitShellfish= fRegress(birdSmooth~shellfish)
@@ -119,7 +117,7 @@ fitShellfish= fRegress(birdSmooth~shellfish)
 xfdlist     = fitShellfish$xfdlist
 betaestlist = fitShellfish$betaestlist
 
-# Section 10.1.3 Choosing Smoothing Parameters
+# Section 10.1.3 Choosing Smoothing Parameters for the pda
 
 #  First test a coarse grid for loglam:
 loglam1 = seq(-9, 9, 2)
@@ -136,8 +134,8 @@ for(i in 1:length(loglam1)){
 
 plot(loglam1, SSE.CV1, type='b')
 
-# Try a medium grid over half the range
-loglam2 = seq(-0.5, 4.5)
+# Try a medium grid over a subset near the minimum
+loglam2 = seq(1.25, 4.75, 0.5)
 SSE.CV2 = rep(NA,length(loglam2))
 names(SSE.CV2) = loglam2
 for(i in 1:length(loglam2)){
@@ -152,6 +150,17 @@ loglam. <- c(loglam1, loglam2)
 SSE.CV. <- c(SSE.CV1, SSE.CV2)
 o. <- order(loglam.)
 plot(loglam.[o.], SSE.CV.[o.], type='b')
+
+loglamSeabird = loglam.[which.min(SSE.CV.)]
+
+# ******** Use this ...
+
+
+
+
+
+
+
 
 # Refine it further near the two local minima
 #loglam3 <- c(seq(-2.4, -1.6, .1), seq(0.6, 1.4, .1),
