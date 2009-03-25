@@ -96,6 +96,22 @@ par(op)
 
 birdSmooth  = Data2fd(yearCode, logCounts)
 
+lambdas = seq(-9,9,0.5)
+gcvs = rep(0,length(lambdas))
+for(ilam in 1:length(lambdas)){
+  sfdPar = fdPar(birdSmooth$basis,2,exp(lambdas[ilam]))
+  ifd =  smooth.basis(yearCode,logCounts,sfdPar)
+  gcvs[ilam] = sum(ifd$gcv)
+}
+
+plot(lambdas,gcvs)
+
+lambda = lambdas[which.min(gcvs)]
+sfdPar = fdPar(birdSmooth$basis,2,exp(lambda))
+birdSmooth =  smooth.basis(yearCode,logCounts,sfdPar)$fd
+
+
+
 shellfish   = as.numeric((1:13) %in% c(1,2,5,6,12,13))
 
 fitShellfish= fRegress(birdSmooth~shellfish)
@@ -121,7 +137,7 @@ for(i in 1:length(loglam1)){
 plot(loglam1, SSE.CV1, type='b')
 
 # Try a medium grid over half the range
-loglam2 = seq(-4.5, 4.5)
+loglam2 = seq(-0.5, 4.5)
 SSE.CV2 = rep(NA,length(loglam2))
 names(SSE.CV2) = loglam2
 for(i in 1:length(loglam2)){
@@ -138,8 +154,9 @@ o. <- order(loglam.)
 plot(loglam.[o.], SSE.CV.[o.], type='b')
 
 # Refine it further near the two local minima
-loglam3 <- c(seq(-2.4, -1.6, .1), seq(0.6, 1.4, .1),
-             seq(1.6, 2.4, .1) )
+#loglam3 <- c(seq(-2.4, -1.6, .1), seq(0.6, 1.4, .1),
+#             seq(1.6, 2.4, .1) )
+loglam3 <- seq(1.5,3.5,0.1)
 SSE.CV3 = rep(NA,length(loglam3))
 names(SSE.CV3) = loglam3
 for(i in 1:length(loglam3)){
