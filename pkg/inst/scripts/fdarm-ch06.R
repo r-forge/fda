@@ -1,18 +1,20 @@
 ###
 ###
-### Ramsey, Hooker & Graves (2009)
+### Ramsay, Hooker & Graves (2009)
 ### Functional Data Analysis with R and Matlab (Springer)
 ###
 ### ch. 6.  Descriptions of Functional Data
 ###
+
 library(fda)
 
 ##
 ## Section 6.1 Some Functional Descriptive Statistics
 ##
+
 #  using 'logprec.fd' computed in fdarm-ch05.R as follows:
 logprecav = CanadianWeather$dailyAv[
-         dayOfYearShifted, , 'log10precip']
+                dayOfYearShifted, , 'log10precip']
 dayrange  = c(0,365)
 daybasis  = create.fourier.basis(dayrange, 365)
 
@@ -28,12 +30,15 @@ meanlogprec   = mean(logprec.fd)
 stddevlogprec = std.fd(logprec.fd)
 
 # Section 6.1.1 The Bivariate Covariance Function v(s; t)
+
 logprecvar.bifd = var.fd(logprec.fd)
 
 weektime        = seq(0,365,length=53)
 logprecvar_mat  = eval.bifd(weektime, weektime,
                               logprecvar.bifd)
+
 # Figure 6.1
+
 persp(weektime, weektime, logprecvar_mat,
       theta=-45, phi=25, r=3, expand = 0.5,
       ticktype='detailed',
@@ -44,6 +49,7 @@ persp(weektime, weektime, logprecvar_mat,
 contour(weektime, weektime, logprecvar_mat)
 
 # Figure 6.2
+
 day5time = seq(0,365,5)
 logprec.varmat = eval.bifd(day5time, day5time,
                     logprecvar.bifd)
