@@ -117,6 +117,18 @@ fitShellfish= fRegress(birdSmooth~shellfish)
 xfdlist     = fitShellfish$xfdlist
 betaestlist = fitShellfish$betaestlist
 
+class(betaestlist)
+sapply(betaestlist, class)
+
+# Figure 10.3 without the confidence intervals;
+# for that, see Section 10.2.2
+op = par(mfrow=c(2,1))
+plot(betaestlist$const$fd)
+plot(betaestlist$shellfish$fd)
+par(op)
+
+plot(betaestlist$const$fd+betaestlist$shellfish$fd)
+
 # Section 10.1.3 Choosing Smoothing Parameters for the pda
 
 #  First test a coarse grid for loglam:
@@ -134,8 +146,8 @@ for(i in 1:length(loglam1)){
 
 plot(loglam1, SSE.CV1, type='b')
 
-# Try a medium grid over a subset near the minimum
-loglam2 = seq(1.25, 4.75, 0.5)
+# Try a finer grid over a subset near the minimum
+loglam2 = seq(1.1, 4.9, 0.2)
 SSE.CV2 = rep(NA,length(loglam2))
 names(SSE.CV2) = loglam2
 for(i in 1:length(loglam2)){
@@ -149,98 +161,24 @@ for(i in 1:length(loglam2)){
 loglam. <- c(loglam1, loglam2)
 SSE.CV. <- c(SSE.CV1, SSE.CV2)
 o. <- order(loglam.)
-plot(loglam.[o.], SSE.CV.[o.], type='b')
+plot(loglam.[o.], SSE.CV.[o.], type='b',
+     xlab='log smoothing parameter',
+     ylab='cross-validated sum of squares')
 
 loglamSeabird = loglam.[which.min(SSE.CV.)]
 
 # ******** Use this ...
 
+lamSeabird = 10^loglamSeabird
 
+for(j in 1:2)betalisti[[j]]$lambda = lamSeabird
+fitShellfish.opt = fRegress(birdSmooth, xfdlist, betalisti)
 
-
-
-
-
-
-# Refine it further near the two local minima
-#loglam3 <- c(seq(-2.4, -1.6, .1), seq(0.6, 1.4, .1),
-#             seq(1.6, 2.4, .1) )
-loglam3 <- seq(1.5,3.5,0.1)
-SSE.CV3 = rep(NA,length(loglam3))
-names(SSE.CV3) = loglam3
-for(i in 1:length(loglam3)){
-  for(j in 1:2)
-    betalisti[[j]]$lambda = 10^loglam3[i]
-  CVi = fRegress.CV(birdSmooth, xfdlist, betalisti)
-  cat(i, loglam3[i], CVi$SSE.CV, '; ')
-  SSE.CV3[i] = CVi$SSE.CV
-}
-
-loglam <- c(loglam1, loglam2, loglam3)
-SSE.CV <- c(SSE.CV1, SSE.CV2, SSE.CV3)
-o <- order(loglam)
-plot(loglam[o], SSE.CV[o], type='b')
-
-
-
-#######################
-##
-## Giles, Jim:  What do you think of the above?
-
-
-
-
-sapply(xfdlist, class)
-sapply(betalisti, class)
-
-#loglam. <- loglam
-#SSE.CV. <- SSE.CV
-#loglam1 <- loglam
-#SSE.CV1 <- SSE.CV
-#loglam2 <- loglam
-#SSE.CV2 <- SSE.CV
-
-SSE.CV3 <- c(SSE.CV, SSE.CV., SSE.CV1, SSE.CV2)
-ylim <- range(SSE.CV, SSE.CV., SSE.CV1, SSE.CV2)
-
-
-
-
-
-
-
-
-
-
-
-
-plot(loglam, SSE.CV, type='b', ylim=ylim, xlim=c(-9, 9))
-lines(loglam., SSE.CV., type='b', col='red')
-lines(loglam1, SSE.CV1, type='b', col='green')
-lines(loglam2, SSE.CV2, type='b', col='blue')
-
-# best = 1.5
-o <- order(as.numeric(names(SSE.CV3)))
-
-SSE.CV3[o]
-plot(names(SSE.CV3[o]), SSE.CV3[o], type='b')
-abline(v=-1.25)
-abline(v=-2)
-abline(v=1.5)
-
-op <- par(mfrow=c(2,1))
-plot(betaestlist$const$fd)
-plot(betaestlist$shellfish$fd)
-par(op)
-
-for(j in 1:2)betalisti[[j]]$lambda = 10^1.5
-fitShellfish1.5 = fRegress(birdSmooth, xfdlist, betalisti)
-
-beta1.5 = fitShellfish1.5$betaestlist
+beta.opt = fitShellfish.opt$betaestlist
 
 op = par(mfrow=c(2,1))
-plot(beta1.5$const$fd)
-plot(beta1.5$shellfish$fd)
+plot(beta.opt$const$fd)
+plot(beta.opt$shellfish$fd)
 par(op)
 
 loglam4       = seq(1.5, -2, -0.25)
