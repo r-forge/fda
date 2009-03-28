@@ -94,25 +94,35 @@ matplot(yearObs, logCounts, type='b', xlab='Year',
         ylab='log10(Mean count)', col=1, lty=1)
 par(op)
 
-birdSmooth  = Data2fd(yearCode, logCounts)
+# (1) Select smoothing for logCounts
+birdSmooth0  = Data2fd(yearCode, logCounts)
 
-lambdas = seq(-9,9,0.5)
-gcvs = rep(0,length(lambdas))
-for(ilam in 1:length(lambdas)){
-  sfdPari = fdPar(birdSmooth$basis,2,exp(lambdas[ilam]))
+loglamBird = seq(-9,9,0.5)
+gcvs = rep(0,length(loglamBird))
+for(ilam in 1:length(loglamBird)){
+  sfdPari = fdPar(birdSmooth0$basis,2,10^loglamBird[ilam])
   ifd =  smooth.basis(yearCode,logCounts,sfdPari)
   gcvs[ilam] = sum(ifd$gcv)
 }
 
-plot(lambdas,gcvs)
+plot(loglamBird,gcvs)
 
-lambda = lambdas[which.min(gcvs)]
-sfdPar = fdPar(birdSmooth$basis,2,exp(lambda))
+loglamB = loglamBird[which.min(gcvs)]
+sfdPar = fdPar(birdSmooth0$basis,2,10^loglamB)
 birdSmooth =  smooth.basis(yearCode,logCounts,sfdPar)$fd
 
+# (2) Create shellfish variable
 shellfish   = as.numeric((1:13) %in% c(1,2,5,6,12,13))
 
+# (3) Initial fRegress
 fitShellfish= fRegress(birdSmooth~shellfish)
+
+
+
+
+
+
+
 
 xfdlist     = fitShellfish$xfdlist
 betaestlist = fitShellfish$betaestlist
@@ -123,13 +133,13 @@ sapply(betaestlist, class)
 # Figure 10.3 without the confidence intervals;
 # for that, see Section 10.2.2
 op = par(mfrow=c(2,1))
-plot(betaestlist$const$fd)
-plot(betaestlist$shellfish$fd)
+plot(betaestlist$const$fd, xlab='', ylab='Intercept')
+plot(betaestlist$shellfish$fd, xlab='', ylab='shellfish effect')
 par(op)
 
 plot(betaestlist$const$fd+betaestlist$shellfish$fd)
 
-# Section 10.1.3 Choosing Smoothing Parameters for the pda
+# Section 10.1.3 Choosing Smoothing Parameters
 
 #  First test a coarse grid for loglam:
 loglam1 = seq(-9, 9, 2)
@@ -181,23 +191,14 @@ plot(beta.opt$const$fd)
 plot(beta.opt$shellfish$fd)
 par(op)
 
-loglam4       = seq(1.5, -2, -0.25)
-SSE.CV4       = rep(NA,length(loglam4))
-names(SSE.CV4)= loglam4
-fiti          = fitShellfish1.5
-betai = fiti$betaestlist
-for(i in 1:length(loglam4)){
-  lami  = 10^loglam4[i]
-  for(j in 1:2)
-    betai[[j]]$lambda = lami
-  fiti = fRegress(birdSmooth, xfdlist, betai)
-  betai= fiti$betaestlist
-  CVi = fRegress.CV(birdSmooth, xfdlist, betai)
-  cat(i, loglam4[i], CVi$SSE.CV, '; ')
-  SSE.CV4[i] = CVi$SSE.CV
-}
+plot(beta.opt$const$fd+beta.opt$shellfish$fd)
 
-lines(loglam4, SSE.CV4, col='red')
+
+
+
+
+
+
 
 
 
