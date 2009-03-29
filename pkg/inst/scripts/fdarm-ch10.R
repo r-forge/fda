@@ -117,36 +117,25 @@ shellfish   = as.numeric((1:13) %in% c(1,2,5,6,12,13))
 # (3) Initial fRegress
 fitShellfish= fRegress(birdSmooth~shellfish)
 
-
-
-
-
-
-
-
-xfdlist     = fitShellfish$xfdlist
 betaestlist = fitShellfish$betaestlist
 
-class(betaestlist)
-sapply(betaestlist, class)
-
-# Figure 10.3 without the confidence intervals;
-# for that, see Section 10.2.2
+# Figure 10.3
 op = par(mfrow=c(3,1), mar=c(2,4,2,2)+0.1)
 plot(betaestlist$const$fd, xlab='', ylab='')
-title(ylab='Intercept (fish eaters)', cex.lab=2)
-title(ylab='Intercept (fish eaters)')
+title(ylab='Intercept (fish eaters)', cex.lab=2, line=2.5)
 
 plot(betaestlist$shellfish$fd, xlab='', ylab='')
-title(ylab='shellfish effect', cex.lab=2)
+title(ylab='shellfish effect', cex.lab=2, line=2.5)
 
 with(betaestlist, plot(const$fd+shellfish$fd, xlab='', ylab=''))
-title(ylab='shellfish eaters', cex.lab=2)
+title(ylab='shellfish eaters', cex.lab=2, line=2.5)
 par(op)
 
 plot(betaestlist$const$fd+betaestlist$shellfish$fd)
 
 # Section 10.1.3 Choosing Smoothing Parameters
+
+xfdlist     = fitShellfish$xfdlist
 
 #  First test a coarse grid for loglam:
 loglam1 = seq(-9, 9, 2)
@@ -193,12 +182,18 @@ fitShellfish.opt = fRegress(birdSmooth, xfdlist, betalisti)
 
 beta.opt = fitShellfish.opt$betaestlist
 
-op = par(mfrow=c(2,1))
-plot(beta.opt$const$fd)
-plot(beta.opt$shellfish$fd)
+op = par(mfrow=c(3,1), mar=c(2,4,2,2)+0.1)
+plot(beta.opt$const$fd, xlab='', ylab='')
+title(ylab='Intercept (fish eaters)', cex.lab=2, line=2.5)
+
+plot(beta.opt$shellfish$fd, xlab='', ylab='')
+title(ylab='shellfish effect', cex.lab=2, line=2.5)
+
+with(beta.opt, plot(const$fd+shellfish$fd, xlab='', ylab=''))
+title(ylab='shellfish eaters', cex.lab=2, line=2.5)
 par(op)
 
-plot(beta.opt$const$fd+beta.opt$shellfish$fd)
+
 
 
 
