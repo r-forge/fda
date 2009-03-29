@@ -132,9 +132,16 @@ sapply(betaestlist, class)
 
 # Figure 10.3 without the confidence intervals;
 # for that, see Section 10.2.2
-op = par(mfrow=c(2,1))
-plot(betaestlist$const$fd, xlab='', ylab='Intercept')
-plot(betaestlist$shellfish$fd, xlab='', ylab='shellfish effect')
+op = par(mfrow=c(3,1), mar=c(2,4,2,2)+0.1)
+plot(betaestlist$const$fd, xlab='', ylab='')
+title(ylab='Intercept (fish eaters)', cex.lab=2)
+title(ylab='Intercept (fish eaters)')
+
+plot(betaestlist$shellfish$fd, xlab='', ylab='')
+title(ylab='shellfish effect', cex.lab=2)
+
+with(betaestlist, plot(const$fd+shellfish$fd, xlab='', ylab=''))
+title(ylab='shellfish eaters', cex.lab=2)
 par(op)
 
 plot(betaestlist$const$fd+betaestlist$shellfish$fd)
