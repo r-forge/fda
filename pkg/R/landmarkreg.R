@@ -20,7 +20,7 @@ landmarkreg <- function(fdobj, ximarks, x0marks=xmeanmarks,
 #  WFD     ... a functional data object for the W functions defining the 
 #              warping functions
 
- #  Last modified 13 November 2008 by Jim Ramsay
+ #  Last modified 30 March 2009 by Jim Ramsay
 
   #  check FDOBJ
 
@@ -100,7 +100,7 @@ nlandm <- dim(ximarks)[2]
   hfunmat <- matrix(0,n,ncurve)
   lambda  <- max(lambda,1e-10)
 
-  xval <- c(rangeval[1],x0marks,rangeval[2])
+  xval    <- c(rangeval[1],x0marks,rangeval[2])
   nwbasis <- wbasis$nbasis
   Wcoef   <- matrix(0,nwbasis,ncurve)
   nval <- length(xval)
@@ -125,7 +125,7 @@ nlandm <- dim(ximarks)[2]
        a         <- rangeval[1] - b*h[1]
        h         <- a + b*h
        h[c(1,n)] <- rangeval
-       wcoefi  <- Wfd$coefs
+       wcoefi    <- Wfd$coef
        Wcoef[,icurve] <- wcoefi
     } else {
        #  use unconstrained smoother
@@ -141,6 +141,8 @@ nlandm <- dim(ximarks)[2]
        if (any(deltah <= 0)) stop(
            paste("Non-increasing warping function estimated for curve",icurve,
                  " Try setting MONWRD to TRUE."))
+       wcoefi    <- warpfd$coef
+       Wcoef[,icurve] <- wcoefi
     }
     hfunmat[,icurve] <- h
 
@@ -202,9 +204,7 @@ nlandm <- dim(ximarks)[2]
   names(warpfdnames)[3] <- paste("Warped",names(regnames)[1])
   warpfdobj$fdnames     <- warpfdnames      
   
-#  Wfd <- fd(wcoef, wbasis)
-if(monwrd)
+  Wfd <- fd(Wcoef, wbasis)
+
   return( list("regfd" = regfdobj, "warpfd" = warpfdobj, "Wfd" = Wfd) )
-else
-  return( list("regfd" = regfdobj, "warpfd" = warpfdobj) )
 }
