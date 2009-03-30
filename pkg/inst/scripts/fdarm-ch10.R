@@ -109,7 +109,8 @@ plot(loglamBird,gcvs)
 
 loglamB = loglamBird[which.min(gcvs)]
 sfdPar = fdPar(birdSmooth0$basis,2,10^loglamB)
-birdSmooth =  smooth.basis(yearCode,logCounts,sfdPar)$fd
+birdSmoothPar =  smooth.basis(yearCode,logCounts,sfdPar)
+birtSmooth = birdSmoothPar$fd
 
 # (2) Create shellfish variable
 shellfish   = as.numeric((1:13) %in% c(1,2,5,6,12,13))
@@ -194,7 +195,24 @@ title(ylab='shellfish eaters', cex.lab=2, line=2.5)
 par(op)
 
 
+#  Section 10.2.2 Confidence Intervals for Regression Functions
 
+yhatmat = eval.fd(yearCode, fitShellfish.opt$yhatfdobj$fd)
+
+rmat = logCounts - yhatmat
+SigmaE = var(t(rmat))
+
+y2cMap = birdSmoothPar$y2cMap
+
+stderrList = fRegress.stderr(fitShellfish.opt, y2cMap,
+     SigmaE)
+betastderrlist = stderrList$betastderrlist
+
+par(mfrow=c(2,1),ask=FALSE)
+titlelist = vector("list", 2)
+titlelist[[1]] = "Intercept"
+titlelist[[2]] = "Feed effect"
+plotbeta(betaestlist, betastderrlist)
 
 
 
@@ -420,6 +438,10 @@ titlelist[[1]] = "Intercept"
 titlelist[[2]] = "Feed effect"
 plotbeta(betaestlist, betastderrlist,
         titlelist=titlelist, index=1:2)
+
+
+
+
 
 # Section 10.2.3 Knee Angle Predicted from Hip Angle
 
