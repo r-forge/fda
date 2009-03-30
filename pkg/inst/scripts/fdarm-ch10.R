@@ -82,10 +82,10 @@ for(i in 1:20){
   meanCounts[i, ] = sapply(UU[sel, birds], mean, na.rm=TRUE)
 }
 
-selYear <- !is.na(meanCounts[, 1])
-logCounts <- log10(meanCounts[selYear,])
-yearObs <- as.numeric(rownames(logCounts))
-yearCode <- (1:20)[selYear]
+selYear = !is.na(meanCounts[, 1])
+logCounts = log10(meanCounts[selYear,])
+yearObs = as.numeric(rownames(logCounts))
+yearCode = (1:20)[selYear]
 
 # Figure 10.2
 
@@ -110,7 +110,7 @@ plot(loglamBird,gcvs)
 loglamB = loglamBird[which.min(gcvs)]
 sfdPar = fdPar(birdSmooth0$basis,2,10^loglamB)
 birdSmoothPar =  smooth.basis(yearCode,logCounts,sfdPar)
-birtSmooth = birdSmoothPar$fd
+birdSmooth = birdSmoothPar$fd
 
 # (2) Create shellfish variable
 shellfish   = as.numeric((1:13) %in% c(1,2,5,6,12,13))
@@ -165,9 +165,9 @@ for(i in 1:length(loglam2)){
   SSE.CV2[i] = CVi$SSE.CV
 }
 
-loglam. <- c(loglam1, loglam2)
-SSE.CV. <- c(SSE.CV1, SSE.CV2)
-o. <- order(loglam.)
+loglam. = c(loglam1, loglam2)
+SSE.CV. = c(SSE.CV1, SSE.CV2)
+o. = order(loglam.)
 plot(loglam.[o.], SSE.CV.[o.], type='b',
      xlab='log smoothing parameter',
      ylab='cross-validated sum of squares')
@@ -208,10 +208,7 @@ stderrList = fRegress.stderr(fitShellfish.opt, y2cMap,
      SigmaE)
 betastderrlist = stderrList$betastderrlist
 
-par(mfrow=c(2,1),ask=FALSE)
-titlelist = vector("list", 2)
-titlelist[[1]] = "Intercept"
-titlelist[[2]] = "Feed effect"
+par(mfrow=c(2,1))
 plotbeta(betaestlist, betastderrlist)
 
 
@@ -224,7 +221,195 @@ plotbeta(betaestlist, betastderrlist)
 
 
 
-birdSmooth <- smooth.basisPar(yearCode, logCounts)
+
+
+# Section 10.2.3 Knee Angle Predicted from Hip Angle
+
+gaittime = seq(0.5,19.5,1)
+gaitrange = c(0,20)
+gaitfine = seq(0,20,len=101)
+
+harmaccelLfd = vec2Lfd(c(0, (2*pi/20)^2, 0), rangeval=gaitrange)
+gaitbasis = create.fourier.basis(gaitrange, nbasis=21)
+
+gaitLoglam = seq(-4,0,0.25)
+nglam   = length(gaitLoglam)
+
+gaitSmoothStats = array(NA, dim=c(nglam, 3),
+      dimnames=list(gaitLoglam, c("log10.lambda", "df", "gcv") ) )
+gaitSmoothStats[, 1] = gaitLoglam
+
+#  loop through smoothing parameters
+
+for (ilam in 1:nglam) {
+  gaitSmooth = smooth.basisPar(gaittime, gait, gaitbasis,
+                   Lfdobj=harmaccelLfd, lambda=10^gaitLoglam[ilam])
+  gaitSmoothStats[ilam, "df"]  = gaitSmooth$df
+  gaitSmoothStats[ilam, "gcv"] = sum(gaitSmooth$gcv)
+  # note: gcv is a matrix in this case
+}
+
+#  display and plot GCV criterion and degrees of freedom
+
+gaitSmoothStats
+plot(gaitSmoothStats[, 1], gaitSmoothStats[, 3])
+
+#  set up plotting arrangements for one and two panel displays
+#  allowing for larger fonts
+
+op = par(mfrow=c(2,1))
+plot(gaitLoglam, gaitSmoothStats[, "gcv"], type="b",
+     xlab="Log_10 lambda", ylab="GCV Criterion",
+     main="Gait Smoothing", log="y")
+
+plot(gaitLoglam, gaitSmoothStats[, "df"], type="b",
+     xlab="Log_10 lambda", ylab="Degrees of freedom",
+     main="Gait Smoothing")
+par(op)
+
+#    GCV is minimized with lambda = 10^(-2).
+
+str(gait)
+gaitfd = smooth.basisPar(gaittime, gait,
+       gaitbasis, Lfdobj=harmaccelLfd, lambda=1e-2)$fd
+
+str(gaitfd)
+names(gaitfd$fdnames) = c("Normalized time", "Child", "Angle")
+gaitfd$fdnames[[3]] = c("Hip", "Knee")
+
+
+hipfd = gaitfd[,1]
+kneefd = gaitfd[,2]
+
+# Now we can set up a  functional linear regression
+
+xfdlist = list(rep(1,39), hipfd)
+
+betafdPar = fdPar(gaitbasis, harmaccelLfd)
+betalist = list(betafdPar,betafdPar)
+fRegressList = fRegress(kneefd, xfdlist, betalist)
+kneehatfd = fRegressList$yhatfd$fd
+betaestlist = fRegressList$betaestlist
+
+kneemat = eval.fd(gaitfine, kneefd)
+kneehatmat = eval.fd(gaitfine, kneehatfd)
+resmat = kneemat - kneehatmat
+SigmaE = cov(t(resmat))
+
+kneefinemat = eval.fd(gaitfine, kneefd)
+kneemeanvec = eval.fd(gaitfine, betaestlist[[1]]$fd)
+kneehatfinemat = eval.fd(gaitfine, kneehatfd)
+resmat = kneefinemat - kneehatfinemat
+resmat0 = kneefinemat - kneemeanvec %*% matrix(1,1,39)
+SSE0 = apply((resmat0)^2, 1, sum)
+SSE1 = apply(resmat^2, 1, sum)
+Rsqr = (SSE0-SSE1)/SSE0
+
+
+gaitbasismat = eval.basis(gaitfine, gaitbasis)
+y2cMap = solve(crossprod(gaitbasismat), t(gaitbasismat))
+
+
+fRegressList2 = fRegress.stderr(fRegressList, y2cMap, SigmaE)
+betastderrlist = fRegressList2$betastderrlist
+titlelist = list("Intercept", "Hip coefficient")
+
+par(mfrow=c(2,1))
+plotbeta(betaestlist, betastderrlist, gaitfine, titlelist)
+
+
+
+
+##
+## Section 10.3 Beyond the Concurrent Model
+##
+#  (no computations in this section)
+
+##
+## Section 10.4 A Functional Linear Model for Swedish Mortality
+##
+betabasis = create.bspline.basis(c(0,80),23)
+beta0Par = fdPar(betabasis, 2, 1e-5)
+beta1sPar = fdPar(betabasis, 2, 1e3)
+beta1tPar = fdPar(betabasis, 2, 1e3)
+betaList = list(beta0Par, beta1sPar, beta1tPar)
+
+linmodSmooth = linmod(NextYear, LastYear, betaList)
+
+# Where's LastYear?  ???
+
+# Figure 10.11
+
+
+
+
+
+
+##
+## Section 10.5 Permutation Tests of Functional Hypotheses
+##
+#  Section 10.5.1 Functional t-Tests
+
+tperm.fd(hgtmfd,hgtffd)
+
+# Figure 10.12
+
+# Section 10.5.2 Functional F-Tests
+
+F.res = Fperm.fd(temp36fd, regionlist, betaList)
+
+
+
+
+
+
+
+
+
+##
+## 10.6 Details for R Functions fRegress, fRegress.CV and fRegress.stderr
+##
+help(fRegress)
+help(fRegress.CV)
+help(fRegress.stderr)
+
+##
+## 10.7 Details for Function plotbeta
+##
+help(plotbeta)
+
+##
+## 10.8 Details for Function linmod
+##
+help(linmod)
+
+##
+## 10.9 Details for Functions Fperm.fd and tperm.fd
+##
+help(Fperm.fd)
+help(tperm.fd)
+
+##
+## Section 10.10 Some Things to Try
+##
+# (exercises for the reader)
+
+##
+## Section 10.11  More to Read
+##
+
+
+
+
+
+
+
+
+
+##### Old stuff from the seabird data
+
+
+birdSmooth = smooth.basisPar(yearCode, logCounts)
 
 
 
@@ -329,7 +514,7 @@ birdtotalcount = birdcountmat[,ind1] +  birdcountmat[,ind2]
 
 # Figure 10.1
 
-op <- par(cex=1.2)
+op = par(cex=1.2)
 matplot(birdtime+1986, log10(birdtotalcount[c(1:12,14:20),]),
         type="b", lty=1, col=1, lwd=2, xlab="Year",
         ylab="log10(Mean count)")
@@ -397,11 +582,11 @@ betafdPari = betafdPar
 for(i in 1:length(loglam)){
   betafdPari$lambda = 10^loglam[i]
   betalisti = betalist
-  for (j in 1:2) betalisti[[j]] <- betafdPari
+  for (j in 1:2) betalisti[[j]] = betafdPari
 
 # *** Need logbirdfd0
 
-  SSE.CV[i] <- fRegress.CV(logbirdfd0, xfdlist,
+  SSE.CV[i] = fRegress.CV(logbirdfd0, xfdlist,
                            betalisti,CVobs=1:26)$SSE.CV
 }
 
@@ -440,124 +625,3 @@ plotbeta(betaestlist, betastderrlist,
         titlelist=titlelist, index=1:2)
 
 
-
-
-
-# Section 10.2.3 Knee Angle Predicted from Hip Angle
-
-xfdlist = list(rep(1,39), hipfd)
-
-# *** Where's hipfd ???
-
-betafdPar = fdPar(gaitbasis, harmaccelLfd)
-betalist = list(betafdPar,betafdPar)
-fRegressList = fRegress(kneefd, xfdlist, betalist)
-kneehatfd = fRegressList$yhatfd
-betaestlist = fRegressList$betaestlist
-
-kneemat = eval.fd(gaittime, kneefd)
-
-kneehatmat = eval.fd(gaittime, kneehatfd)
-resmat = kneemat - kneehatmat
-SigmaE = cov(t(resmat))
-
-kneefinemat = eval.fd(gaitfine, kneefd)
-kneemeanvec = eval.fd(gaitfine, kneemeanfd)
-kneehatfinemat = eval.fd(gaitfine, kneehatfd)
-resmat = kneefinemat - kneehatfinemat
-resmat0 = kneefinemat -
-kneemeanvec %*% matrix(1,1,ncurve)
-SSE0 = apply((resmat0)ˆ2, 1, sum)
-SSE1 = apply(resmatˆ2, 1, sum)
-Rsqr = (SSE0-SSE1)/SSE0
-
-
-kneebasismat = eval.basis(gaitfine, kneebasis)
-y2cMap = solve(crossprod(kneebasismat)), t(kneebasismat))
-
-
-fRegressList1 = fRegress(kneefd, xfdlist, betalist,
-           y2cMap, SigmaE)
-
-fRegressList2 = fRegress.stderr(fRegressList1, y2cMap, SigmaE)
-betastderrlist = fRegressList2$betastderrlist
-titlelist = list("Intercept", "Hip coefficient")
-plotbeta(betaestlist, betastderrlist, gaitfine, titlelist)
-
-##
-## Section 10.3 Beyond the Concurrent Model
-##
-#  (no computations in this section)
-
-##
-## Section 10.4 A Functional Linear Model for Swedish Mortality
-##
-betabasis = create.bspline.basis(c(0,80),23)
-beta0Par = fdPar(betabasis, 2, 1e-5)
-beta1sPar = fdPar(betabasis, 2, 1e3)
-beta1tPar = fdPar(betabasis, 2, 1e3)
-betaList = list(beta0Par, beta1sPar, beta1tPar)
-
-linmodSmooth = linmod(NextYear, LastYear, betaList)
-
-# Where's LastYear?  ???
-
-# Figure 10.11
-
-
-
-
-
-
-##
-## Section 10.5 Permutation Tests of Functional Hypotheses
-##
-#  Section 10.5.1 Functional t-Tests
-
-tperm.fd(hgtmfd,hgtffd)
-
-# Figure 10.12
-
-# Section 10.5.2 Functional F-Tests
-
-F.res = Fperm.fd(temp36fd, regionlist, betaList)
-
-
-
-
-
-
-
-
-
-##
-## 10.6 Details for R Functions fRegress, fRegress.CV and fRegress.stderr
-##
-help(fRegress)
-help(fRegress.CV)
-help(fRegress.stderr)
-
-##
-## 10.7 Details for Function plotbeta
-##
-help(plotbeta)
-
-##
-## 10.8 Details for Function linmod
-##
-help(linmod)
-
-##
-## 10.9 Details for Functions Fperm.fd and tperm.fd
-##
-help(Fperm.fd)
-help(tperm.fd)
-
-##
-## Section 10.10 Some Things to Try
-##
-# (exercises for the reader)
-
-##
-## Section 10.11  More to Read
-##
