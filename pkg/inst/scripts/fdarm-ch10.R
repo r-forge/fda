@@ -471,6 +471,11 @@ SSE0 = apply((resmat0)ˆ2, 1, sum)
 SSE1 = apply(resmatˆ2, 1, sum)
 Rsqr = (SSE0-SSE1)/SSE0
 
+
+kneebasismat = eval.basis(gaitfine, kneebasis)
+y2cMap = solve(crossprod(kneebasismat)), t(kneebasismat))
+
+
 fRegressList1 = fRegress(kneefd, xfdlist, betalist,
            y2cMap, SigmaE)
 
