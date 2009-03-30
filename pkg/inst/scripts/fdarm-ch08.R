@@ -1,196 +1,291 @@
 ###
 ###
-### Ramsey, Hooker & Graves (2009)
+### Ramsay, Hooker & Graves (2009)
 ### Functional Data Analysis with R and Matlab (Springer)
 ###
 ### ch. 8.  Registration: Aligning Features
 ###         for Samples of Curves
 ###
+
 library(fda)
 
 ##
 ## Section 8.1 Amplitude and Phase Variation
 ##
-age    = growth$age
-ageRng = range(age)
 
-# Monotone smooth (see section 5.4.2)
-# B-spline of order 6 = quintic polynomials
-# so the acceleration will be cubic
-wbasis = create.bspline.basis(norder=6, breaks=age)
+#  set up ages of measurement and an age mesh
 
-# Consider only the first 10 girls
-children= 1:10
-ncasef  = length(children)
-hgtf   = growth$hgtf[, children]
+age     = growth$age
+nage    = length(age)
+ageRng  = range(age)
+agefine = seq(ageRng[1], ageRng[2], length=101)
 
-# starting values for coeficients
-cvecf          = matrix(0, wbasis$nbasis, ncasef)
-dimnames(cvecf)= list(wbasis$names, dimnames(hgtf)[[2]])
+#  the data
 
-# Create initial functional data and functional parameter objects
+hgtf   = growth$hgtf
+ncasef = dim(hgtf)[2]
+
+#  an order 6 bspline basis with knots at ages of measurement
+
+norder = 6
+nbasis = nage + norder - 2
+wbasis = create.bspline.basis(ageRng, nbasis, norder, age)
+
+#  define the roughness penalty for function W
+
+Lfdobj    = 3          #  penalize curvature of acceleration
+lambda    = 10^(-0.5)  #  smoothing parameter
+cvecf     = matrix(0, nbasis, ncasef)
 Wfd0      = fd(cvecf, wbasis)
-growfdPar = fdPar(Wfd0, Lfdobj=3, lambda=10^(-1.5))
-# Lfdobj = 3:  penalize rate of change of acceleration
-# lambda = 10^(-1.5) used for Figure 1.1, 1.15, etc.
+growfdPar = fdPar(Wfd0, Lfdobj, lambda)
 
-# Estimate monotone smooths:
+#  monotone smoothing
+
 growthMon = smooth.monotone(age, hgtf, growfdPar)
-#***WAIT for individual interative fits to 10 girls
 
-Wfd       = growthMon$Wfd
-betaf     = growthMon$beta
-hgtfhatfd = growthMon$yhatfd
+# (wait for an iterative fit to each of 54 girls)
+
+Wfd        = growthMon$Wfd
+betaf      = growthMon$beta
+hgtfhatfd  = growthMon$yhatfd
+
+#  Set up functional data objects for the acceleration curves 
+#  and their mean.  Suffix UN means "unregistered".
+
+accelfdUN     = deriv.fd(hgtfhatfd, 2)
+accelmeanfdUN = mean(accelfdUN)
+
+#  plot unregistered curves
+
+par(ask=F)
+plot(accelfdUN, xlim=c(1,18), ylim=c(-4,3), lty=1, lwd=2,
+     cex=2, xlab="Age", ylab="Acceleration (cm/yr/yr)")
+
+#  This is a manual PGS spurt identification procedure requiring
+#  a mouse click at the point where the acceleration curve
+#  crosses the zero axis with a negative slope during puberty.
+#  A second mouse click advances the plot to the next case.
+#  Here we do this only for the first 10 children.
+
+children = 1:10
+
+PGSctr = rep(0,length(children))
+par(mfrow=c(1,1), ask=T)
+for (icase in children) {
+    accveci = eval.fd(agefine, accelfdUN[icase])
+    plot(agefine,accveci,"l", ylim=c(-6,4),
+         xlab="Year", ylab="Height Accel.", 
+         main=paste("Case",icase))
+    lines(c(1,18),c(0,0),lty=2)
+    PGSctr[icase] = locator(1)$x
+}
+
+#  This is an automatic PGS spurt identification procedure.
+#  A mouse click advances the plot to the next case.
+#  Compute PGS mid point for landmark registration.
+#  Downward crossings are computed within the limits defined
+#  by INDEX.  Each of the crossings within this interval 
+#  are plotted.  The estimated PGS center is plotted as a vertical line.
+
+#  The choice of range of argument values (6--18) to consider
+#  for a potential mid PGS location is determined by previous
+#  analyses, where they have a mean of about 12 and a s.d. of 1.
+
+#  We compute landmarks for all 54 children
+
+index  = 1:102  #  wide limits
+nindex = length(index)
+ageval = seq(8.5,15,len=nindex)
+PGSctr = rep(0,ncasef)
+par(mfrow=c(1,1), ask=T)
+for (icase in 1:ncasef) {
+    accveci = eval.fd(ageval, accelfdUN[icase])
+    aup     = accveci[2:nindex]
+    adn     = accveci[1:(nindex-1)]
+    indx    = (1:102)[adn*aup < 0 & adn > 0]
+    plot(ageval[2:nindex],aup,"p",
+         xlim=c(7.9,18), ylim=c(-6,4))
+    lines(c(8,18),c(0,0),lty=2)
+    for (j in 1:length(indx)) {
+        indxj = indx[j]
+        aupj  = aup[indxj]
+        adnj  = adn[indxj]
+        agej  = ageval[indxj] + 0.1*(adnj/(adnj-aupj))
+        if (j == length(indx)) {
+            PGSctr[icase] = agej
+            lines(c(agej,agej),c(-4,4),lty=1)
+        } else {
+            lines(c(agej,agej),c(-4,4),lty=3)
+        }
+    }
+    title(paste('Case ',icase))
+}
+
+#  
+# Landmark registration
+#
+
+#  We use the minimal basis function sufficient to fit 3 points
+#  remember that the first coefficient is set to 0, so there
+#  are three free coefficients, and the data are two boundary
+#  values plus one interior knot.
+#  Suffix LM means "Landmark-registered".
+
+PGSctrmean = mean(PGSctr)
+
+#  Define the basis for the function W(t).  
+
+wbasisLM = create.bspline.basis(c(1,18), 4, 3, c(1,PGSctrmean,18))
+WfdLM    = fd(matrix(0,4,1),wbasisLM)
+WfdParLM = fdPar(WfdLM,1,1e-12)
+
+#  Carry out landmark registration.  
+
+registerlistLM = landmarkreg(accelfdUN, PGSctr, PGSctrmean, 
+                             WfdParLM, TRUE)
+
+accelfdLM     = registerlistLM$regfd 
+accelmeanfdLM = mean(accelfdLM)
+
+#  plot registered curves
+
+par(ask=F)
+plot(accelfdLM, xlim=c(1,18), ylim=c(-4,3), lty=1, lwd=1,
+     cex=2, xlab="Age", ylab="Acceleration (cm/yr/yr)")
+lines(accelmeanfdLM, col=1, lwd=2, lty=2)
+lines(c(PGSctrmean,PGSctrmean), c(-4,3), lty=2, lwd=1.5)
 
 # Figure 8.1
 
-#**** Plot AFTER the code in  section 8.3
+accelmeanfdUN10 = mean(accelfdUN[children])
+accelmeanfdLM10 = mean(accelfdLM[children])
 
-# Figure 8.2
+op = par(mfrow=c(2,1))
+plot(accelfdUN[children], xlim=c(1,18), ylim=c(-3,1.5), lty=1, lwd=1,
+     cex=2, xlab="", ylab="Acceleration (cm/yr/yr)")
+lines(accelmeanfdUN10, col=1, lwd=2, lty=2)
+lines(c(PGSctrmean,PGSctrmean), c(-3,1.5), lty=2, lwd=1.5)
+plot(accelfdLM[children], xlim=c(1,18), ylim=c(-3,1.5), lty=1, lwd=1,
+     cex=2, xlab="Age (Years)", ylab="Acceleration (cm/yr/yr)")
+lines(accelmeanfdLM10, col=1, lwd=2, lty=2)
+lines(c(PGSctrmean,PGSctrmean), c(-3,1.5), lty=2, lwd=1.5)
+par(op)
 
-# 2009.03.16:  Asked Jim & Giles for the formula ... ???
+# Figure 8.2 not computed here.
 
-# ... if they don't reply, I could do this any time
-# by reading points off the graph for one of the curves,
-# fitting a spline to it, then shifting & scaling it
-# to get the other curves ...
+#  plot warping functions for cases 3 and 7
 
-# ... AFTER everything else is working ...
+warpfdLM  = registerlistLM$warpfd
+warpmatLM = eval.fd(agefine, warpfdLM)
 
-
-
-
-
-
-
-##
-## Section 8.2 Time-Warping Functions and Registration
-##
+op = par(mfrow=c(1,1))
+matplot(agefine, warpmatLM[,c(3,7)], "l", lty=1, lwd=2, col=1, cex=1.2,
+        xlab="Clock years", ylab="Growth years")
+lines(agefine,  agefine, lty=2, lwd=1.5)
+lines(c(PGSctrmean,PGSctrmean), c(1,18), lty=2, lwd=1.5)
+text(c(PGSctrmean,PGSctrmean), warpmatLM[61,c(3,7)]+0.5, c("3","7"))
+text(PGSctrmean, 6,"Early")
+text(PGSctrmean,17,"Late")
 
 # Figure 8.3
 
-#**** Plot AFTER the code in  section 8.3
+op = par(mfrow=c(2,2))
+plot(accelfdUN[3], xlim=c(1,18), ylim=c(-3,1.5), lty=1, lwd=2,
+     xlab="", ylab="")
+lines(c(PGSctrmean,PGSctrmean), c(-3,1.5), lty=2, lwd=1.5)
+plot(agefine, warpmatLM[,3], "l", lty=1, lwd=2, col=1, cex=1.2,
+        xlab="", ylab="")
+lines(agefine,  agefine, lty=2, lwd=1.5)
+lines(c(PGSctrmean,PGSctrmean), c(1,18), lty=2, lwd=1.5)
+text(PGSctrmean+0.1, warpmatLM[61,3]+0.3, "o", lwd=2)
 
-##
-## Section 8.3 Time-Warping Functions and Registration
-##
-
-# Use locator(1) to select the age
-# of the center of the pubertal growth spurt
-# for the first 10 girls
-PGSctr = rep(0,10)
-agefine= seq(1,18,len=101)
-
-accfd = deriv(growthMon$yhatfd, 2)
-
-op = par(mfrow=c(1,1), ask=TRUE)
-for (icase in 1:10) {
-  accveci = predict(accfd[icase], agefine)
-  plot(agefine,accveci,"l", ylim=c(-6,4),
-       xlab="Year", ylab="Height Accel.",
-       main=paste("Case",icase))
-  lines(c(1,18),c(0,0),lty=2)
-  PGSctr[icase] = locator(1)$x
-# *** Click once to change the graph
-# *** Then click where acceleration = 0 closest to age 11.7
-}
+plot(accelfdUN[7], xlim=c(1,18), ylim=c(-3,1.5), lty=1, lwd=2,
+     xlab="", ylab="")
+lines(c(PGSctrmean,PGSctrmean), c(-3,1.5), lty=2, lwd=1.5)
+plot(agefine, warpmatLM[,7], "l", lty=1, lwd=2, col=1, cex=1.2,
+        xlab="", ylab="")
+lines(c(PGSctrmean,PGSctrmean), c(1,18), lty=2, lwd=1.5)
+lines(agefine,  agefine, lty=2, lwd=1.5)
+text(PGSctrmean+0.1, warpmatLM[61,7]+0.2, "o", lwd=2)
 par(op)
-
-PGSctrmean = mean(PGSctr)
-wbasisLM   = create.monomial.basis(c(1,18), 3)
-WfdParLM   = fdPar(wbasisLM)
-
-landmarkList = landmarkreg(accfd, PGSctr, PGSctrmean,
-                           WfdParLM, TRUE)
-# Progress:  Each dot is a curve
-# .Error in chol.default(Asym) :
-#   the leading minor of order 1 is not positive definite
-
-
-
-
-accregfdLM   = landmarkList$regfd
-warpfdLM     = landmarkList$warpfd
-
-
-
-
-
-
-
-
-op = par(mfrow=c(2,1))
-
-agefine= seq(ageRng[1], ageRng[2], length=201)
-accfvec1.5 = predict(growthMon, agefine, Lfdobj=2)
-matplot(agefine, accfvec1.5, type='l', lty=1, ylim=c(-4, 2),
-        xlab='Age (years)', ylab=expression(Accel.  (cm/yr^2)),
-        xlim=c(1, 18), col=1, las=1)
-abline(h=0, lty='dotted')
-lines(agefine, rowMeans(accfvec1.5), lty='dashed', lwd=2)
-
-
-
-# -> bottom pannel of Figure 8.1?????
-#  ... & Figure 8.3 ... ???
-
-
-
-
-
-
-
-
-
-par(op)
-
-
-
-
-
-##
-## Section 8.4 Continuous Registration with Function register.fd
-##
-
-wbasisCR = create.bspline.basis(c(1,18), 5, 4,
-c(1,PGSmeanctr,18))
-Wfd0CR = fd(matrix(0,5,10),wbasisCR)
-regList = register.fd(mean(accregfdLM),
-accregfdLM, Wfd0CR)
-accregfdCR = regList$regfd
-WfdCR = regList$Wfd
-
-# Figure 8.4
-
-
-
-
-# Figure 8.5
-
-
-
-
-
 
 ##
 ## Section 8.5 A Decomposition into Amplitude and Phase Sums of Squares
 ##
 
-AmpPhasList = AmpPhaseDecomp(accffd, accregfdLM, Wfd)
-RSQR = AmpPhasList$RSQR
+WfdLM       = registerlistLM$Wfd
+AmpPhasList = AmpPhaseDecomp(accelfdUN, accelfdLM, WfdLM)
+RSQRLM      = AmpPhasList$RSQR
+CLM         = AmpPhasList$C
 
+print(paste("R-squared =", round(RSQRLM,3), ",  C =", round(CLM,3)))
 
+#  
+#  Continuous registration
+#  
 
+#  Set up a cubic spline basis with a single interior knot at PGSctrmean
+
+nwbasisCR = 15
+norderCR  =  5
+wbasisCR  = create.bspline.basis(c(1,18), nwbasisCR, norderCR)
+Wfd0CR    = fd(matrix(0,nwbasisCR,ncasef),wbasisCR)
+lambdaCR  = 1
+WfdParCR  = fdPar(Wfd0CR, 3, lambdaCR)
+
+#  carry out the registration
+
+registerlistCR = register.fd(mean(accelfdLM), accelfdLM, WfdParCR)
+
+accelfdCR = registerlistCR$regfd
+WfdCR     = registerlistCR$Wfd
+
+AmpPhasList = AmpPhaseDecomp(accelfdLM, accelfdCR, WfdCR)
+RSQRCR      = AmpPhasList$RSQR
+CCR         = AmpPhasList$C
+
+print(paste("R-squared =", round(RSQRCR,3), ",  C =", round(CCR,3)))
+
+#  plot landmark and continuously registered curves
+
+accelmeanfdCR10 = mean(accelfdCR[children])
+
+par(mfrow=c(2,1))
+plot(accelfdLM[children], xlim=c(1,18), ylim=c(-3,1.5), lty=1, lwd=1,
+     cex=2, xlab="Age (Years)", ylab="Acceleration (cm/yr/yr)")
+lines(accelmeanfdLM10, col=1, lwd=2, lty=2)
+lines(c(PGSctrmean,PGSctrmean), c(-3,1.5), lty=2, lwd=1.5)
+plot(accelfdCR[children], xlim=c(1,18), ylim=c(-3,1.5), lty=1, lwd=1,
+     cex=2, xlab="Age (Years)", ylab="Acceleration (cm/yr/yr)")
+lines(accelmeanfdCR10, col=1, lwd=2, lty=2)
+lines(c(PGSctrmean,PGSctrmean), c(-3,1.5), lty=2, lwd=1.5)
+par(op)
+
+# Figure 8.4
+
+par(mfrow=c(1,1))
+plot(accelfdCR[children], xlim=c(1,18), ylim=c(-3,1.5), lty=1, lwd=1,
+     cex=2, xlab="Age (Years)", ylab="Acceleration (cm/yr/yr)")
+lines(accelmeanfdCR10, col=1, lwd=2, lty=2)
+lines(c(PGSctrmean,PGSctrmean), c(-3,1.5), lty=2, lwd=1.5)
+par(op)
+
+# Figure 8.5
+
+accelmeanfdUN = mean(accelfdUN)
+accelmeanfdLM = mean(accelfdLM)
+accelmeanfdCR = mean(accelfdCR)
+   
+plot(accelmeanfdCR, xlim=c(1,18), ylim=c(-3,1.5), lty=1, lwd=2,
+     cex=1.2, xlab="Years", ylab="Height Acceleration")
+lines(accelmeanfdLM, lwd=1.5, lty=1)
+lines(accelmeanfdUN, lwd=1.5, lty=2)
 
 ##
 ## 8.6 Registering the Chinese Handwriting Data
 ##
 
 # Figure 8.6
-
-
-
-
 
 ##
 ## 8.7 Details for Functions landmarkreg and register.fd
