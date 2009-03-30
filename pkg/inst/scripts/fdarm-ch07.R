@@ -30,10 +30,10 @@ daybasis  = create.fourier.basis(dayrange, 365)
 Lcoef        = c(0,(2*pi/diff(dayrange))^2,0)
 harmaccelLfd = vec2Lfd(Lcoef, dayrange)
 
-lambda   = 1e6
-fdParobj = fdPar(daybasis, harmaccelLfd, lambda)
+lambda      = 1e6
+fdParobj    = fdPar(daybasis, harmaccelLfd, lambda)
 logprec.fit = smooth.basis(day.5, logprecav, fdParobj)
-logprec.fd = logprec.fit$fd
+logprec.fd  = logprec.fit$fd
 
 logprec.pcalist = pca.fd(logprec.fd, 2)
 print(logprec.pcalist$values[1:4])
@@ -52,10 +52,6 @@ plot.pca.fd(logprec.rotpcalist, expand=.5)
 # Figure 7.3
 
 #  plot.pca.fd(..., type='scores')???
-
-
-
-
 
 # Section 7.2.2 PCA of Log Precipitation Residuals
 # logprecres = residuals from
@@ -149,12 +145,40 @@ plot(1:neig, log10(fdaeig[1:neig]), "b",
 lines(1:neig, c[1]+ c[2]*(1:neig), lty=2)
 par(op)
 
-# Figure 7.7 varimax rotation ...
+# Figure 7.7 varimax rotation 
 
+#  set up mean function
 
+fdameanfd  = mean(fdafd)
+fdameanmat = eval.fd(fdatime, fdameanfd)
 
+#  evaluate the harmonics
 
+harmfd  = fdarotpcaList$harm
+harmmat = eval.fd(fdatime, harmfd)
 
+fdapointtime = seq(0,2300,len=201)
+fdameanpoint = eval.fd(fdapointtime, fdameanfd)
+harmpointmat = eval.fd(fdapointtime, harmfd)
+
+fac = 0.1
+harmplusmat = array(0,c(201,3,2))
+harmminsmat = array(0,c(201,3,2))
+for (j in 1:3) {
+    harmplusmat[,j,] = fdameanpoint[,1,] + fac*harmpointmat[,j,]
+    harmminsmat[,j,] = fdameanpoint[,1,] - fac*harmpointmat[,j,]
+}
+
+j=3
+    plot(fdameanmat[,1,1]-0.035,  fdameanmat[,1,2], "l", lwd=2,
+         xlim=c(-0.075,0.075), ylim=c(-0.04, 0.04),
+         xlab="", ylab="")
+    lines(harmplusmat[,j,1]-0.035, harmplusmat[,j,2], lty=2)
+    lines(harmminsmat[,j,1]-0.035, harmminsmat[,j,2], lty=2)
+j=2
+    lines(fdameanmat[,1,1]+0.035,  fdameanmat[,1,2],  lty=1, lwd=2)
+    lines(harmplusmat[,j,1]+0.035, harmplusmat[,j,2], lty=2)
+    lines(harmminsmat[,j,1]+0.035, harmminsmat[,j,2], lty=2)
 
 
 ##
@@ -162,19 +186,54 @@ par(op)
 ##             with Canonical Correlation Analysis
 ##
 
-ccabasis = create.fourier.basis(dayrange, 3)
+#  set up temp.fd
 
-#  need tempfd ???
+tempav = CanadianWeather$dailyAv[
+              dayOfYearShifted, , 'Temperature.C']
 
-ccalist = cca.fd(tempfd, logprecfd, 3, ccabasis, ccabasis)
+lambda   = 1e2 
+fdParobj = fdPar(daybasis, harmaccelLfd, lambda)
+temp.fd  = smooth.basis(day.5, tempav, fdParobj)$fd
+temp.fd$fdnames = list("Day (July 2 to June 30)",
+                       "Weather Station",
+                       "Mean temperature (deg. C)")
 
-#  Figure 7.8 & 7.9
+ccafdPar = fdPar(daybasis, 2, 5e6)
+ccalist  = cca.fd(temp.fd, logprec.fd, 3, ccafdPar, ccafdPar)
+
+ccawt.temp    = ccalist$ccawtfd1
+ccawt.logprec = ccalist$ccawtfd2
+corrs         = ccalist$ccacorr
+
+print(corrs[1:3])
+#  [1] 0.9139817 0.6194850 0.3495515
+
+ccawtmat.temp    = eval.fd(daytime, ccawt.temp)
+ccawtmat.logprec = eval.fd(daytime, ccawt.logprec)
 
 
+#  Figure 7.8
 
+plot(daytime, ccawtmat.temp[,1], type='l', lwd=2, cex=2,
+     xlab="Day (July 1 to June 30)",
+     ylab="Canonical Weight Functions")
+lines(daytime, ccawtmat.logprec[,1], lty=2, lwd=2)
+lines(c(0, 365), c(0, 0), lty=3)
+legend("bottomleft", c("Temp.", "Log Prec."), lty=c(1,2))
 
+#  Figure 7.9
 
+ccascr.temp    = ccalist$ccavar1
+ccascr.logprec = ccalist$ccavar2
 
+placeindex = c(35,30,31,19,33,25,24,17,16,8,14,12,15,10,27,6,1,29)
+
+plot(ccascr.temp[,1], ccascr.logprec[,1], type="p", pch="*", cex=2,
+     xlim=c(-40,80),
+     xlab="Temperature Canonical Weight", 
+     ylab="Log Precipitation Canonical Weight")
+text(ccascr.temp[placeindex,1]+10, ccascr.logprec[placeindex,1], 
+     CanadianWeather$place[placeindex])
 
 ##
 ## Section 7.6 Details for the pca.fd and cca.fd Functions
