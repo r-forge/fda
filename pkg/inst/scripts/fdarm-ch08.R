@@ -230,19 +230,16 @@ nwbasisCR = 15
 norderCR  =  5
 wbasisCR  = create.bspline.basis(c(1,18), nwbasisCR, norderCR)
 Wfd0CR    = fd(matrix(0,nwbasisCR,ncasef),wbasisCR)
-lambdaCR  = 0
+lambdaCR  = 1
 WfdParCR  = fdPar(Wfd0CR, 1, lambdaCR)
 
 #  carry out the registration
 
-registerlistCR = register.fd(mean(accelfdLM), accelfdLM, WfdParCR)
+registerlistCR = register.fd(accelmeanfdLM, accelfdLM, WfdParCR)
 
 accelfdCR = registerlistCR$regfd
+warpfdCR  = registerlistCR$warpfd
 WfdCR     = registerlistCR$Wfd
-
-warpmat  = eval.monfd(agefine, WfdCR)
-warpmat  = 1 + 17*warpmat/outer(rep(1,nfine),warpmat[nfine,])
-warpfdCR = smooth.basis(agefine, warpmat, wbasisCR)$fd
 
 par(mfrow=c(1,1))
 plot(warpfdCR)
