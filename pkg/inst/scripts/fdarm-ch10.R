@@ -132,8 +132,6 @@ with(betaestlist, plot(const$fd+shellfish$fd, xlab='', ylab=''))
 title(ylab='shellfish eaters', cex.lab=2, line=2.5)
 par(op)
 
-plot(betaestlist$const$fd+betaestlist$shellfish$fd)
-
 # Section 10.1.3 Choosing Smoothing Parameters
 
 xfdlist     = fitShellfish$xfdlist
@@ -194,6 +192,10 @@ with(beta.opt, plot(const$fd+shellfish$fd, xlab='', ylab=''))
 title(ylab='shellfish eaters', cex.lab=2, line=2.5)
 par(op)
 
+##
+## Section 10.2 Functional Responses with Functional Predictors:
+##              The Concurrent Model
+##
 
 #  Section 10.2.2 Confidence Intervals for Regression Functions
 

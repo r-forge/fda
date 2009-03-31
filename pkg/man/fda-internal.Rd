@@ -67,6 +67,7 @@
 \alias{PENSSEhess}
 \alias{argcheck}
 \alias{fdParcheck}
+\alias{trapz}
 \alias{ycheck}
 
 % docclass is function

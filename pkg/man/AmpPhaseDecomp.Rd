@@ -12,7 +12,7 @@
   variation in the unregistered functions is due to  phase.
 }
 \usage{
-AmpPhaseDecomp(xfd, yfd, wfd)
+AmpPhaseDecomp(xfd, yfd, hfd)
 }
 \arguments{
   \item{xfd}{
@@ -21,7 +21,7 @@ AmpPhaseDecomp(xfd, yfd, wfd)
   \item{yfd}{
     a functional data object containing the registered curves.
   }
-  \item{wfd}{
+  \item{hfd}{
     a functional data object defining the functions $w(t)$ that define
     the strictly monotone warping functions $h(t)$.  This is typically
     returned by the functions \code{landmarkreg} and
