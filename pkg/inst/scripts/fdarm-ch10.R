@@ -113,7 +113,7 @@ birdSmoothPar =  smooth.basis(yearCode,logCounts,sfdPar)
 birdSmooth = birdSmoothPar$fd
 
 # (2) Create shellfish variable
-shellfish   = as.numeric((1:13) %in% c(1,2,5,6,12,13))
+shellfish   = (2*((1:13) %in% c(1,2,5,6,12,13))-1)
 
 # (3) Initial fRegress
 fitShellfish= fRegress(birdSmooth~shellfish)
@@ -121,15 +121,11 @@ fitShellfish= fRegress(birdSmooth~shellfish)
 betaestlist = fitShellfish$betaestlist
 
 # Figure 10.3
-op = par(mfrow=c(3,1), mar=c(2,4,2,2)+0.1)
-plot(betaestlist$const$fd, xlab='', ylab='')
-title(ylab='Intercept (fish eaters)', cex.lab=2, line=2.5)
-
-plot(betaestlist$shellfish$fd, xlab='', ylab='')
-title(ylab='shellfish effect', cex.lab=2, line=2.5)
-
-with(betaestlist, plot(const$fd+shellfish$fd, xlab='', ylab=''))
-title(ylab='shellfish eaters', cex.lab=2, line=2.5)
+op = par(mfrow=c(2,1), mar=c(2,4,2,2)+0.1)
+plot(betaestlist$const$fd, xlab='',
+     ylab='Intercept (overall trend)')
+plot(betaestlist$shellfish$fd, xlab='',
+     ylab='shellfish effect')
 par(op)
 
 # Section 10.1.3 Choosing Smoothing Parameters
@@ -181,15 +177,12 @@ fitShellfish.opt = fRegress(birdSmooth, xfdlist, betalisti)
 
 beta.opt = fitShellfish.opt$betaestlist
 
-op = par(mfrow=c(3,1), mar=c(2,4,2,2)+0.1)
+op = par(mfrow=c(2,1), mar=c(2,4,2,2)+0.1)
 plot(beta.opt$const$fd, xlab='', ylab='')
-title(ylab='Intercept (fish eaters)', cex.lab=2, line=2.5)
+title(ylab='Intercept', cex.lab=2, line=2.5)
 
 plot(beta.opt$shellfish$fd, xlab='', ylab='')
 title(ylab='shellfish effect', cex.lab=2, line=2.5)
-
-with(beta.opt, plot(const$fd+shellfish$fd, xlab='', ylab=''))
-title(ylab='shellfish eaters', cex.lab=2, line=2.5)
 par(op)
 
 ##
@@ -210,9 +203,9 @@ stderrList = fRegress.stderr(fitShellfish.opt, y2cMap,
      SigmaE)
 betastderrlist = stderrList$betastderrlist
 
-par(mfrow=c(2,1))
+op <- par(mfrow=c(2,1))
 plotbeta(betaestlist, betastderrlist)
-
+par(op)
 
 
 
