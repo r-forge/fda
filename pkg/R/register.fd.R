@@ -32,14 +32,14 @@ register.fd <- function(y0fd=NULL, yfd=NULL, WfdParobj=c(Lfdobj=2, lambda=1),
 #                Default:  0
 #  Returns:
 
-#  REGSTR  ...  A list with fields
-#    REGSTR$REGFD ... A functional data object for the registered curves
-#    REGSTR$WFD   ... A Functional data object for function W defining
+#  REGSTR  ...  A list with fields:
+#    REGSTR$REGFD  ... A functional data object for the registered curves
+#    REGSTR$WARPFD ... A Functional data object for warping functions h
+#    REGSTR$WFD    ... A Functional data object for functions W defining
 #                         warping fns
-#    REGSTR$SHIFT ... Shift parameter value if curves are periodic
+#    REGSTR$SHIFT  ... Shift parameter value if curves are periodic
 
-# last modified 3 January 2008 by Jim Ramsay
-# previously modified 2007.09.13 by Spencer Graves  
+# last modified 31 March 2009 by Jim Ramsay
 
 ##
 ## 1.  Check y0fd and yfd
@@ -495,7 +495,7 @@ regfdnames[[3]] <- paste("Registered ",regfdnames[[3]])
 ybasis  <- yfd$basis
 regfd   <- fd(yregcoef, ybasis, regfdnames)
 
-#  create functional data objects for the warping functions
+#  set up vector of time shifts
 
 if (periodic) {
   shift <- c(wcoef[1,])
@@ -503,9 +503,23 @@ if (periodic) {
 } else {
   shift <- rep(0,ncurve)
 }
+
+#  functional data object for functions W(t)
+
 Wfd <- fd(wcoef, wbasis)
 
-regstr <- list("regfd"=regfd, "Wfd"=Wfd, "shift"=shift)
+#  functional data object for warping functions
+
+warpmat = eval.monfd(xfine, Wfd)
+warpmat = rangex[1] + (rangex[2]-rangex[1])*
+           warpmat/outer(rep(1,nfine),warpmat[nfine,]) + 
+           outer(rep(1,nfine),shift)
+warpfdobj  = smooth.basis(xfine, warpmat, wbasis)$fd
+warpfdnames       <- yfd$fdnames
+warpfdnames[[3]]  <- paste("Warped",warpfdnames[[1]])
+warpfdobj$fdnames <- warpfdnames      
+
+regstr <- list("regfd"=regfd, "warpfd"=warpfdobj, "Wfd"=Wfd, "shift"=shift)
 
 return(regstr)
 }
