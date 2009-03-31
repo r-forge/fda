@@ -18,7 +18,8 @@ library(fda)
 age     = growth$age
 nage    = length(age)
 ageRng  = range(age)
-agefine = seq(ageRng[1], ageRng[2], length=101)
+nfine   = 101
+agefine = seq(ageRng[1], ageRng[2], length=nfine)
 
 #  the data
 
@@ -213,8 +214,7 @@ par(op)
 ## Section 8.5 A Decomposition into Amplitude and Phase Sums of Squares
 ##
 
-WfdLM       = registerlistLM$Wfd
-AmpPhasList = AmpPhaseDecomp(accelfdUN, accelfdLM, WfdLM)
+AmpPhasList = AmpPhaseDecomp(accelfdUN, accelfdLM, warpfdLM)
 RSQRLM      = AmpPhasList$RSQR
 CLM         = AmpPhasList$C
 
@@ -224,14 +224,14 @@ print(paste("R-squared =", round(RSQRLM,3), ",  C =", round(CLM,3)))
 #  Continuous registration
 #  
 
-#  Set up a cubic spline basis with a single interior knot at PGSctrmean
+#  Set up a cubic spline basis for continuous registration
 
 nwbasisCR = 15
 norderCR  =  5
 wbasisCR  = create.bspline.basis(c(1,18), nwbasisCR, norderCR)
 Wfd0CR    = fd(matrix(0,nwbasisCR,ncasef),wbasisCR)
-lambdaCR  = 1
-WfdParCR  = fdPar(Wfd0CR, 3, lambdaCR)
+lambdaCR  = 0
+WfdParCR  = fdPar(Wfd0CR, 1, lambdaCR)
 
 #  carry out the registration
 
@@ -240,17 +240,25 @@ registerlistCR = register.fd(mean(accelfdLM), accelfdLM, WfdParCR)
 accelfdCR = registerlistCR$regfd
 WfdCR     = registerlistCR$Wfd
 
-AmpPhasList = AmpPhaseDecomp(accelfdLM, accelfdCR, WfdCR)
+warpmat  = eval.monfd(agefine, WfdCR)
+warpmat  = 1 + 17*warpmat/outer(rep(1,nfine),warpmat[nfine,])
+warpfdCR = smooth.basis(agefine, warpmat, wbasisCR)$fd
+
+par(mfrow=c(1,1))
+plot(warpfdCR)
+
+AmpPhasList = AmpPhaseDecomp(accelfdLM, accelfdCR, warpfdCR)
 RSQRCR      = AmpPhasList$RSQR
 CCR         = AmpPhasList$C
 
 print(paste("R-squared =", round(RSQRCR,3), ",  C =", round(CCR,3)))
 
-#  plot landmark and continuously registered curves
+#  plot landmark and continuously registered curves for the
+#  first 10 children
 
 accelmeanfdCR10 = mean(accelfdCR[children])
 
-par(mfrow=c(2,1))
+op = par(mfrow=c(2,1))
 plot(accelfdLM[children], xlim=c(1,18), ylim=c(-3,1.5), lty=1, lwd=1,
      cex=2, xlab="Age (Years)", ylab="Acceleration (cm/yr/yr)")
 lines(accelmeanfdLM10, col=1, lwd=2, lty=2)
@@ -260,6 +268,22 @@ plot(accelfdCR[children], xlim=c(1,18), ylim=c(-3,1.5), lty=1, lwd=1,
 lines(accelmeanfdCR10, col=1, lwd=2, lty=2)
 lines(c(PGSctrmean,PGSctrmean), c(-3,1.5), lty=2, lwd=1.5)
 par(op)
+
+#  plot all landmark and continuously registered curves 
+
+accelmeanfdCR = mean(accelfdCR)
+
+op = par(mfrow=c(2,1))
+plot(accelfdLM, xlim=c(1,18), ylim=c(-4,3), lty=1, lwd=1,
+     cex=2, xlab="Age (Years)", ylab="Acceleration (cm/yr/yr)")
+lines(accelmeanfdLM, col=1, lwd=2, lty=2)
+lines(c(PGSctrmean,PGSctrmean), c(-4,3), lty=2, lwd=1.5)
+plot(accelfdCR, xlim=c(1,18), ylim=c(-4,3), lty=1, lwd=1,
+     cex=2, xlab="Age (Years)", ylab="Acceleration (cm/yr/yr)")
+lines(accelmeanfdCR, col=1, lwd=2, lty=2)
+lines(c(PGSctrmean,PGSctrmean), c(-4,3), lty=2, lwd=1.5)
+par(op)
+
 
 # Figure 8.4
 
