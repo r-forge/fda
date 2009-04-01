@@ -22,10 +22,9 @@ AmpPhaseDecomp(xfd, yfd, hfd)
     a functional data object containing the registered curves.
   }
   \item{hfd}{
-    a functional data object defining the functions $w(t)$ that define
-    the strictly monotone warping functions $h(t)$.  This is typically
-    returned by the functions \code{landmarkreg} and
-    \code{register.fd}.
+    a functional data object containing the strictly monotone warping
+    functions $h(t)$.  This is typically returned by the functions
+    \code{landmarkreg} and \code{register.fd}.
   }
 }
 \value{
