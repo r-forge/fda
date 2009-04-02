@@ -71,29 +71,19 @@ rt  = c('Quebec', 'Montreal',
 length(lft)
 length(rt)
 
-row.names(precRotSc)
 sum(lft %in% row.names(precRotSc))
 sum(rt %in% row.names(precRotSc))
 
-plot(logprec.rotpcalist$scores)
+plot(logprec.rotpcalist$scores, xlab='Rotated Harmonic I',
+     ylab='Rotated Harmonic II')
 
-
+text(precRotSc[lft, ], labels=lft, pos=2)
+text(precRotSc[rt, ], labels=rt, pos=4)
 
 # Section 7.2.2 PCA of Log Precipitation Residuals
 # logprecres = residuals from
 # the smooths of the log precipitation curves in Chapter 5.
 
-logprecav = CanadianWeather$dailyAv[
-         dayOfYearShifted, , 'log10precip']
-
-dayrange  = c(0,365)
-daybasis  = create.fourier.basis(dayrange, 365)
-Lcoef        = c(0,(2*pi/diff(dayrange))^2,0)
-harmaccelLfd = vec2Lfd(Lcoef, dayrange)
-lambda   = 1e6
-fdParobj = fdPar(daybasis, harmaccelLfd, lambda)
-logprec.fit = smooth.basis(day.5, logprecav, fdParobj)
-logprec.fd = logprec.fit$fd
 fdnames = list("Day (July 1 to June 30)",
                "Weather Station" = CanadianWeather$place,
                "Log 10 Precipitation (mm)")
@@ -113,10 +103,7 @@ plot(logprecres.fd, lwd=2, col=4, lty=1, cex=1.2,
 # Figure 7.5
 
 logprec.pca1 = pca.fd(logprecres.fd, 1)
-plot(logprec.pca1, expand=0.01)
-
-# ???????????????
-
+plot(logprec.pca1, expand=0.01, xlab='Day (July 1 to June 30)')
 
 ##
 ## Section 7.3 More Functional PCA Features
@@ -234,16 +221,15 @@ corrs         = ccalist$ccacorr
 print(corrs[1:3])
 #  [1] 0.9139817 0.6194850 0.3495515
 
-ccawtmat.temp    = eval.fd(daytime, ccawt.temp)
-ccawtmat.logprec = eval.fd(daytime, ccawt.logprec)
-
+ccawtmat.temp    = eval.fd(day.5, ccawt.temp)
+ccawtmat.logprec = eval.fd(day.5, ccawt.logprec)
 
 #  Figure 7.8
 
-plot(daytime, ccawtmat.temp[,1], type='l', lwd=2, cex=2,
+plot(day.5, ccawtmat.temp[,1], type='l', lwd=2, cex=2,
      xlab="Day (July 1 to June 30)",
      ylab="Canonical Weight Functions")
-lines(daytime, ccawtmat.logprec[,1], lty=2, lwd=2)
+lines(day.5, ccawtmat.logprec[,1], lty=2, lwd=2)
 lines(c(0, 365), c(0, 0), lty=3)
 legend("bottomleft", c("Temp.", "Log Prec."), lty=c(1,2))
 
