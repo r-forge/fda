@@ -146,6 +146,8 @@ agefine = seq(1,18,len=101)
 velffine = predict(hgtfmonfd, agefine, 1);
 accffine = predict(hgtfmonfd, agefine, 2);
 
+# Figure 1.15
+
 plot(velffine, accffine, type='n', xlim=c(0, 12), ylim=c(-5, 2),
      xlab='Velocity (cm/yr)', ylab=expression(Acceleration (cm/yr^2)),
      las=1)
