@@ -42,16 +42,41 @@ print(logprec.pcalist$values[1:4])
 
 plot.pca.fd(logprec.pcalist)
 
-plot(logprec.pcalist, expand=.5)
+op = par(mfrow=c(2,1))
+plot(logprec.pcalist, expand=.5, xlab='')
+par(op)
 
 # Figure 7.2
 
 logprec.rotpcalist = varmx.pca.fd(logprec.pcalist)
-plot.pca.fd(logprec.rotpcalist, expand=.5)
+
+op = par(mfrow=c(2,1))
+plot.pca.fd(logprec.rotpcalist, expand=.5, xlab='')
+par(op)
 
 # Figure 7.3
 
-#  plot.pca.fd(..., type='scores')???
+precRotSc = logprec.rotpcalist$scores
+
+lft = c('Pr. Rupert', 'Halifax',
+    'Thunder Bay', 'Calgary',
+    'Regina', 'Whitehorse')
+rt  = c('Quebec', 'Montreal',
+    'Toronto', 'Winnipeg', 'Edmonton',
+    'Pr. George', 'Iqaluit', 'Vancouver',
+    'Uranium City', 'Dawson',
+    'Kamloops', 'Victoria', 'Resolute')
+
+length(lft)
+length(rt)
+
+row.names(precRotSc)
+sum(lft %in% rown.names(precRotSc))
+sum(rtt %in% rown.names(precRotSc))
+
+plot(logprec.rotpcalist$scores)
+
+
 
 # Section 7.2.2 PCA of Log Precipitation Residuals
 # logprecres = residuals from
@@ -145,7 +170,7 @@ plot(1:neig, log10(fdaeig[1:neig]), "b",
 lines(1:neig, c[1]+ c[2]*(1:neig), lty=2)
 par(op)
 
-# Figure 7.7 varimax rotation 
+# Figure 7.7 varimax rotation
 
 #  set up mean function
 
@@ -191,7 +216,7 @@ j=2
 tempav = CanadianWeather$dailyAv[
               dayOfYearShifted, , 'Temperature.C']
 
-lambda   = 1e2 
+lambda   = 1e2
 fdParobj = fdPar(daybasis, harmaccelLfd, lambda)
 temp.fd  = smooth.basis(day.5, tempav, fdParobj)$fd
 temp.fd$fdnames = list("Day (July 2 to June 30)",
@@ -230,9 +255,9 @@ placeindex = c(35,30,31,19,33,25,24,17,16,8,14,12,15,10,27,6,1,29)
 
 plot(ccascr.temp[,1], ccascr.logprec[,1], type="p", pch="*", cex=2,
      xlim=c(-40,80),
-     xlab="Temperature Canonical Weight", 
+     xlab="Temperature Canonical Weight",
      ylab="Log Precipitation Canonical Weight")
-text(ccascr.temp[placeindex,1]+10, ccascr.logprec[placeindex,1], 
+text(ccascr.temp[placeindex,1]+10, ccascr.logprec[placeindex,1],
      CanadianWeather$place[placeindex])
 
 ##
