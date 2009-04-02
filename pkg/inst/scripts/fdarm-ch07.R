@@ -41,6 +41,7 @@ print(logprec.pcalist$values[1:4])
 # Figure 7.1
 
 plot.pca.fd(logprec.pcalist)
+## *** -> Click on the plot for page change
 
 op = par(mfrow=c(2,1))
 plot(logprec.pcalist, expand=.5, xlab='')
@@ -71,8 +72,8 @@ length(lft)
 length(rt)
 
 row.names(precRotSc)
-sum(lft %in% rown.names(precRotSc))
-sum(rtt %in% rown.names(precRotSc))
+sum(lft %in% row.names(precRotSc))
+sum(rt %in% row.names(precRotSc))
 
 plot(logprec.rotpcalist$scores)
 
