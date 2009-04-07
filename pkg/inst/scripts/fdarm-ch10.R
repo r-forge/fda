@@ -1,16 +1,18 @@
 ###
 ###
-### Ramsey, Hooker & Graves (2009)
+### Ramsay, Hooker & Graves (2009)
 ### Functional Data Analysis with R and Matlab (Springer)
 ###
 ### ch.  10.  Linear Models for Functional Responses
 ###
+
 library(fda)
 
 ##
 ## Section 10.1  Functional Responses and an Analysis of Variance Model
 ##
 #  Section 10.1.1 Climate Region Effects on Temperature
+
 regions.         = unique(CanadianWeather$region)
 p                = length(regions.) + 1
 regionList       = vector("list", p)
@@ -61,8 +63,10 @@ par(op)
 
 #  select only the data for sites Uyak and Uganik, which have data
 #  from 1986 to 2005, except for 1998
-sel = (seabird$Bay %in% c('Uganik', 'Uyak'))
-UU  = seabird[sel,]
+
+sites = c('Uganik', 'Uyak')
+sel   = seabird$Bay %in% sites
+UU    = seabird[sel,]
 
 # Drop 2 species with many NAs
 
@@ -71,8 +75,7 @@ NAs. = which(NAs > 2)
 birdindex= (1:15)[-NAs.]
 birds = names(UU)[birdindex]
 
-#  select the columns with counts and
-#  the years on which counts were taken
+#  Compute mean counts taken over both sites and transects
 
 meanCounts = matrix(NA, 20, 13)
 dimnames(meanCounts) = list(1986:2005, birds)
@@ -82,108 +85,221 @@ for(i in 1:20){
   meanCounts[i, ] = sapply(UU[sel, birds], mean, na.rm=TRUE)
 }
 
-selYear = !is.na(meanCounts[, 1])
+selYear = !is.na(meanCounts[,1])
 logCounts = log10(meanCounts[selYear,])
-yearObs = as.numeric(rownames(logCounts))
-yearCode = (1:20)[selYear]
 
-# Figure 10.2
+#  Compute mean counts taken over transects only
+#  Two of these counts are zero, and are replaced by 1/(2*n)
+
+meanCounts2 = matrix(NA, 20, 26)
+
+for(i in 1:20) for (j in 1:2) {
+  sel = (UU$Year == rownames(meanCounts)[i] & as.character(UU$Bay) == sites[j])
+  meanCountsij = sapply(UU[sel, birds], mean, na.rm=TRUE)
+  n = sum(sel)
+  if (n > 0) {
+    meanCountsij[meanCountsij == 0] = 1/(2*n)
+  }
+  meanCounts2[i,(j-1)*13+(1:13)] = meanCountsij
+}
+
+selYear2   = !is.na(meanCounts2[, 1])
+logCounts2 = log10(meanCounts2[selYear2,])
+
+#  time vectors in years and in indices in 1:20
+
+yearObs   = as.numeric(rownames(logCounts))
+yearCode  = (1:20)[selYear]
+
+# Figure 10.2 with color  (quick version)
 
 op = par(cex=1.3)
 matplot(yearObs, logCounts, type='b', xlab='Year',
-        ylab='log10(Mean count)', col=1, lty=1)
+        ylab='log10(Mean count)', lty=1, col=1)
 par(op)
 
-# (1) Select smoothing for logCounts
-birdSmooth0  = Data2fd(yearCode, logCounts)
+#  Represent log mean counts exactly with a polygonal basis
 
-loglamBird = seq(-9,9,0.5)
-gcvs = rep(0,length(loglamBird))
-for(ilam in 1:length(loglamBird)){
-  sfdPari = fdPar(birdSmooth0$basis,2,10^loglamBird[ilam])
-  ifd =  smooth.basis(yearCode,logCounts,sfdPari)
-  gcvs[ilam] = sum(ifd$gcv)
-}
+birdbasis = create.polygonal.basis(c(1,20), yearCode)
 
-plot(loglamBird,gcvs)
+birdlist  = smooth.basis(yearCode, logCounts,  birdbasis)
+birdlist2 = smooth.basis(yearCode, logCounts2, birdbasis)
 
-loglamB = loglamBird[which.min(gcvs)]
-sfdPar = fdPar(birdSmooth0$basis,2,10^loglamB)
-birdSmoothPar =  smooth.basis(yearCode,logCounts,sfdPar)
-birdSmooth = birdSmoothPar$fd
+birdfd  = birdlist$fd
+birdfd2 = birdlist2$fd
 
-# (2) Create shellfish variable
-shellfish   = (2*((1:13) %in% c(1,2,5,6,12,13))-1)
+#  plot the data for all birds averaged over both sites and transects
 
-# (3) Initial fRegress
-fitShellfish= fRegress(birdSmooth~shellfish)
+par(ask=F)
+plot(birdfd, lwd=2)
 
-betaestlist = fitShellfish$betaestlist
+#  plot the data separately for the two diets
 
-# Figure 10.3
-op = par(mfrow=c(2,1), mar=c(2,4,2,2)+0.1)
-plot(betaestlist$const$fd, xlab='',
-     ylab='Intercept (overall trend)')
-plot(betaestlist$shellfish$fd, xlab='',
-     ylab='shellfish effect')
+shellfishindex = c(1,2,5,6,12,13)
+fishindex      = (1:13)[-shellfishindex]
+
+op = par(mfrow=c(2,1))
+plot(birdfd[shellfishindex], lwd=2,
+     main="Shellfish diet")
+plot(birdfd[-shellfishindex], lwd=2,
+     main="Fish diet")
 par(op)
 
+yearfine = seq(1, 20, len=191)
+birdmatS = eval.fd(yearfine, birdfd[ shellfishindex])
+birdmatF = eval.fd(yearfine, birdfd[-shellfishindex])
+birdvecS = apply(birdmatS, 1, mean)
+birdvecF = apply(birdmatF, 1, mean)
+
+#  plot of Figure 10.2  (Text Version)
+
+op = par(mfrow=c(2,1), cex=1.2)
+matplot(yearfine+1985, birdmatS, type="l", lwd=1, col=1,
+        xlim=c(1985,2005), ylim=c(-1.5,2),
+        xlab="", ylab="",
+        main="Shellfish diet")
+lines(yearfine+1985, birdvecS, lty=1, lwd=2)
+lines(c(1986,2005), c(0,0), lty=2, lwd=1)
+matplot(yearfine+1985, birdmatF, type="l", lwd=1, col=1,
+        xlim=c(1985,2005), ylim=c(-1.5,2),
+        xlab="", ylab="",
+        main="Fish diet")
+lines(yearfine+1985, birdvecF, lty=1, lwd=2)
+lines(c(1986,2005), c(0,0), lty=2, lwd=1)
+par(op)
+
+#  -----------------------------------------------------------------
+#  After some preliminary analyses we determined that there was no
+#  contribution from either site or food*site interaction.
+#  Now we use a reduced model with only a feed effect,
+#  but we add bird effects, which were seen in the plot to be
+#  strong.  Birds are nested within feed groups, and either their
+#  effects must sum to zero within each group, or we must designate
+#  a bird in each group as a baseline, and provide dummy variables
+#  for the remainder.  We opt for the latter strategy.
+#  -----------------------------------------------------------------
+
+#  The design matrix contains an intercept dummy variable, a
+#  feed dummy variable, and dummy variables for birds, excluding
+#  the second bird in each group, which turns out to be the each
+#  group's most abundant species, and which is designated as the
+#  baseline bird for that group.
+
+meanlogCounts = apply(logCounts,2,mean)
+meanlogCounts[shellfishindex]
+meanlogCounts[-shellfishindex]
+
+Zmat = matrix(0,26,15)
+
+#  Intercept or baseline effect
+
+Intercept = rep(1,26)
+
+#  Crustacean/Mollusc feeding effect:  a contrast between the two groups
+
+foodindex = c(1,2,5,6,12,13)
+fooddummy = c(2*rep(1:13 %in% foodindex, 2)-1, 0, 0)
+
+#  Bird effect, one for each species
+
+birddummy = diag(rep(1,13))
+birddummy = rbind(birddummy,birddummy)
+
+#  fill the columns of the design matrix
+
+Zmat[,1]    = Intercept
+Zmat[,2]    = fooddummy
+Zmat[,3:15] = birddummy
+
+#  Two extra dummy observations are added to the functional data
+#  object for log counts, and two additional rows are added to 
+#  the design matrix to force the bird effects within each diet
+#  group to equal 0.
+
+birdfd3 = birdfd2
+birdfd3$coefs = cbind(birdfd3$coefs, matrix(0,19,2))
+
+Zmat = rbind(Zmat, matrix(0,2,15))
+Zmat[27,shellfishindex+2]  = 1
+Zmat[28,fishindex+2] = 1
+
+p = 15
+xfdlist = vector("list",p)
+for (j in 1:p) xfdlist[[j]] = Zmat[,j]
+
+#  set up the functional parameter object for (the regression fns.
+
+betalist = vector("list",p)
+
+#  use cubic b-spline basis for intercept and food coefficients
+
+betalist = vector("list", p)
+betabasis1 = create.bspline.basis(c(1,20),21,4,yearCode)
+lambda = 10
+betafdPar1 = fdPar(betabasis1,2,lambda)
+betalist[[1]] = betafdPar1
+betalist[[2]] = betafdPar1
+betabasis2 = create.constant.basis(c(1,20))
+betafdPar2 = fdPar(betabasis2)
+for (j in 3:15) betalist[[j]] = betafdPar2
+
+#
 # Section 10.1.3 Choosing Smoothing Parameters
+#
 
-xfdlist     = fitShellfish$xfdlist
+#  Choose the level of smoothing by minimizing cross-validated
+#  error sums of squares.  
 
-#  First test a coarse grid for loglam:
-loglam1 = seq(-9, 9, 2)
-SSE.CV1 = rep(NA,length(loglam1))
-names(SSE.CV1) = loglam1
-betalisti = betaestlist
-for(i in 1:length(loglam1)){
-  for(j in 1:2)
-    betalisti[[j]]$lambda = 10^loglam1[i]
-  CVi = fRegress.CV(birdSmooth, xfdlist, betalisti)
-  cat(i, loglam1[i], CVi$SSE.CV, '; ')
-  SSE.CV1[i] = CVi$SSE.CV
+loglam = seq(-2,4,0.25)
+SSE.CV = rep(0,length(loglam))
+betafdPari = betafdPar1
+for(i in 1:length(loglam)){
+    print(loglam[i])
+    betafdPari$lambda = 10^loglam[i]
+    betalisti = betalist
+    for (j in 1:2) betalisti[[j]] = betafdPari
+    CVi = fRegress.CV(birdfd3, xfdlist, betalisti,CVobs=1:26)
+    SSE.CV[i] = CVi$SSE.CV
 }
 
-plot(loglam1, SSE.CV1, type='b')
+#  Figure 10.4
 
-# Try a finer grid over a subset near the minimum
-loglam2 = seq(1.1, 4.9, 0.2)
-SSE.CV2 = rep(NA,length(loglam2))
-names(SSE.CV2) = loglam2
-for(i in 1:length(loglam2)){
-  for(j in 1:2)
-    betalisti[[j]]$lambda = 10^loglam2[i]
-  CVi = fRegress.CV(birdSmooth, xfdlist, betalisti)
-  cat(i, loglam2[i], CVi$SSE.CV, '; ')
-  SSE.CV2[i] = CVi$SSE.CV
+par(mfrow=c(1,1))
+plot(loglam,SSE.CV,type='b',cex.lab=1.5,cex.axis=1.5,lwd=2,
+  xlab='log smoothing parameter',ylab='cross validated sum of squares')
+  
+#  Cross-validation is minimized at something like lambda = 10, although
+#  the discontinous nature of the CV function is disquieting.
+
+betafdPar1$lambda = 10
+for (j in 1:2) betalist[[j]] = betafdPar1
+
+#  carry out the functional regression analysis
+
+fRegressList = fRegress(birdfd3, xfdlist, betalist)
+
+#  plot regression functions
+
+betanames = list("Intercept", "Food Effect")
+
+betaestlist = fRegressList$betaestlist
+
+par(mfrow=c(2,1), cex=1.2)
+for (j in 1:2) {
+    betaestParfdj = betaestlist[[j]]
+    betaestfdj    = betaestParfdj$fd
+    betaestvecj   = eval.fd(yearCode, betaestfdj)
+	  plot(yearObs, betaestvecj, type="l", lwd=4, col=4,
+           xlab="Year", ylab="Temp.",
+           main=betanames[[j]])
 }
 
-loglam. = c(loglam1, loglam2)
-SSE.CV. = c(SSE.CV1, SSE.CV2)
-o. = order(loglam.)
-plot(loglam.[o.], SSE.CV.[o.], type='b',
-     xlab='log smoothing parameter',
-     ylab='cross-validated sum of squares')
+#  plot predicted functions
 
-loglamSeabird = loglam.[which.min(SSE.CV.)]
+yhatfdobj = fRegressList$yhatfdobj
 
-# ******** Use this ...
-
-lamSeabird = 10^loglamSeabird
-
-for(j in 1:2)betalisti[[j]]$lambda = lamSeabird
-fitShellfish.opt = fRegress(birdSmooth, xfdlist, betalisti)
-
-beta.opt = fitShellfish.opt$betaestlist
-
-op = par(mfrow=c(2,1), mar=c(2,4,2,2)+0.1)
-plot(beta.opt$const$fd, xlab='', ylab='')
-title(ylab='Intercept', cex.lab=2, line=2.5)
-
-plot(beta.opt$shellfish$fd, xlab='', ylab='')
-title(ylab='shellfish effect', cex.lab=2, line=2.5)
-par(op)
+par(mfrow=c(1,1))
+plotfit.fd(logCounts2, yearCode, yhatfdobj)
 
 ##
 ## Section 10.2 Functional Responses with Functional Predictors:
@@ -206,16 +322,6 @@ betastderrlist = stderrList$betastderrlist
 op <- par(mfrow=c(2,1))
 plotbeta(betaestlist, betastderrlist)
 par(op)
-
-
-
-
-
-
-
-
-
-
 
 
 # Section 10.2.3 Knee Angle Predicted from Hip Angle
@@ -300,7 +406,6 @@ SSE0 = apply((resmat0)^2, 1, sum)
 SSE1 = apply(resmat^2, 1, sum)
 Rsqr = (SSE0-SSE1)/SSE0
 
-
 gaitbasismat = eval.basis(gaitfine, gaitbasis)
 y2cMap = solve(crossprod(gaitbasismat), t(gaitbasismat))
 
@@ -312,7 +417,74 @@ titlelist = list("Intercept", "Hip coefficient")
 par(mfrow=c(2,1))
 plotbeta(betaestlist, betastderrlist, gaitfine, titlelist)
 
+#
+#  Computing confidence limits for the sea bird regression
+#    (Completing Figure 10.3)
+#
 
+#  compute residual matrix and get covariance of residuals
+
+yhatmat = eval.fd(yearCode, yhatfdobj)
+rmat    = logCounts - yhatmat
+SigmaE  = var(t(rmat))
+
+#  plot covariance surface for errors
+
+par(mfrow=c(1,1))
+contour(SigmaE, xlab="Year", ylab="Year")
+lines(c(1986,2005),c(1986,2005),lty=4)
+
+persp(SigmaE)
+
+#  If desired, one can use the diagonal of SigmaE here.
+#  But the resulting confidence intervals do not depend critically
+#  on this choice.
+
+#  SigmaE = diag(diag(SigmaE))
+
+#  plot standard deviation of errors
+
+par(mfrow=c(1,1), mar=c(5,5,3,2), pty="m")
+stddevE = sqrt(diag(SigmaE))
+plot(yearObs, stddevE, type="l", lwd=4, col=4, ylim=c(0,1),
+     xlab="Year", ylab="Standard error")
+
+#  Repeat regression, this time outputting results for
+#  confidence intervals
+
+y2cMap = birdlist2$y2cMap
+
+stderrList = fRegress.stderr(fRegressList, y2cMap, SigmaE)
+
+betastderrlist = stderrList$betastderrlist
+
+# Figure 10.3  as it appears in the book
+
+#  plot regression functions with confidence limits
+
+par(mfrow=c(2,1), cex=1.2)
+for (j in 1:2) {
+	betafdParj  = betaestlist[[j]]
+	betafdj     = betafdParj$fd
+	betaj       = eval.fd(yearCode, betafdj)
+	betastderrj = eval.fd(yearCode, betastderrlist[[j]])
+	matplot(yearObs, cbind(betaj,
+          betaj+2*betastderrj,
+          betaj-2*betastderrj),
+	        type="l",lty=c(1,4,4), xlab="", ylab="Reg. Coeff.",
+          lwd=4, col=1,
+          main=betanames[[j]])
+      lines(c(1986,2005), c(0,0), lwd=2, col=c(4,2,2), lty=2)
+}
+
+#  Figure 10.3  (alternative version using function plotbeta as in code)
+ 
+par(mfrow=c(2,1),ask=FALSE)
+titlelist = vector("list", 2)
+titlelist[[1]] = "Intercept"
+titlelist[[2]] = "Feed effect"
+plotbeta(betaestlist, betastderrlist,
+         titlelist=titlelist, index=1:2)
 
 
 ##
@@ -323,6 +495,7 @@ plotbeta(betaestlist, betastderrlist, gaitfine, titlelist)
 ##
 ## Section 10.4 A Functional Linear Model for Swedish Mortality
 ##
+
 betabasis = create.bspline.basis(c(0,80),23)
 beta0Par = fdPar(betabasis, 2, 1e-5)
 beta1sPar = fdPar(betabasis, 2, 1e3)
@@ -334,11 +507,6 @@ linmodSmooth = linmod(NextYear, LastYear, betaList)
 # Where's LastYear?  ???
 
 # Figure 10.11
-
-
-
-
-
 
 ##
 ## Section 10.5 Permutation Tests of Functional Hypotheses
@@ -352,13 +520,6 @@ tperm.fd(hgtmfd,hgtffd)
 # Section 10.5.2 Functional F-Tests
 
 F.res = Fperm.fd(temp36fd, regionlist, betaList)
-
-
-
-
-
-
-
 
 
 ##
