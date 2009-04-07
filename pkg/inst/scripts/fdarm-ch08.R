@@ -13,6 +13,88 @@ library(fda)
 ## Section 8.1 Amplitude and Phase Variation
 ##
 
+#  Figure 8.1 in this section requires that we do landmark registration first,
+#  and is therefore plotted in Section 8.3 below.
+
+#  Figure 8.2
+
+#  set up a fine mesh of t-values for plotting, and define mu and sigma
+
+tvec  = seq(-5,5,len=201)
+mu    = seq(-1,1,len=  5)
+sigma = (1:5)/3
+
+#  Here is function Dgauss that we use below to compute values
+#  of the first derivative of a Gaussian density:
+
+DGauss = function(tvec, mu, sigma)
+{
+var = as.matrix(sigma)^2
+
+n = length(tvec)
+m = length(mu)
+if (length(sigma) != m)
+    stop('MU and SIGMA not of same length')
+
+tvec  = as.matrix(tvec)
+mu    = as.matrix(mu)
+onesm = matrix(1,1,m)
+onesn = matrix(1,n,1)
+
+res   = tvec %*% onesm - onesn %*% t(mu)
+expon = res^2/(2*onesn %*% t(var))
+DpG   = -res*exp(-expon)
+
+return(DpG)
+}
+
+#  Data to be plotted in the left panel
+
+DpGphase = matrix(0,201,5)
+for (i in 1:5) DpGphase[,i] = DGauss(tvec+mu[i], 0, 1)
+DpGphaseMean = apply(DpGphase,1,mean)
+
+#  Data to be plotted in the right panel
+
+DpGampli = matrix(0,201,5)
+for (i in 1:5) DpGampli[,i] = sigma[i]*DGauss(tvec, 0, 1)
+DpGampliMean = apply(DpGampli,1,mean)
+
+op = par(mfrow=c(2,1), cex=1, ask=F)
+#  left panel
+matplot(tvec, DpGphase, "l", lwd=1, col=1, lty=1, 
+        xlim=c(-5,5), ylim=c(-0.8,0.8),
+        xlab="", ylab="")
+lines(tvec, DpGphaseMean, col=1, lty=2, lwd=2) 
+lines(c(-5,5), c(0,0), col=1, lty=3, lwd=1)
+# right panel
+matplot(tvec, DpGampli, "l", lwd=1, col=1, lty=1, 
+        xlim=c(-5,5), ylim=c(-1.2,1.2),
+        xlab="", ylab="")
+lines(t, DpGampliMean, col=1, lty=2, lwd=2) 
+lines(c(-5,5), c(0,0), col=1, lty=3, lwd=1)
+par(op)
+
+#  get eigenvalues for each panel
+
+eigvecphase = svd(DpGphase)$s^2
+eigvecphase = eigvecphase/sum(eigvecphase)
+
+eigvecampli = svd(DpGampli)$s^2
+eigvecampli = eigvecampli/sum(eigvecampli)
+
+print(c(eigvecphase, eigvecampli))
+
+##
+## Section 8.2 Time-Warping Functions and Registration
+##
+
+#  Figure 8.3 requires landmark registration, and is set up below
+
+## 
+##  Compute the monotone smoothing of the Berkeley female growth data.
+##
+
 #  set up ages of measurement and an age mesh
 
 age     = growth$age
@@ -71,7 +153,7 @@ plot(accelfdUN, xlim=c(1,18), ylim=c(-4,3), lty=1, lwd=2,
 children = 1:10
 
 PGSctr = rep(0,length(children))
-par(mfrow=c(1,1), ask=T)
+par(mfrow=c(1,1), ask=TRUE)
 for (icase in children) {
     accveci = eval.fd(agefine, accelfdUN[icase])
     plot(agefine,accveci,"l", ylim=c(-6,4),
@@ -122,9 +204,9 @@ for (icase in 1:ncasef) {
     title(paste('Case ',icase))
 }
 
-#  
-# Landmark registration
-#
+##  
+##  Section 8.3: Landmark registration
+##
 
 #  We use the minimal basis function sufficient to fit 3 points
 #  remember that the first coefficient is set to 0, so there
@@ -142,10 +224,10 @@ WfdParLM = fdPar(WfdLM,1,1e-12)
 
 #  Carry out landmark registration.  
 
-registerlistLM = landmarkreg(accelfdUN, PGSctr, PGSctrmean, 
+regListLM = landmarkreg(accelfdUN, PGSctr, PGSctrmean, 
                              WfdParLM, TRUE)
 
-accelfdLM     = registerlistLM$regfd 
+accelfdLM     = regListLM$regfd 
 accelmeanfdLM = mean(accelfdLM)
 
 #  plot registered curves
@@ -172,23 +254,12 @@ lines(accelmeanfdLM10, col=1, lwd=2, lty=2)
 lines(c(PGSctrmean,PGSctrmean), c(-3,1.5), lty=2, lwd=1.5)
 par(op)
 
-# Figure 8.2 not computed here.
+# Figure 8.3 
 
 #  plot warping functions for cases 3 and 7
 
 warpfdLM  = registerlistLM$warpfd
 warpmatLM = eval.fd(agefine, warpfdLM)
-
-op = par(mfrow=c(1,1))
-matplot(agefine, warpmatLM[,c(3,7)], "l", lty=1, lwd=2, col=1, cex=1.2,
-        xlab="Clock years", ylab="Growth years")
-lines(agefine,  agefine, lty=2, lwd=1.5)
-lines(c(PGSctrmean,PGSctrmean), c(1,18), lty=2, lwd=1.5)
-text(c(PGSctrmean,PGSctrmean), warpmatLM[61,c(3,7)]+0.5, c("3","7"))
-text(PGSctrmean, 6,"Early")
-text(PGSctrmean,17,"Late")
-
-# Figure 8.3
 
 op = par(mfrow=c(2,2))
 plot(accelfdUN[3], xlim=c(1,18), ylim=c(-3,1.5), lty=1, lwd=2,
@@ -210,19 +281,9 @@ lines(agefine,  agefine, lty=2, lwd=1.5)
 text(PGSctrmean+0.1, warpmatLM[61,7]+0.2, "o", lwd=2)
 par(op)
 
-##
-## Section 8.5 A Decomposition into Amplitude and Phase Sums of Squares
-##
-
-AmpPhasList = AmpPhaseDecomp(accelfdUN, accelfdLM, warpfdLM)
-RSQRLM      = AmpPhasList$RSQR
-CLM         = AmpPhasList$C
-
-print(paste("R-squared =", round(RSQRLM,3), ",  C =", round(CLM,3)))
-
-#  
-#  Continuous registration
-#  
+##  
+##  Section 8.4: Continuous registration
+##  
 
 #  Set up a cubic spline basis for continuous registration
 
@@ -243,12 +304,6 @@ WfdCR     = registerlistCR$Wfd
 
 par(mfrow=c(1,1))
 plot(warpfdCR)
-
-AmpPhasList = AmpPhaseDecomp(accelfdLM, accelfdCR, warpfdCR)
-RSQRCR      = AmpPhasList$RSQR
-CCR         = AmpPhasList$C
-
-print(paste("R-squared =", round(RSQRCR,3), ",  C =", round(CCR,3)))
 
 #  plot landmark and continuously registered curves for the
 #  first 10 children
@@ -281,7 +336,6 @@ lines(accelmeanfdCR, col=1, lwd=2, lty=2)
 lines(c(PGSctrmean,PGSctrmean), c(-4,3), lty=2, lwd=1.5)
 par(op)
 
-
 # Figure 8.4
 
 par(mfrow=c(1,1))
@@ -303,10 +357,30 @@ lines(accelmeanfdLM, lwd=1.5, lty=1)
 lines(accelmeanfdUN, lwd=1.5, lty=2)
 
 ##
+## Section 8.5 A Decomposition into Amplitude and Phase Sums of Squares
+##
+
+#  Comparing unregistered to landmark registered curves
+
+AmpPhasList = AmpPhaseDecomp(accelfdUN, accelfdLM, warpfdLM)
+RSQRLM      = AmpPhasList$RSQR
+CLM         = AmpPhasList$C
+
+print(paste("R-squared =", round(RSQRLM,3), ",  C =", round(CLM,3)))
+
+#  Comparing landmark to continuously registered curves
+
+AmpPhasList = AmpPhaseDecomp(accelfdLM, accelfdCR, warpfdCR)
+RSQRCR      = AmpPhasList$RSQR
+CCR         = AmpPhasList$C
+
+print(paste("R-squared =", round(RSQRCR,3), ",  C =", round(CCR,3)))
+
+##
 ## 8.6 Registering the Chinese Handwriting Data
 ##
 
-# Figure 8.6
+#  No code for this section
 
 ##
 ## 8.7 Details for Functions landmarkreg and register.fd
