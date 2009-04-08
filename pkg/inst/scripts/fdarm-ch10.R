@@ -486,25 +486,28 @@ lines(gaitfine, knee.R2, lty='dashed')
 # done
 par(op)
 
-
-
-
-
-
-
-
-
+# Figure 10.8
 
 gaitbasismat = eval.basis(gaitfine, gaitbasis)
-y2cMap = solve(crossprod(gaitbasismat), t(gaitbasismat))
+y2cMap0 = solve(crossprod(gaitbasismat), t(gaitbasismat))
+
+fRegressList1 = fRegress(kneefd, xfdlist, betalist,
+                         y2cMap0, SigmaE)
+
+#Error in fRegress.fdPar(yfdPar, xfdlist, betalist, wt = wt, y2cMap = y2cMap,  :
+#  Number of weights not equal to N.
+
+# ?????
 
 
-fRegressList2 = fRegress.stderr(fRegressList, y2cMap, SigmaE)
+
+fRegressList2 = fRegress.stderr(fRegressList1, y2cMap0, SigmaE)
 betastderrlist = fRegressList2$betastderrlist
 titlelist = list("Intercept", "Hip coefficient")
 
 op = par(mfrow=c(2,1))
-plotbeta(betaestlist, betastderrlist, gaitfine, titlelist)
+plotbeta(betaestlist, betastderrlist, gaitfRegressList1 = fRegress(kneefd, xfdlist, betalist,
+y2cMap0, SigmaE)fine, titlelist)
 par(op)
 
 
