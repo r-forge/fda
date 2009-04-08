@@ -466,16 +466,17 @@ resmat. = kneemat - kneehatmat
 SigmaE = cov(t(resmat.))
 
 kneefinemat = eval.fd(gaitfine, kneefd)
-kneemeanvec = eval.fd(gaitfine, betaestlist[[1]]$fd)
+kneemeanvec = eval.fd(gaitfine, mean(kneefd))
 kneehatfinemat = eval.fd(gaitfine, kneehatfd)
 resmat = kneefinemat - kneehatfinemat
-resmat0 = kneefinemat - kneemeanvec %*% matrix(1,1,39)
+ncurve = dim(gait)[2]
+resmat0 = kneefinemat - kneemeanvec %*% matrix(1,1,ncurve)
 SSE0 = apply((resmat0)^2, 1, sum)
 SSE1 = apply(resmat^2, 1, sum)
 Rsqr = (SSE0-SSE1)/SSE0
 
-
 # Plot Hip Coefficient & Squared Multiple Correlation
+
 ylim2=c(0, max(hipCoef, knee.R2))
 plot(gaitfine, hipCoef, lwd=2, xlab='', ylab='', ylim=ylim2, type='l',
      main='Hip Coefficient and Squared Multiple Correlation')
