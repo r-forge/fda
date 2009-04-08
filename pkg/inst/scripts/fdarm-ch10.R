@@ -340,15 +340,14 @@ plotfit.fd(logCounts2, yearCode, yhatfdobj$fd[1:26])
 
 #yhatmat = eval.fd(yearCode, fitShellfish.5$yhatfdobj$fd)
 yhatmat = eval.fd(yearCode, yhatfdobj$fd[1:26])
-
-rmat = logCounts2 - yhatmat
-SigmaE = var(t(rmat))
+rmatb   = logCounts2 - yhatmat
+SigmaEb = var(t(rmatb))
 
 #y2cMap = birdSmoothPar$y2cMap
 y2cMap = birdlist2$y2cMap
 
 stderrList = fRegress.stderr(fitShellfish.5, y2cMap,
-     SigmaE)
+     SigmaEb)
 betastderrlist = stderrList$betastderrlist
 
 op <- par(mfrow=c(2,1))
@@ -461,13 +460,20 @@ hipCoef = predict(betaestlist$hip$fd, gaitfine)
 
 # Squared multiple correlation
 kneehatfd = gaitRegress$yhatfd$fd
-kneemat = predict(kneefd, gaitfine)
-kneehatmat = eval.fd(gaitfine, kneehatfd)
-resmat = kneemat - kneehatmat
-SigmaE = cov(t(resmat))
+kneemat = predict(kneefd, gaittime)
+kneehatmat = eval.fd(gaittime, kneehatfd)
+resmat. = kneemat - kneehatmat
+SigmaE = cov(t(resmat.))
 
-knee.sd = sd.fd(kneefd)
-knee.R2 = (1 - diag(SigmaE)/(predict(knee.sd, gaitfine)^2))
+kneefinemat = eval.fd(gaitfine, kneefd)
+kneemeanvec = eval.fd(gaitfine, betaestlist[[1]]$fd)
+kneehatfinemat = eval.fd(gaitfine, kneehatfd)
+resmat = kneefinemat - kneehatfinemat
+resmat0 = kneefinemat - kneemeanvec %*% matrix(1,1,39)
+SSE0 = apply((resmat0)^2, 1, sum)
+SSE1 = apply(resmat^2, 1, sum)
+Rsqr = (SSE0-SSE1)/SSE0
+
 
 # Plot Hip Coefficient & Squared Multiple Correlation
 ylim2=c(0, max(hipCoef, knee.R2))
@@ -482,14 +488,6 @@ par(op)
 
 
 
-kneefinemat = eval.fd(gaitfine, kneefd)
-kneemeanvec = eval.fd(gaitfine, betaestlist[[1]]$fd)
-kneehatfinemat = eval.fd(gaitfine, kneehatfd)
-resmat = kneefinemat - kneehatfinemat
-resmat0 = kneefinemat - kneemeanvec %*% matrix(1,1,39)
-SSE0 = apply((resmat0)^2, 1, sum)
-SSE1 = apply(resmat^2, 1, sum)
-Rsqr = (SSE0-SSE1)/SSE0
 
 gaitbasismat = eval.basis(gaitfine, gaitbasis)
 y2cMap = solve(crossprod(gaitbasismat), t(gaitbasismat))
