@@ -91,8 +91,8 @@ print(c(eigvecphase, eigvecampli))
 
 #  Figure 8.3 requires landmark registration, and is set up below
 
-## 
-##  Compute the monotone smoothing of the Berkeley female growth data.
+##  
+##  Section 8.3: Landmark registration
 ##
 
 #  set up ages of measurement and an age mesh
@@ -108,32 +108,13 @@ agefine = seq(ageRng[1], ageRng[2], length=nfine)
 hgtf   = growth$hgtf
 ncasef = dim(hgtf)[2]
 
-#  an order 6 bspline basis with knots at ages of measurement
-
-norder = 6
-nbasis = nage + norder - 2
-wbasis = create.bspline.basis(ageRng, nbasis, norder, age)
-
-#  define the roughness penalty for function W
-
-Lfdobj    = 3          #  penalize curvature of acceleration
-lambda    = 10^(-0.5)  #  smoothing parameter
-cvecf     = matrix(0, nbasis, ncasef)
-Wfd0      = fd(cvecf, wbasis)
-growfdPar = fdPar(Wfd0, Lfdobj, lambda)
-
-#  monotone smoothing
-
-growthMon = smooth.monotone(age, hgtf, growfdPar)
-
-# (wait for an iterative fit to each of 54 girls)
-
-Wfd        = growthMon$Wfd
-betaf      = growthMon$beta
-hgtfhatfd  = growthMon$yhatfd
-
 #  Set up functional data objects for the acceleration curves 
 #  and their mean.  Suffix UN means "unregistered".
+
+#  This step requires the functional data object hgtfhatfd computed
+#  from the monotone smooth of the Berkeley female data.  Refer to 
+#  Section 5.4.2.2  in the text and in the script file fdarm-ch05.R
+#  for the computing it.
 
 accelfdUN     = deriv.fd(hgtfhatfd, 2)
 accelmeanfdUN = mean(accelfdUN)
@@ -203,10 +184,6 @@ for (icase in 1:ncasef) {
     }
     title(paste('Case ',icase))
 }
-
-##  
-##  Section 8.3: Landmark registration
-##
 
 #  We use the minimal basis function sufficient to fit 3 points
 #  remember that the first coefficient is set to 0, so there
