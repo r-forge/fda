@@ -347,10 +347,10 @@ SigmaEb = var(t(rmatb))
 y2cMap = birdlist2$y2cMap
 
 stderrList = fRegress.stderr(fitShellfish.5, y2cMap,
-     SigmaEb)
+                             SigmaEb)
 betastderrlist = stderrList$betastderrlist
 
-op <- par(mfrow=c(2,1))
+op = par(mfrow=c(2,1))
 plotbeta(betaestlist[1:2], betastderrlist[1:2])
 par(op)
 
@@ -404,7 +404,7 @@ gaitfd = gaitSmooth$fd
 names(gaitfd$fdnames) = c("Normalized time", "Child", "Angle")
 gaitfd$fdnames[[3]] = c("Hip", "Knee")
 
-hipfd = gaitfd[,1]
+hipfd  = gaitfd[,1]
 kneefd = gaitfd[,2]
 
 # Figure 10.5
@@ -431,11 +431,11 @@ phaseplanePlot(gaitfine, kneefdMean,
 
 # Set up a  functional linear regression
 
-xfdlist = list(const=rep(1,39), hip=hipfd)
+xfdlist   = list(const=rep(1,39), hip=hipfd)
 betafdPar = fdPar(gaitbasis, harmaccelLfd20)
-betalist = list(const=betafdPar, hip=betafdPar)
+betalist  = list(const=betafdPar, hip=betafdPar)
 
-gaitRegress = fRegress(kneefd, xfdlist, betalist)
+gaitRegress= fRegress(kneefd, xfdlist, betalist)
 
 # Figure 10.7
 op = par(mfrow=c(2,1))
@@ -465,11 +465,11 @@ kneehatmat = eval.fd(gaittime, kneehatfd)
 resmat. = kneemat - kneehatmat
 SigmaE = cov(t(resmat.))
 
-kneefinemat = eval.fd(gaitfine, kneefd)
-kneemeanvec = eval.fd(gaitfine, mean(kneefd))
-kneehatfinemat = eval.fd(gaitfine, kneehatfd)
-resmat = kneefinemat - kneehatfinemat
-ncurve = dim(gait)[2]
+kneefinemat   = eval.fd(gaitfine, kneefd)
+kneemeanvec   = eval.fd(gaitfine, mean(kneefd))
+kneehatfinemat= eval.fd(gaitfine, kneehatfd)
+resmat        = kneefinemat - kneehatfinemat
+ncurve        = dim(gait)[2]
 resmat0 = kneefinemat - kneemeanvec %*% matrix(1,1,ncurve)
 SSE0 = apply((resmat0)^2, 1, sum)
 SSE1 = apply(resmat^2, 1, sum)
@@ -485,6 +485,11 @@ lines(gaitfine, knee.R2, lty='dashed')
 
 # done
 par(op)
+
+
+
+
+
 
 
 
