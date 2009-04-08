@@ -141,6 +141,8 @@ lines(day.5, precfit,lwd=2)
 
 # 5.4.2.  Monotone smoothing
 
+# 5.4.2.1 Fitting the tibia data
+
 day    = infantGrowth[, 'day']
 tib    = infantGrowth[, 'tibiaLength']
 n      = length(tib)
@@ -177,6 +179,62 @@ plot(dayfine, D2tibhat, type = "l", cex=1.2, las=1,
 lines(c(1,n),c(0,0),lty=2)
 
 par(op)
+
+# 5.4.2.2  Smoothing the Berkeley female data
+
+## 
+##  Compute the monotone smoothing of the Berkeley female growth data.
+##
+
+#  set up ages of measurement and an age mesh
+
+age     = growth$age
+nage    = length(age)
+ageRng  = range(age)
+nfine   = 101
+agefine = seq(ageRng[1], ageRng[2], length=nfine)
+
+#  the data
+
+hgtf   = growth$hgtf
+ncasef = dim(hgtf)[2]
+
+#  an order 6 bspline basis with knots at ages of measurement
+
+norder = 6
+nbasis = nage + norder - 2
+wbasis = create.bspline.basis(ageRng, nbasis, norder, age)
+
+#  define the roughness penalty for function W
+
+Lfdobj    = 3          #  penalize curvature of acceleration
+lambda    = 10^(-0.5)  #  smoothing parameter
+cvecf     = matrix(0, nbasis, ncasef)
+Wfd0      = fd(cvecf, wbasis)
+growfdPar = fdPar(Wfd0, Lfdobj, lambda)
+
+#  monotone smoothing
+
+growthMon = smooth.monotone(age, hgtf, growfdPar)
+
+# (wait for an iterative fit to each of 54 girls)
+
+Wfd        = growthMon$Wfd
+betaf      = growthMon$beta
+hgtfhatfd  = growthMon$yhatfd
+
+#  Set up functional data objects for the acceleration curves 
+#  and their mean.  Suffix UN means "unregistered".
+
+accelfdUN     = deriv.fd(hgtfhatfd, 2)
+accelmeanfdUN = mean(accelfdUN)
+
+#  plot unregistered curves
+
+par(ask=F)
+plot(accelfdUN, xlim=c(1,18), ylim=c(-4,3), lty=1, lwd=2,
+     cex=2, xlab="Age", ylab="Acceleration (cm/yr/yr)")
+
 
 # 5.4.3.  Probability Density Functions
 
