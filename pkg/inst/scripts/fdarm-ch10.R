@@ -361,11 +361,13 @@ gaittime = seq(0.5,19.5,1)
 gaitrange = c(0,20)
 gaitfine = seq(0,20,len=101)
 
-harmaccelLfd = vec2Lfd(c(0, (2*pi/20)^2, 0), rangeval=gaitrange)
+harmaccelLfd20 = vec2Lfd(c(0, (2*pi/20)^2, 0), rangeval=gaitrange)
 gaitbasis = create.fourier.basis(gaitrange, nbasis=21)
 
 gaitLoglam = seq(-4,0,0.25)
 nglam   = length(gaitLoglam)
+
+# First select smoothing for the raw data
 
 gaitSmoothStats = array(NA, dim=c(nglam, 3),
       dimnames=list(gaitLoglam, c("log10.lambda", "df", "gcv") ) )
@@ -375,7 +377,7 @@ gaitSmoothStats[, 1] = gaitLoglam
 
 for (ilam in 1:nglam) {
   gaitSmooth = smooth.basisPar(gaittime, gait, gaitbasis,
-                   Lfdobj=harmaccelLfd, lambda=10^gaitLoglam[ilam])
+                   Lfdobj=harmaccelLfd20, lambda=10^gaitLoglam[ilam])
   gaitSmoothStats[ilam, "df"]  = gaitSmooth$df
   gaitSmoothStats[ilam, "gcv"] = sum(gaitSmooth$gcv)
   # note: gcv is a matrix in this case
@@ -384,49 +386,101 @@ for (ilam in 1:nglam) {
 #  display and plot GCV criterion and degrees of freedom
 
 gaitSmoothStats
-plot(gaitSmoothStats[, 1], gaitSmoothStats[, 3])
+plot(gaitSmoothStats[, c(1, 3)], type='b')
 
 #  set up plotting arrangements for one and two panel displays
 #  allowing for larger fonts
 
 op = par(mfrow=c(2,1))
-plot(gaitLoglam, gaitSmoothStats[, "gcv"], type="b",
-     xlab="Log_10 lambda", ylab="GCV Criterion",
-     main="Gait Smoothing", log="y")
-
-plot(gaitLoglam, gaitSmoothStats[, "df"], type="b",
-     xlab="Log_10 lambda", ylab="Degrees of freedom",
-     main="Gait Smoothing")
+plot(gaitSmoothStats[, c(1, 3)], type="b", log="y")
+plot(gaitSmoothStats[, 1:2], type="b", log="y")
 par(op)
 
-#    GCV is minimized with lambda = 10^(-2).
+#    GCV is minimized with lambda = 10^(-1.5).
 
-str(gait)
-gaitfd = smooth.basisPar(gaittime, gait,
-       gaitbasis, Lfdobj=harmaccelLfd, lambda=1e-2)$fd
+gaitSmooth = smooth.basisPar(gaittime, gait,
+       gaitbasis, Lfdobj=harmaccelLfd20, lambda=10^(-1.5))
+gaitfd = gaitSmooth$fd
 
-str(gaitfd)
 names(gaitfd$fdnames) = c("Normalized time", "Child", "Angle")
 gaitfd$fdnames[[3]] = c("Hip", "Knee")
-
 
 hipfd = gaitfd[,1]
 kneefd = gaitfd[,2]
 
-# Now we can set up a  functional linear regression
+# Figure 10.5
 
-xfdlist = list(rep(1,39), hipfd)
+kneefdMean = mean(kneefd)
 
-betafdPar = fdPar(gaitbasis, harmaccelLfd)
-betalist = list(betafdPar,betafdPar)
-fRegressList = fRegress(kneefd, xfdlist, betalist)
-kneehatfd = fRegressList$yhatfd$fd
-betaestlist = fRegressList$betaestlist
+op = par(mfrow=c(3,1))
+plot(kneefdMean, xlab='', ylab='', ylim=c(0, 80),
+     main='Mean Knee Angle', lwd=2)
+abline(v=c(7.5, 14.7), lty='dashed')
+plot(deriv(kneefdMean), xlab='', ylab='',
+     main='Knee Angle Velocity', lwd=2)
+abline(v=c(7.5, 14.7), h=0, lty='dashed')
+plot(deriv(kneefdMean, 2), xlab='', ylab='',
+     main='Knee Angle Acceleration', lwd=2)
+abline(v=c(7.5, 14.7), h=0, lty='dashed')
+par(op)
 
-kneemat = eval.fd(gaitfine, kneefd)
+# Figure 10.6
+
+phaseplanePlot(gaitfine, kneefdMean,
+               labels=list(evalarg=gaittime, labels=1:20),
+               xlab='Knee Velocity', ylab='Knee Acceleration')
+
+# Set up a  functional linear regression
+
+xfdlist = list(const=rep(1,39), hip=hipfd)
+betafdPar = fdPar(gaitbasis, harmaccelLfd20)
+betalist = list(const=betafdPar, hip=betafdPar)
+
+gaitRegress = fRegress(kneefd, xfdlist, betalist)
+
+# Figure 10.7
+op = par(mfrow=c(2,1))
+
+# Intercept
+betaestlist = gaitRegress$betaestlist
+kneeIntercept = predict(betaestlist$const$fd, gaitfine)
+
+# mean knee angle
+kneeMean = predict(kneefdMean, gaitfine)
+
+# Plot intercept & mean knee angle
+ylim1 = range(kneeIntercept, kneeMean)
+plot(gaitfine, kneeIntercept, ylim=ylim1, lwd=2,
+     main="Intercept and Mean Knee Angle", type='l',
+     xlab='', ylab='')
+lines(gaitfine, kneeMean, lty='dashed')
+abline(h=0, v=c(7.5, 14.7), lty='dashed')
+
+# Hip coefficient
+hipCoef = predict(betaestlist$hip$fd, gaitfine)
+
+# Squared multiple correlation
+kneehatfd = gaitRegress$yhatfd$fd
+kneemat = predict(kneefd, gaitfine)
 kneehatmat = eval.fd(gaitfine, kneehatfd)
 resmat = kneemat - kneehatmat
 SigmaE = cov(t(resmat))
+
+knee.sd = sd.fd(kneefd)
+knee.R2 = (1 - diag(SigmaE)/(predict(knee.sd, gaitfine)^2))
+
+# Plot Hip Coefficient & Squared Multiple Correlation
+ylim2=c(0, max(hipCoef, knee.R2))
+plot(gaitfine, hipCoef, lwd=2, xlab='', ylab='', ylim=ylim2, type='l',
+     main='Hip Coefficient and Squared Multiple Correlation')
+abline(v=c(7.5, 14.7), lty='dashed')
+lines(gaitfine, knee.R2, lty='dashed')
+
+# done
+par(op)
+
+
+
 
 kneefinemat = eval.fd(gaitfine, kneefd)
 kneemeanvec = eval.fd(gaitfine, betaestlist[[1]]$fd)
