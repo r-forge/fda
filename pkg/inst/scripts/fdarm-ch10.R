@@ -517,13 +517,35 @@ lines(gaitt3, kneeAccel.R2, lty='dashed', lwd=2)
 ## Section 10.4 A Functional Linear Model for Swedish Mortality
 ##
 
-SE.betabasis = create.bspline.basis(c(0,80),23)
-SE.beta0Par = fdPar(betabasis, 2, 1e-5)
-beta1sPar = fdPar(betabasis, 2, 1e3)
-beta1tPar = fdPar(betabasis, 2, 1e3)
-betaList = list(beta0Par, beta1sPar, beta1tPar)
+# From Giles' Sweden.Rdata
+Swede.Rdata = 'C:/Users/spencerg/fda/Rbook/Rbook/RCode/Sweden.Rdata'
+(mat0 = load(Swede.Rdata))
+# SwedeMat Swede1920
 
-linmodSmooth = linmod(NextYear, LastYear, betaList)
+class(SwedeMat)
+dim(SwedeMat)
+
+d1920 <- sapply(SwedeMat, function(x)sum((x-Swede1920)^2))
+plot(d1920)
+
+SwedeLogHazard <- SwedeMat
+names(SwedeLogHazard) <- paste('b', 1757:1900, sep='')
+
+matplot(0:80, SwedeLogHazard[, c('b1780', 'b1820', 'b1860', 'b1900')],
+        type='b')
+
+SwedeLogHazard$b1900
+# Huge spike in 1924 for the 1900 cohort
+# in this plot but not in Fig 10.10
+
+
+SwedeBasis = create.bspline.basis(c(0,80),23)
+SwedeBeta0Par = fdPar(SwedeBasis, 2, 1e-5)
+SwedeBeta1sPar = fdPar(SwedeBasis, 2, 1e3)
+SwedeBeta1tPar = fdPar(SwedeBasis, 2, 1e3)
+SwedeBetaList = list(SwedeBeta0Par, SwedeBeta1sPar, SwedeBeta1tPar)
+
+Swede.linmodSmooth = linmod(NextYear, LastYear, betaList)
 
 # Where's LastYear?  ???
 
