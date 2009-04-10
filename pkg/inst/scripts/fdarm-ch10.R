@@ -11,6 +11,9 @@ library(fda)
 ##
 ## Section 10.1  Functional Responses and an Analysis of Variance Model
 ##
+
+####### TEMPERATURE ~ REGION #######
+
 #  Section 10.1.1 Climate Region Effects on Temperature
 
 regions.         = unique(CanadianWeather$region)
@@ -58,6 +61,8 @@ for (j in 1:p) plot(betaestList[[j]]$fd, lwd=2,
 plot(regionFit, lwd=2, col=1, lty=1,
      xlab="Day (July 1 to June 30)", ylab="", main="Prediction")
 par(op)
+
+####### SEA BIRDS ON KODIAK ISLAND #######
 
 # 10.1.2 Trends in Sea Bird Populations on Kodiak Island
 
@@ -144,7 +149,6 @@ birdlist2 = smooth.basis(yearCode, logCounts2, birdbasis)
 
 #birdfd  = birdlist$fd
 birdfd2 = birdlist2$fd
-
 
 #yearfine = seq(1, 20, len=191)
 #birdmatS = eval.fd(yearfine, birdfd[ shellfishindex])
@@ -325,6 +329,8 @@ op = par(mfrow=c(2,1))
 plotbeta(betaestlist[1:2], betastderrlist[1:2])
 par(op)
 
+####### KNEE ~ HIP #######
+
 # Section 10.2.3 Knee Angle Predicted from Hip Angle
 
 gaittime = seq(0.5,19.5,1)
@@ -479,15 +485,28 @@ par(op)
 # fRegress(deriv(kneefd, 2) ~ deriv(hipfd, 2))
 
 xfdlist2 = list(const=rep(1,39), hip=deriv(hipfd, 2))
-
-gaitAccelRegr = fRegress(deriv(kneefd, 2), xfdlist2, betalist)
+kneefd.accel = deriv(kneefd, 2)
+gaitAccelRegr = fRegress(kneefd.accel, xfdlist2, betalist)
 
 gaitt3 = seq(0, 20, length=401)
 beta.hipFine = predict(gaitAccelRegr$betaestlist$hip$fd, gaitt3)
-plot(gaitt3, beta.hipFine, type ='l')
 
-# NOT quite the same as Figure 10.9:  need different smoothing?
+plot(gaitt3, beta.hipFine, type ='l', ylim=c(0, max(beta.hipFine)),
+     xlab='', ylab='Hip acceleration and squared multiple correlation',
+     lwd=2)
+abline(v=c(7.5, 14.7), lty='dashed')
 
+# Squared multiple correlation
+# kneeAccel.R2 = var(gaitAccel.Regr$yhatfd) / var(kneefd.accel)
+
+kneeAccel.pred = predict(gaitAccelRegr$yhatfd$fd, gaitt3)
+kneeAccel.     = predict(kneefd.accel, gaitt3)
+
+MS.pred = sd(t(kneeAccel.pred))^2
+MS.accelfd = sd(t(kneeAccel.))^2
+kneeAccel.R2 = (MS.pred / MS.accelfd)
+
+lines(gaitt3, kneeAccel.R2, lty='dashed', lwd=2)
 
 
 
