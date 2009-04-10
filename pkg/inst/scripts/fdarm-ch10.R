@@ -522,14 +522,13 @@ Swede.Rdata = 'C:/Users/spencerg/fda/Rbook/Rbook/RCode/Sweden.Rdata'
 (mat0 = load(Swede.Rdata))
 # SwedeMat Swede1920
 
-class(SwedeMat)
-dim(SwedeMat)
-
-d1920 <- sapply(SwedeMat, function(x)sum((x-Swede1920)^2))
-plot(d1920)
-
 SwedeLogHazard <- SwedeMat
 names(SwedeLogHazard) <- paste('b', 1757:1900, sep='')
+
+# *****
+#
+# GILES:  Are these names correct?
+#
 
 # Figure 10.10
 
@@ -540,14 +539,38 @@ SwedeLogHazard$b1900
 # Huge spike in 1924 for the 1900 cohort
 # in this plot but not in Fig 10.10
 
+# Giles said the plot was mislabeled;  try 1820, 1860, 1900, 1920:
+Swede4Lines = cbind(SwedeLogHazard[, c('b1820', 'b1860', 'b1900')],
+    b1920=Swede1920)
+
+matplot(0:80, Swede4Lines, type='b')
+
+# Set up for 'linmod'
 
 SwedeBasis = create.bspline.basis(c(0,80),23)
+
 SwedeBeta0Par = fdPar(SwedeBasis, 2, 1e-5)
 SwedeBeta1sPar = fdPar(SwedeBasis, 2, 1e3)
 SwedeBeta1tPar = fdPar(SwedeBasis, 2, 1e3)
 SwedeBetaList = list(SwedeBeta0Par, SwedeBeta1sPar, SwedeBeta1tPar)
 
-Swede.linmodSmooth = linmod(NextYear, LastYear, betaList)
+D2fdPar = fdPar(SwedeBasis, lambda=1e-7)
+
+SwedeLogHazfd = smooth.basis(0:80, as.matrix(SwedeLogHazard), D2fdPar)
+
+NextYear = SwedeLogHazfd[2:81]
+LastYear = SwedeLogHazfd[1:80]
+
+Swede.linmodSmooth = linmod(NextYear, LastYear, SwedeBetaList)
+
+# *** NULL
+
+# ***????????
+
+Swede.ages = seq(0, 80, 2)
+Swede.beta1fd = eval.bifd(Swede.ages, Swede.ages,
+    Swede.linmodSmooth$regfd)
+
 
 # Where's LastYear?  ???
 
