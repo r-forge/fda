@@ -284,26 +284,26 @@ fitShellfish.5 = fRegress(birdfd3, xfdlist, betalist)
 
 betanames = list("Intercept", "Food Effect")
 
-betaestlist = fitShellfish.5$betaestlist
+birdBetaestlist = fitShellfish.5$betaestlist
 #betaestlist = fRegressList$betaestlist
 
-par(mfrow=c(2,1), cex=1.2)
+op = par(mfrow=c(2,1), cex=1.2)
 for (j in 1:2) {
-    betaestParfdj = betaestlist[[j]]
+    betaestParfdj = birdBetaestlist[[j]]
     betaestfdj    = betaestParfdj$fd
     betaestvecj   = eval.fd(yearCode, betaestfdj)
 	  plot(yearObs, betaestvecj, type="l", lwd=4, col=4,
            xlab="Year", ylab="Temp.",
            main=betanames[[j]])
 }
+par(op)
 
 #  plot predicted functions
 
 #yhatfdobj = fRegressList$yhatfdobj
-yhatfdobj = fitShellfish.5$yhatfdobj
+birdYhatfdobj = fitShellfish.5$yhatfdobj
 
-par(mfrow=c(1,1))
-plotfit.fd(logCounts2, yearCode, yhatfdobj$fd[1:26])
+plotfit.fd(logCounts2, yearCode, birdYhatfdobj$fd[1:26])
 # *** Click on the plot to advance to the next ...
 
 ##
@@ -314,19 +314,19 @@ plotfit.fd(logCounts2, yearCode, yhatfdobj$fd[1:26])
 #  Section 10.2.2 Confidence Intervals for Regression Functions
 
 #yhatmat = eval.fd(yearCode, fitShellfish.5$yhatfdobj$fd)
-yhatmat = eval.fd(yearCode, yhatfdobj$fd[1:26])
-rmatb   = logCounts2 - yhatmat
+birdYhatmat = eval.fd(yearCode, birdYhatfdobj$fd[1:26])
+rmatb   = logCounts2 - birdYhatmat
 SigmaEb = var(t(rmatb))
 
 #y2cMap = birdSmoothPar$y2cMap
-y2cMap = birdlist2$y2cMap
+y2cMap.bird = birdlist2$y2cMap
 
-stderrList = fRegress.stderr(fitShellfish.5, y2cMap,
+birdStderrList = fRegress.stderr(fitShellfish.5, y2cMap.bird,
                              SigmaEb)
-betastderrlist = stderrList$betastderrlist
+birdBeta.sdList = birdStderrList$betastderrlist
 
 op = par(mfrow=c(2,1))
-plotbeta(betaestlist[1:2], betastderrlist[1:2])
+plotbeta(birdBetaestlist[1:2], birdBeta.sdList[1:2])
 par(op)
 
 ####### KNEE ~ HIP #######
@@ -508,78 +508,6 @@ kneeAccel.R2 = (MS.pred / MS.accelfd)
 
 lines(gaitt3, kneeAccel.R2, lty='dashed', lwd=2)
 
-
-
-#
-#  Computing confidence limits for the sea bird regression
-#    (Completing Figure 10.3)
-#
-
-#  compute residual matrix and get covariance of residuals
-
-#yhatmat = eval.fd(yearCode, yhatfdobj)
-#rmat    = logCounts - yhatmat
-#SigmaE  = var(t(rmat))
-
-#  plot covariance surface for errors
-
-#par(mfrow=c(1,1))
-#contour(SigmaE, xlab="Year", ylab="Year")
-#lines(c(1986,2005),c(1986,2005),lty=4)
-
-#persp(SigmaE)
-
-#  If desired, one can use the diagonal of SigmaE here.
-#  But the resulting confidence intervals do not depend critically
-#  on this choice.
-
-#  SigmaE = diag(diag(SigmaE))
-
-#  plot standard deviation of errors
-
-#par(mfrow=c(1,1), mar=c(5,5,3,2), pty="m")
-#stddevE = sqrt(diag(SigmaE))
-#plot(yearObs, stddevE, type="l", lwd=4, col=4, ylim=c(0,1),
-#     xlab="Year", ylab="Standard error")
-
-#  Repeat regression, this time outputting results for
-#  confidence intervals
-
-#y2cMap = birdlist2$y2cMap
-
-#stderrList = fRegress.stderr(fRegressList, y2cMap, SigmaE)
-
-#betastderrlist = stderrList$betastderrlist
-
-# Figure 10.3  as it appears in the book
-
-#  plot regression functions with confidence limits
-
-#par(mfrow=c(2,1), cex=1.2)
-#for (j in 1:2) {
-#	betafdParj  = betaestlist[[j]]
-#	betafdj     = betafdParj$fd
-#	betaj       = eval.fd(yearCode, betafdj)
-#	betastderrj = eval.fd(yearCode, betastderrlist[[j]])
-#	matplot(yearObs, cbind(betaj,
-#          betaj+2*betastderrj,
-#          betaj-2*betastderrj),
-#	        type="l",lty=c(1,4,4), xlab="", ylab="Reg. Coeff.",
-#          lwd=4, col=1,
-#          main=betanames[[j]])
-#      lines(c(1986,2005), c(0,0), lwd=2, col=c(4,2,2), lty=2)
-#}
-
-#  Figure 10.3  (alternative version using function plotbeta as in code)
-
-#par(mfrow=c(2,1),ask=FALSE)
-#titlelist = vector("list", 2)
-#titlelist[[1]] = "Intercept"
-#titlelist[[2]] = "Feed effect"
-#plotbeta(betaestlist, betastderrlist,
-#         titlelist=titlelist, index=1:2)
-
-
 ##
 ## Section 10.3 Beyond the Concurrent Model
 ##
@@ -589,8 +517,8 @@ lines(gaitt3, kneeAccel.R2, lty='dashed', lwd=2)
 ## Section 10.4 A Functional Linear Model for Swedish Mortality
 ##
 
-betabasis = create.bspline.basis(c(0,80),23)
-beta0Par = fdPar(betabasis, 2, 1e-5)
+SE.betabasis = create.bspline.basis(c(0,80),23)
+SE.beta0Par = fdPar(betabasis, 2, 1e-5)
 beta1sPar = fdPar(betabasis, 2, 1e3)
 beta1tPar = fdPar(betabasis, 2, 1e3)
 betaList = list(beta0Par, beta1sPar, beta1tPar)
