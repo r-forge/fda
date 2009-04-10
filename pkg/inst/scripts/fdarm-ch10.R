@@ -531,6 +531,8 @@ plot(d1920)
 SwedeLogHazard <- SwedeMat
 names(SwedeLogHazard) <- paste('b', 1757:1900, sep='')
 
+# Figure 10.10
+
 matplot(0:80, SwedeLogHazard[, c('b1780', 'b1820', 'b1860', 'b1900')],
         type='b')
 
