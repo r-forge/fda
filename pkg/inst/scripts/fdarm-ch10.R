@@ -145,42 +145,12 @@ birdlist2 = smooth.basis(yearCode, logCounts2, birdbasis)
 #birdfd  = birdlist$fd
 birdfd2 = birdlist2$fd
 
-#  plot the data for all birds averaged over both sites and transects
-
-par(ask=FALSE)
-#plot(birdfd, lwd=2)
-
-#  plot the data separately for the two diets
-
-#op = par(mfrow=c(2,1))
-#plot(birdfd[shellfishindex], lwd=2,
-#    main="Shellfish diet")
-#plot(birdfd[-shellfishindex], lwd=2,
-#     main="Fish diet")
-#par(op)
 
 #yearfine = seq(1, 20, len=191)
 #birdmatS = eval.fd(yearfine, birdfd[ shellfishindex])
 #birdmatF = eval.fd(yearfine, birdfd[-shellfishindex])
 #birdvecS = apply(birdmatS, 1, mean)
 #birdvecF = apply(birdmatF, 1, mean)
-
-#  plot of Figure 10.2  (Text Version)
-
-#op = par(mfrow=c(2,1), cex=1.2)
-#matplot(yearfine+1985, birdmatS, type="l", lwd=1, col=1,
-#        xlim=c(1985,2005), ylim=c(-1.5,2),
-#        xlab="", ylab="",
-#        main="Shellfish diet")
-#lines(yearfine+1985, birdvecS, lty=1, lwd=2)
-#lines(c(1986,2005), c(0,0), lty=2, lwd=1)
-#matplot(yearfine+1985, birdmatF, type="l", lwd=1, col=1,
-#        xlim=c(1985,2005), ylim=c(-1.5,2),
-#        xlab="", ylab="",
-#        main="Fish diet")
-#lines(yearfine+1985, birdvecF, lty=1, lwd=2)
-#lines(c(1986,2005), c(0,0), lty=2, lwd=1)
-#par(op)
 
 #  -----------------------------------------------------------------
 #  After some preliminary analyses we determined that there was no
@@ -262,6 +232,7 @@ betaestlist = birdRegress$betaestlist
 
 # Figure 10.3 is produced in Section 10.2.2 below
 # after estimating the smoothing parameter in Section 10.1.3
+#
 # Here we plot the regression parameters
 # without the confidence intervals.
 
@@ -456,13 +427,14 @@ lines(gaitfine, kneeMean, lty='dashed')
 abline(h=0, v=c(7.5, 14.7), lty='dashed')
 
 # Hip coefficient
-hipCoef = predict(betaestlist$hip$fd, gaitfine)
+#hipCoef = predict(betaestlist$hip$fd, gaitfine)
 
 # Squared multiple correlation
 kneehatfd = gaitRegress$yhatfd$fd
-kneemat = predict(kneefd, gaittime)
+#kneemat = predict(kneefd, gaittime)
 kneehatmat = eval.fd(gaittime, kneehatfd)
-resmat. = kneemat - kneehatmat
+#resmat. = kneemat - kneehatmat
+resmat. = gait[,,'Knee Angle'] - kneehatmat
 SigmaE = cov(t(resmat.))
 
 kneefinemat   = eval.fd(gaitfine, kneefd)
@@ -473,7 +445,7 @@ ncurve        = dim(gait)[2]
 resmat0 = kneefinemat - kneemeanvec %*% matrix(1,1,ncurve)
 SSE0 = apply((resmat0)^2, 1, sum)
 SSE1 = apply(resmat^2, 1, sum)
-Rsqr = (SSE0-SSE1)/SSE0
+knee.R2 = (SSE0-SSE1)/SSE0
 
 # Plot Hip Coefficient & Squared Multiple Correlation
 
@@ -489,26 +461,34 @@ par(op)
 # Figure 10.8
 
 gaitbasismat = eval.basis(gaitfine, gaitbasis)
-y2cMap0 = solve(crossprod(gaitbasismat), t(gaitbasismat))
+#y2cMap0 = solve(crossprod(gaitbasismat), t(gaitbasismat))
+y2cMap = gaitSmooth$y2cMap
 
 fRegressList1 = fRegress(kneefd, xfdlist, betalist,
-                         y2cMap0, SigmaE)
+                         y2cMap=y2cMap, SigmaE=SigmaE)
 
-#Error in fRegress.fdPar(yfdPar, xfdlist, betalist, wt = wt, y2cMap = y2cMap,  :
-#  Number of weights not equal to N.
-
-# ?????
-
-
-
-fRegressList2 = fRegress.stderr(fRegressList1, y2cMap0, SigmaE)
+fRegressList2 = fRegress.stderr(fRegressList1, y2cMap, SigmaE)
 betastderrlist = fRegressList2$betastderrlist
-titlelist = list("Intercept", "Hip coefficient")
+#titlelist = list("Intercept", "Hip coefficient")
 
 op = par(mfrow=c(2,1))
-plotbeta(betaestlist, betastderrlist, gaitfRegressList1 = fRegress(kneefd, xfdlist, betalist,
-y2cMap0, SigmaE)fine, titlelist)
+plotbeta(betaestlist, betastderrlist, gaitfine)
 par(op)
+
+# Figure 10.9
+# fRegress(deriv(kneefd, 2) ~ deriv(hipfd, 2))
+
+xfdlist2 = list(const=rep(1,39), hip=deriv(hipfd, 2))
+
+gaitAccelRegr = fRegress(deriv(kneefd, 2), xfdlist2, betalist)
+
+gaitt3 = seq(0, 20, length=401)
+beta.hipFine = predict(gaitAccelRegr$betaestlist$hip$fd, gaitt3)
+plot(gaitt3, beta.hipFine, type ='l')
+
+# NOT quite the same as Figure 10.9:  need different smoothing?
+
+
 
 
 #
@@ -518,17 +498,17 @@ par(op)
 
 #  compute residual matrix and get covariance of residuals
 
-yhatmat = eval.fd(yearCode, yhatfdobj)
-rmat    = logCounts - yhatmat
-SigmaE  = var(t(rmat))
+#yhatmat = eval.fd(yearCode, yhatfdobj)
+#rmat    = logCounts - yhatmat
+#SigmaE  = var(t(rmat))
 
 #  plot covariance surface for errors
 
-par(mfrow=c(1,1))
-contour(SigmaE, xlab="Year", ylab="Year")
-lines(c(1986,2005),c(1986,2005),lty=4)
+#par(mfrow=c(1,1))
+#contour(SigmaE, xlab="Year", ylab="Year")
+#lines(c(1986,2005),c(1986,2005),lty=4)
 
-persp(SigmaE)
+#persp(SigmaE)
 
 #  If desired, one can use the diagonal of SigmaE here.
 #  But the resulting confidence intervals do not depend critically
@@ -538,47 +518,47 @@ persp(SigmaE)
 
 #  plot standard deviation of errors
 
-par(mfrow=c(1,1), mar=c(5,5,3,2), pty="m")
-stddevE = sqrt(diag(SigmaE))
-plot(yearObs, stddevE, type="l", lwd=4, col=4, ylim=c(0,1),
-     xlab="Year", ylab="Standard error")
+#par(mfrow=c(1,1), mar=c(5,5,3,2), pty="m")
+#stddevE = sqrt(diag(SigmaE))
+#plot(yearObs, stddevE, type="l", lwd=4, col=4, ylim=c(0,1),
+#     xlab="Year", ylab="Standard error")
 
 #  Repeat regression, this time outputting results for
 #  confidence intervals
 
-y2cMap = birdlist2$y2cMap
+#y2cMap = birdlist2$y2cMap
 
-stderrList = fRegress.stderr(fRegressList, y2cMap, SigmaE)
+#stderrList = fRegress.stderr(fRegressList, y2cMap, SigmaE)
 
-betastderrlist = stderrList$betastderrlist
+#betastderrlist = stderrList$betastderrlist
 
 # Figure 10.3  as it appears in the book
 
 #  plot regression functions with confidence limits
 
-par(mfrow=c(2,1), cex=1.2)
-for (j in 1:2) {
-	betafdParj  = betaestlist[[j]]
-	betafdj     = betafdParj$fd
-	betaj       = eval.fd(yearCode, betafdj)
-	betastderrj = eval.fd(yearCode, betastderrlist[[j]])
-	matplot(yearObs, cbind(betaj,
-          betaj+2*betastderrj,
-          betaj-2*betastderrj),
-	        type="l",lty=c(1,4,4), xlab="", ylab="Reg. Coeff.",
-          lwd=4, col=1,
-          main=betanames[[j]])
-      lines(c(1986,2005), c(0,0), lwd=2, col=c(4,2,2), lty=2)
-}
+#par(mfrow=c(2,1), cex=1.2)
+#for (j in 1:2) {
+#	betafdParj  = betaestlist[[j]]
+#	betafdj     = betafdParj$fd
+#	betaj       = eval.fd(yearCode, betafdj)
+#	betastderrj = eval.fd(yearCode, betastderrlist[[j]])
+#	matplot(yearObs, cbind(betaj,
+#          betaj+2*betastderrj,
+#          betaj-2*betastderrj),
+#	        type="l",lty=c(1,4,4), xlab="", ylab="Reg. Coeff.",
+#          lwd=4, col=1,
+#          main=betanames[[j]])
+#      lines(c(1986,2005), c(0,0), lwd=2, col=c(4,2,2), lty=2)
+#}
 
 #  Figure 10.3  (alternative version using function plotbeta as in code)
 
-par(mfrow=c(2,1),ask=FALSE)
-titlelist = vector("list", 2)
-titlelist[[1]] = "Intercept"
-titlelist[[2]] = "Feed effect"
-plotbeta(betaestlist, betastderrlist,
-         titlelist=titlelist, index=1:2)
+#par(mfrow=c(2,1),ask=FALSE)
+#titlelist = vector("list", 2)
+#titlelist[[1]] = "Intercept"
+#titlelist[[2]] = "Feed effect"
+#plotbeta(betaestlist, betastderrlist,
+#         titlelist=titlelist, index=1:2)
 
 
 ##
