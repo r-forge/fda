@@ -563,8 +563,10 @@ LastYear = SwedeLogHazfd[1:80]
 
 Swede.linmodSmooth = linmod(NextYear, LastYear, SwedeBetaList)
 
-# *** NULL
-
+# ***
+#
+# 'linmod' returns NULL
+#
 # ***????????
 
 Swede.ages = seq(0, 80, 2)
@@ -572,9 +574,9 @@ Swede.beta1fd = eval.bifd(Swede.ages, Swede.ages,
     Swede.linmodSmooth$regfd)
 
 
-# Where's LastYear?  ???
-
 # Figure 10.11
+
+# ***?????
 
 ##
 ## Section 10.5 Permutation Tests of Functional Hypotheses
@@ -591,20 +593,23 @@ with(growth, matlines(age, hgtf[, 1:10], lty='solid'))
 legend('topleft', legend=c('girls', 'boys'),
        lty=c('solid', 'dashed'))
 
-#****** Where to get htgmfd and hgtffd?
+growthbasis = create.bspline.basis(breaks=growth$age, norder=6)
+growfdPar = fdPar(growthbasis, 3, 10^(-0.5))
 
-tperm.fd(hgtmfd,hgtffd)
+hgtffd = with(growth, smooth.basis(age,hgtf,growfdPar))
+hgtmfd = with(growth, smooth.basis(age,hgtm,growfdPar))
+tres = tperm.fd(hgtffd$fd,hgtmfd$fd)
 
 # Figure 10.13
-
-
-#   ???????????????????
 
 # Section 10.5.2 Functional F-Tests
 
 # temp36fd, regionList, betaList from Section 10.1.1 above
 F.res = Fperm.fd(temp36fd, regionList, betaList)
+
+# Figure 10.14
 # plot in black and white
+
 with(F.res,{
             q = 0.95
            ylims = c(min(c(Fvals, qval, qvals.pts)), max(c(Fobs,
@@ -621,9 +626,6 @@ with(F.res,{
                   2, 2))
         }
 )
-
-# Figure 10.14 ?????
-
 
 ##
 ## 10.6 Details for R Functions fRegress, fRegress.CV and fRegress.stderr
@@ -656,231 +658,3 @@ help(tperm.fd)
 ##
 ## Section 10.11  More to Read
 ##
-
-
-
-
-
-
-
-
-
-##### Old stuff from the seabird data
-
-
-birdSmooth = smooth.basisPar(yearCode, logCounts)
-
-
-
-birdlabels= colnames(UyakUganik)[birdindex]
-nbird     = length(birdlabels)
-
-# Specific plots of ground at which counts were taken.
-transect  = unique(UU$Transect)
-
-#  indices for years except for 1998, for which all data are missing
-no98     = c(1:12,14:20)
-birdtime = no98 - 1;
-
-#  set up a basis for smoothing the counts.
-#  this basis is for order 4 (cubic) B-splines, with a knot at
-#  each year, except for 1998 when there were no observations
-
-birdbasis  = create.bspline.basis(breaks=birdtime)
-nbirdbasis = birdbasis$nbasis
-
-#  set up arrays for accumulated coefficients and counts
-
-birdcoefmat  = matrix(0,nbirdbasis,2*nbird)
-birdcountmat = matrix(0,20,2*nbird)
-birdnmat     = birdcountmat
-
-# Smooth on curvature with lambda = 10
-
-birdfdPar = fdPar(birdbasis, Lfdobj=2, lambda=1e1)
-
-#  accumulate coefficients and counts for Uyak
-
-Uyak       = (UU$Bay %in% 'Uyak')
-tUy        = (transect %in% UU$Transect[Uyak])
-transUyak  = transect[tUy]
-transUganik= transect[!tUy]
-
-for (i in transUyak) {
-    #  select the data and count years for this transect
-    index    = UU$Transect == i
-    Seabirdi = UU[index,c(birdindex,16)]
-    timei    = Seabirdi[,nbird+1]
-    #  loop through the birds to be used, smoothing each in turn
-    for (j in 1:nbird) {
-#  select times corresponding to non-missing count data
-        indexj        = !is.na(Seabirdi[,j])
-        onesj         = rep(1,19)
-        onesj[is.na(Seabirdi[,j])] = 0
-        timeij        = timei[indexj]-1986
-        Seabirdij     = Seabirdi[indexj,j]
-#  smooth the data, selecting the functional data object to output
-        Seabirdfdij   =
-            smooth.basis(timeij, Seabirdij, birdfdPar)$fd
-        birdcoefmat[         ,j] =
-           birdcoefmat[         ,j] + Seabirdfdij$coef
-        birdcountmat[timeij+1,j] =
-           birdcountmat[timeij+1,j] + Seabirdij
-        birdnmat[no98,j]         =
-           birdnmat[no98,j]         + onesj
-    }
-}
-
-#  accumulate coefficients and counts for Uganik
-
-for (i in transUganik) {
-    #  select the data and count years for this transect
-    index    = UU$Transect == i
-    Seabirdi = UU[index,c(birdindex,16)]
-    timei    = Seabirdi[,nbird+1]
-    #  loop through the birds to be used, smoothing each in turn
-    for (j in 1:nbird) {
-#  select times corresponding to non-missing count data
-        indexj      = !is.na(Seabirdi[,j])
-        onesj       = rep(1,19)
-        onesj[is.na(Seabirdi[,j])] = 0
-        timeij      = timei[indexj]-1986
-        Seabirdij   = Seabirdi[indexj,j]
-#  smooth the data, selecting the functional data object to output
-        Seabirdfdij   =
-            smooth.basis(timeij, Seabirdij, birdfdPar)$fd
-        birdcoefmat[         ,j+nbird] =
-          birdcoefmat[         ,j+nbird] + Seabirdfdij$coef
-        birdcountmat[timeij+1,j+nbird] =
-          birdcountmat[timeij+1,j+nbird] + Seabirdij
-        birdnmat[        no98,j+nbird] =
-          birdnmat[        no98,j+nbird] + onesj
-    }
-}
-
-#  normalize coefficients and counts by dividing by number of transects
-
-ind1 = 1:nbird
-ind2 = ind1 + nbird
-birdcoefmat[,ind1]  = birdcoefmat[,ind1]/79
-birdcoefmat[,ind2]  = birdcoefmat[,ind2]/50
-birdcountmat[,ind1] = birdcountmat[,ind1]/79
-birdcountmat[,ind2] = birdcountmat[,ind2]/50
-
-#  get total counts
-
-birdtotalcount = birdcountmat[,ind1] +  birdcountmat[,ind2]
-
-# Figure 10.1
-
-op = par(cex=1.2)
-matplot(birdtime+1986, log10(birdtotalcount[c(1:12,14:20),]),
-        type="b", lty=1, col=1, lwd=2, xlab="Year",
-        ylab="log10(Mean count)")
-par(op)
-
-#  replace 0 counts in 1998 by NA's
-
-birdcountmat[13,] = NA
-
-birdfdnames = list("Year", "Birds and sites", "Mean count per transect")
-birdfd      = fd(birdcoefmat, birdbasis, birdfdnames)
-
-plot(birdfd)
-
-plotyear = seq(0,19,len=101)
-birdmat  = eval.fd(plotyear, birdfd)
-
-
-
-
-# Figure 10.2
-
-fooddummy1 = matrix(0,13,1)
-foodindex = c(1,2,5,6,12,13)
-fooddummy1[foodindex] = 1
-fooddummy = rbind(fooddummy1, fooddummy1)
-birddummy = diag(rep(1,13))
-
-Zmat         = matrix(0,28,15)
-Zmat[1:26,1] = rep(1,26)
-Zmat[1:26,2] = fooddummy
-
-Zmat[ 1:26,3:15] = birdvarbl
-Zmat[14:26,3:15] = birdvarbl
-
-Zmat[27,  foodindex+2 ] = 1
-Zmat[28,-(foodindex+2)] = 1
-
-logbirdcoef = logbirdfd$coefs
-logbirdcoef0 = cbind(logbirdcoef,
-matrix(0,nbirdbasis,2))
-logbirdfd0 = fd(logbirdcoef0,birdbasis)
-
-p = 15
-xfdlist = vector("list",p)
-for (j in 1:p) xfdlist[[j]] = Zmat[,j]
-betalist = vector("list",p)
-foodbasis = create.bspline.basis(c(0,19),5)
-betalist[[1]] = fdPar(foodbasis)
-betalist[[2]] = fdPar(foodbasis)
-birdbasis = create.constant.basis(c(0,19))
-for (j in 3:p) betalist[[j]] = fdPar(birdbasis)
-
-fRegressList = fRegress(logbirdfd0,xfdlist,betalist)
-betaestlist = fRegressList$betaestlist
-yhatfdobj = fRegressList$yhatfdobj
-
-# Figure 10.3:  After determining the smoothing paramter
-
-# Section 10.1.3 Choosing Smoothing Parameters
-
-loglam = seq(-2,0,0.25)
-SSE.CV = rep(0,length(loglam))
-betafdPari = betafdPar
-for(i in 1:length(loglam)){
-  betafdPari$lambda = 10^loglam[i]
-  betalisti = betalist
-  for (j in 1:2) betalisti[[j]] = betafdPari
-
-# *** Need logbirdfd0
-
-  SSE.CV[i] = fRegress.CV(logbirdfd0, xfdlist,
-                           betalisti,CVobs=1:26)$SSE.CV
-}
-
-# Figure 10.4
-
-
-
-##
-## Section 10.2 Functional Responses with Functional Predictors:
-##              The Concurrent Model
-##
-#  Section 10.2.1 Estimation for the Concurrent Model
-
-#  Section 10.2.2 Confidence Intervals for Regression Functions
-
-yhatmat = eval.fd(plotyear, yhatfdobj)
-ymat = eval.fd(plotyear, logbirdfd0)
-
-rmat = ymat - yhatmat
-SigmaE = var(t(rmat))
-stddevE = sqrt(diag(SigmaE))
-SigmaE = diag(stddevEˆ2)
-
-birdbasismat = eval.basis(plotyear, birdbasis)
-y2cMap = solve(crossprod(birdbasismat)), t(birdbasismat))
-
-stderrList = fRegress.stderr(fRegressList, y2cMap,
-     SigmaE)
-betastderrlist = stderrList$betastderrlist
-
-par(mfrow=c(2,1),ask=FALSE)
-titlelist = vector("list", p)
-titlelist[[1]] = "Intercept"
-titlelist[[2]] = "Feed effect"
-plotbeta(betaestlist, betastderrlist,
-        titlelist=titlelist, index=1:2)
-
-
