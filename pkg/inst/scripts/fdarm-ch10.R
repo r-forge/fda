@@ -539,11 +539,13 @@ SwedeLogHazard$b1900
 # Huge spike in 1924 for the 1900 cohort
 # in this plot but not in Fig 10.10
 
-# Giles said the plot was mislabeled;  try 1820, 1860, 1900, 1920:
-Swede4Lines = cbind(SwedeLogHazard[, c('b1820', 'b1860', 'b1900')],
+# Giles said the plot was mislabeled;  try 1760, 1820, 1880, 1920:
+Swede4Lines = cbind(SwedeLogHazard[, c('b1760','b1820', 'b1880')],
     b1920=Swede1920)
 
-matplot(0:80, Swede4Lines, type='b')
+matplot(0:80, Swede4Lines, type='l',lwd=2,xlab='age',ylab='log Hazard',col=1,
+  cex.lab=1.5,cex.axis=1.5)
+legend(x='bottomright',legend=c('1760','1820', '1880','1920'),lwd=2,col=1,lty=1:4)
 
 # Set up for 'linmod'
 
@@ -557,6 +559,9 @@ SwedeBetaList = list(SwedeBeta0Par, SwedeBeta1sPar, SwedeBeta1tPar)
 D2fdPar = fdPar(SwedeBasis, lambda=1e-7)
 
 SwedeLogHazfd = smooth.basis(0:80, as.matrix(SwedeLogHazard), D2fdPar)
+
+plotfit.fd(as.matrix(SwedeLogHazard),0:80,SwedeLogHazfd$fd)
+
 
 NextYear = SwedeLogHazfd[2:81]
 LastYear = SwedeLogHazfd[1:80]
