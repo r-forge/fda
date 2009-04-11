@@ -581,14 +581,30 @@ Swede.beta1fd = eval.bifd(Swede.ages, Swede.ages,
 ##
 #  Section 10.5.1 Functional t-Tests
 
+# Figure 10.12
+
+ylim = with(growth, range(hgtm, hgtf))
+
+with(growth, matplot(age, hgtm[, 1:10], type='l',
+                     lty='dashed', ylab='height (cm)'))
+with(growth, matlines(age, hgtf[, 1:10], lty='solid'))
+legend('topleft', legend=c('girls', 'boys'),
+       lty=c('solid', 'dashed'))
+
+#****** Where to get htgmfd and hgtffd?
+
 tperm.fd(hgtmfd,hgtffd)
 
-# Figure 10.12
+# Figure 10.13
+
+
+#   ???????????????????
 
 # Section 10.5.2 Functional F-Tests
 
+# temp36fd, regionList, betaList from Section 10.1.1 above
 F.res = Fperm.fd(temp36fd, regionList, betaList)
-
+# plot in black and white
 with(F.res,{
             q = 0.95
            ylims = c(min(c(Fvals, qval, qvals.pts)), max(c(Fobs,
@@ -605,6 +621,8 @@ with(F.res,{
                   2, 2))
         }
 )
+
+# Figure 10.14 ?????
 
 
 ##
