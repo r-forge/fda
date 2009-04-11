@@ -78,13 +78,14 @@ par(op)
 
 #  get eigenvalues for each panel
 
-eigvecphase = svd(DpGphase)$s^2
-eigvecphase = eigvecphase/sum(eigvecphase)
+eigvecphase = svd(DpGphase)$d^2
+(eigvecphase = eigvecphase/sum(eigvecphase))
+# First three = 0.55, 0.39, and 0.05
 
-eigvecampli = svd(DpGampli)$s^2
-eigvecampli = eigvecampli/sum(eigvecampli)
-
-print(c(eigvecphase, eigvecampli))
+eigvecampli = svd(DpGampli)$d^2
+(eigvecampli = eigvecampli/sum(eigvecampli))
+# First singular value = 1;
+# all others are round-off
 
 ##
 ## Section 8.2 Time-Warping Functions and Registration
