@@ -115,28 +115,37 @@ ncasef = dim(hgtf)[2]
 
 #  This step requires the functional data object hgtfhatfd computed
 #  from the monotone smooth of the Berkeley female data.  Refer to
-#  Section 5.4.2.2  in the text and in the script file fdarm-ch05.R
-#  for the computing it.
+#  Section 5.4.2.2  in the text.  To create it here, we copy
+#  relevant lines from the script file fdarm-ch05.R
+
+growbasis = with(growth, create.bspline.basis(norder=6, breaks=age))
+Lfdobj    = 3          #  penalize curvature of acceleration
+lambda    = 10^(-0.5)  #  smoothing parameter
+cvecf     = matrix(0, growbasis$nbasis, ncol(growth$hgtf))
+dimnames(cvecf) = list(growbasis$names, dimnames(growth$hgtf)[[2]])
+
+growfd0      = fd(cvecf, growbasis)
+growfdPar = fdPar(growfd0, Lfdobj, lambda)
+
+growthMon = with(growth, smooth.monotone(age, hgtf, growfdPar))
+hgtfhatfd  = growthMon$yhatfd
 
 accelfdUN     = deriv.fd(hgtfhatfd, 2)
 accelmeanfdUN = mean(accelfdUN)
 
 #  plot unregistered curves
 
-par(ask=F)
 plot(accelfdUN, xlim=c(1,18), ylim=c(-4,3), lty=1, lwd=2,
      cex=2, xlab="Age", ylab="Acceleration (cm/yr/yr)")
 
-#  This is a manual PGS spurt identification procedure requiring
+#  This is a MANUAL PGS spurt identification procedure requiring
 #  a mouse click at the point where the acceleration curve
 #  crosses the zero axis with a negative slope during puberty.
-#  A second mouse click advances the plot to the next case.
 #  Here we do this only for the first 10 children.
 
 children = 1:10
 
 PGSctr = rep(0,length(children))
-par(mfrow=c(1,1), ask=TRUE)
 for (icase in children) {
     accveci = eval.fd(agefine, accelfdUN[icase])
     plot(agefine,accveci,"l", ylim=c(-6,4),
@@ -144,6 +153,8 @@ for (icase in children) {
          main=paste("Case",icase))
     lines(c(1,18),c(0,0),lty=2)
     PGSctr[icase] = locator(1)$x
+# **** CLICK ON EACH ACCELERATION CURVE WHERE IT
+# **** CROSSES ZERO WITH NEGATIVE SLOPE DURING PUBERTY
 }
 
 #  This is an automatic PGS spurt identification procedure.
@@ -163,7 +174,7 @@ index  = 1:102  #  wide limits
 nindex = length(index)
 ageval = seq(8.5,15,len=nindex)
 PGSctr = rep(0,ncasef)
-par(mfrow=c(1,1), ask=T)
+op = par(ask=TRUE)
 for (icase in 1:ncasef) {
     accveci = eval.fd(ageval, accelfdUN[icase])
     aup     = accveci[2:nindex]
@@ -185,7 +196,10 @@ for (icase in 1:ncasef) {
         }
     }
     title(paste('Case ',icase))
+# ****** CLICK ON EACH PLOT TO ADVANCE TO THE NEXT
+# ****** {par(ask=TRUE)}
 }
+par(op)
 
 #  We use the minimal basis function sufficient to fit 3 points
 #  remember that the first coefficient is set to 0, so there
@@ -211,7 +225,6 @@ accelmeanfdLM = mean(accelfdLM)
 
 #  plot registered curves
 
-par(ask=F)
 plot(accelfdLM, xlim=c(1,18), ylim=c(-4,3), lty=1, lwd=1,
      cex=2, xlab="Age", ylab="Acceleration (cm/yr/yr)")
 lines(accelmeanfdLM, col=1, lwd=2, lty=2)
@@ -237,7 +250,7 @@ par(op)
 
 #  plot warping functions for cases 3 and 7
 
-warpfdLM  = registerlistLM$warpfd
+warpfdLM  = regListLM$warpfd
 warpmatLM = eval.fd(agefine, warpfdLM)
 
 op = par(mfrow=c(2,2))
@@ -281,7 +294,6 @@ accelfdCR = registerlistCR$regfd
 warpfdCR  = registerlistCR$warpfd
 WfdCR     = registerlistCR$Wfd
 
-par(mfrow=c(1,1))
 plot(warpfdCR)
 
 #  plot landmark and continuously registered curves for the
