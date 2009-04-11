@@ -13,8 +13,9 @@ library(fda)
 ## Section 8.1 Amplitude and Phase Variation
 ##
 
-#  Figure 8.1 in this section requires that we do landmark registration first,
-#  and is therefore plotted in Section 8.3 below.
+#  Figure 8.1 in this section requires that we firt do
+#  landmark registration first.
+#  This figure is therefore plotted in Section 8.3 below.
 
 #  Figure 8.2
 
@@ -29,23 +30,23 @@ sigma = (1:5)/3
 
 DGauss = function(tvec, mu, sigma)
 {
-var = as.matrix(sigma)^2
+  var = as.matrix(sigma)^2
 
-n = length(tvec)
-m = length(mu)
-if (length(sigma) != m)
+  n = length(tvec)
+  m = length(mu)
+  if (length(sigma) != m)
     stop('MU and SIGMA not of same length')
 
-tvec  = as.matrix(tvec)
-mu    = as.matrix(mu)
-onesm = matrix(1,1,m)
-onesn = matrix(1,n,1)
+  tvec  = as.matrix(tvec)
+  mu    = as.matrix(mu)
+  onesm = matrix(1,1,m)
+  onesn = matrix(1,n,1)
 
-res   = tvec %*% onesm - onesn %*% t(mu)
-expon = res^2/(2*onesn %*% t(var))
-DpG   = -res*exp(-expon)
+  res   = tvec %*% onesm - onesn %*% t(mu)
+  expon = res^2/(2*onesn %*% t(var))
+  DpG   = -res*exp(-expon)
 
-return(DpG)
+  return(DpG)
 }
 
 #  Data to be plotted in the left panel
@@ -61,17 +62,17 @@ for (i in 1:5) DpGampli[,i] = sigma[i]*DGauss(tvec, 0, 1)
 DpGampliMean = apply(DpGampli,1,mean)
 
 op = par(mfrow=c(2,1), cex=1, ask=F)
-#  left panel
-matplot(tvec, DpGphase, "l", lwd=1, col=1, lty=1, 
+#  top panel
+matplot(tvec, DpGphase, "l", lwd=1, col=1, lty=1,
         xlim=c(-5,5), ylim=c(-0.8,0.8),
         xlab="", ylab="")
-lines(tvec, DpGphaseMean, col=1, lty=2, lwd=2) 
+lines(tvec, DpGphaseMean, col=1, lty=2, lwd=4)
 lines(c(-5,5), c(0,0), col=1, lty=3, lwd=1)
-# right panel
-matplot(tvec, DpGampli, "l", lwd=1, col=1, lty=1, 
+# bottom panel
+matplot(tvec, DpGampli, "l", lwd=1, col=1, lty=1,
         xlim=c(-5,5), ylim=c(-1.2,1.2),
         xlab="", ylab="")
-lines(t, DpGampliMean, col=1, lty=2, lwd=2) 
+lines(tvec, DpGampliMean, col=1, lty=2, lwd=4)
 lines(c(-5,5), c(0,0), col=1, lty=3, lwd=1)
 par(op)
 
@@ -91,7 +92,7 @@ print(c(eigvecphase, eigvecampli))
 
 #  Figure 8.3 requires landmark registration, and is set up below
 
-##  
+##
 ##  Section 8.3: Landmark registration
 ##
 
@@ -108,11 +109,11 @@ agefine = seq(ageRng[1], ageRng[2], length=nfine)
 hgtf   = growth$hgtf
 ncasef = dim(hgtf)[2]
 
-#  Set up functional data objects for the acceleration curves 
+#  Set up functional data objects for the acceleration curves
 #  and their mean.  Suffix UN means "unregistered".
 
 #  This step requires the functional data object hgtfhatfd computed
-#  from the monotone smooth of the Berkeley female data.  Refer to 
+#  from the monotone smooth of the Berkeley female data.  Refer to
 #  Section 5.4.2.2  in the text and in the script file fdarm-ch05.R
 #  for the computing it.
 
@@ -138,7 +139,7 @@ par(mfrow=c(1,1), ask=TRUE)
 for (icase in children) {
     accveci = eval.fd(agefine, accelfdUN[icase])
     plot(agefine,accveci,"l", ylim=c(-6,4),
-         xlab="Year", ylab="Height Accel.", 
+         xlab="Year", ylab="Height Accel.",
          main=paste("Case",icase))
     lines(c(1,18),c(0,0),lty=2)
     PGSctr[icase] = locator(1)$x
@@ -148,7 +149,7 @@ for (icase in children) {
 #  A mouse click advances the plot to the next case.
 #  Compute PGS mid point for landmark registration.
 #  Downward crossings are computed within the limits defined
-#  by INDEX.  Each of the crossings within this interval 
+#  by INDEX.  Each of the crossings within this interval
 #  are plotted.  The estimated PGS center is plotted as a vertical line.
 
 #  The choice of range of argument values (6--18) to consider
@@ -193,18 +194,18 @@ for (icase in 1:ncasef) {
 
 PGSctrmean = mean(PGSctr)
 
-#  Define the basis for the function W(t).  
+#  Define the basis for the function W(t).
 
 wbasisLM = create.bspline.basis(c(1,18), 4, 3, c(1,PGSctrmean,18))
 WfdLM    = fd(matrix(0,4,1),wbasisLM)
 WfdParLM = fdPar(WfdLM,1,1e-12)
 
-#  Carry out landmark registration.  
+#  Carry out landmark registration.
 
-regListLM = landmarkreg(accelfdUN, PGSctr, PGSctrmean, 
+regListLM = landmarkreg(accelfdUN, PGSctr, PGSctrmean,
                              WfdParLM, TRUE)
 
-accelfdLM     = regListLM$regfd 
+accelfdLM     = regListLM$regfd
 accelmeanfdLM = mean(accelfdLM)
 
 #  plot registered curves
@@ -231,7 +232,7 @@ lines(accelmeanfdLM10, col=1, lwd=2, lty=2)
 lines(c(PGSctrmean,PGSctrmean), c(-3,1.5), lty=2, lwd=1.5)
 par(op)
 
-# Figure 8.3 
+# Figure 8.3
 
 #  plot warping functions for cases 3 and 7
 
@@ -258,9 +259,9 @@ lines(agefine,  agefine, lty=2, lwd=1.5)
 text(PGSctrmean+0.1, warpmatLM[61,7]+0.2, "o", lwd=2)
 par(op)
 
-##  
+##
 ##  Section 8.4: Continuous registration
-##  
+##
 
 #  Set up a cubic spline basis for continuous registration
 
@@ -298,7 +299,7 @@ lines(accelmeanfdCR10, col=1, lwd=2, lty=2)
 lines(c(PGSctrmean,PGSctrmean), c(-3,1.5), lty=2, lwd=1.5)
 par(op)
 
-#  plot all landmark and continuously registered curves 
+#  plot all landmark and continuously registered curves
 
 accelmeanfdCR = mean(accelfdCR)
 
@@ -327,7 +328,7 @@ par(op)
 accelmeanfdUN = mean(accelfdUN)
 accelmeanfdLM = mean(accelfdLM)
 accelmeanfdCR = mean(accelfdCR)
-   
+
 plot(accelmeanfdCR, xlim=c(1,18), ylim=c(-3,1.5), lty=1, lwd=2,
      cex=1.2, xlab="Years", ylab="Height Acceleration")
 lines(accelmeanfdLM, lwd=1.5, lty=1)
