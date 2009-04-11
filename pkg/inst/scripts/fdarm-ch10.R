@@ -587,7 +587,24 @@ tperm.fd(hgtmfd,hgtffd)
 
 # Section 10.5.2 Functional F-Tests
 
-F.res = Fperm.fd(temp36fd, regionlist, betaList)
+F.res = Fperm.fd(temp36fd, regionList, betaList)
+
+with(F.res,{
+            q = 0.95
+           ylims = c(min(c(Fvals, qval, qvals.pts)), max(c(Fobs,
+                qval)))
+            plot(argvals, Fvals, type = "l", ylim = ylims, col = 1,
+                lwd = 2, xlab = "day", ylab = "F-statistic", cex.lab=1.5,cex.axis=1.5)
+            lines(argvals, qvals.pts, lty = 3, col = 1, lwd = 2)
+            abline(h = qval, lty = 2, col = 1, lwd = 2)
+            legendstr = c("Observed Statistic", paste("pointwise",
+                1 - q, "critical value"), paste("maximum", 1 -
+                q, "critical value"))
+            legend(argvals[1], 1.2, legend = legendstr,
+                col = c(1, 1, 1), lty = c(1, 3, 2), lwd = c(2,
+                  2, 2))
+        }
+)
 
 
 ##
