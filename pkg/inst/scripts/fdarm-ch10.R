@@ -518,11 +518,12 @@ lines(gaitt3, kneeAccel.R2, lty='dashed', lwd=2)
 ##
 
 # From Giles' Sweden.Rdata
-Swede.Rdata = 'C:/Users/spencerg/fda/Rbook/Rbook/RCode/Sweden.Rdata'
-(mat0 = load(Swede.Rdata))
+#Swede.Rdata = 'C:/Users/spencerg/fda/Rbook/Rbook/RCode/Sweden.Rdata'
+#(mat0 = load(Swede.Rdata))
 # SwedeMat Swede1920
 
-# Download the contents of http://www.mortality.org/hmd/SWE/STATS/fltcoh_1x1.txt
+# Download the contents of
+# http://www.mortality.org/hmd/SWE/STATS/fltcoh_1x1.txt
 # to a file 'Sweden Female Lifetable.txt
 
 SwedeTab = read.table('Sweden Female Lifetable.txt')
@@ -533,21 +534,8 @@ SwedeMat = log(HazMat)
 SwedeLogHazard <- SwedeMat[,1:144]
 names(SwedeLogHazard) <- paste('b', 1751:1894, sep='')
 
-# *****
-#
-# GILES:  Are these names correct?
-#
-
 # Figure 10.10
 
-matplot(0:80, SwedeLogHazard[, c('b1780', 'b1820', 'b1880', 'b1885')],
-        type='b')
-
-SwedeLogHazard$b1900
-# Huge spike in 1924 for the 1900 cohort
-# in this plot but not in Fig 10.10
-
-# Giles said the plot was mislabeled;  try 1760, 1820, 1880, 1920:
 Swede4Lines = cbind(SwedeLogHazard[, c('b1760', 'b1820', 'b1880')],
     b1920=Swede1920)
 
@@ -568,13 +556,16 @@ D2fdPar = fdPar(SwedeBasis, lambda=1e-7)
 
 SwedeLogHazfd = smooth.basis(0:80, as.matrix(SwedeLogHazard), D2fdPar)
 
-plotfit.fd(as.matrix(SwedeLogHazard),0:80,SwedeLogHazfd$fd)
+# The following requires manually clicking on the plot
+# for each of 144 birth year cohorts
+#plotfit.fd(as.matrix(SwedeLogHazard),0:80,SwedeLogHazfd$fd)
 
 
-NextYear = SwedeLogHazfd[2:81]
-LastYear = SwedeLogHazfd[1:80]
+NextYear = SwedeLogHazfd[2:144]
+LastYear = SwedeLogHazfd[1:143]
 
-Swede.linmodSmooth = linmod(NextYear, LastYear, SwedeBetaList)
+#Swede.linmodSmooth = linmod(NextYear, LastYear, SwedeBetaList)
+Swede.linmodSmooth = linmod(LastYear, NextYear)
 
 # ***
 #
