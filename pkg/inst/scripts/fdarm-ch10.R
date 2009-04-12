@@ -518,6 +518,8 @@ lines(gaitt3, kneeAccel.R2, lty='dashed', lwd=2)
 ##
 
 # From Giles' Sweden.Rdata
+Swede.Rdata = 'C:/Users/spencerg/fda/Rbook/Rbook/RCode/Sweden.Rdata'
+(mat0 = load(Swede.Rdata))
 #Swede.Rdata = 'C:/Users/spencerg/fda/Rbook/Rbook/RCode/Sweden.Rdata'
 #(mat0 = load(Swede.Rdata))
 # SwedeMat Swede1920
@@ -531,19 +533,47 @@ HazMat = matrix(SwedeTab[,3],111,164,byrow=FALSE)
 HazMat = matrix(as.numeric(HazMat[1:81,]),81,164)
 SwedeMat = log(HazMat)
 
-SwedeLogHazard <- SwedeMat[,1:144]
-names(SwedeLogHazard) <- paste('b', 1751:1894, sep='')
+
+# *****
+#
+# GILES:  Are these names correct?
+#
+
+dimnames(SwedeMat)[[2]] <- paste('b', 1751:1914, sep='')
+
+# *****
+#
+# GILES:  Are these names correct?
+#
 
 # Figure 10.10
 
+matplot(0:80, SwedeLogHazard[, c('b1780', 'b1820', 'b1880', 'b1885')],
+        type='b')
+
+SwedeLogHazard$b1900
+# Huge spike in 1924 for the 1900 cohort
+
+# Giles said the plot was mislabeled;  try 1760, 1820, 1880, 1920:
 Swede4Lines = cbind(SwedeLogHazard[, c('b1760', 'b1820', 'b1880')],
     b1920=Swede1920)
 
 matplot(0:80, Swede4Lines, type='l',lwd=2,xlab='age',ylab='log Hazard',col=1,
+matplot(0:80, SwedeMat[, c('b1751', 'b1810', 'b1860', 'b1914')],
+        type='b')
+
+SwedeLogHazard$b1900
+# Huge spike in 1924 for the 1900 cohort
+# in this plot but not in Fig 10.10
+
+matplot(0:80, SwedeMat[, c('b1751', 'b1810', 'b1860', 'b1914')], type='l',lwd=2,xlab='age',ylab='log Hazard',col=1,
   cex.lab=1.5,cex.axis=1.5)
-legend(x='bottomright',legend=c('1760','1820', '1880','1915'),lwd=2,col=1,lty=1:4)
+legend(x='bottomright',legend=c('1751','1810', '1860','1914'),lwd=2,col=1,lty=1:4)
 
 # Set up for 'linmod'
+
+
+SwedeLogHazard <- SwedeMat[,1:144]
 
 SwedeBasis = create.bspline.basis(c(0,80),23)
 
