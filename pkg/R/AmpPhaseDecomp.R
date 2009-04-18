@@ -1,4 +1,4 @@
-AmpPhaseDecomp <- function(xfd, yfd, hfd)
+AmpPhaseDecomp <- function(xfd, yfd, hfd, rng=xrng)
 {
 #  Computes the amplitude-phase decomposition for a registration.
 
@@ -13,13 +13,17 @@ AmpPhaseDecomp <- function(xfd, yfd, hfd)
 #  RSQR   ... squared correlation measure of prop. phase variation 
 #  C      ... constant C
 
-#  Last modified 31 March 2009
+#  Last modified 18 April 2009
 
 xbasis  <- xfd$basis
 nxbasis <- xbasis$nbasis
 nfine   <- max(201,10*nxbasis)
 xrng    <- xbasis$rangeval
-tfine   <- seq(xrng[1],xrng[2],len=nfine)
+
+if (rng[1] < xrng[1] || rng[2] > xrng[2]) stop(
+    "RNG is not within the range of the other arguments.")
+if (rng[1] >= rng[2]) stop("Elements of rng are not increasing.")
+tfine   <- seq(rng[1],rng[2],len=nfine)
 delta   <- tfine[2] - tfine[1]
 
 Dhfine  <- eval.fd(tfine, hfd, 1)

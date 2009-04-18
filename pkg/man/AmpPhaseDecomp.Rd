@@ -12,7 +12,7 @@
   variation in the unregistered functions is due to  phase.
 }
 \usage{
-AmpPhaseDecomp(xfd, yfd, hfd)
+AmpPhaseDecomp(xfd, yfd, hfd, rng=xrng)
 }
 \arguments{
   \item{xfd}{
@@ -25,6 +25,12 @@ AmpPhaseDecomp(xfd, yfd, hfd)
     a functional data object containing the strictly monotone warping
     functions $h(t)$.  This is typically returned by the functions
     \code{landmarkreg} and \code{register.fd}.
+  }
+  \item{rng}{
+    a vector of length 2 specifying a range of values over which the
+    decomposition is to be computed.  Both values must be within the
+    range of the functional data objects in the argument.  By default
+    the whole range of the functional data objects is used.
   }
 }
 \value{
