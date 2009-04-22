@@ -165,17 +165,17 @@ is a function.
 
 
 
-I don't want the following;  I included it here 
-because it works and is similar to what I do want:  
-\newline 
+I don't want the following;  I included it here
+because it works and is similar to what I do want:
+\newline
 
 \[ D x(t) = \beta(t) x(t) + \alpha(t) u(t) + \epsilon(t) \]
-\newline \newline \newline 
-%% I don't want this here.  Instead I want:  
+\newline \newline \newline
+%% I don't want this here.  Instead I want:
 
-%  \[ y_i = \alpha_0 + \int x_i(t) \beta(t) \D t + \epsilon_i. \]
+\[ y_i = \alpha_0 + \int x_i(t) \beta(t) d t + \epsilon_i. \]
 
-%% This stops with the following error:  
+%% This stops with the following error:
 % ! Undefined control sequence.
 % \beamer@doifinframe ...+ \int x_i(t) \beta (t) \D
 %                                                   t + \epsilon _i. \] \par \...
@@ -184,11 +184,11 @@ because it works and is similar to what I do want:
 % ?
 
 
-%% Why doesn't the following work?  
+%% Why doesn't the following work?
 
-% Estimate \texttt{\beta(t)}
+Estimate $\beta(t)$
 
-%% It stops with the following error:  
+%% It stops with the following error:
 % ("C:\Program Files (x86)\MiKTeX 2.7\tex\latex\base\ulasy.fd") [4]
 % ! Missing $ inserted.
 % <inserted text>
@@ -196,9 +196,9 @@ because it works and is similar to what I do want:
 % l.194 \end{frame}
 %
 % ?
-I do want the following ... maybe:  \newline
+%I do want the following ... maybe:  \newline
 \texttt{log(annual precipitation) \~\ (temperature profile)}
-%\includegraphics[height=7cm, width=11cm]{figs/precbeta5}
+\includegraphics[height=7cm, width=11cm]{figs/precbeta5}
 \newline \newline \newline
 Ramsay, Hooker and Graves (2009)
 \emph{Functional Data Analysis with R and Matlab}
