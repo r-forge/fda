@@ -20,7 +20,7 @@
                     ylab=NULL, ask=FALSE, nx=NULL, axes=NULL, ...)
 \method{plot}{fdPar}(x, y, Lfdobj=0, href=TRUE, titles=NULL,
                     xlim=NULL, ylim=NULL, xlab=NULL,
-                    ylab=NULL, ask=FALSE, nx=NULL, ...)
+                    ylab=NULL, ask=FALSE, nx=NULL, axes=NULL, ...)
 \method{plot}{fdSmooth}(x, y, Lfdobj=0, href=TRUE, titles=NULL,
                     xlim=NULL, ylim=NULL, xlab=NULL,
                     ylab=NULL, ask=FALSE, nx=NULL, axes=NULL, ...)
