@@ -77,16 +77,6 @@ Using the \texttt{fda} Package in R}
 
 \date{}
 
-%\authors[First Author]{Graves, Hooker & Ramsay}
-%\title[Short Title]{Functional Regression}
-
-%This essentially gives you the ability to put anything on the footer as in the next section:
-%Slide Numbers in the Footer
-%To get slide numbers in the footer (next to the title of the presentation) replace your \title{} command with this:
-
-%\title[Abbrev. Title\hspace{2em}\insertframenumber/
-%\inserttotalframenumber]{Full Title}
-
 %%%%%%%%%%%%% Title slide
 \begin{frame}
 
@@ -97,10 +87,6 @@ Ramsay, Hooker and Graves (2009)
 (Springer)
 
 \end{frame}
-
-% reset title for footnotes
-%\authors{Graves, Hooker & Ramsay}
-%\title{Functional Regression}
 
 %%%%%%%%%%%% Outline
 \begin{frame}{This Presentation}
@@ -163,46 +149,29 @@ is a function.
 
 \begin{frame}{fRegress.numeric:  Scalar Response}
 
-
-
-I don't want the following;  I included it here
-because it works and is similar to what I do want:
-\newline
-
-\[ D x(t) = \beta(t) x(t) + \alpha(t) u(t) + \epsilon(t) \]
-\newline \newline \newline
-%% I don't want this here.  Instead I want:
-
 \[ y_i = \alpha_0 + \int x_i(t) \beta(t) d t + \epsilon_i. \]
-
-%% This stops with the following error:
-% ! Undefined control sequence.
-% \beamer@doifinframe ...+ \int x_i(t) \beta (t) \D
-%                                                   t + \epsilon _i. \] \par \...
-% l.196 \end{frame}
-%
-% ?
-
-
-%% Why doesn't the following work?
-
-Estimate $\beta(t)$
-
-%% It stops with the following error:
-% ("C:\Program Files (x86)\MiKTeX 2.7\tex\latex\base\ulasy.fd") [4]
-% ! Missing $ inserted.
-% <inserted text>
-%                 $
-% l.194 \end{frame}
-%
-% ?
-%I do want the following ... maybe:  \newline
+%Example:  \newline
 \texttt{log(annual precipitation) \~\ (temperature profile)}
-\includegraphics[height=7cm, width=11cm]{figs/precbeta5}
-\newline \newline \newline
-Ramsay, Hooker and Graves (2009)
-\emph{Functional Data Analysis with R and Matlab}
-(Springer, ch. 9)
+%\newline
+%Estimate $\beta(t)$
+%\includegraphics[height=4cm, width=10cm]{figs/precbeta5b}
+\includegraphics[height=6cm, width=9cm]{figs/precbeta5b}
+%\newline
+%Ramsay, Hooker, Graves (2009, Fig. 9.1)
+
+\end{frame}
+
+%%%%%%%%%%%%%%% fRegress.numeric:  precip ~ temp interp 
+
+\begin{frame}{log(annual precipitation) \~\ temperature(t) }
+
+\includegraphics[height=5.9cm, width=9cm]{figs/precbeta5b}
+
+Conclusion:  Wetter locations tend to be 
+    cooler in February and August 
+    and warmer in May and November 
+\newline \newline
+Ramsay, Hooker, Graves (2009, Fig. 9.1)
 
 \end{frame}
 
