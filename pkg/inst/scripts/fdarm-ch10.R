@@ -19,7 +19,7 @@ library(fda)
 regions.         = unique(CanadianWeather$region)
 p                = length(regions.) + 1
 regionList       = vector("list", p)
-names(regionList)= regions.
+names(regionList)= c('Canada', regions.)
 regionList[[1]]  = c(rep(1,35),0)
 for (j in 2:p) {
   xj             = (CanadianWeather$region == regions.[j-1])
