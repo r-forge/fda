@@ -98,7 +98,7 @@ Ramsay, Hooker and Graves (2009)
 
 \item fRegress.numeric:  Scalar Response
 
-\item fRegress.fdPar:  Functional response, x = scalar 
+\item fRegress.fdPar:  Functional response, x = scalar
 
 \item fRegress.fdPar:  Concurrent Functional Model
 
@@ -120,16 +120,16 @@ Ramsay, Hooker and Graves (2009)
 
 \begin{frame}{What Is Functional Regression?}
 
-Functional Data Analysis extends spline smoothing to:  
-\begin{itemize} 
-    \item an arbitrary finite basis approximation to a function space 
+Functional Data Analysis extends spline smoothing to:
+\begin{itemize}
+    \item an arbitrary finite basis approximation to a function space
     \item smoothing with an arbitrary linear differential operator
-\end{itemize} 
+\end{itemize}
 \[ \]
 
 Functional regression = fitting a model where
-\begin{itemize} 
-    \item the response or 
+\begin{itemize}
+    \item the response or
     \item an explanatory variable
 \end{itemize}
 is a function.
@@ -159,7 +159,7 @@ is a function.
 
 \end{tabular}
 \newline \newline \newline
-R code for all of these appears in 
+R code for all of these appears in
 script files in the
 \texttt{fda} package
 
@@ -181,34 +181,29 @@ script files in the
 
 \end{frame}
 
-%%%%%%%%%%%%%%% fRegress.numeric:  precip ~ temp interp 
+%%%%%%%%%%%%%%% fRegress.numeric:  precip ~ temp interp
 
 \begin{frame}{log(annual precipitation) \~\ temperature(t) }
 
 \includegraphics[height=5.9cm, width=9cm]{figs/precbeta5b}
 
-Conclusion:  Wetter locations tend to be 
-\begin{itemize} 
-  \item cooler in February and August and 
-  \item warmer in May and November 
-\end{itemize} 
+Conclusion:  Wetter locations tend to be
+\begin{itemize}
+  \item cooler in February and August and
+  \item warmer in May and November
+\end{itemize}
 Ramsay, Hooker, Graves (2009, Fig. 9.1)
 
 \end{frame}
 
-%%%%%%%%%%%%%%% fRegress.fdPar:  functional response, x = scalar 
+%%%%%%%%%%%%%%% fRegress.fdPar:  functional response, x = scalar
 
 \begin{frame}{fRegress.numeric:  functional response, x = scalar}
 
 \[ y_i(t) = \beta_0(t) + \sum_{j=1}^4 x_{ij} \beta_j(t) + \epsilon_i(t) \]
-\texttt{temperature \~\ region}
+\texttt{temperature \~\ region};  Region Deviation:  
 
-The following is the wrong plot;  currently just a placeholder.  
-
-%\newline
-%Estimate $\beta(t)$
-%\includegraphics[height=4cm, width=10cm]{figs/precbeta5b}
-\includegraphics[height=6cm, width=9cm]{figs/precbeta5b}
+\includegraphics[height=5cm, width=9cm]{figs/tempregionbeta2}
 
 Ramsay, Hooker, Graves (2009, Fig. 10.1)
 
