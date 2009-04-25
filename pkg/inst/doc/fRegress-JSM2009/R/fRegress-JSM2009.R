@@ -105,3 +105,15 @@ sapply(predTemp, length)
 library(lattice)
 xyplot(beta.region~day | region, predTemp, layout=c(4, 1), type='l')
 
+# x axis ticks & labels?  ???
+#xyplot(beta.region~day | region, predTemp, layout=c(4, 1), type='l',
+#       scales=list(bottom=list(ticks=seq(1, 365, length=5)),
+#                   labels=list(at=seq(365/8, 7*365/8, length=4),
+#                               labels=c("Q1", "Q2", "Q3", "Q4") ) ) )
+#
+
+xyplot(beta.region~day | region, predTemp, layout=c(4, 1), type='l',
+       scales=list(x=seq(1, 7, 2)*365/4,
+           labels=c('duhh', "Q1", "Q2", "Q3", "Q4") ),
+       xlab='')
+

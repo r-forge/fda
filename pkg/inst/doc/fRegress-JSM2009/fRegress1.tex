@@ -200,7 +200,7 @@ Ramsay, Hooker, Graves (2009, Fig. 9.1)
 
 \begin{frame}{fRegress.numeric:  functional response, x = scalar}
 
-\[ y_i(t) = \beta_0(t) + \sum_{j=1}^4 x_{ij} \beta_j(t) + \epsilon_i(t) \]
+\[ y_i(t) = \beta_0(t) + \sum x_{ij} \beta_j(t) + \epsilon_i(t) \]
 \texttt{temperature \~\ region};  Region Deviation:  
 
 \includegraphics[height=5cm, width=9cm]{figs/tempregionbeta2}
@@ -213,10 +213,13 @@ Ramsay, Hooker, Graves (2009, Fig. 10.1)
 
 \begin{frame}{fRegress.fdPar:  Concurrent Functional Model}
 
-%\newline \newline \newline
-Ramsay, Hooker and Graves (2009)
-\emph{Functional Data Analysis with R and Matlab}
-(Springer,ch. 10)
+\[ y_i(t) = \beta_0(t) + \sum x_{ij}(t) \beta_j(t) + \epsilon_i(t) \]
+
+\texttt{(knee angle) \~\ (hip angle)} 
+
+\includegraphics[height=5cm, width=9cm]{figs/gaitregression1}
+
+Ramsay, Hooker and Graves (2009, Fig. 10.7)
 
 \end{frame}
 
