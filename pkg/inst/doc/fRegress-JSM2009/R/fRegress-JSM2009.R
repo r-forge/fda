@@ -113,7 +113,7 @@ xyplot(beta.region~day | region, predTemp, layout=c(4, 1), type='l')
 #
 
 xyplot(beta.region~day | region, predTemp, layout=c(4, 1), type='l',
-       scales=list(x=seq(1, 7, 2)*365/4,
-           labels=c('duhh', "Q1", "Q2", "Q3", "Q4") ),
+       scales=list(x=list(at=seq(1, 7, 2)*365/8,
+           labels=c("Q1", "Q2", "Q3", "Q4") )),
        xlab='')
 
