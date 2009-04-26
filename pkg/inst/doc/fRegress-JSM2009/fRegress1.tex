@@ -92,25 +92,19 @@ Ramsay, Hooker and Graves (2009)
 \begin{frame}{This Presentation}
 
 \begin{itemize}
-\item What Is Functional Regression?
+    \item What Is Functional Regression?
 
-\item Different types of Functional Regression
+    \item Different types of Functional Regression
 
-\item fRegress.numeric:  Scalar Response
+    \item fRegress:  3 examples + formula interface 
 
-\item fRegress.fdPar:  Functional response, x = scalar
+    \item linmod:  Full Integration Regression
 
-\item fRegress.fdPar:  Concurrent Functional Model
+    \item pda.fd:  Estimating a Differential Equation
 
-\item fRegress.formula:  Simple fRegress Setup
+    \item Closing Remarks
 
-\item linmod:  Full Integration Regression
-
-\item pda.fd:  Estimating a Differential Equation
-
-\item Closing Remarks
-
-\item References
+    \item References
 
 \end{itemize}
 
@@ -243,14 +237,14 @@ Easier than manual set up, esp. w. x factors?
 
 \begin{frame}{linmod:  Full Integration Regression}
 
-\[ 
+\[
 y_i(t) = \beta_0(t) + \int_{\Omega_t} \beta_1(t,s) x_i(s) d s + \epsilon_i(t)
 \]
-$\beta_1(t,s)$ = bivariate regression coefficient function 
-$\Omega_t$ = $\{s < t\}$:  historical linear model 
-$\Omega_t$ = unconstrained:  full integration regression 
-\newline \newline 
-Example:  \newline 
+$\beta_1(t,s)$ = bivariate regression coefficient function
+$\Omega_t$ = $\{s < t\}$:  historical linear model
+$\Omega_t$ = unconstrained:  full integration regression
+\newline \newline
+Example:  \newline
 Swedish Female Mortality 1751 to 1914 Cohorts \newline
 \[
 x_{i+1}(t) = \beta_0(t) + \int \beta_1(s,t) x_i(t) d s + \epsilon_i(t)
@@ -258,14 +252,14 @@ x_{i+1}(t) = \beta_0(t) + \int \beta_1(s,t) x_i(t) d s + \epsilon_i(t)
 $x_i(t)$ = log(hazard) at age $t$ for cohort $i$ \newline
 \end{frame}
 
-%%%%%%%%%%%%%%% linmod:  Swedish Female Mortality 
+%%%%%%%%%%%%%%% linmod:  Swedish Female Mortality
 
 \begin{frame}{linmod:  Full Integration Regression}
 \[
 x_{i+1}(t) = \beta_0(t) + \int \beta_1(s,t) x_i(t) d s + \epsilon_i(t)
 \]
 \includegraphics[height=5.5cm, width=9cm]{figs/swede_beta1}
-\newline 
+\newline
 Ramsay, Hooker and Graves (2009, Fig. 10.11)
 
 \end{frame}
@@ -287,17 +281,17 @@ Ramsay, Hooker and Graves (2009)
 %%%%%%%%%%%%%%% References
 \begin{frame}{References}
 
-%Software:   Ramsay, Wickham, Graves and Hooker (2009)
-%\emph{fda: Functional Data Analysis. R package}, version 2.1.2
-%(www.functionaldata.org)
-
-%How to:  Ramsay, Hooker and Graves (2009)
-%\emph{Functional Data Analysis with R and Matlab}
-%(Springer, ch. 11)
-
-%Theory:  Ramsay and Silverman (2005)
-%\emph{Functional Data Analysis}, 2nd ed.
-%(Springer)
+Software:   Ramsay, Wickham, Graves and Hooker (2009)
+\emph{fda: Functional Data Analysis. R package}, version 2.1.2
+(www.functionaldata.org) 
+\newline \newline 
+How to:  Ramsay, Hooker and Graves (2009)
+\emph{Functional Data Analysis with R and Matlab}
+(Springer, ch. 11)
+\newline \newline
+Theory:  Ramsay and Silverman (2005)
+\emph{Functional Data Analysis}, 2nd ed.
+(Springer)
 
 \end{frame}
 
