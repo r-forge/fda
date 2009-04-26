@@ -433,7 +433,7 @@ lines(gaitfine, kneeMean, lty='dashed')
 abline(h=0, v=c(7.5, 14.7), lty='dashed')
 
 # Hip coefficient
-#hipCoef = predict(betaestlist$hip$fd, gaitfine)
+hipCoef = predict(betaestlist$hip$fd, gaitfine)
 
 # Squared multiple correlation
 kneehatfd = gaitRegress$yhatfd$fd

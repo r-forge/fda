@@ -105,15 +105,92 @@ sapply(predTemp, length)
 library(lattice)
 xyplot(beta.region~day | region, predTemp, layout=c(4, 1), type='l')
 
-# x axis ticks & labels?  ???
-#xyplot(beta.region~day | region, predTemp, layout=c(4, 1), type='l',
-#       scales=list(bottom=list(ticks=seq(1, 365, length=5)),
-#                   labels=list(at=seq(365/8, 7*365/8, length=4),
-#                               labels=c("Q1", "Q2", "Q3", "Q4") ) ) )
-#
-
 xyplot(beta.region~day | region, predTemp, layout=c(4, 1), type='l',
        scales=list(x=list(at=seq(1, 7, 2)*365/8,
            labels=c("Q1", "Q2", "Q3", "Q4") )),
        xlab='')
 
+##
+## Slide 8.  fRegress.fdPar: Concurrent Functional Model
+##
+
+# Section 10.2.3 Knee Angle Predicted from Hip Angle
+gaittime = seq(0.5,19.5,1)
+gaitrange = c(0,20)
+gaitfine = seq(0,20,len=101)
+
+harmaccelLfd20 = vec2Lfd(c(0, (2*pi/20)^2, 0), rangeval=gaitrange)
+gaitbasis = create.fourier.basis(gaitrange, nbasis=21)
+
+#    GCV is minimized with lambda = 10^(-1.5).
+
+gaitSmooth = smooth.basisPar(gaittime, gait,
+       gaitbasis, Lfdobj=harmaccelLfd20, lambda=10^(-1.5))
+gaitfd = gaitSmooth$fd
+
+names(gaitfd$fdnames) = c("Normalized time", "Child", "Angle")
+gaitfd$fdnames[[3]] = c("Hip", "Knee")
+
+hipfd  = gaitfd[,1]
+kneefd = gaitfd[,2]
+
+kneefdMean = mean(kneefd)
+
+xfdlist   = list(const=rep(1,39), hip=hipfd)
+betafdPar = fdPar(gaitbasis, harmaccelLfd20)
+betalist  = list(const=betafdPar, hip=betafdPar)
+
+gaitRegress= fRegress(kneefd, xfdlist, betalist)
+
+# Figure 10.7
+
+op = par(mfrow=c(2,1))
+
+# Intercept
+betaestlist = gaitRegress$betaestlist
+kneeIntercept = predict(betaestlist$const$fd, gaitfine)
+
+# mean knee angle
+kneeMean = predict(kneefdMean, gaitfine)
+
+# Hip coefficient
+hipCoef = predict(betaestlist$hip$fd, gaitfine)
+
+# Squared multiple correlation
+kneehatfd = gaitRegress$yhatfd$fd
+#kneemat = predict(kneefd, gaittime)
+kneehatmat = eval.fd(gaittime, kneehatfd)
+#resmat. = kneemat - kneehatmat
+resmat. = gait[,,'Knee Angle'] - kneehatmat
+SigmaE = cov(t(resmat.))
+
+kneefinemat   = eval.fd(gaitfine, kneefd)
+kneemeanvec   = eval.fd(gaitfine, mean(kneefd))
+kneehatfinemat= eval.fd(gaitfine, kneehatfd)
+resmat        = kneefinemat - kneehatfinemat
+ncurve        = dim(gait)[2]
+resmat0 = kneefinemat - kneemeanvec %*% matrix(1,1,ncurve)
+SSE0 = apply((resmat0)^2, 1, sum)
+SSE1 = apply(resmat^2, 1, sum)
+knee.R2 = (SSE0-SSE1)/SSE0
+
+# Plot Hip Coefficient & Squared Multiple Correlation
+
+ylim2=c(0, max(hipCoef, knee.R2))
+plot(gaitfine, hipCoef, lwd=2, xlab='', ylab='', ylim=ylim2, type='l',
+     main='Hip Coefficient and Squared Multiple Correlation')
+abline(v=c(7.5, 14.7), lty='dashed')
+lines(gaitfine, knee.R2, lty='dashed')
+
+# done
+par(op)
+
+# Plot Hip Coefficient & Squared Multiple Correlation
+# By itself for presentation
+
+ylim2=c(0, max(hipCoef, knee.R2))
+plot(gaitfine, hipCoef, lwd=2, xlab='gait cycle', ylab='',
+     ylim=ylim2, type='l',
+     main='Hip Coefficient and Squared Multiple Correlation')
+abline(v=c(7.5, 14.7), lty='dashed')
+lines(gaitfine, knee.R2, lty='dashed')
