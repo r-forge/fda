@@ -226,16 +226,16 @@ Ramsay, Hooker and Graves (2009, Fig. 10.7)
 %%%%%%%%%%%%%%% fRegress.formula:  Simple fRegress Setup
 
 \begin{frame}{fRegress.formula:  Simple fRegress Setup}
-Traditional:  fRegress(y, xlist, betalist) 
+Traditional:  fRegress(y, xlist, betalist)
 \newline \newline
-Formula interface: 
-\begin{itemize} 
-    \item model <- fRegress(y \~\ x, method='model') 
-    \item model = list(y, xlist, betalist) 
+Formula interface:
+\begin{itemize}
+    \item model <- fRegress(y \~\ x, method='model')
+    \item model = list(y, xlist, betalist)
 \end{itemize}
 Manually adjust model to get what you want.
 \newline \newline
-Easier than manual set up, esp. w. x factors? 
+Easier than manual set up, esp. w. x factors?
 
 \end{frame}
 
@@ -243,10 +243,30 @@ Easier than manual set up, esp. w. x factors?
 
 \begin{frame}{linmod:  Full Integration Regression}
 
-%\newline \newline \newline
-Ramsay, Hooker and Graves (2009)
-\emph{Functional Data Analysis with R and Matlab}
-(Springer, ch. 10)
+\[ 
+y_i(t) = \beta_0(t) + \int_{\Omega_t} \beta_1(t,s) x_i(s) d s + \epsilon_i(t)
+\]
+$\beta_1(t,s)$ = bivariate regression coefficient function 
+$\Omega_t$ = $\{s < t\}$:  historical linear model 
+$\Omega_t$ = unconstrained:  full integration regression 
+\newline \newline 
+Example:  \newline 
+Swedish Female Mortality 1751 to 1914 Cohorts \newline
+\[
+x_{i+1}(t) = \beta_0(t) + \int \beta_1(s,t) x_i(t) d s + \epsilon_i(t)
+\]
+$x_i(t)$ = log(hazard) at age $t$ for cohort $i$ \newline
+\end{frame}
+
+%%%%%%%%%%%%%%% linmod:  Swedish Female Mortality 
+
+\begin{frame}{linmod:  Full Integration Regression}
+\[
+x_{i+1}(t) = \beta_0(t) + \int \beta_1(s,t) x_i(t) d s + \epsilon_i(t)
+\]
+\includegraphics[height=5.5cm, width=9cm]{figs/swede_beta1}
+\newline 
+Ramsay, Hooker and Graves (2009, Fig. 10.11)
 
 \end{frame}
 %%%%%%%%%%%%%%% pda.fd:  Estimating a Differential Equation
