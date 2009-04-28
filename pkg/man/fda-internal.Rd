@@ -32,7 +32,6 @@
 \alias{loglfnpos}
 \alias{loglhesspos}
 \alias{m2ij}
-\alias{monfn}
 \alias{mongrad}
 \alias{monhess}
 \alias{normalize.phi}
