@@ -40,6 +40,9 @@ register.fd(y0fd=NULL, yfd=NULL, WfdParobj=c(Lfdobj=2, lambda=1),
     curve. The object also contains information on a roughness penalty
     and smoothing parameter to control the roughness of $h(t)$.
 
+    The basis used for this object must be a B-spline basis.  If a
+    constant basis is desired, then use create.bspline.basis(wrange,1,1).
+
     Alternatively, this can be a vector or a list with components named
     \code{Lfdobj} and \code{lambda}, which are passed as arguments to
     \code{fdPar} to create the functional parameter form of WfdParobj
