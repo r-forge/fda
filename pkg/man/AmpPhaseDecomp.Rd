@@ -33,6 +33,13 @@ AmpPhaseDecomp(xfd, yfd, hfd, rng=xrng)
     the whole range of the functional data objects is used.
   }
 }
+\details{
+  The decomposition can yield negative values for \code{MS.phas} if the
+  registration does not improve the alignment of the curves, or if used
+  to compare two registration processes based on different principles,
+  such as  is the case for functions \code{landmarkreg} and
+  \code{register.fd}.
+}
 \value{
   a named list with the following components:
 
@@ -51,13 +58,6 @@ AmpPhaseDecomp(xfd, yfd, hfd, rng=xrng)
     derivatives the warping functions are independent of the squared
     registered functions.
   }
-}
-\details{
-  The decomposition can yield negative values for \code{MS.phas} if the
-  registration does not improve the alignment of the curves, or if used
-  to compare two registration processes based on different principles,
-  such as  is the case for functions \code{landmarkreg} and
-  \code{register.fd}.
 }
 \seealso{
   \code{\link{landmarkreg}},

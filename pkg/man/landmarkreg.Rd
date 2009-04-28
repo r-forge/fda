@@ -50,7 +50,7 @@ landmarkreg(fdobj, ximarks, x0marks=xmeanmarks,
 \value{
   a named list of length 2 with components:
 
-  \item{fdreg}{
+  \item{regfd}{
     a functional data object for the registered curves.
   }
   \item{warpfd}{

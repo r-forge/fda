@@ -22,7 +22,8 @@
       \item{2}{ coefficient functions for each equation}
       \item{3}{ coefficients of derivatives of each variable}
     }
-    \code{whichdim} should be an ordered vector of length between 1 and 3.
+    \code{whichdim} should be an ordered vector of length between 1 and
+    3.
   }
   \item{npts}{
     number of points to use for plotting.
