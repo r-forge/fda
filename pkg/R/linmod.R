@@ -1,4 +1,4 @@
-linmod = function(xfd, yfd, betaList, wtvec=NULL)  {
+linmod = function(xfdobj, yfdobj, betaList, wtvec=NULL)  {
 #  LINMOD  Fits an unrestricted or full functional linear model of the form
 #       y(t) = \alpha(t) + \int x(s) \beta(s,t) ds + \epsilon(t),
 #  where
@@ -18,23 +18,21 @@ linmod = function(xfd, yfd, betaList, wtvec=NULL)  {
 
 #  Last modified 5 May 2009
 
-#  check xfd and yfd
+#  check xfdobj and yfdobj
 
-print("checking xfd")
-
-if (!is.fd(xfd)) {
+if (!is.fd(xfdobj)) {
     stop("XFD is not a functional data object.")
 }
 
-if (!is.fd(yfd)) {
+if (!is.fd(yfdobj)) {
     stop("YFD is not a functional data object.")
 }
 
-ybasis  = yfd$basis
+ybasis  = yfdobj$basis
 ynbasis = ybasis$nbasis
 ranget  = ybasis$rangeval
 
-xbasis  = xfd$basis
+xbasis  = xfdobj$basis
 ranges  = xbasis$rangeval
 
 nfine = max(c(201,10*ynbasis+1))
@@ -42,10 +40,8 @@ tfine = seq(ranget[1],ranget[2],len=nfine)
 
 #  get dimensions of data
 
-print("data dimensions")
-
-coefy   = yfd$coef
-coefx   = xfd$coef
+coefy   = yfdobj$coef
+coefx   = xfdobj$coef
 coefdx  = dim(coefx)
 coefdy  = dim(coefy)
 ncurves = coefdx[2]
@@ -58,8 +54,6 @@ if (coefdy[2] != ncurves) {
 if (!is.null(wtvec)) wtvec = wtcheck(ncurves, wtvec)
 
 #  get basis parameter objects
-
-print("betaList info")
 
 if (!inherits(betaList, "list")) stop("betaList is not a list object.")
 
@@ -123,14 +117,12 @@ betatnbasis = betatbasis$nbasis
 
 #  get inner products of basis functions and data functions
 
-print("Inner products")
-
 Finprod = inprod(ybasis, alphabasis)
 Ginprod = inprod(ybasis, betatbasis)
 Hinprod = inprod(xbasis, betasbasis)
 
-ycoef = yfd$coef
-xcoef = xfd$coef
+ycoef = yfdobj$coef
+xcoef = xfdobj$coef
 Fmat = t(ycoef) %*% Finprod
 Gmat = t(ycoef) %*% Ginprod
 Hmat = t(xcoef) %*% Hinprod
@@ -221,7 +213,7 @@ coefvec = symsolve(Cmat, Dmat)
 ind1 = 1:alphanbasis
 alphacoef = coefvec[ind1]
 
-alphafdnames = yfd$fdnames
+alphafdnames = yfdobj$fdnames
 alphafdnames[[3]] = "Intercept"
 alphafd = fd(alphacoef, alphabasis, alphafdnames)
 
@@ -229,7 +221,7 @@ alphafd = fd(alphacoef, alphabasis, alphafdnames)
 
 ind1 = alphanbasis + (1:betan)
 betacoef    = matrix(coefvec[ind1],betatnbasis,betasnbasis)
-betafdnames = xfd$fdnames
+betafdnames = xfdobj$fdnames
 betafdnames[[3]] = "Reg. Coefficient"
 betafd = bifd(t(betacoef), betasbasis, betatbasis, betafdnames)
 
