@@ -201,11 +201,11 @@ ind2 = ind1
 Cmat[ind1,ind2] = kronecker(HHCP,betattmat)
 if (betaslambda > 0) {
     Cmat[ind1,ind2] = Cmat[ind1,ind2] + 
-                      betaslambda*kron(betaspenmat,betattmat)
+                      betaslambda*kronecker(betaspenmat,betattmat)
 }
 if (betatlambda > 0) {
     Cmat[ind1,ind2] = Cmat[ind1,ind2] + 
-                      betatlambda*kron(betassmat,betatpenmat)
+                      betatlambda*kronecker(betassmat,betatpenmat)
 }
 
 Dmat[ind1] = matrix(t(HGCP),betan,1)
