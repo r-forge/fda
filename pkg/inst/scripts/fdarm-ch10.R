@@ -518,7 +518,7 @@ lines(gaitt3, kneeAccel.R2, lty='dashed', lwd=2)
 ##
 
 # From Giles' Sweden.Rdata
-Swede.Rdata = 'C:/Users/spencerg/fda/Rbook/Rbook/RCode/Sweden.Rdata'
+Swede.Rdata = 'C:/Users/jim/FDA2008/Sweden.Rdata'
 (mat0 = load(Swede.Rdata))
 #Swede.Rdata = 'C:/Users/spencerg/fda/Rbook/Rbook/RCode/Sweden.Rdata'
 #(mat0 = load(Swede.Rdata))
@@ -529,8 +529,9 @@ Swede.Rdata = 'C:/Users/spencerg/fda/Rbook/Rbook/RCode/Sweden.Rdata'
 # to a file 'Sweden Female Lifetable.txt
 
 SwedeTab = read.table('Sweden Female Lifetable.txt')
-HazMat = matrix(SwedeTab[,3],111,164,byrow=FALSE)
-HazMat = matrix(as.numeric(HazMat[1:81,]),81,164)
+SwedeTab = read.table('SwedeHazard.dat')
+HazMat   = matrix(SwedeTab[,3],111,164,byrow=FALSE)
+HazMat   = matrix(as.numeric(HazMat[1:81,]),81,164)
 SwedeMat = log(HazMat)
 
 
@@ -578,13 +579,13 @@ SwedeLogHazard <- SwedeMat[,1:144]
 SwedeBasis = create.bspline.basis(c(0,80),23)
 
 SwedeBeta0Par = fdPar(SwedeBasis, 2, 1e-5)
-SwedeBeta1sPar = fdPar(SwedeBasis, 2, 1e3)
-SwedeBeta1tPar = fdPar(SwedeBasis, 2, 1e3)
-SwedeBetaList = list(SwedeBeta0Par, SwedeBeta1sPar, SwedeBeta1tPar)
+SwedeBeta1Par = fdPar(SwedeBasis, 2, 1e3)
+
+SwedeBetaList = list(SwedeBeta0Par, SwedeBeta1Par, SwedeBeta1Par)
 
 D2fdPar = fdPar(SwedeBasis, lambda=1e-7)
 
-SwedeLogHazfd = smooth.basis(0:80, as.matrix(SwedeLogHazard), D2fdPar)
+SwedeLogHazfd = smooth.basis(0:80, as.matrix(SwedeLogHazard), D2fdPar)$fd
 
 # The following requires manually clicking on the plot
 # for each of 144 birth year cohorts
@@ -594,8 +595,7 @@ SwedeLogHazfd = smooth.basis(0:80, as.matrix(SwedeLogHazard), D2fdPar)
 NextYear = SwedeLogHazfd[2:144]
 LastYear = SwedeLogHazfd[1:143]
 
-#Swede.linmodSmooth = linmod(NextYear, LastYear, SwedeBetaList)
-Swede.linmodSmooth = linmod(LastYear, NextYear)
+Swede.linmodSmooth = linmod(NextYear, LastYear, SwedeBetaList)
 
 # ***
 #
