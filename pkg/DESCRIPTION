@@ -13,9 +13,12 @@ Description: These functions were developed to support
    functional data analysis as described in Ramsay, J. O.
    and Silverman, B. W. (2005) Functional Data Analysis.
    New York: Springer.  They were ported from earlier
-   versions in Matlab and S-PLUS.  The library also contains
-   a number of the data sets used in the book along with R code
-   for the analyses that produced many of the figures in the book.
+   versions in Matlab and S-PLUS.  An introduction
+   appears in Ramsay, J. O., Hooker, Giles, and Graves, Spencer
+   (2009) Functional Data Analysis with R and Matlab (Springer).
+   The package includes data sets and script files working many
+   examples including all but one of the 76 figures in this
+   latter book.
 License: GPL (>= 2)
 URL: http://www.functionaldata.org
 LazyData: true
