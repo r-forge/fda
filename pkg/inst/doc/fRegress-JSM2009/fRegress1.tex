@@ -96,7 +96,7 @@ Ramsay, Hooker and Graves (2009)
 
     \item Different types of Functional Regression
 
-    \item fRegress:  3 examples + formula interface 
+    \item fRegress:  3 examples + formula interface
 
     \item linmod:  Full Integration Regression
 
@@ -267,14 +267,26 @@ Ramsay, Hooker and Graves (2009, Fig. 10.11)
 
 \begin{frame}{pda.fd:  Estimating a Differential Equation}
 
+\begin{equation} 
+  D^2 x(t) = -\beta_1(t) Dx(t) - \beta_0 (t) x(t)
+\end{equation}
+
+\includegraphics[height=5.5cm, width=9cm]{figs/lipbifurcation}
+
 %\newline \newline \newline
-Ramsay, Hooker and Graves (2009)
-\emph{Functional Data Analysis with R and Matlab}
-(Springer, ch. 11)
+Ramsay, Hooker and Graves (2009, Fig. 11.4)
 
 \end{frame}
 %%%%%%%%%%%%%%% Closing Remarks
 \begin{frame}{Closing Remarks}
+
+The \texttt{fda} package for R supports several types of functional regression 
+\newline \newline
+including regression with either scalars or functions 
+\newline \newline
+as either response or explanatory variables 
+\newline \newline
+and estimating non-constant coefficients in a differential equation
 
 \end{frame}
 
@@ -283,8 +295,8 @@ Ramsay, Hooker and Graves (2009)
 
 Software:   Ramsay, Wickham, Graves and Hooker (2009)
 \emph{fda: Functional Data Analysis. R package}, version 2.1.2
-(www.functionaldata.org) 
-\newline \newline 
+(www.functionaldata.org)
+\newline \newline
 How to:  Ramsay, Hooker and Graves (2009)
 \emph{Functional Data Analysis with R and Matlab}
 (Springer, ch. 11)
