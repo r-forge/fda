@@ -398,15 +398,14 @@ CSTRsse(par, datstruct, fitstruct, CSTRbasis, lambda)
 \references{
   Ramsay, J. O., Hooker, G., Cao, J. and Campbell, D. (2007) Parameter
   estimation for differential equations: A generalized smoothing
-  approach (with discussion). Journal of the Royal Statistical Society,
-  Series B. To appear.
+  approach (with discussion). \emph{Journal of the Royal Statistical
+    Society}, Series B, 69, 741-796.
 
-  Ramsay, J. O., and Silverman, B. W. (2006) Functional Data Analysis,
-  2nd ed. (Springer)
+  Ramsay, J. O., and Silverman, B. W. (2006) \emph{Functional Data
+    Analysis}, 2nd ed., Springer, New York.
 
   Ramsay, James O., and Silverman, Bernard W. (2002), \emph{Applied
-    Functional Data Analysis}, Springer, New York
-
+    Functional Data Analysis}, Springer, New York.
 }
 
 \seealso{
