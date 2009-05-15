@@ -90,7 +90,7 @@ daybasis65 = create_fourier_basis(dayrange, nbasis);
 %  ----  set up the harmonic acceleration operator  -------
 
 % Lbasis  = create_constant_basis(dayrange);  %  create a constant basis
-% Lcoef   = [0,(2*pi/365)^2,0];    %  set up three coefficients
+ Lcoef   = [0,(2*pi/365)^2,0];    %  set up three coefficients
 % wfd     = fd(Lcoef,Lbasis);      % define an FD object for weight functions
 % wfdcell = fd2cell(wfd);          % convert the FD object to a cell object
 % harmaccelLfd = Lfd(3, wfdcell);  %  define the operator object

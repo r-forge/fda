@@ -1,4 +1,27 @@
 function [F,argvals] = Fstat_fd(y,yhat,argvals)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fstat_fd
+%
+% Calculates an F-type statistic from observed and predicted responses for
+% a functional linear model. This is mostly used by Fperm_fd.
+%
+% Arguments:
+%
+%   - y:  observed responses, either a vector or a functional data object. 
+%
+%   - yhat: predicted responses, must be of the same time as y
+%
+%   - argvals: time points at which to evaluate the pointwise F-statistic;
+%   defaults to 101 equally spaced points. Only used if y and yhat are
+%   functional data objects. 
+%
+% Returns:
+%
+%   F: the Fstatistic given as var(yhat)/mean( (y-yhat) ). If y and yhat
+%   are functional data objects, this is a vector giving the F statistic at
+%   each point in argvals
+
+% Last modified May 15, 2009
 
     if  isnumeric(yhat), yhat = reshape(yhatnumel(yhat),1); end
 

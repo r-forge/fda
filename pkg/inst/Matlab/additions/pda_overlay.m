@@ -1,4 +1,26 @@
 function [] = pda_overlay(bfdcell,nfine,ncoarse)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% pda_overlay
+%
+% Creates a bifurcation plot for a one-dimensional 2nd-order partial
+% differential analysis. 
+%
+% Arguments:
+%   - bfdcell: a cell array of functional data objects defining the
+%   coefficients of the principal differential analysis. This is returned
+%   by pda_cell. 
+%   
+%   - nfine: number of time points at which to evaluate the pointwise
+%   stability of the system. Defaults to 501. 
+%
+%   - ncoarse: number of time points to give as text values on the plot. 
+%
+% Returns:
+%   Nothing, but produces a plot of beta_1(t) against beta_2(t), marking
+%   out regions of exponential growth, decay and regions in which cyclic
+%   behavior is expected. 
+
+% Last modified 15 May, 2009
 
 if nargin < 3, ncoarse = 11; end
 if nargin < 2, nfine = 501; end

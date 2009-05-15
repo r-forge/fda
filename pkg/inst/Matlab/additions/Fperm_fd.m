@@ -1,5 +1,51 @@
 function [pval,qval,Fobs,Fnull,Fvals,Fnullvals,pvals_pts,qvals_pts,fregresscell,argvals] = ...
     Fperm_fd(yfdPar, xfdlist, betalist,wt,nperm,argvals,q,plotres)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fperm_fd
+%
+% Computes a permutation F-test for the significance of a functional linear
+% model, based on the maximal F-statistic for functional resposes, or an
+% F-statistic for scalar responses. 
+%
+% Arguments:
+%
+%   - yfdPar, xfdlist, betalist, wt; arguments to fRegress for the
+%   functional linear model. 
+%
+%   - nperm: number of permutations to use, defaults to 200
+%
+%   - argvals: time points to evaluate an F-statistic, if the response is
+%   functional. Defaults to 101 equally spaced points on the range of the
+%   response. 
+% 
+%   - q: alpha level of the test, defaults to 0.05.
+%
+%   - plotres: should a graphical display be given?
+%
+% Returns:
+%   - pval: the observed p-value for the test
+%   
+%   - qval: the permutation critical value
+%
+%   - Fobs: the observed test statistic: maximal pointwise F-statistic
+%   
+%   - Fnull: the computed permutation distribution given as a vector of
+%   samples
+%
+%   - Fvals: the pointwise t-statistics
+%
+%   - Fnullvals: a matrix of pointwise null distribution values
+%
+%   - qvals_pts: the pointwise critical values for the permutation
+%   distribution
+%
+%   - pvals_pts: pointwise p-values for the permutation test
+%
+%   - fregresscell: the functional linear model as returned from fRegress. 
+%
+%   - argvals: the time points at which the t-statistics were evaluated.
+
+% Last modified 15 May, 2009
 
    if nargin<8, plotres = 1; end
    if nargin < 7, q = 0.05; end
@@ -38,8 +84,8 @@ function [pval,qval,Fobs,Fnull,Fvals,Fnullvals,pvals_pts,qvals_pts,fregresscell,
 
     tyfdPar = yfdPar(randperm(n));
 
-    fregresscell = fRegress(tyfdPar, xfdlist, betalist);
-    yhat = fregresscell.yhatfdobj;
+    tfregresscell = fRegress(tyfdPar, xfdlist, betalist);
+    yhat = tfregresscell.yhatfdobj;
     
     Fnullvals = [Fnullvals,Fstat_fd(yfdPar,yhat,argvals)];
 

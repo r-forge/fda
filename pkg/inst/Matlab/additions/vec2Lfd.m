@@ -1,15 +1,17 @@
 function Lfdobj = vec2Lfd(bwtvec, rangeval)
-%VEC2LFD converts a vector of length m to a linear differential
-%  operator object of order m.  The range of the
-%  functional data object in any cell is set to RANGEVAL.  
+%  VEC2LFD converts a vector of length m to a linear differential operator 
+%  object of order m.  The range of the functional data object in any cell 
+%  is set to RANGEVAL (defaults to [0 1]) and a constant basis is used.
+%
 %  In the event that BWTVEC is already a linear differential operator
 %  object, it returns the object.  
+%
+%  Returns a Lfd object defining a constant-coefficient linear 
+%  differential operator. 
 
-%  Last modified 10 December 2005
+%  Last modified 15 May, 2005. 
 
-%  return BWTVEC if it is of class LFD
-
-if  isa_lfd(bwtvec),
+if  isa_Lfd(bwtvec),
     Lfdobj = bwtvec;
 else
     if(nargin<2), rangeval = [0 1]; end

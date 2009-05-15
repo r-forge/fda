@@ -1,5 +1,50 @@
 function [pval,qval,Tobs,Tnull,Tvals,Tnullvals,qvals_pts,pvals_pts,argvals] = tperm_fd(x1fd,x2fd,nperm,q,argvals,plotres) 
-                                                                      
+%%%%%%%%%%%%%%%%%%%%%%%
+% tperm_fd 
+%
+% Permutation t-tests between groups of functional data objects.
+% Specifically, the function reports the permutation test for the maximal
+% pointwise t-statistic. It also reports the permutation critical values
+% for the t-statistic at each time point. 
+%
+% Arguments
+%    - x1fd, x2fd  two functional data objects, replications within the fd
+%    objects are the data of interest and the test is for differences in
+%    the means of x1fd and x2fd.
+%   
+%   - nperm:  number of permutations to use, defaults to 200
+%
+%   - q: alpha-level of the test, defaults to 0.05
+%
+%   - argvals: number of points at which to compute the t-statistic.
+%   Defaults to 100 equally spaced along the range of the functional data
+%   objects. 
+%
+%   - plotres: should a graphical desplay be plotted?
+%
+% Returns
+%   - pval: the observed p-value for the test
+%   
+%   - qval: the permutation critical value
+%
+%   - Tobs: the observed test statistic: maximal pointwise t-statistic
+%   
+%   - Tnull: the computed permutation distribution given as a vector of
+%   samples
+%
+%   - Tvals: the pointwise t-statistics
+%
+%   - Tnullvals: a matrix of pointwise null distribution values
+%
+%   - qvals_pts: the pointwise critical values for the permutation
+%   distribution
+%
+%   - pvals_pts: pointwise p-values for the permutation test
+%
+%   - argvals: the time points at which the t-statistics were evaluated.
+
+% Last modified 15 May, 2009
+
     if ~isa_fd(x1fd) || ~isa_fd(x2fd)                                     
         error('x1fd and x2fd must both be functional data objects');         
     end                                                                      

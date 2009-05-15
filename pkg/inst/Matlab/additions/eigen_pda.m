@@ -1,4 +1,45 @@
-function [tfine,eigvals,limvals] = eigen_pda(pdaList,plotresult,npts)
+function [tfine,eigvals,limvals] = eigen_pda(bwtlist,awtlist,ufdlist,plotresult,npts)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% eigen_pda
+%
+% A graphical stability analysis of the result of a principal differential
+% analysis. Computes the instantaneous Eigenvalues and stable points of a
+% time-varying linear differential equation. 
+%
+% Arguments:
+%
+%   - bwtlist, awtlist: lists defining the alpha and beta functions as
+%   returned by pda_cell. 
+%
+%   - ufdlist: list of forcing functions as given to pda_cell.
+%
+%   - plotresult: should the stability analysis be plotted? Defaults to
+%   true. 
+%
+%   - npts: number of time points at which to evaluate the stability
+%   analysis. Defaults to 501. 
+%
+% Returns:
+%
+%   If plotres is non-zero a graph is produced giving the real and
+%   imaginary eigenvalues of the system at each of npts time points.
+%   Positive real values indicate a system undergoing exponential growth,
+%   negative real values indicate decay to a fixed point. Non-zero
+%   imaginary values indicate a system that is oscillating. 
+%
+%   If ufdcell is not empty a third pane is created giving the stable
+%   points of the system at each time. 
+%
+%   In addition, it returns
+%
+%   - tfine: time points at which the stability analysis is plotted
+%
+%   - eigvals: a matrix of eigenvalues; rows correspond to tfine
+%
+%   - limvals: a matrix of stable points of the system, rows correspond to
+%   tfine. 
+
+% Last modified May 15, 2009
 
 if nargin < 3, npts = 501; end
 if nargin < 2, plotresult = 1; end
@@ -7,10 +48,6 @@ rangval = getbasisrange(getbasis(pdaList.resfdcell{1}));
 
 m = length(pdaList.resfdcell);
 tfine = linspace(rangval(1),rangval(2),npts);
-
-bwtlist = pdaList.bwtlist;
-awtlist = pdaList.awtlist;
-ufdlist = pdaList.ufdlist;
 
 if m == 1
     d = length(bwtlist);
