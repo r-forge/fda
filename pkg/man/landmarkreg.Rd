@@ -17,7 +17,7 @@ function. It must be strictly increasing and smooth.
 }
 \usage{
 landmarkreg(fdobj, ximarks, x0marks=xmeanmarks,
-            WfdPar, monwrd=FALSE)
+            WfdPar, monwrd=FALSE, ylambda=1e-10)
 }
 \arguments{
   \item{fdobj}{
@@ -46,11 +46,19 @@ landmarkreg(fdobj, ximarks, x0marks=xmeanmarks,
     method is used, which is not guaranteed to give strictly monotonic
     warping functions.
   }
+  \item{ylambda}{
+    Smoothing parameter controlling the smoothness of the registered
+    functions.  It can happen with high dimensional bases that local
+    wiggles can appear in the registered curves or their derivatives
+    that are not seen in the unregistered versions.  In this case,
+    this parameter should be increased to the point where they
+    disappear.
+  }
 }
 \value{
   a named list of length 2 with components:
 
-  \item{regfd}{
+  \item{fdreg}{
     a functional data object for the registered curves.
   }
   \item{warpfd}{
