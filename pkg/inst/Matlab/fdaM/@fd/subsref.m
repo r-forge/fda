@@ -49,12 +49,13 @@ elseif strcmp(type, '()')
     subfd.coef     = newcoef;
     subfd.basisobj = getbasis(fdobj);
     fdnames        = getnames(fdobj);
-    caselabels     = getfdlabels(fdnames{2},nrep);
-    varlabels      = getfdlabels(fdnames{3},nvar);
-    if ~isempty(caselabels)
+%    caselabels     = getfdlabels(fdnames{2},nrep);
+%    varlabels      = getfdlabels(fdnames{3},nvar);
+    [caselabels, varlabels] = getfdlabels(fdnames,nrep,nvar);
+    if ~isempty(caselabels) && iscell(fdnames{2})
         fdnames{2}{2} = caselabels(subs{1},:);
     end
-    if ~isempty(varlabels)
+    if ~isempty(varlabels) && iscell(fdnames{3}) 
         fdnames{3}{2} = varlabels(subs{2},:);
     end
     subfd.fdnames = fdnames;

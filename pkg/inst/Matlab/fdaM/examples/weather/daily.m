@@ -405,6 +405,10 @@ pacindex = [12,17,18,30,31];
 conindex = [3,5,6,7,16,20,26,27,29,32,33,35];
 artindex = [10,11,21];
 
+% T-test for differences
+
+tperm_fd(tempfd(atlindex),tempfd(conindex));
+
 %  Set up a design matrix having a column for the grand mean, and
 %    a column for each climate zone effect. Add a dummy contraint
 %    observation
@@ -473,6 +477,12 @@ end
 subplot(2,3,6)
 plot(yhatfdobj)
 title('Predicted values')
+
+% Try a cross-validation and permutation test
+
+sse_cv = fRegress_CV(tempfd, xfdcell, betacell,1:35);
+
+Fperm_fd(tempfd,xfdcell,betacell);
 
 %  compute mapping from data y to coefficients in c
 
@@ -709,6 +719,11 @@ fRegressCell = fRegress(annualprec, xfdcell, betacell);
 
 betaestcell   = fRegressCell{4}; 
 annualprechat = fRegressCell{5};
+
+% Permutation F-test
+
+Fperm_fd(annualprec, xfdcell, betacell);
+
 
 %  constant term
 

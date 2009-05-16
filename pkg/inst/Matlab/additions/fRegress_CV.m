@@ -1,4 +1,4 @@
-function SSE_CV = fRegress_CV(yfdPar, xfdcell, betacell,cvobs)
+function [SSE_CV,errfd] = fRegress_CV(yfdPar, xfdcell, betacell,cvobs)
 % FREGRESS_CV computes cross-validated error sum of squares
 
 %  Last modified 20 July 2006
@@ -8,11 +8,16 @@ if strcmp(class(yfdPar),'double')
     yvec = yfdPar;
     N = length(yvec);
     p = length(xfdcell);
-    
-    if nargin<4, cvobs = 1:N; else N = length(cvobs); end
+
+    if nargin<4,
+        cvobs = 1:N;
+        N2 = N;
+    else
+        N = length(cvobs);
+    end
 
     SSE_CV  = 0;
-    for m=1:N
+    for m=1:N2
         i = cvobs(m);
         clear xfdcelli;
         indexi = find((1:N) ~= i);
@@ -42,24 +47,29 @@ if strcmp(class(yfdPar),'double')
         SSE_CV = SSE_CV + (yvec(i) - yhati).^2;
     end
 elseif isa_fdPar(yfdPar) || isa_fd(yfdPar)
-    if isa_fdPar(yfdPar) yfd = getfd(yfdPar); else yfd = yfdPar; end
-    
-    ycoef = getcoefs(yfd);
+    if isa_fdPar(yfdPar), yfd = getfd(yfdPar); else yfd = yfdPar; end
+
+    ycoef = getcoef(yfd);
     N = size(ycoef,2);
-    if nargin < 4, CVobs = 1:N else N = length(cvobs) end;
+    if nargin < 4,
+        cvobs = 1:N;
+        N2= N;
+    else
+        N2 = length(cvobs);
+    end;
 
-    p = length(xfdlist);
+    p = length(xfdcell);
 
-    SSE.CV = 0;
+    SSE_CV = 0;
     errcoefs = [];
 
-    for m = 1:N
-      i =  cvobs(m);
-%      if m == 2
-%        print(paste('Estimated Computing time =',round(N*elapsed.time),'seconds.'))
-%      end
+    for m = 1:N2
+        i =  cvobs(m);
+        if m == 2
+            print(strcat('Estimated Computing time =  ',num2str(round(N*elapsed.time)),'seconds.'))
+        end
 
-%      begin <- proc.time()
+        tic
         clear xfdcelli;
         indexi = find((1:N) ~= i);
         xfdcelli = cell(p,1);
@@ -71,23 +81,23 @@ elseif isa_fdPar(yfdPar) || isa_fd(yfdPar)
         yfdi = yfd(indexi);
         fRegressCelli = fRegress(yfdi, xfdcelli, betacell);
 
-      yhat = 0                        % Now we predict
-      for k = 1:p
-        xfdk = xfdcell{k}
-        yhat = yhat + xfdk(i)*getfd(tres.betaestlist{k})
-      end
-      err = yfd(i) - yhat
+        yhat = 0;                        % Now we predict
+        for k = 1:p
+            xfdk = xfdcell{k};
+            yhat = yhat + xfdk(i).*getfd(fRegressCelli{4}{k});
+        end
+        err = yfd(i) - yhat;
 
-      errcoefs = [errcoefs,getcoefs(err)];
+        errcoefs = [errcoefs,getcoef(err)];
 
-      SSE.CV = SSE.CV + inprod(err,err);
-%      elapsed.time <- max(proc.time()-begin,na.rm=TRUE)
+        SSE_CV = SSE_CV + inprod(err,err);
+        elapsed.time = toc;
     end
     errfd = fd(errcoefs,getbasis(err));
-%    names(errfd$fdnames)[[3]] = "Xval Errors"    %% NEED TO CHECK THIS
-    
-    
-else  
+    %    names(errfd$fdnames)[[3]] = "Xval Errors"    %% NEED TO CHECK THIS
+
+
+else
     %  YFDOBJ is neither functional nor multivariate
     error('YFDOBJ is neither functional nor multivariate.');
 end
