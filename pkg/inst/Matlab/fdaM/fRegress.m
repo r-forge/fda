@@ -34,9 +34,11 @@ function fRegressCell = ...
 %    Cmatinv     ... inverse of the coefficient matrix, needed for
 %                    function FREGRESS_STDERR that computes standard errors
 %    wt          ... weights for observations
-%    df          ... degrees of freedom for fit
+%    df          ... degrees of freedom for fit  (scalar response)
+%    OCV         ... ordinary cross validation score (scalar response)
+%    GCV         ... generalized cross validation score (scalar resonse)
 
-%  Last modified 28 February 2007
+%  Last modified 15 May 2009
 
 if nargin < 3
     error('Less than three arguments supplied.');
@@ -311,6 +313,8 @@ if isa_fdPar(yfdPar) || isa_fd(yfdPar)
     yhatfdobj = data2fd(yhatmat, tfine, ybasisobj);
     
     df = NaN;
+    OCV = NaN;
+    GCV = NaN;
         
 elseif strcmp(class(yfdPar),'double')
     
@@ -412,7 +416,9 @@ elseif strcmp(class(yfdPar),'double')
     
     % compute degrees of freedom measure
     
-    df = sum(diag(Zmat*Cmatinv*Zmat'));
+%    df = sum(diag(Zmat*Cmatinv*Zmat'));
+    hatvals = diag(Zmat * Cmatinv * Zmat');
+    df = sum(hatvals);
     
     %  set up fdPar object for BETAESTFDPAR
     
@@ -461,7 +467,10 @@ elseif strcmp(class(yfdPar),'double')
         end
     end
     yhatfdobj = yhatmat;
-        
+
+    OCV = sum( (ymat-yhatmat).^2./(1-hatvals).^2 );
+    GCV = sum( (ymat-yhatmat).^2 )/( (sum(1-hatvals)).^2 );
+    
 else
     %  YFDOBJ is neither functional nor multivariate
     error('YFDOBJ is neither functional nor multivariate.');
@@ -475,6 +484,8 @@ fRegressCell{5} = yhatfdobj;
 fRegressCell{6} = Cmatinv;
 fRegressCell{7} = wt;
 fRegressCell{8} = df;
+fRegressCell{9} = OCV;
+fRegressCell{10} = GCV;
 
 %  ------------------------------------------------------------
 
