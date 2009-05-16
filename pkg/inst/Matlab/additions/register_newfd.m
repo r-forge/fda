@@ -2,8 +2,8 @@ function yregfd = register_newfd(yfd, Wfd,type)
 
 if nargin < 3, type = 'direct'; end
 
-coef  = getcoefs(Wfd);
-shift <- coef(1);
+coef  = getcoef(Wfd);
+shift = coef(1);
 
 if all(coef == 0)
     if strcmp(type,'periodic'),
@@ -45,7 +45,7 @@ else
         xfine = eval_monfd(tfine,Wfd);
         xfine = xfine*diag(1./xfine(neval,:))*(Wrange(2)-Wrange(1))+Wrange(1);
     end
-    xfine = xfine*( xfine>yrange(1) & xfine < yrange(2)) + yrange(2)*(xfine>=yrange(2)) + yrange(1)*(xfine<=yrange(1));
+    xfine = xfine.*( xfine>yrange(1) & xfine < yrange(2)) + yrange(2).*(xfine>=yrange(2)) + yrange(1).*(xfine<=yrange(1));
     yfine = eval_fd(tfine,yfd);
 
     xdim = size(xfine);
