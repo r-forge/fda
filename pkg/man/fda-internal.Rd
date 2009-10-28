@@ -68,6 +68,8 @@
 \alias{fdParcheck}
 \alias{trapz}
 \alias{ycheck}
+\alias{moreNames}
+\alias{bifdPar}
 
 % docclass is function
 \keyword{internal}
