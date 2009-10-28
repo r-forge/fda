@@ -1,4 +1,4 @@
-fRegress.stderr <- function(y, y2cMap, SigmaE, ...) {
+fRegress.stderr <- function(fRegressList, y2cMap, SigmaE, ...) {
 
 #  FREGRESS.STDERR  computes standard error estimates for regression
 #       coefficient functions estimated by function FREGRESS.
@@ -27,7 +27,6 @@ fRegress.stderr <- function(y, y2cMap, SigmaE, ...) {
 
 #  Last modified 21 October 2008 by Jim Ramsay
 
-  fRegressList <- y
 #  get number of independent variables
 
   xfdlist  <- fRegressList$xfdlist

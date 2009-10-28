@@ -15,11 +15,11 @@
   and not sampling covariances.
 }
 \usage{
-fRegress.stderr(y, y2cMap, SigmaE, ...)
+fRegress.stderr(fRegressList, y2cMap, SigmaE, ...)
 }
 \arguments{
-  \item{y}{
-    the named list of length six that is returned from a call to
+  \item{fRegressList}{
+    the named list that is returned from a call to
     function \code{fRegress}.
   }
   \item{y2cMap}{
@@ -44,23 +44,22 @@ fRegress.stderr(y, y2cMap, SigmaE, ...)
 
 }
 \value{
-  a named list of length 3 containing:
+a named list of length 3 containing:
 
-
-  \item{betastderrlist}{
-    a list object of length equal to the number of independent
-    variables. Each member contains a functional parameter object for
-    the standard error of a regression function.
-  }
-  \item{bvar}{
-    a symmetric matrix containing sampling variances and covariances for
-    the matrix of regression coefficients for the regression functions.
-    These are stored column-wise in defining BVARIANCE.
-  }
-  \item{c2bMap}{
-    a matrix containing the mapping from response variable coefficients
-    to coefficients for regression coefficients.
-  }
+\item{betastderrlist}{
+  a list object of length the number of independent variables.  Each
+  member contains a functional parameter object for the standard error
+  of a regression function.
+}
+\item{bvar}{
+  a symmetric matrix containing sampling variances and covariances for
+  the matrix of regression coefficients for the regression functions.
+  These are stored column-wise in defining BVARIANCE.
+}
+\item{c2bMap}{
+  a matrix containing the mapping from response variable coefficients to
+  coefficients for regression coefficients.
+}
 }
 \seealso{
 \code{\link{fRegress}},
