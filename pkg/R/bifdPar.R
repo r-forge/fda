@@ -1,21 +1,12 @@
-bifdPar = function(bifdobj, estimate=TRUE, lambdas=0, lambdat=0, 
-                   Lfdobjs=int2Lfd(2), Lfdobjt=int2Lfd(2)) {
-# Sets up a functional parameter object
+bifdPar = function(bifdobj, Lfdobjs=int2Lfd(2), Lfdobjt=int2Lfd(2), 
+                   lambdas=0, lambdat=0, estimate=TRUE) {
+# Sets up a bivariate functional parameter object
 #  Arguments:
 #  BIFDOBJ  ... A bivariate functional data object.  The basis for this object 
 #               is used to define the bivariate functional parameter.
 #               When an initial value is required for iterative 
 #               estimation of a bivariate functional parameter, the coefficients
 #               will give the initial values for the iteration.
-#  ESTIMATE ... If nonzero, the parameter is estimated; if zero, the
-#                parameter is held fixed at this value.
-#                By default, this is 1.
-#  LAMBDAS  ... The penalty parameter controlling the smoothness of
-#               the estimated parameter with respect to the first argument s.  
-#               By default this is 0.
-#  LAMBDAT  ... The penalty parameter controlling the smoothness of
-#               the estimated parameter with respect to the second argument t.  
-#               By default this is 0.
 #  LFDOBJS  ... A linear differential operator value or a derivative
 #               value for penalizing the roughness of the object
 #               with respect to the first argument s.
@@ -24,8 +15,17 @@ bifdPar = function(bifdobj, estimate=TRUE, lambdas=0, lambdat=0,
 #               value for penalizing the roughness of the object
 #               with respect to the second argument t.
 #               By default, this is 2.
+#  LAMBDAS  ... The penalty parameter controlling the smoothness of
+#               the estimated parameter with respect to the first argument s.  
+#               By default this is 0.
+#  LAMBDAT  ... The penalty parameter controlling the smoothness of
+#               the estimated parameter with respect to the second argument t.  
+#               By default this is 0.
+#  ESTIMATE ... If nonzero, the parameter is estimated; if zero, the
+#                parameter is held fixed at this value.
+#                By default, this is 1.
 
-#  last modified 4 May 2009
+#  last modified 28 October 2009
 
 #  check BIFDOBJ
 
