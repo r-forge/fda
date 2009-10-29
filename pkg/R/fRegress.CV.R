@@ -6,9 +6,9 @@ fRegress.CV <- function(y, xfdlist, betalist, wt=NULL, CVobs=1:N, ...)
 # generalized cross validation scores are now returned by fRegress
 # when scalar responses are used.
 
-# last modified 23 October 2009 by Jim Ramsay
+# last modified 29 October 2009 by Jim Ramsay
 
-arglist <- fRegress.argcheck(y, xfdlist, betalist, wt)
+arglist <- fRegressArgCheck(y, xfdlist, betalist, wt)
 
 yfdPar   <- arglist$yfdPar
 xfdlist  <- arglist$xfdlist
