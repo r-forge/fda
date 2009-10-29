@@ -346,7 +346,11 @@ for (ivar in 1:nvar) {
 
   Wfdobj = fd(coef, basisobj)
 
-  return( list("Wfdobj"=Wfdobj, "Flist"=Flist) )
+  posFD = list("Wfdobj"=Wfdobj, "Flist"=Flist)
+  
+  class(posFd) = 'posfd'
+
+  return(posFD)
 }
 
 #  ---------------------------------------------------------------
