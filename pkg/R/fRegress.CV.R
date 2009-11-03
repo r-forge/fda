@@ -8,12 +8,11 @@ fRegress.CV <- function(y, xfdlist, betalist, wt=NULL, CVobs=1:N, ...)
 
 # last modified 29 October 2009 by Jim Ramsay
 
-arglist <- fRegressArgCheck(y, xfdlist, betalist, wt)
-
-yfdPar   <- arglist$yfdPar
-xfdlist  <- arglist$xfdlist
-betalist <- arglist$betalist
-wt       <- arglist$wt 
+argList  <- fRegressArgCheck(y, xfdlist, betalist, wt)
+yfdPar   <- argList$yfdPar
+xfdlist  <- argList$xfdlist
+betalist <- argList$betalist
+wt       <- argList$wt 
 
 p <- length(xfdlist)
 N <- dim(xfdlist[[1]]$coef)[2]

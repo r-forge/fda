@@ -3,6 +3,8 @@ fRegressArgCheck <- function(yfdPar, xfdlist, betalist, wt=NULL)
 #  FREGRESS_ARGCHECK checks the first four arguments for the functions
 #  for function regression, including FREGRESS.
 
+#  Last modified 3 November 2009 by Jim Ramsay
+
 #  --------------------  Check classes of arguments  --------------------
 
 #  check YFDPAR and compute sample size N
@@ -139,6 +141,7 @@ if (is.null(wt)) wt = rep(1,N)
 if (length(wt) != N) stop("Number of weights not equal to N.")
 if (any(wt < 0))     stop("Negative weights found.")
 
-return(list(yfdPar=yfdPar, xfdlist=xfdlist, betalist=betalist, wt=wt))
+argList <- list(yfdPar=yfdPar, xfdlist=xfdlist, betalist=betalist, wt=wt)
+return(argList)
 
 }

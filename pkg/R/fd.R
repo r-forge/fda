@@ -808,10 +808,12 @@ times.fd <- function(e1, e2, basisobj=NULL)
 #  power method for "fd"
 #  -------------------------------------------------------------------
 
-"^.fd" <- function(fdobj, a, tol=1e-4)
+"^.fd" <- function(e1, e2)
 {
 #  A positive integer pointwise power of a functional data object with
-#  a B-splinebasis.  powerfd = fdobj^a
+#  a B-splinebasis.  powerfd = fdobj^a.  
+#  Generic arguments e1 = fdobj and e2 = a.  
+#
 #  The basis is tested for being a B-spline basis.  The function then
 #  sets up a new spline basis with the same knots but with an order
 #  that is M-1 higher than the basis for FDOBJ, where M = ceiling(a),
@@ -835,9 +837,13 @@ times.fd <- function(e1, e2, basisobj=NULL)
 #  values over a suitable mesh.  This is especially true for fourier
 #  bases.
 
-#  Last modified 22 October 2009
+#  Last modified 3 Novem ber 2009
 
 #  check first two arguments
+
+fdobj = e1
+a     = e2
+tol   = 1e-4
 
 if ((!(inherits(fdobj, "fd"))))
         stop("First argument for ^ is not a functional data object.")
