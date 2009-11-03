@@ -13,6 +13,7 @@
 \alias{eigchk}
 \alias{expect.phiphit}
 \alias{fd2list}
+\alias{fRegressArgCheck}
 \alias{fdchk}
 \alias{fngrad.smooth.monotone}
 \alias{fngrad.smooth.morph}
