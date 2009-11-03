@@ -20,9 +20,3 @@ Description: These functions were developed to support functional data
 License: GPL (>= 2)
 URL: http://www.functionaldata.org
 LazyData: true
-Repository: CRAN
-Repository/R-Forge/Project: fda
-Repository/R-Forge/Revision: 451
-Date/Publication: 2009-10-18 09:17:59
-Packaged: 2009-10-15 20:11:00 UTC; rforge
-Built: R 2.10.0; ; 2009-10-23 22:57:55 UTC; windows
