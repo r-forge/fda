@@ -15,12 +15,14 @@
   and not sampling covariances.
 }
 \usage{
-fRegress.stderr(fRegressList, y2cMap, SigmaE, ...)
+fRegress.stderr(y, y2cMap, SigmaE, ...)
 }
 \arguments{
-  \item{fRegressList}{
+  \item{y}{
     the named list that is returned from a call to
-    function \code{fRegress}.
+    function \code{fRegress}, where it is referred to as fRegressList.
+    R syntax requires that the first argument of any function beginning
+    with \code{fRegress.} must begin with \code{y}.
   }
   \item{y2cMap}{
     a matrix that contains the linear transformation that takes the raw
