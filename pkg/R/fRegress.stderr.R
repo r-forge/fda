@@ -1,11 +1,14 @@
-fRegress.stderr <- function(fRegressList, y2cMap, SigmaE, ...) {
+fRegress.stderr <- function(y, y2cMap, SigmaE, ...) {
 
 #  FREGRESS.STDERR  computes standard error estimates for regression
 #       coefficient functions estimated by function FREGRESS.
 #
 #  Arguments:
 #
-#  FREGRESSLIST ... a list object produced by function FREGRESS.
+#  FREGRESSLIST ... a list object produced by function FREGRESS.  This
+#                   is indicated by Y in the arguments since R syntax
+#                   requires all of tghe fRegress family of functions to
+#                   use this notation.
 #  Y2CMAP       ... the matrix mapping from the vector of observed values
 #                   to the coefficients for the dependent variable.
 #                   This is output by function SMOOTH_BASIS.  If this is
@@ -25,7 +28,11 @@ fRegress.stderr <- function(fRegressList, y2cMap, SigmaE, ...) {
 #  C2BMAP         ... the matrix mapping from response variable coefficients
 #                     to coefficients for regression coefficients
 
-#  Last modified 21 October 2008 by Jim Ramsay
+#  Last modified 4 November 2008 by Jim Ramsay
+
+#  generic argument y is actually fRegressList
+
+fRegressList <- y
 
 #  get number of independent variables
 
