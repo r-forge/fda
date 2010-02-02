@@ -29,7 +29,7 @@ inprod <- function(fdobj1, fdobj2=NULL, Lfdobj1=int2Lfd(0), Lfdobj2=int2Lfd(0),
 #  A matrix of NREP1 by NREP2 of inner products for each possible pair
 #  of functions.
 
-#  Last modified 5 May 2009
+#  Last modified 2 February 2010
 
 #  Check FDOBJ1 and get no. replications and basis object
 
