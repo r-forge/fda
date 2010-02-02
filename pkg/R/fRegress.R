@@ -53,7 +53,7 @@ fRegress <- function(y, xfdlist, betalist, wt=NULL,
 #    wt          ... weights for observations
 #    df          ... degrees of freedom for fit
 
-#  Last modified 29 October 2009 by Jim Ramsay
+#  Last modified 2 February 2010 by Jim Ramsay
 
 arglist <- fRegressArgCheck(y, xfdlist, betalist, wt)
 
@@ -88,6 +88,8 @@ if (inherits(yfdPar, "fdPar")) {
     ybasisobj <- yfdobj$basis
     rangeval  <- ybasisobj$rangeval
     ynbasis   <- ybasisobj$nbasis
+    onesbasis <- create.constant.basis(rangeval)
+    onesfd    <- fd(1,onesbasis)
 
     if (length(ycoefdim) > 2) stop("YFDOBJ from YFDPAR is not univariate.")
 
@@ -122,7 +124,7 @@ if (inherits(yfdPar, "fdPar")) {
             indexj <- mj1:mj2
             #  compute right side of equation DMAT
             xfdj <- xfdlist[[j]]
-            if (wtconstant) {
+            if (wtconst) {
                 xyfdj <- xfdj*yfdobj
             } else {           
                 xyfdj <- (xfdj*wt)*yfdobj
@@ -144,7 +146,7 @@ if (inherits(yfdPar, "fdPar")) {
                     indexk <- mk1:mk2
                     #  set up two weight functions
                     xfdk <- xfdlist[[k]]
-                    if (wtconstant) {
+                    if (wtconst) {
                         xxfdjk <- xfdj*xfdk
                     } else {           
                         xxfdjk <- (xfdj*wt)*xfdk
@@ -166,7 +168,7 @@ if (inherits(yfdPar, "fdPar")) {
         }
     }
 
-    Cmat    <- (Cmat+t(Cmat))/2
+    Cmat <- (Cmat+t(Cmat))/2
 
     #  check Cmat for singularity
 
