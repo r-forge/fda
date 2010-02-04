@@ -53,7 +53,7 @@ fRegress <- function(y, xfdlist, betalist, wt=NULL,
 #    wt          ... weights for observations
 #    df          ... degrees of freedom for fit
 
-#  Last modified 2 February 2010 by Jim Ramsay
+#  Last modified 3 February 2010 by Jim Ramsay
 
 arglist <- fRegressArgCheck(y, xfdlist, betalist, wt)
 
