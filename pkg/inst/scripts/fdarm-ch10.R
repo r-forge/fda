@@ -614,6 +614,7 @@ dimnames(SwedeLogHazard)[[2]] <- paste('b', 1751:1894, sep='')
 Fig10.10data = cbind(SwedeLogHazard[, c('b1751', 'b1810', 'b1860')], Swede1920)
 
 SwedeTime = 0:80;
+SwedeRng = c(0,80);
 
 matplot(SwedeTime, Fig10.10data,
         type='l',lwd=2,xlab='age',ylab='log Hazard',col=1,
