@@ -647,7 +647,7 @@ SwedeBeta1fd  = bifd(matrix(0,23,23), SwedeBetaBasis, SwedeBetaBasis)
 
 SwedeBeta1Par = bifdPar(SwedeBeta1fd, 2, 2, 1e3, 1e3)
 
-SwedeBetaList = list(SwedeBeta0Par, SwedeBeta1Par, SwedeBeta1Par)
+SwedeBetaList = list(SwedeBeta0Par, SwedeBeta1Par)
 
 #  Define the dependent and independent variable objects
 
