@@ -84,7 +84,9 @@ BD usually provides many ties (curves have the same depth values), but MBD does 
 %% ...
 }
 \references{
-Sun, Y. and Genton, M. G. (2010), "Functional Boxplots," Manuscript. Texas A&M University, Department of Statistics.
+Sun, Y., and Genton, M. G. (2011), "Functional boxplots,"
+<http://www.stat.tamu.edu/%7Egenton/2011.SG.JCGS.pdf> /Journal of
+Computational and Graphical Statistics/, to appear.
 \cr
 \cr Lopez-Pintado, S. and Romo, J. (2009), "On the concept of depth for functional data," Journal
 of the American Statistical Association, 104, 718-734.
