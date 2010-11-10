@@ -28,8 +28,7 @@
 #
 #  --------------------------------------------------------------------
 
-#  Last modified 21 November 2008 by Jim Ramsay
-#  Previously modified 25 February 2007 by Spencer Graves
+#  Last modified 10 November 2010 by Jim Ramsay
 
 #  attach the FDA functions
 
@@ -124,7 +123,7 @@ par(op)
 #par(mfrow=c(1,2), mar=c(3,4,2,1), pty="s")
 op <- par(mfrow=c(2,1))
 plotfit.fd(gait, gaittime, gaitfd, cex=1.2)
-# Problem:  does not work properly;
+# Problem:  does not work properly
 # ask=TRUE with appropriate choices for lty, etc.,
 # might make it stop after each one,
 # but would not fix the overplotting
@@ -216,6 +215,7 @@ title("Hip - Hip")
 #  do the PCA with varimax rotation
 
 # Smooth with lambda as determined above
+
 gaitfdPar  <- fdPar(gaitbasis, harmaccelLfd, lambda=1e-2)
 gaitpca.fd <- pca.fd(gaitfd, nharm=4, gaitfdPar)
 
@@ -227,6 +227,66 @@ gaitpca.fd <- varmx.pca.fd(gaitpca.fd)
 op <- par(mfrow=c(2,2))
 plot.pca.fd(gaitpca.fd, cycle=TRUE)
 par(op)
+
+#  compute proportions of variance associated with each angle
+
+#  compute the harmonic scores associated with each angle
+
+gaitscores = gaitpca.fd$scores
+hipscores  = gaitscores[,,1]
+kneescores = gaitscores[,,2]
+
+#  compute the values of the harmonics at time values for each angle
+
+gaitharmmat = eval.fd(gaittime, gaitharmfd)
+hipharmmat  = gaitharmmat[,,1]
+kneeharmmat = gaitharmmat[,,2]
+
+#  we need the values of the two mean functions also
+
+gaitmeanvec = eval.fd(gaittime, gaitmeanfd)
+hipmeanvec  = gaitmeanvec[,,1]
+kneemeanvec = gaitmeanvec[,,2]
+
+#  the values of the smooths of each angle less each mean function
+
+gaitsmtharray = eval.fd(gaittime, gaitfd)
+hipresmat  = gaitsmtharray[,,1] - outer( hipmeanvec,rep(1,39))
+kneeresmat = gaitsmtharray[,,2] - outer(kneemeanvec,rep(1,39))
+
+#  the variances of the residuals of the smooth angles from their means
+
+hipvar  = mean( hipresmat^2)
+kneevar = mean(kneeresmat^2)
+
+print(paste("Variances of fits by the means:", 
+            round(c(hipvar, kneevar),1)))
+
+#  compute the fits to the residual from the mean achieved by the PCA
+
+hipfitmat  =  hipharmmat %*% t(hipscores)
+kneefitmat = kneeharmmat %*% t(kneescores)
+
+#  compute the variances of the PCA fits
+
+hipfitvar  = mean( hipfitmat^2)
+kneefitvar = mean(kneefitmat^2)
+
+#  compute percentages relative to the total PCA fit variance
+
+hippropvar1  = hipfitvar/(hipfitvar+kneefitvar)
+kneepropvar1 = kneefitvar/(hipfitvar+kneefitvar)
+
+print(paste("Percentages of fits for the PCA:", 
+            round(100*c(hippropvar1, kneepropvar1),1)))
+
+#  compute percentages relative to the total mean fit variance
+
+hippropvar2  = hipfitvar/(hipvar+kneevar)
+kneepropvar2 = kneefitvar/(hipvar+kneevar)
+
+print((paste("Percentages of fits for the PCA:", 
+             round(100*c(hippropvar2, kneepropvar2),1))))
 
 #  --------------------------------------------------------------
 #           Canonical correlation analysis
