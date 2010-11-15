@@ -1,4 +1,4 @@
-function stderrStruct = fRegress_stderr(fRegressStruct, y2cMap, SigmaE)
+function stderrCell = fRegress_stderr(fRegressStruct, y2cMap, SigmaE)
 
 %  FREGRESS.STDERR  computes standard error estimates for regression
 %       coefficient functions estimated by function FREGRESS.
@@ -29,10 +29,10 @@ function stderrStruct = fRegress_stderr(fRegressStruct, y2cMap, SigmaE)
 
 %  get number of independent variables 
     
-yfdPar   = fRegressStruct.yfdPar;
-xfdcell  = fRegressStruct.xfdcell;
-betacell = fRegressStruct.betacell;
-Cmatinv  = fRegressStruct.Cmatinv;
+yfdPar   = fRegressStruct{1};
+xfdcell  = fRegressStruct{2};
+betacell = fRegressStruct{3};
+Cmatinv  = fRegressStruct{6};
 
 p = length(xfdcell);
 
@@ -181,6 +181,6 @@ else
     end
 end
 
-stderrStruct.betastderr = betastderrcell;
-stderrStruct.bvar       = bvar;
-stderrStruct.c2bMap     = c2bMap;
+stderrCell{1} = betastderrcell;
+stderrCell{2} = bvar;
+stderrCell{3} = c2bMap;

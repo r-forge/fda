@@ -437,21 +437,21 @@ end
 %                  Set up output struct object
 %  -----------------------------------------------------------------------
 
-fRegressCell.yfdPar     = yfdPar;
-fRegressCell.xfdcell    = xfdcell;
-fRegressCell.betacell   = betacell;
-fRegressCell.betahat    = betaestcell;
-fRegressCell.yhat       = yhatfd;
-fRegressCell.Cmat       = Cmat;
-fRegressCell.Dmat       = Dmat;
-fRegressCell.Cmatinv    = Cmatinv;
-fRegressCell.w          = wt;
-fRegressCell.df         = df;
-fRegressCell.y2cMap     = y2cMap;
-fRegressCell.SigmaE     = SigmaE;
-fRegressCell.betastderr = betastderrcell;
-fRegressCell.bvar       = bvar;
-fRegressCell.c2bMap     = c2bMap;
+fRegressStruct.yfdPar     = yfdPar;
+fRegressStruct.xfdcell    = xfdcell;
+fRegressStruct.betacell   = betacell;
+fRegressStruct.betahat    = betaestcell;
+fRegressStruct.yhat       = yhatfd;
+fRegressStruct.Cmat       = Cmat;
+fRegressStruct.Dmat       = Dmat;
+fRegressStruct.Cmatinv    = Cmatinv;
+fRegressStruct.w          = wt;
+fRegressStruct.df         = df;
+fRegressStruct.y2cMap     = y2cMap;
+fRegressStruct.SigmaE     = SigmaE;
+fRegressStruct.betastderr = betastderrcell;
+fRegressStruct.bvar       = bvar;
+fRegressStruct.c2bMap     = c2bMap;
 
 %  ------------------------------------------------------------
 
