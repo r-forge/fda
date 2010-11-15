@@ -51,7 +51,7 @@ fdmat     = eval_fd(harmfd, x);
 meanmat   = squeeze(eval_fd(pcastr.meanfd, x));
 dimfd     = size(fdmat);
 nharm     = dimfd(2);
-casenames = getfdlabels(fdnames{2}, nharm);
+casenames = getfdlabels(fdnames);
 if harm == 0
     harm = (1:nharm);
 end
