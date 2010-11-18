@@ -204,7 +204,7 @@ if nargout > 2
     end
 end
 
-if nargout == 4
+if nargout > 4
     if ncurve > 1 || nvar > 1
         y2cMap = cell(ncurve,nvar);
     else
@@ -415,8 +415,8 @@ for ivar=1:nvar
         
         %  save y2cMap if required in cell array.
         
-        if nargout == 4
-            y2cMapij = (inv(Dyhat' * Dyhat + lambda*Kmat)*Dyhat')./sqrt(n);
+        if nargout > 4
+            y2cMapij = ((Dyhat' * Dyhat + lambda*Kmat)\Dyhat')./sqrt(n);
             if ncurve == 1 && nvar == 1
                 y2cMap = y2cMapij;
             else

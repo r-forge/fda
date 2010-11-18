@@ -146,7 +146,7 @@ end
 if ndim == 3
     if matplt
         %  plot all curves
-        varnames = getfdlabels(fdnames{3}, nvar);
+        varnames = getfdlabels(fdnames{3});
         for ivar = 1:nvar
             subplot(nvar,1,ivar);
             temp = squeeze(fdmat(:,:,ivar));
