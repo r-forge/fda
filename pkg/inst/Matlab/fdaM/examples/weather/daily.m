@@ -2,7 +2,7 @@
 
 addpath ('../..')
 
-%  Last modified 22 September 2009
+%  Last modified 11 November 2010
 
 %  -----------------------------------------------------------------------
 %                     Daily Weather Data
