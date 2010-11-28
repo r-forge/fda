@@ -78,7 +78,7 @@ else
         end
         yfdi = yfd(indexi);        
         fRegresscelli = fRegress(yfdi,xfdcelli,betacell,wti);
-        betaestcelli = fRegresscelli{4};
+        betaestcelli = fRegresscelli.betahat;
         yhatfdi = 0;
         for j=1:p
             betafdParj = betaestcelli{j};
