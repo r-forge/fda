@@ -41,16 +41,16 @@ register.fd0 <- function(y0fd, yfd=NULL, ...)
   y0dim0   <- dim(y0coefs0)
   ndimy00  <- length(y0dim0)
   if (ndimy00 > ndimy) stop("Y0FD has more dimensions than YFD")
-  #  Determine whether the target function is full or not
-  if (y0dim0[2] == 1) {
-      fulltarg <- FALSE
-  } else {
-      if (y0dim0[2] == ydim[2]) {
-          fulltarg <- TRUE
-      } else {
-          stop("Second argument of Y0FD not correct.")
-      }
-  }
+#  Determine whether the target function is full or not
+#  if (y0dim0[2] == 1) {
+#      fulltarg <- FALSE
+#  } else {
+#      if (y0dim0[2] == ydim[2]) {
+#          fulltarg <- TRUE
+#      } else {
+#          stop("Second argument of Y0FD not correct.")
+#      }
+#  }
   if (ndimy00 == 3 && ydim[3] != y0dim0[3]) stop(
       "Third dimension of YOFD does not match that of YFD.")
 
@@ -58,10 +58,11 @@ register.fd0 <- function(y0fd, yfd=NULL, ...)
   if(any(yfd$basis$rangeval != y0rangeval))
     stop('y0fd and yfd do not have the same rangeval')
 ##
-## 2.  integrand function
+## 2.  Internal functions for optimize
 ##
+#  2.1.  integrand function
   dy2 <- function(x, x0, y, y0){
-#  2.1.  domain of y, y0 adjusted by x0
+#  2.1.1.  domain of y, y0 adjusted by x0
     y0range <- y0$basis$rangeval
     xlim <- y0range
     if(x0>0){
@@ -73,21 +74,19 @@ register.fd0 <- function(y0fd, yfd=NULL, ...)
 #      warning('range reduced to 0 in ss.dy2;  returning Inf')
       return(Inf)
     }
-#  2.2.  rescale x
+#  2.1.2.  rescale x
     x. <- xlim[1]+d.x*x
     y. <- eval.fd(x.-x0, y)
     y0. <- eval.fd(x., y0)
     (y.-y0.)^2 / d.x
   }
-##
-## 3.  objective function
-##
+#  2.2.  objective function
   ss.dy2 <- function(x0, y, y0, ...){
     int <- integrate(dy2, 0, 1, x0=x0, y=y, y0=y0, ...)
     int$value
   }
 ##
-## 4.  optimize
+## 3.  optimize
 ##
   x0 <- rep(NA, ncurve)
   dxlim <- diff(y0rangeval)
@@ -96,9 +95,50 @@ register.fd0 <- function(y0fd, yfd=NULL, ...)
     x0[ic] <- fiti$minimum
   }
 ##
-## 5.  Done
+## 4.  Compute regfd = the registerd yfd, starting with basis
 ##
-  rfd <- list(yfd=yfd, offset=x0)
+  b <- yfd$basis
+#  4.1.  rangeval
+  newrangeval <- c(b$rangeval[1]+max(0, x0),
+                   b$rangeval[2]+min(0, x0) )
+  if(diff(newrangeval)<=0){
+    warning('the adjusted rangeval is reduced to nothing:  ',
+            paste(newrangeval, collapse=', ') )
+    regfd <- rep(NA, ncurve)
+    for(ic in 1:ncurve){
+      regfd[ic] <- eval.fd(newrangeval[1]-x0[ic], yfd[ic])
+    }
+    dregfd <- regfd-eval.fd(newrangeval[1], y0fd)
+  } else {
+    npts <- 300
+#  4.2.  if B-spline:  new basis
+    if(b$type=='bspline'){
+      knotsgood <- ((newrangeval[1] < b$params) &
+                    (b$params < newrangeval[2]) )
+      goodknots <- c(newrangeval[1], b$params[knotsgood],
+                     newrangeval[2])
+      b <- create.bspline.basis(newrangeval, norder=norder(b),
+                                   breaks=goodknots)
+      npts <- npts+length(goodknots)
+    }
+#  4.3.  Fit each curve to this new basis
+    xx <- seq(newrangeval[1], newrangeval[2], length=npts)
+    yxx <- matrix(NA, npts, ncurve)
+    for(ic in 1:ncurve)
+      yxx[, ic] <- eval.fd(xx-x0[ic], yfd[ic])
+#
+    regfd <- Data2fd(xx, yxx, b)
+##
+## 5.  dregfd
+##
+    y0xx <- as.numeric(eval.fd(xx, y0fd))
+    dyxx <- (yxx-y0xx)
+    dregfd <- Data2fd(xx, dyxx, b)
+  }
+##
+## 6.  Done
+##
+  rfd <- list(regfd=regfd, dregfd=dregfd, offset=x0)
   class(rfd) <- 'register.fd0'
   rfd
 }
