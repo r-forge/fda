@@ -112,6 +112,7 @@ register.fd(y0fd=NULL, yfd=NULL, WfdParobj=c(Lfdobj=2, lambda=1),
 \seealso{
   \code{\link{smooth.monotone}},
   \code{\link{smooth.morph}}
+  \code{\link{register.fd0}}
 }
 \examples{
 #See the analyses of the growth data for examples.
