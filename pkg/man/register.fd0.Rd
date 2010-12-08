@@ -1,12 +1,11 @@
 \name{register.fd0}
 \alias{register.fd0}
-%\alias{plot.register.fd0}
 \title{
-  Estimate initial position error between functional data objects.
+  Correct for initial position error between functional data objects.
 }
 \description{
   Certain physical measurements differ only in their initial position.
-  Correct for this by estimating x0 to minimize the following:
+  Correct for this by estimating \code{x0} to minimize the following:
 
   integral( (yfd(x-x0)-y0fd(x))^2
   from max(x1, x1+x0) to min(x2, x2+x0)) / (x2-x1-abs(x0))
@@ -35,29 +34,53 @@ register.fd0(y0fd, yfd=NULL, ...)
 \details{
   Mikkelsen (2003) noted that depth positioning errors in measuring
   subsurface movement of soils can make it appear that soils are moving
-  when they are not.  This function is designed to estimate and correct
-  for errors in starting position like this.
+  when they are not.  \code{register.fd0} differs from
+  \code{register.fd} in two ways:  \code{register.fd} estimates a
+  nonlinear transformation starting and ending at the same place.  By
+  contrast, \code{register.fd0} shifts the starting point, using a "time
+  warping" function that is linear with unit slope.  This means that the
+  length of the interval of validity is shrunk by abs(x0).
 
-  1.  eval.df y0fd and yfd at a grid of npts
+  This function is designed to find the most obvious local minimum of
+  the normalized integrated squared differences between
+  y0df(x) and yfd(x+x0), as defined above.  This objective function may
+  have multiple local minima.  \code{register.fd0} uses
+  \code{\link{optimize}} to find a global minimum over x0 in c(-1,
+  1)*diff(y0fd\$basis\$rangeval).
 
-  2.  n.5 <- ceiling(sqrt(npts))
+  1.  Check y0fd and yfd.
 
-  3.  compute the sum of squares of the differences between yfd and y0fd
-  offset by i in seq(-n.5, n.5), divided by the number of points in each
-  sum (npts with i = 0, npts-n.5 with i = abs(n.5)).
+  2.  Define dy2 = integrand function and ss.dy2 = objective function.
 
+  3.  optimize(ss.dy2, ...) for each curve in yfd.
 
-  4.  Fit a cubic spline to this sum of squares.
+  4.  Compute regfd = registered yfd as follows:
 
+  4.1.  Let x00 = min(0, x0) <= 0 and x01 = max(0, x0) >= 0.  Then
+  regfd\$rangeval = (rangeval[1] + x01, rangeval[2] + x00)
 
-  5.  Find the minimum
+  4.2.  For a B-spline basis, construct a new basis retaining all the
+  knots interior to regfd\$rangeval.
+
+  4.3.  Fit each curve adjusted to this new basis to obtain regfd.
+
+  5.  Compute dregfd = minus.fd(regfd, y0fd, regfd\$basis).
 }
 \value{
-  \code{register.fd0} returns an object of class \code{register.fd0},
-  which is a list with the following components:
+  a list of class \code{register.fd0} with the following components:
 
-  \item{yfd}{
-    the input argument \code{yfd}.
+  \item{regfd}{
+    a functional data object containing the input functional data
+    objects shifted by the offset = x0, restricted to their common
+    range, c(rangeval[1]+max(0, offset), rangeval[2]+min(0, offset)).
+  }
+  \item{dregfd}{
+    the difference between regfd (yfd registered) and y0fd.
+
+    This difference cannot currently be computed with the naive "-.fd",
+    because of a missmatch between regfd$basis$rangeval and
+    y0fd$basis$rangeval.  This is handled by computing minus.fd(regfd,
+    y0fd, regfd$basis$rangeval).
   }
   \item{offset}{
     the vector \code{x0} containing the offset for each function in
@@ -116,7 +139,18 @@ smBv <- deriv(hgtmfd.all$fd, 1)
 
 smB.reg.0 <- register.fd0(smBv[1:nBoys])
 
-# plot(smB.reg.0)
+op <- par(mfrow=c(3,1))
+plot(smBv[1:nBoys])
+lines(mean.fd(smBv[1:nBoys]), lty='dotted', col='blue')
+
+plot(smB.reg.0$regfd)
+lines(mean.fd(smBv[1:nBoys]), lty='dotted', col='blue')
+# Note change of scale.
+# The peak of smBv[2] at ~15.5
+# is pushed off the chart as x0[2]=4.47
+plot(smB.reg.0$dregfd)
+# looks OK
+par(op)
 
 }
 % docclass is function
