@@ -13,6 +13,8 @@
 \usage{
 Data2fd(argvals=NULL, y=NULL, basisobj=NULL, nderiv=NULL,
         lambda=0, fdnames=NULL)
+%       lambda=NULL here
+% explain:  default = 1e-9*sd(y)/diff(range(argvals)) below
 }
 \arguments{
   \item{argvals}{
@@ -25,7 +27,7 @@ Data2fd(argvals=NULL, y=NULL, basisobj=NULL, nderiv=NULL,
     Dimensions for \code{argvals} must match the first dimensions of
     \code{y}, though \code{y} can have more dimensions.  For example, if
     dim(y) = c(9, 5, 2), \code{argvals} can be a vector of length 9 or a
-    matrix of dimenions c(9, 5) or an array of dimensions c(9, 5, 2).
+    matrix of dimensions c(9, 5) or an array of dimensions c(9, 5, 2).
   }
   \item{y}{
     an array containing sampled values of curves.
