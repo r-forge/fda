@@ -120,7 +120,6 @@ par(op)
 
 #  plot each pair of curves interactively
 
-#par(mfrow=c(1,2), mar=c(3,4,2,1), pty="s")
 op <- par(mfrow=c(2,1))
 plotfit.fd(gait, gaittime, gaitfd, cex=1.2)
 # Problem:  does not work properly
@@ -133,13 +132,13 @@ par(op)
 
 #  plot the residuals, sorting cases by residual sum of squares
 
-#par(mfrow=c(1,2), mar=c(3,4,2,1), pty="s")
 plotfit.fd(gait, gaittime, gaitfd, residual=TRUE, sort=TRUE, cex=1.2)
 
 #  plot first derivative of all curves
 
-#par(mfrow=c(1,2), mar=c(3,4,2,1), pty="s")
+op <- par(mfrow=c(2,1))
 plot(gaitfd, Lfdob=1)
+par(op)
 
 #  -----------------------------------------------------------------
 #            Display the mean, variance and covariance functions
@@ -151,8 +150,6 @@ gaitmeanfd <- mean.fd(gaitfd)
 
 #  plot these functions and their first two derivatives
 
-#par(mfcol=c(2,3),pty="s")
-#op <- par(mfrow=c(3,2))
 op <- par(mfcol=2:3)
 plot(gaitmeanfd)
 plot(gaitmeanfd, Lfdobj=1)
@@ -165,8 +162,6 @@ gaitvarbifd <- var.fd(gaitfd)
 str(gaitvarbifd)
 
 gaitvararray <- eval.bifd(gaittime, gaittime, gaitvarbifd)
-
-#par(mfrow=c(1,1), mar=c(3,4,2,1), pty="m")
 
 #  plot variance and covariance functions as contours
 
@@ -190,8 +185,6 @@ title("Knee - Hip")
 persp(gaittime, gaittime, gaitvararray[,,1,3], cex=1.2)
 title("Hip - Hip")
 
-#par(mfrow=c(1,1), mar=c(3,4,2,1), pty="m")
-
 #  plot correlation functions as contours
 
 gaitCorArray <- cor.fd(gaittime, gaitfd)
@@ -206,7 +199,6 @@ title("Knee - Hip")
 
 contour(gaittime, gaittime, gaitCorArray[,,1,3], cex=1.2)
 title("Hip - Hip")
-
 
 #  --------------------------------------------------------------
 #            Principal components analysis
@@ -223,7 +215,6 @@ gaitpca.fd <- varmx.pca.fd(gaitpca.fd)
 
 #  plot harmonics using cycle plots
 
-#par(mfrow=c(1,1), mar=c(3,4,2,1), pty="s")
 op <- par(mfrow=c(2,2))
 plot.pca.fd(gaitpca.fd, cycle=TRUE)
 par(op)
@@ -233,12 +224,10 @@ par(op)
 #  compute the harmonic scores associated with each angle
 
 gaitscores = gaitpca.fd$scores
-hipscores  = gaitscores[,,1]
-kneescores = gaitscores[,,2]
 
 #  compute the values of the harmonics at time values for each angle
 
-gaitharmmat = eval.fd(gaittime, gaitharmfd)
+gaitharmmat = eval.fd(gaittime, gaitpca.fd$harmonics)
 hipharmmat  = gaitharmmat[,,1]
 kneeharmmat = gaitharmmat[,,2]
 
@@ -264,26 +253,47 @@ print(paste("Variances of fits by the means:",
 
 #  compute the fits to the residual from the mean achieved by the PCA
 
-hipfitmat  =  hipharmmat %*% t(hipscores)
-kneefitmat = kneeharmmat %*% t(kneescores)
+hipfitarray  = array(NA, c(nrow(hipharmmat ),nrow(gaitscores),ncol(gaitscores)))
+kneefitarray = array(NA, c(nrow(kneeharmmat),nrow(gaitscores),ncol(gaitscores)))
+for (isc in 1:2) {
+               hipfitarray[,,isc]  = hipharmmat  %*% t(gaitscores[,,isc]) 
+               kneefitarray[,,isc] = kneeharmmat %*% t(gaitscores[,,isc])
+}
 
 #  compute the variances of the PCA fits
 
-hipfitvar  = mean( hipfitmat^2)
-kneefitvar = mean(kneefitmat^2)
+hipfitvar  = c()
+kneefitvar = c()
+for (isc in 1:2) {
+            hipfitvar  = c(hipfitvar,  mean( hipfitarray[,,isc]^2))
+            kneefitvar = c(kneefitvar, mean(kneefitarray[,,isc]^2))
+}
 
 #  compute percentages relative to the total PCA fit variance
+#  these percentages will add to 100
 
-hippropvar1  = hipfitvar/(hipfitvar+kneefitvar)
-kneepropvar1 = kneefitvar/(hipfitvar+kneefitvar)
+hippropvar1 = c()
+kneepropvar1 = c()
+for (isc in 2) {
+            hippropvar1  = c(hippropvar1,  hipfitvar[isc]/(hipfitvar[isc] +
+                                           kneefitvar[isc]))
+            kneepropvar1 = c(kneepropvar1, kneefitvar[isc]/(hipfitvar[isc]+
+                                           kneefitvar[isc]))
+}
 
 print(paste("Percentages of fits for the PCA:", 
             round(100*c(hippropvar1, kneepropvar1),1)))
 
 #  compute percentages relative to the total mean fit variance
+#  these percentages will add to the total percentage of fit
+#  accounted for by the pca, which will typically be less than 100
 
-hippropvar2  = hipfitvar/(hipvar+kneevar)
-kneepropvar2 = kneefitvar/(hipvar+kneevar)
+hippropvar2  = c()
+kneepropvar2 = c()
+for (isc in 1:2) {
+            hippropvar2  = c(hippropvar2,  hipfitvar[isc] /(hipvar+kneevar))
+            kneepropvar2 = c(kneepropvar2, kneefitvar[isc]/(hipvar+kneevar))
+}
 
 print((paste("Percentages of fits for the PCA:", 
              round(100*c(hippropvar2, kneepropvar2),1))))
@@ -416,7 +426,6 @@ par(op)
 
 gaitfine    <- seq(0,20,len=101)
 kneemat     <- eval.fd(gaitfine, kneefd)
-#kneehatmat  <- eval.fd(gaitfine, kneehatfd)
 kneehatmat  <- predict(kneehatfd, gaitfine)
 kneemeanvec <- as.vector(eval.fd(gaitfine, kneemeanfd))
 
@@ -469,7 +478,6 @@ par(op)
 #  compute and plot squared multiple correlation function
 
 D2kneemat     <- eval.fd(gaitfine, D2kneefd)
-#D2kneehatmat  <- eval.fd(gaitfine, D2kneehatfd)
 D2kneehatmat  <- predict(D2kneehatfd, gaitfine)
 D2kneemeanvec <- as.vector(eval.fd(gaitfine, D2kneemeanfd))
 
