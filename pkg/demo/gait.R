@@ -43,7 +43,7 @@ library(fda)
 (gaittime <- as.numeric(dimnames(gait)[[1]])*20)
 gaitrange <- c(0,20)
 
-#  set up a three-dimensional array of function values
+#  display ranges of gait for each variable
 
 apply(gait, 3, range)
 
@@ -103,13 +103,12 @@ par(op)
 # With gaittime <- (1:20)/21,
 #    GCV is minimized with lambda = 10^(-2).
 
-str(gait)
 gaitfd <- smooth.basisPar(gaittime, gait,
        gaitbasis, Lfdobj=harmaccelLfd, lambda=1e-2)$fd
-
-str(gaitfd)
 names(gaitfd$fdnames) <- c("Normalized time", "Child", "Angle")
 gaitfd$fdnames[[3]] <- c("Hip", "Knee")
+
+str(gaitfd)
 
 #  --------  plot curves and their first derivatives  ----------------
 
@@ -328,55 +327,32 @@ plot(1:6, ccafd$ccacorr[1:6], type="b")
 
 #  compute the acceleration and mean acceleration
 
-D2gaitfd <- deriv.fd(gaitfd,2)
+D2gaitfd      <- deriv.fd(gaitfd,2)
+names(D2gaitfd$fdnames)[[3]] <- "Angular acceleration"
+D2gaitfd$fdnames[[3]] <- c("Hip", "Knee")
 D2gaitmeanfd  <- mean.fd(D2gaitfd)
+names(D2gaitmeanfd$fdnames)[[3]] <- "Mean angular acceleration"
+D2gaitmeanfd$fdnames[[3]] <- c("Hip", "Knee")
 
 #  set up basis for warping function
 
 nwbasis   <- 7
 wbasis    <- create.bspline.basis(gaitrange,nwbasis,3)
-Warpfd    <- fd(matrix(0,nwbasis,39),wbasis)
+Warpfd    <- fd(matrix(0,nwbasis,5),wbasis)
 WarpfdPar <- fdPar(Warpfd)
 
 #  register the functions
 
-regstr <- register.fd(D2gaitmeanfd, D2gaitfd, WarpfdPar, periodic=TRUE)
+gaitreglist <- register.fd(D2gaitmeanfd, D2gaitfd[1:5,], WarpfdPar, periodic=TRUE)
 
-xfine        <- seq(0,1,len=101)
-D2gaitregfd  <- regstr$regfd
-D2gaitregmat <- eval.fd(xfine, D2gaitregfd)
-warpfd       <- regstr$Wfd
-shift        <- regstr$shift
-warpmat      <- eval.monfd(xfine, warpfd)
-warpmat      <- warpmat/outer(rep(1,101),warpmat[101,])
+plotreg.fd(gaitreglist)
 
-print(round(shift,1))
-hist(shift)
+#  display horizonal shift values
+print(round(gaitreglist$shift,1)))
 
-#  plot warping functions
-
-op <- par(mfrow=c(1,1), mar=c(4,4,2,1), pty="m")
-matplot(xfine, warpmat, type="l", xlab="t", ylab="h(t)",
-        main="Time warping functions", cex=1.2)
-par(op)
-
-#  plot the deformation functions, def(t) = warp(t) - t
-
-defmat <- warpmat
-for (i in 1:39)
-	defmat[,i] <- warpmat[,i] - xfine - shift[i]
-
-op <- par(mfrow=c(1,1), mar=c(4,4,2,1), pty="m")
-matplot(xfine, defmat, type="l", xlab="t", ylab="h(t) - t",
-        main="Deformation functions", cex=1.2)
-par(op)
-
-#  plot both the unregistered and registered versions of the curves
-
-op <- par(mfrow=c(2,2))
-plot(D2gaitfd,    ask=FALSE)
-plot(D2gaitregfd, ask=FALSE)
-par(op)
+#  histogram of horizontal shift values
+par(mfrow=c(1,1))
+hist(gaitreglist$shift,xlab="Normalized time")
 
 #  --------------------------------------------------------------
 #              Predict knee angle from hip angle
