@@ -143,7 +143,7 @@ smooth.basis <- function (argvals, y, fdParobj,
 
   #  set up matrix of basis function values
 
-  basismat <- eval.basis(argvals, basisobj)
+  basismat <- eval.basis(as.vector(argvals), basisobj)
 
 #  ----------------------------------------------------------------
 #                set up the linear equations for smoothing

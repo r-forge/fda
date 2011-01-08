@@ -41,8 +41,9 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
 #  SORTWRD  ... sort plots by mean square error
 #  TITLES   ... vector of title strings for curves
 
+# Last modified 2011.01.07 by Spencer Graves
 # Last modified 2010.12.14 by Jim Ramsay
-# Last modified 2008.12.12 by Spencer Graves
+# previously modified 2008.12.12 by Spencer Graves
 
 ##
 ## 1.  Basic checks
@@ -73,7 +74,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
   fdobj$coef <- subset$y
   #  number of argument values
   n <- dim(y)[1]
-  #  number of replications 
+  #  number of replications
   nrep <- dim(y)[2]
   #  number  of variables
   nvar <- dim(y)[3]
@@ -94,31 +95,31 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
                 Axes <- TRUE
                 axFun <- FALSE
     } else {
-                if (!inherits(fdobj$basis$axes, "list")) 
-                  stop("fdobj$basis$axes must be a list;  ", 
+                if (!inherits(fdobj$basis$axes, "list"))
+                  stop("fdobj$basis$axes must be a list;  ",
                     "class(fdobj$basis$axes) = ", class(fdobj$basis$axes))
-                if (!(inherits(fdobj$basis$axes[[1]], "character") || 
-                  inherits(fdobj$basis$axes[[1]], "function"))) 
-                  stop("fdobj$basis$axes[[1]] must be either a function or the ", 
-                    "name of a function;  class(fdobj$basis$axes[[1]]) = ", 
+                if (!(inherits(fdobj$basis$axes[[1]], "character") ||
+                  inherits(fdobj$basis$axes[[1]], "function")))
+                  stop("fdobj$basis$axes[[1]] must be either a function or the ",
+                    "name of a function;  class(fdobj$basis$axes[[1]]) = ",
                     class(fdobj$basis$axes[[1]]))
                 Axes   <- FALSE
                 axFun  <- TRUE
                 axList <- c(fdobj$basis$axes, ...)
-    } 
+    }
   } else {
             if (is.logical(axes)) {
                 Axes  <- axes
                 axFun <- FALSE
             }
             else {
-                if (!inherits(axes, "list")) 
-                  stop("axes must be a logical or a list;  class(axes) = ", 
+                if (!inherits(axes, "list"))
+                  stop("axes must be a logical or a list;  class(axes) = ",
                     class(axes))
-                if (!(inherits(axes[[1]], "character") || inherits(axes[[1]], 
-                  "function"))) 
-                  stop("axes[[1]] must be either a function or the ", 
-                    "name of a function;  class(axes[[1]]) = ", 
+                if (!(inherits(axes[[1]], "character") || inherits(axes[[1]],
+                  "function")))
+                  stop("axes[[1]] must be either a function or the ",
+                    "name of a function;  class(axes[[1]]) = ",
                     class(axes[[1]]))
                 Axes <- FALSE
                 axFun <- TRUE
@@ -126,7 +127,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
             }
   }
   dots <- list(...)
-  if (is.null(titles) && ("main" %in% names(dots))) 
+  if (is.null(titles) && ("main" %in% names(dots)))
         titles <- dots$main
   ##
 ## 3.  Computed fitted values for argvals and a fine mesh
@@ -257,31 +258,29 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
         for (i in 1:nrepi) {
           if(iOnOne %in% c(0, nOnOne)[1:(1+ask)]){
             plot(rng, ylim, type="n", xlab=xlab,
-                 ylab=ylab[j], axes=Axes, ...)
+                 ylab=ylab, axes=Axes, ...)
             if(axFun)
               do.call(axList[[1]], axList[-1])
             par(ask=ask)
             if(nOnOne==1){
-              {
-                if(is.null(titles)) title(main=casenames[i],
-                                          sub=sub[i, j])
-                else title(main=titles[i], sub=sub[i, j])
-              }
+              if(is.null(titles)) title(main=casenames[i],
+                                        sub=sub[i, 1])
+                else title(main=titles[i], sub=sub[i, 1])
             }
             iOnOne <- 0
           }
           iOnOne <- iOnOne+1
-          points(argvals, y[,i,j], type=type,
-                 xlab=xlab, ylab=varnames[j], col=col[iOnOne],
+          points(argvals, y[,i,1], type=type,
+                 xlab=xlab, ylab=varnames, col=col[iOnOne],
                  lty=lty[iOnOne], lwd=lwd[iOnOne],
                  cex=cex.pch[iOnOne])
-          lines(xfine, yfine[,i,j], col=col[iOnOne],
+          lines(xfine, yfine[,i,1], col=col[iOnOne],
                 lty=lty[iOnOne], lwd=lwd[iOnOne])
-        } 
-      } else {        
-        nOnOne <- nvar   
-        par(mfrow=c(nvar,1),ask=FALSE)       
-        for (i in 1:nrepi) {    
+        }
+      } else {
+        nOnOne <- nvar
+        par(mfrow=c(nvar,1),ask=FALSE)
+        for (i in 1:nrepi) {
           for (j in 1:nvar) {
             if (iOnOne %in% c(0, nOnOne)[1:(1+ask)]) {
               plot(rng, ylim, type="n", xlab=xlab,
@@ -299,7 +298,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
             lines(xfine, yfine[,i,j], col=col[iOnOne],
                   lty=lty[iOnOne], lwd=lwd[iOnOne])
           }
-        } 
+        }
       }
   }
   invisible(NULL)

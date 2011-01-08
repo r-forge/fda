@@ -218,6 +218,8 @@ with(CanadianWeather, plotfit.fd(dailyAv[, , "Temperature.C",
 with(CanadianWeather, plotfit.fd(
           dailyAv[,, "Temperature.C"], day.5,
           daytempfd, ask=TRUE) )
+
+#
 }
 
 # If you want only the fitted functions, use plot(daytempfd)

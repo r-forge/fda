@@ -4,10 +4,10 @@
   Plot the results of the registration of a set of curves
 }
 \description{
-A function is said to be aligned or registered with a target function if its 
-salient features, such as peaks, valleys and crossings of fixed thresholds, 
-occur at about the same argument values as those of the target.  
-Function \code{plotreg.fd} plots for each curve that is registered (1) 
+A function is said to be aligned or registered with a target function if its
+salient features, such as peaks, valleys and crossings of fixed thresholds,
+occur at about the same argument values as those of the target.
+Function \code{plotreg.fd} plots for each curve that is registered (1)
 the unregistered curve (blue dashed line), (2) the target curve (red dashed
 line) and (3) the registered curve (blue solid line).  It also plots within
 the same graphics window the warping function $h(t)$ along with a dashed
@@ -32,6 +32,7 @@ plotreg.fd(reglist)
   a series of plots, each containing two side-by-side panels.  Clicking
   on the R Graphics window advances to the next plot.
 }
+\references{
   Ramsay, James O., and Silverman, Bernard W. (2005), \emph{Functional
     Data Analysis, 2nd ed.}, Springer, New York.
 
@@ -50,7 +51,7 @@ gaittime  <- as.numeric(dimnames(gait)[[1]])*20
 gaitrange <- c(0,20)
 #  set up a fourier basis object
 gaitbasis <- create.fourier.basis(gaitrange, nbasis=21)
-%  set up a functional parameter object penalizing harmonic acceleration 
+%  set up a functional parameter object penalizing harmonic acceleration
 harmaccelLfd <- vec2Lfd(c(0, (2*pi/20)^2, 0), rangeval=gaitrange)
 gaitfdPar    <- fdPar(gaitbasis, harmaccelLfd, 1e-2)
 #  smooth the data
@@ -72,7 +73,7 @@ WarpfdPar <- fdPar(Warpfd)
 #  argument periodic = TRUE causes register.fd to estimate a horizontal shift
 #  for each curve, which is a possibility when the data are periodic
 nBoys <- 10
-gaitreglist <- register.fd(D2gaitmeanfd, D2gaitfd[1:nBoys,], WarpfdPar, 
+gaitreglist <- register.fd(D2gaitmeanfd, D2gaitfd[1:nBoys,], WarpfdPar,
                            periodic=TRUE)
 #  plot the results
 plotreg.fd(gaitreglist)

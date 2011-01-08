@@ -4,15 +4,15 @@
   Register Functional Data Objects Using a Continuous Criterion
 }
 \description{
-A function is said to be aligned or registered with a target function if its 
-salient features, such as peaks, valleys and crossings of fixed thresholds, 
-occur at about the same argument values as those of the target.  
-Function \code{register.fd} aligns these features by transforming or warping 
-the argument domain of each function in a nonlinear but strictly 
-order-preserving fashion.  Multivariate functions may also be registered.
-If the domain is time, we say that this transformation transforms clock time
-to system time.  The transformation itself is called a warping function.  
-
+  A function is said to be aligned or registered with a target function
+  if its  salient features, such as peaks, valleys and crossings of
+  fixed thresholds,  occur at about the same argument values as those of
+  the target.  Function \code{register.fd} aligns these features by
+  transforming or warping  the argument domain of each function in a
+  nonlinear but strictly  order-preserving fashion.  Multivariate
+  functions may also be registered.  If the domain is time, we say that
+  this transformation transforms clock time to system time.  The
+  transformation itself is called a warping function.
 }
 \usage{
 register.fd(y0fd=NULL, yfd=NULL, WfdParobj=NULL,
@@ -20,49 +20,52 @@ register.fd(y0fd=NULL, yfd=NULL, WfdParobj=NULL,
 }
 \arguments{
   \item{y0fd}{
-    a functional data object defining one or more target functions for 
-    registering the functions in argument \code{yfd}. If the functions to
-    be registered are univariate, then \code{y0fd} may contain only a single
-    function, or it may contain as many functions as are in \code{yfd}.  If
-    \code{yfd} contains multivariate functions, then \code{y0fd} may either 
-    as many functions as there are variables in \code{yfd}, or it may contain 
-    as many functions as are in \code{yfd} and these functions must then
-    be multivariate and be of the same dimension as those in \code{yfd}.
+    a functional data object defining one or more target functions for
+    registering the functions in argument \code{yfd}. If the functions
+    to be registered are univariate, then \code{y0fd} may contain only a
+    single function, or it may contain as many functions as are in
+    \code{yfd}.  If \code{yfd} contains multivariate functions, then
+    \code{y0fd} may either as many functions as there are variables in
+    \code{yfd}, or it may contain as many functions as are in \code{yfd}
+    and these functions must then be multivariate and be of the same
+    dimension as those in \code{yfd}.
 
-    If \code{yfd} is supplied as a named argument and \code{y0fd} is not,
-    then \code{y0fd} is computed inside the function to be the mean of the
-    functions in \code{yfd}.
+    If \code{yfd} is supplied as a named argument and \code{y0fd} is
+    not, then \code{y0fd} is computed inside the function to be the mean
+    of the functions in \code{yfd}.
 
     If the function is called with a single unnamed argument, and there
     is no other argument that is named as \code{y0fd} then this unnamed
-    argument is taken to be actually \code{yfd} rather than \code{y0fd}, and
-    then also \code{y0fd} is computed to be the man of the functions supplied.
+    argument is taken to be actually \code{yfd} rather than \code{y0fd},
+    and then also \code{y0fd} is computed to be the man of the functions
+    supplied.
   }
   \item{yfd}{
     a functional data object defining the functions to be
-    registered to target \code{y0fd}.  The functions may be either univariate
-    or multivariate.  
-    
-    If \code{yfd} contains a single multivariate function is to be registered,  
-    it essential that the coefficient array for \code}y0fd} have class 
-    \code{array}, have three dimensions, and that its second dimension be 
-    of length 1.
+    registered to target \code{y0fd}.  The functions may be either
+    univariate or multivariate.
+
+    If \code{yfd} contains a single multivariate function is to be
+    registered, it essential that the coefficient array for \code{y0fd}
+    have class \code{array}, have three dimensions, and that its second
+    dimension be of length 1.
   }
   \item{WfdParobj}{
-    a functional parameter object containing either a single function or the
-    same number of functions as are contained in \code{yfd}.  The coefficients
-    supply the initial values in the estimation of a functions $W(t)$ that
-    defines the warping functions $h(t)$ that register the set of curves.
-    \code{WfdParobj} also defines the roughness penalty
-    and smoothing parameter used to control the roughness of $h(t)$.
+    a functional parameter object containing either a single function or
+    the same number of functions as are contained in \code{yfd}.  The
+    coefficients supply the initial values in the estimation of a
+    functions $W(t)$ that defines the warping functions $h(t)$ that
+    register the set of curves.  \code{WfdParobj} also defines the
+    roughness penalty and smoothing parameter used to control the
+    roughness of $h(t)$.
 
-    The basis used for this object must be a B-spline type, and the order
-    of the B-spline basis must be at least 2 (piecewise linear).
+    The basis used for this object must be a B-spline type, and the
+    order of the B-spline basis must be at least 2 (piecewise linear).
 
-    If WFDPAROBJ is not supplied, it is constructed from a bspline
-    basis of order 2 with 2 basis functions; that is, a basis for piecewise
-    linear functions.  The smoothing parameter lambda for this default is 0.
-    
+    If WFDPAROBJ is not supplied, it is constructed from a bspline basis
+    of order 2 with 2 basis functions; that is, a basis for piecewise
+    linear functions.  The smoothing parameter lambda for this default
+    is 0.
   }
   \item{conv}{
     a criterion for convergence of the iterations.
@@ -73,11 +76,11 @@ register.fd(y0fd=NULL, yfd=NULL, WfdParobj=NULL,
   \item{dbglev}{
     either 0, 1, or 2.  This controls the amount information printed out
     on each iteration, with 0 implying no output, 1 intermediate output
-    level, and 2 full output.  R normally postpones displaying these results
-    until the entire computation is computed, an option that it calls "output
-    buffering."  Since the total computation time may be considerable, one
-    may opt for turning this feature off by un-checking this box in the "Misc"
-    menu item in the R Console.
+    level, and 2 full output.  R normally postpones displaying these
+    results until the entire computation is computed, an option that it
+    calls "output buffering."  Since the total computation time may be
+    considerable, one may opt for turning this feature off by
+    un-checking this box in the "Misc" menu item in the R Console.
   }
   \item{periodic}{
     a logical variable:  if \code{TRUE}, the functions are considered to
@@ -86,9 +89,10 @@ register.fd(y0fd=NULL, yfd=NULL, WfdParobj=NULL,
   }
   \item{crit}{
     an integer that is either 1 or 2 that indicates the nature of the
-    continuous registration criterion that is used.  If 1, the criterion is
-    least squares, and if 2, the criterion is the minimum eigenvalue of a
-    cross-product matrix.  In general, criterion 2 is to be preferred.
+    continuous registration criterion that is used.  If 1, the criterion
+    is least squares, and if 2, the criterion is the minimum eigenvalue
+    of a cross-product matrix.  In general, criterion 2 is to be
+    preferred.
   }
 }
 \value{
@@ -160,8 +164,8 @@ hgtmfd.all   <- with(growth, smooth.basis(age, hgtm, growfdPar2.3))
 # growth curves directly
 smBv <- deriv(hgtmfd.all$fd, 1)
 ##
-## 2.  Register the first 10 Berkeley boys using the default basis for the
-##     warping function
+## 2.  Register the first 10 Berkeley boys using the default basis
+##     for the warping function
 ##
 # register.fd takes time, so use only 10 curves as an illustration
 # to minimize compute time in these examples
@@ -171,7 +175,7 @@ smBv0 = mean.fd(smBv[1:nBoys])
 #  Register these curves.  The default choice for the functional
 #  parameter object WfdParObj is used.
 smB.reg.0 <- register.fd(smBv0, smBv[1:nBoys])
-#  plot each curve.  Click on the R Graphics window to show each plot.  
+#  plot each curve.  Click on the R Graphics window to show each plot.
 #  The left panel contains:
 #    -- the unregistered curve (dashed blue line)
 #    -- the target function (dashed red line)
@@ -188,7 +192,8 @@ plotreg.fd(smB.reg.0)
 Wnbasis   <- 5
 Wbasis    <- create.bspline.basis(rng.growth, Wnbasis)
 Wfd0      <- fd(matrix(0,Wnbasis,1),Wbasis)
-#  set up the functional parameter object using only a light amount smoothing
+#  set up the functional parameter object using only
+#      a light amount smoothing
 WfdParobj <- fdPar(Wfd0, Lfdobj=2, lambda=0.01)
 #  register the curves
 smB.reg.1 <- register.fd(smBv0, smBv[1:nBoys], WfdParobj)
@@ -203,9 +208,9 @@ smBv1 <- mean.fd(smB.reg.1$regfd)
 par(mfrow=c(1,1),ask=F)
 plot(smBv1)
 lines(smBv0, lty=2)
-#  Notice how the new target (solid line) has sharper features and a stronger
-#  pubertal growth spurt relative to the old target (dashed line)
-#  Now register to the new target
+#  Notice how the new target (solid line) has sharper features and
+#  a stronger pubertal growth spurt relative to the old target
+#  (dashed line).  Now register to the new target
 smB.reg.2 <- register.fd(smBv1, smBv[1:nBoys], WfdParobj)
 plotreg.fd(smB.reg.2)
 #  Plot the mean of these curves as well as the first and second targets
@@ -213,9 +218,10 @@ par(mfrow=c(1,1),ask=F)
 plot(mean.fd(smB.reg.2$regfd))
 lines(smBv0, lty=2)
 lines(smBv1, lty=3)
-#  Notice that there is almost no improvement over the age of the pubertal
-#  growth spurt, but some further detail added in the pre-pubertal region
-#  Now register the previously registered functions to the new target
+#  Notice that there is almost no improvement over the age of the
+#  pubertal growth spurt, but some further detail added in the
+#  pre-pubertal region.  Now register the previously registered
+#  functions to the new target.
 smB.reg.3 <- register.fd(smBv1, smB.reg.1$regfd, WfdParobj)
 plotreg.fd(smB.reg.3)
 #  Notice that the warping functions only deviate from the straight line
@@ -228,7 +234,7 @@ gaittime  <- as.numeric(dimnames(gait)[[1]])*20
 gaitrange <- c(0,20)
 #  set up a fourier basis object
 gaitbasis <- create.fourier.basis(gaitrange, nbasis=21)
-%  set up a functional parameter object penalizing harmonic acceleration 
+%  set up a functional parameter object penalizing harmonic acceleration
 harmaccelLfd <- vec2Lfd(c(0, (2*pi/20)^2, 0), rangeval=gaitrange)
 gaitfdPar    <- fdPar(gaitbasis, harmaccelLfd, 1e-2)
 #  smooth the data
@@ -247,15 +253,16 @@ wbasis    <- create.bspline.basis(gaitrange,nwbasis,3)
 Warpfd    <- fd(matrix(0,nwbasis,5),wbasis)
 WarpfdPar <- fdPar(Warpfd)
 #  register the functions for the first 10 boys
-#  argument periodic = TRUE causes register.fd to estimate a horizontal shift
-#  for each curve, which is a possibility when the data are periodic
+#  argument periodic = TRUE causes register.fd to estimate a
+#  horizontal shift for each curve, which is a possibility when the data
+#    are periodic
 nBoys <- 10
-gaitreglist <- register.fd(D2gaitmeanfd, D2gaitfd[1:nBoys,], WarpfdPar, 
+gaitreglist <- register.fd(D2gaitmeanfd, D2gaitfd[1:nBoys,], WarpfdPar,
                            periodic=TRUE)
 #  plot the results
 plotreg.fd(gaitreglist)
 #  display horizonal shift values
-print(round(gaitreglist$shift,1)))
+print(round(gaitreglist$shift,1))
 }
 
 % docclass is function
