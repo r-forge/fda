@@ -87,7 +87,7 @@ if (nvar == 1) {
     for (i in 1:ncurve) {
         #  left panel:  plot registered, unregistered and target functions
         plot (argfine, ymat[,i], type="l", lty=2, col=4, ylim=ylimit,
-          xlab="Argument value", ylab=ylabel[j], main=paste("Case",casename[i]))
+          xlab="Argument value", ylab=ylabel[i], main=paste("Case",casename[i]))
         lines(argfine, y0mat[,i],   lty=2, col=2)
         lines(argfine, yregmat[,i], lty=1, col=4)
         #  right panel: plot warping functions
