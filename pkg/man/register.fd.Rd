@@ -205,7 +205,7 @@ plotreg.fd(smB.reg.1)
 ##
 smBv1 <- mean.fd(smB.reg.1$regfd)
 #  plot the old and the new targets
-par(mfrow=c(1,1),ask=F)
+par(mfrow=c(1,1),ask=FALSE)
 plot(smBv1)
 lines(smBv0, lty=2)
 #  Notice how the new target (solid line) has sharper features and
@@ -214,7 +214,7 @@ lines(smBv0, lty=2)
 smB.reg.2 <- register.fd(smBv1, smBv[1:nBoys], WfdParobj)
 plotreg.fd(smB.reg.2)
 #  Plot the mean of these curves as well as the first and second targets
-par(mfrow=c(1,1),ask=F)
+par(mfrow=c(1,1),ask=FALSE)
 plot(mean.fd(smB.reg.2$regfd))
 lines(smBv0, lty=2)
 lines(smBv1, lty=3)
@@ -247,17 +247,17 @@ D2gaitfd$fdnames[[3]] <- c("Hip", "Knee")
 D2gaitmeanfd  <- mean.fd(D2gaitfd)
 names(D2gaitmeanfd$fdnames)[[3]] <- "Mean angular acceleration"
 D2gaitmeanfd$fdnames[[3]] <- c("Hip", "Knee")
+#  register the functions for the first 10 boys
+#  argument periodic = TRUE causes register.fd to estimate a horizontal shift
+#  for each curve, which is a possibility when the data are periodic
+nBoys <- 10
 #  set up the basis for the warping functions
 nwbasis   <- 7
 wbasis    <- create.bspline.basis(gaitrange,nwbasis,3)
-Warpfd    <- fd(matrix(0,nwbasis,5),wbasis)
+Warpfd    <- fd(matrix(0,nwbasis,nBoys),wbasis)
 WarpfdPar <- fdPar(Warpfd)
-#  register the functions for the first 10 boys
-#  argument periodic = TRUE causes register.fd to estimate a
-#  horizontal shift for each curve, which is a possibility when the data
-#    are periodic
-nBoys <- 10
-gaitreglist <- register.fd(D2gaitmeanfd, D2gaitfd[1:nBoys,], WarpfdPar,
+#  register the functions 
+gaitreglist <- register.fd(D2gaitmeanfd, D2gaitfd[1:nBoys], WarpfdPar,
                            periodic=TRUE)
 #  plot the results
 plotreg.fd(gaitreglist)
