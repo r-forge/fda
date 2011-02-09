@@ -237,7 +237,8 @@ for (icurve in 1:ncurve) {
     if (nvar == 1) {
       yfdi <- yfd[icurve]
     } else {
-      yfdi <- yfd[icurve,]
+      yfdi <- yfd[icurve]
+      yfdi$coef <- array(yfdi$coef,c(ynbasis,1,nvar))
     }
     if (fulltarg) {
       if (nvar == 1) {
@@ -252,12 +253,11 @@ for (icurve in 1:ncurve) {
 
   #  evaluate curve to be registered at fine mesh
 
-  yfine <- eval.fd(xfine, yfdi)
+  yfine  <- matrix(eval.fd(xfine, yfdi),nfine,nvar)
   
   #  evaluate target curve at fine mesh
   
-  y0fine <- eval.fd(xfine, y0fdi)
-  if (length(dim(y0fine)) == 3 && dim(y0fine)[[2]] == 1) y0fine = y0fine[,1,]
+  y0fine <- matrix(eval.fd(xfine, y0fdi),nfine,nvar)
 
   #  evaluate objective function for starting coefficients
 

@@ -51,7 +51,7 @@ gaittime  <- as.numeric(dimnames(gait)[[1]])*20
 gaitrange <- c(0,20)
 #  set up a fourier basis object
 gaitbasis <- create.fourier.basis(gaitrange, nbasis=21)
-%  set up a functional parameter object penalizing harmonic acceleration
+#  set up a functional parameter object penalizing harmonic acceleration
 harmaccelLfd <- vec2Lfd(c(0, (2*pi/20)^2, 0), rangeval=gaitrange)
 gaitfdPar    <- fdPar(gaitbasis, harmaccelLfd, 1e-2)
 #  smooth the data
@@ -64,21 +64,22 @@ D2gaitfd$fdnames[[3]] <- c("Hip", "Knee")
 D2gaitmeanfd  <- mean.fd(D2gaitfd)
 names(D2gaitmeanfd$fdnames)[[3]] <- "Mean angular acceleration"
 D2gaitmeanfd$fdnames[[3]] <- c("Hip", "Knee")
-#  set up the basis for the warping functions
-nwbasis   <- 7
-wbasis    <- create.bspline.basis(gaitrange,nwbasis,3)
-Warpfd    <- fd(matrix(0,nwbasis,5),wbasis)
-WarpfdPar <- fdPar(Warpfd)
 #  register the functions for the first 10 boys
 #  argument periodic = TRUE causes register.fd to estimate a horizontal shift
 #  for each curve, which is a possibility when the data are periodic
 nBoys <- 10
-gaitreglist <- register.fd(D2gaitmeanfd, D2gaitfd[1:nBoys,], WarpfdPar,
+#  set up the basis for the warping functions
+nwbasis   <- 7
+wbasis    <- create.bspline.basis(gaitrange,nwbasis,3)
+Warpfd    <- fd(matrix(0,nwbasis,nBoys),wbasis)
+WarpfdPar <- fdPar(Warpfd)
+#  carry out the continuous registration
+gaitreglist <- register.fd(D2gaitmeanfd, D2gaitfd[1:nBoys], WarpfdPar,
                            periodic=TRUE)
 #  plot the results
 plotreg.fd(gaitreglist)
 #  display horizonal shift values
-print(round(gaitreglist$shift,1)))
+print(round(gaitreglist$shift,1))
 }
 
 % docclass is function
