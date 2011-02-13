@@ -7,7 +7,8 @@ Author: J. O. Ramsay <ramsay@psych.mcgill.ca>, Hadley Wickham
         <spencer.graves@prodsyse.com>, Giles Hooker <gjh27@cornell.edu>
 Maintainer: J. O. Ramsay <ramsay@psych.mcgill.ca>
 Depends: R (>= 2.4.0), splines, zoo
-Suggests: graphics, odesolve, R.matlab, quadprog, DierckxSpline, nlme
+Suggests: graphics, odesolve, R.matlab, quadprog, DierckxSpline, nlme,
+	  lattice
 Description: These functions were developed to support functional data
         analysis as described in Ramsay, J. O. and Silverman, B. W.
         (2005) Functional Data Analysis. New York: Springer.  They were
