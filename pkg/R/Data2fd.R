@@ -1,9 +1,9 @@
 Data2fd <- function(argvals=NULL, y=NULL, basisobj=NULL, nderiv=NULL,
-                    lambda=0.0, fdnames=NULL)
+                    lambda=3e-8/diff(range(argvals)), fdnames=NULL)
 {
-## Change proposed by Spencer Graves 2010.12.08:
+## Change proposed by Spencer Graves 2011.01.10:
 ## Default lambda = NULL here,
-##   converted below to 1e-9*sd(y)/range(argvals)
+##   converted below to 3e-8/range(argvals)
 #
 #  DATA2FD Converts an array Y of function values plus an array
 #    ARGVALS of argument values into a functional data object.

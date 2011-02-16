@@ -12,7 +12,7 @@
 }
 \usage{
 Data2fd(argvals=NULL, y=NULL, basisobj=NULL, nderiv=NULL,
-        lambda=0, fdnames=NULL)
+        lambda=3e-8/diff(range(argvals)), fdnames=NULL)
 %       lambda=NULL here
 % explain:  default = 1e-9*sd(y)/diff(range(argvals)) below
 }
