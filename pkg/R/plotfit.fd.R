@@ -92,7 +92,7 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
   varnames  <- dimnames(y)[[3]]
   if (is.null(axes)) {
     if (is.null(fdobj$basis$axes)) {
-                Axes <- TRUE
+                Axes  <- TRUE
                 axFun <- FALSE
     } else {
                 if (!inherits(fdobj$basis$axes, "list"))
@@ -139,8 +139,8 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
   dimnames(MSE) <- list(casenames, varnames)
   MSEsum <- apply(MSE,1,sum)
   #  compute fitted values for fine mesh of values
-  xfine <- seq(rng[1], rng[2], len=nfine)
-  yfine <- array(eval.fd(xfine, fdobj),c(nfine,nrep,nvar))
+  xfine  <- seq(rng[1], rng[2], len=nfine)
+  yfine  <- array(eval.fd(xfine, fdobj),c(nfine,nrep,nvar))
   #  sort cases by MSE if desired?????
   if (sortwrd && nrep > 1) {
     MSEind <- order(MSEsum)
@@ -181,10 +181,10 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
   argind    <- ((argvals >= rng[1]) & (argvals <= rng[2]))
   argvals   <- argvals[argind]
   casenames <- casenames[argind]
-  y    <- y   [argind,,, drop=FALSE]
-  yhat <- yhat[argind,,, drop=FALSE]
-  res  <- res [argind,,, drop=FALSE]
-  n    <- length(argvals)
+  y         <- y   [argind,,, drop=FALSE]
+  yhat      <- yhat[argind,,, drop=FALSE]
+  res       <- res [argind,,, drop=FALSE]
+  n         <- length(argvals)
 
   xfiind <- ((xfine >= rng[1]) & (xfine <= rng[2]))
   xfine  <- xfine[xfiind]
@@ -278,25 +278,34 @@ plotfit.fd <- function(y, argvals, fdobj, rng = NULL,
                 lty=lty[iOnOne], lwd=lwd[iOnOne])
         }
       } else {
-        nOnOne <- nvar
-        par(mfrow=c(nvar,1),ask=FALSE)
-        for (i in 1:nrepi) {
-          for (j in 1:nvar) {
-            if (iOnOne %in% c(0, nOnOne)[1:(1+ask)]) {
-              plot(rng, ylim, type="n", xlab=xlab,
-                   ylab=varnames[j], axes=Axes)
+        if (ask) {
+          aski = FALSE
+          for (i in 1:nrepi) {
+            par(mfrow=c(nvar,1),ask=aski)
+            for (j in 1:nvar) {
+              plot(rng, ylim, type="n", xlab=xlab,ylab=varnames[j], axes=Axes)
               if (axFun) do.call(axList[[1]], axList[-1])
-              title(main=titles[i], sub=sub[i, j])
-            } else {
-              iOnOne <- 0
+              if (j == 1) {
+                if (is.null(titles)) {
+                  title(paste("Record",i))
+                } else {
+                  title(main=titles[i], sub=sub[i, j])
+                }
+              }
+              points(argvals, y[,i,j], xlab=xlab, ylab=varnames[j])
+              lines(xfine, yfine[,i,j])
             }
-            iOnOne <- iOnOne+1
-            points(argvals, y[,i,j], type=type,
-                   xlab=xlab, ylab=varnames[j], col=col[iOnOne],
-                   lty=lty[iOnOne], lwd=lwd[iOnOne],
-                   cex=cex.pch[iOnOne])
-            lines(xfine, yfine[,i,j], col=col[iOnOne],
-                  lty=lty[iOnOne], lwd=lwd[iOnOne])
+            aski = TRUE
+          }
+        } else {
+          askj <- FALSE
+          for (j in 1:nvar) {
+            par(mfrow=c(1,1),ask=askj)
+            matplot(argvals, y[,,j], type="p", pch="o", ylim=ylim, xlab=xlab,
+                    ylab=varnames[j])
+            if (axFun) do.call(axList[[1]], axList[-1])
+            matlines(xfine, yfine[,,j])
+            askj <- TRUE
           }
         }
       }
