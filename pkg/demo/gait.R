@@ -119,15 +119,7 @@ par(op)
 
 #  plot each pair of curves interactively
 
-op <- par(mfrow=c(2,1))
-plotfit.fd(gait, gaittime, gaitfd, cex=1.2)
-# Problem:  does not work properly
-# ask=TRUE with appropriate choices for lty, etc.,
-# might make it stop after each one,
-# but would not fix the overplotting
-# Need to modify plotfit.fd to accept ylim = array,
-# not just a vector of length 2.
-par(op)
+plotfit.fd(gait, gaittime, gaitfd, cex=1.2, ask=FALSE)
 
 #  plot the residuals, sorting cases by residual sum of squares
 
@@ -136,7 +128,7 @@ plotfit.fd(gait, gaittime, gaitfd, residual=TRUE, sort=TRUE, cex=1.2)
 #  plot first derivative of all curves
 
 op <- par(mfrow=c(2,1))
-plot(gaitfd, Lfdob=1)
+plot(gaitfd, Lfdobj=1)
 par(op)
 
 #  -----------------------------------------------------------------
