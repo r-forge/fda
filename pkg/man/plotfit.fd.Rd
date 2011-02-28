@@ -199,6 +199,9 @@ plotfit.fdSmooth(y, argvals, fdSm, rng = NULL, index = NULL,
 daybasis65 <- create.fourier.basis(c(0, 365), 65,
                     axes=list("axesIntervals"))
 #  smooth the average temperature data using function data2fd
+Daytempfd <- with(CanadianWeather, Data2fd(
+       dailyAv[,,"Temperature.C"], day.5,
+       daybasis65) )
 daytempfd <- with(CanadianWeather, data2fd(
        dailyAv[,,"Temperature.C"], day.5,
        daybasis65, argnames=list("Day", "Station", "Deg C")) )
@@ -207,13 +210,20 @@ daytempfd <- with(CanadianWeather, data2fd(
 # If you want only the fitted functions, use plot(daytempfd)
 # To plot only a single fit vs. observations, use argument index
 # to request which one you want.
+with(CanadianWeather, plotfit.fd(dailyAv[, , "Temperature.C",
+     drop=FALSE], argvals= day.5, daytempfd, index=1, titles=place) )
+# Default ylab = daytempfd[['fdnames']]
+
 with(CanadianWeather, plotfit.fd(dailyAv[, , "Temperature.C"],
-     argvals= day.5, daytempfd, index=1, titles=place) )
+     argvals= day.5, Daytempfd, index=1, titles=place) )
+
+plot(daytempfd)
+
 \dontrun{
 # plot all the weather stations, one by one after a click on the plot
 # in response to a request.
-# This example is within the "dontrun" environment to prevent the 
-# the R package checking process from pausing: without 'dontrun', the package 
+# This example is within the "dontrun" environment to prevent the
+# the R package checking process from pausing: without 'dontrun', the package
 # build process might encounter problems with the par(ask=TRUE) feature.
 with(CanadianWeather, plotfit.fd(dailyAv[,, "Temperature.C"], day.5,
      daytempfd, ask=TRUE) )
@@ -242,7 +252,7 @@ gaittime  <- as.numeric(dimnames(gait)[[1]])*20
 gaitrange <- c(0,20)
 #  Define the harmonic acceleration differential operator
 harmaccelLfd <- vec2Lfd(c(0, (2*pi/20)^2, 0), rangeval=gaitrange)
-#  Set up basis for representing gait data.  
+#  Set up basis for representing gait data.
 gaitbasis <- create.fourier.basis(gaitrange, nbasis=21)
 #  Smooth the data
 gaitfd <- smooth.basisPar(gaittime, gait,
