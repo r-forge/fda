@@ -204,7 +204,7 @@ with(result2, c(df, gcv, SSE))
 fdPar0 <- fdPar(basisobj, 2, lambda=0)
 result3  <- smooth.basis(x, y, fdPar0)
 with(result3, c(df, gcv, SSE))
-# Saturate fit:  number of observations = nbasis
+# Saturated fit:  number of observations = nbasis
 # with no smoothing, so degrees of freedom = nbasis,
 # gcv = Inf indicating overfitting;
 # SSE = 0 (to within roundoff error)
@@ -245,6 +245,19 @@ gaitfd <- smooth.basis(gaittime, gait, gaitfdPar)$fd
 # by default creates multiple plots, asking for a click between plots
 plotfit.fd(gait, gaittime, gaitfd)
 }
+
+\dontshow{
+\dontrun{
+##
+## Example 8.  Allow matrix argvals
+##
+
+gaitTime <- array(gaittime, dim(gait)[1:2])
+gaitSmooth <- smooth.basis(gaitTime, gait, gaitfdPar)
+
+}}
+
+
 }
 % docclass is function
 \keyword{smooth}
