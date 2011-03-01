@@ -1,5 +1,8 @@
 \name{smooth.basis}
 \alias{smooth.basis}
+\alias{smooth.basis1}
+\alias{smooth.basis2}
+\alias{smooth.basis3}
 \title{
   Smooth Data with an Indirectly Specified Roughness Penalty
 }
@@ -11,8 +14,7 @@
   operator.
 }
 \usage{
-smooth.basis(argvals, y, fdParobj, wtvec=rep(1, length(argvals)),
-             fdnames=NULL)
+smooth.basis(argvals, y, fdParobj, wtvec=NULL, fdnames=NULL)
 }
 \arguments{
   \item{argvals}{
@@ -40,8 +42,8 @@ smooth.basis(argvals, y, fdParobj, wtvec=rep(1, length(argvals)),
     \code{smooth.basis} is essentially the same as \code{data2fd}.
   }
   \item{wtvec}{
-    a vector of the same length as \code{argvals} containing weights for
-    the values to be smoothed.
+    a vector of the same length as the first dimension of \code{y}
+    containing weights for the values to be smoothed.  Defaults to 1.
   }
   \item{fdnames}{
     a list of length 3 containing character vectors of names for the
@@ -95,6 +97,9 @@ smooth.basis(argvals, y, fdParobj, wtvec=rep(1, length(argvals)),
   the data in a basis system with reasonably high resolution using
   \code{data2fd}, and then smooth the resulting functional data object
   using function \code{smooth.fd}.
+
+  (smooth.basis1, smooth.basis2, smooth.basis3 are internal only
+  functions, not normally to be called by users.)
 }
 \value{
   an object of class \code{fdSmooth}, which is a named list of length 8
@@ -240,20 +245,33 @@ lambda    <- 10^(-11.5)
 harmaccelLfd <- vec2Lfd(c(0, 0, (2*pi)^2, 0))
 
 gaitfdPar <- fdPar(gaitbasis, harmaccelLfd, lambda)
-gaitfd <- smooth.basis(gaittime, gait, gaitfdPar)$fd
+gaitSmooth <- smooth.basis(gaittime, gait, gaitfdPar)
+gaitfd <- gaitSmooth$fd
 \dontrun{
 # by default creates multiple plots, asking for a click between plots
 plotfit.fd(gait, gaittime, gaitfd)
 }
 
 \dontshow{
-\dontrun{
 ##
 ## Example 8.  Allow matrix argvals
 ##
 
 gaitTime <- array(gaittime, dim(gait)[1:2])
-gaitSmooth <- smooth.basis(gaitTime, gait, gaitfdPar)
+gaitSmooth. <- smooth.basis(gaitTime, y=gait, fdParobj=gaitfdPar)
+
+\dontrun{
+\dontshow{stopifnot(}
+all.equal(gaitSmooth, gaitSmooth.)
+\dontshow{)}
+
+
+gaitArray <- array(gaittime, dim(gait))
+gaitSmooth3 <- smooth.basis(gaitArray, y=gait, fdParobj=gaitfdPar)
+
+\dontshow{stopifnot(}
+all.equal(gaitSmooth, gaitSmooth.)
+\dontshow{)}
 
 }}
 
