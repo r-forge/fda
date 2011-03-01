@@ -1,4 +1,120 @@
-smooth.basis <- function (argvals, y, fdParobj,
+smooth.basis <- function(argvals, y, fdParobj,
+                         wtvec=NULL, fdnames=NULL)
+{
+#  check argvals
+  if (!is.numeric(argvals)) stop("'argvals' is not numeric.")
+#
+  dima <- dim(argvals)
+  nda <- length(dima)
+  if(nda<2)
+    return(smooth.basis1(argvals, y=y, fdParobj=fdParobj,
+                         wtvec=wtvec, fdnames=fdnames) )
+#
+  dimy <- dim(y)
+  ndy <- length(dimy)
+  if(ndy<nda)
+    stop('argvals has ', nda, ' dimensions;  y has only ', ndy)
+#
+  if(all(dima==dimy[1:nda])){
+    if(nda<3)
+      return(smooth.basis2(argvals, y=y, fdParobj=fdParobj,
+                           wtvec=wtvec, fdnames=fdnames) )
+    stop('smooth.basis not programmed for ',
+         'length(dim(argvalse)) > 2')
+    if(nda<4)
+      return(smooth.basis1(argvals, y=y, fdParobj=fdParobj,
+                           wtvec=wtvec, fdnames=fdnames) )
+    cat('dim(argvals =', paste(dima, collapse=', '), '\n')
+    stop('smooth.basis not programmed for ',
+         'length(dim(argvalse)) > 3')
+  } else {
+    cat('dim(argvals) =', paste(dima, collapse=', '), '\n')
+    cat('dim(y) = ', paste(dimy, collapse=''), '\n')
+    stop('Dimensions of argvals do not match those of y')
+  }
+}
+
+smooth.basis3 <- function(argvals, y, fdParobj,
+                          wtvec=rep(1,length(argvals)), fdnames=NULL){
+  'coming soon'
+}
+
+smooth.basis2 <- function(argvals, y, fdParobj,
+                          wtvec=rep(1,length(argvals)), fdnames=NULL){
+##
+## 1.  number of  dimensions of y = 2 or 3?
+##
+  dimy <- dim(y)
+  ndy <- length(dimy)
+##
+## 2.  ndy = 2
+##
+  if(ndy<3){
+#  2.1.  argvals[, 1]
+    sb1 <- smooth.basis1(argvals[, 1], y[, 1], fdParobj,
+                         wtvec)
+#  2.2.  set up output object
+    dimc1 <- dim(sb1$coefs)
+    dimc <- c(dimc1[1], dimy[-1])
+    coefs <- array(NA, dim=dimc)
+    dimnames(coefs) <- dimnames(argvals)
+#
+    for(i in seq(2, length=dimy[2]-1)){
+      sbi <- smooth.basis1(argvals[, 1], y[, 1], fdParobj,
+                           wtvec)
+      coefs[, i] <- sbi$coefs
+    }
+  } else{
+##
+## 3.  ndy = 3
+##
+    sb1 <- smooth.basis1(argvals[, 1], y[, 1, ], fdParobj,
+                         wtvec)
+#  2.2.  set up output object
+    coef1 <- sb1$fd$coefs
+    dimc1 <- dim(coef1)
+    dimc <- c(dimc1[1], dimy[-1])
+    coefs <- array(NA, dim=dimc)
+    argNames <- dimnames(argvals)
+    yNames <- dimnames(y)
+    c1Names <- dimnames(coef1)
+    cNames <- vector('list', 3)
+    if(!is.null(c1Names[[1]]))
+      cNames[[1]] <- c1Names[[1]]
+    if(!is.null(yNames[[2]]))
+      cNames[[2]] <- yNames[[2]]
+    if(is.null(c1Names[[2]])){
+      if(!is.null(yNames[[3]]))
+        cNames[[3]] <- yNames[[3]]
+    } else cNames[[3]] <- c1Names[[2]]
+#
+#    if(is.null(argNames)){
+#      argNames <- vector('list', 3)
+#      if(!is.null(yNames[[2]]))
+#        argNames[[2]] <- yNames[[2]]
+#    }
+#    if(!is.null(yNames[[3]]))
+#       argNames[[3]] <- yNames[[3]]
+#
+    dimnames(coefs) <- cNames
+    coefs[, 1, ] <- coef1
+#
+    for(i in seq(2, length=dimy[2]-1)){
+      sbi <- smooth.basis1(argvals[, i], y[, i, ], fdParobj,
+                           wtvec)
+      coefs[, i, ] <- sbi$fd$coefs
+    }
+  }
+##
+## 4.  done
+##
+  sb <- sb1
+  sb$fd$coefs <- coefs
+  sb$fdnames <- fdnames
+  sb
+}
+
+smooth.basis1 <- function (argvals, y, fdParobj,
                           wtvec=rep(1,length(argvals)), fdnames=NULL)
 {
 # ARGVALS ... A set of argument values, set by default to equally spaced
@@ -66,6 +182,7 @@ smooth.basis <- function (argvals, y, fdParobj,
 
   if (ydim[1] != n)
     stop("'y' is not the same length as 'argvals'.")
+  if(is.null(wtvec))wtvec <- rep(1, n)
 
   #  check fdParobj
 
