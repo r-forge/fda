@@ -158,10 +158,10 @@ fdPar2 <- fdPar(b2.3, Lfdobj=2, lambda=1)
 # second derivative Lfdobj=2 is discontinuous,
 # so the following generates an error:
   fd2.3s0 <- smooth.basis(0:1, 0:1, fdPar2)
-Derivative of order 2 cannot be taken for B-spline of order 2
-Probable cause is a value of the nbasis argument
- in function create.basis.fd that is too small.
-Error in bsplinepen(basisobj, Lfdobj, rng) :
+#  Derivative of order 2 cannot be taken for B-spline of order 2
+#  Probable cause is a value of the nbasis argument
+#  in function create.basis.fd that is too small.
+#Error in bsplinepen(basisobj, Lfdobj, rng) :
 }
 
 ##
@@ -262,15 +262,14 @@ gaitSmooth. <- smooth.basis(gaitTime, y=gait, fdParobj=gaitfdPar)
 
 \dontrun{
 \dontshow{stopifnot(}
-all.equal(gaitSmooth, gaitSmooth.)
+all.equal(gaitSmooth$fd, gaitSmooth.$fd)
 \dontshow{)}
-
 
 gaitArray <- array(gaittime, dim(gait))
 gaitSmooth3 <- smooth.basis(gaitArray, y=gait, fdParobj=gaitfdPar)
 
 \dontshow{stopifnot(}
-all.equal(gaitSmooth, gaitSmooth.)
+all.equal(gaitSmooth$fd, gaitSmooth.$fd)
 \dontshow{)}
 
 }}
