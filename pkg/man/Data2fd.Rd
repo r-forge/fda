@@ -299,11 +299,9 @@ with(growth, matpoints(age, hgtf))
 ##
 ## multivariate argvals
 ##
-\dontrun{
 ageMat <- with(growth, array(age, dim(hgtf)))
 
 girl.data2fd2 <- Data2fd(ageMat, growth$hgtf, hgtbasis)
-}
 }
 
 % docclass is function
