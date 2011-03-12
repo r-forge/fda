@@ -57,8 +57,8 @@ smooth.basis3 <- function(argvals, y, fdParobj,
 ## 2.  Call smooth.basis2 repeatedly
 ##
 #  2.1.  argvals[, , 1]
-  sb1 <- smooth.basis2(argvals[, , 1], y[, , 1], fdParobj, wtvec,
-                       fdnames)
+  sb1 <- smooth.basis2(argvals[, , 1], y=y[, , 1], fdParobj=fdParobj,
+                       wtvec=wtvec, fdname=fdnames)
 #  2.2.  set up output object
   coef1 <- sb1$fd$coefs
   dimc1 <- dim(coef1)
@@ -75,8 +75,8 @@ smooth.basis3 <- function(argvals, y, fdParobj,
   dimnames(coefs) <- cNames
 #
   for(i in seq(2, length=dimy[3]-1)){
-    sbi <- smooth.basis2(argvals[,,i], y[,,i], fdParobj,
-                         wtvec, fdnames)
+    sbi <- smooth.basis2(argvals[,,i], y=y[,,i], fdParobj=fdParobj,
+                         wtvec=wtvec, fdnames=fdnames)
     coefs[,,i] <- sbi$fd$coefs
   }
   if(is.null(fdnames)){
@@ -123,8 +123,8 @@ smooth.basis2 <- function(argvals, y, fdParobj,
 ##
   if(ndy<3){
 #  2.1.  argvals[, 1]
-    sb1 <- smooth.basis1(argvals[, 1], y[, 1], fdParobj,
-                         wtvec)
+    sb1 <- smooth.basis1(argvals[, 1], y=y[, 1], fdParobj=fdParobj,
+                         wtvec=wtvec)
 #  2.2.  set up output object
     dimc1 <- dim(sb1$fd$coefs)
     dimc <- c(dimc1[1], dimy[-1])
@@ -138,8 +138,8 @@ smooth.basis2 <- function(argvals, y, fdParobj,
 #    dimnames(coefs) <- argNames
 #
     for(i in seq(2, length=dimy[2]-1)){
-      sbi <- smooth.basis1(argvals[, 1], y[, 1], fdParobj,
-                           wtvec)
+      sbi <- smooth.basis1(argvals[, i], y=y[, i], fdParobj=fdParobj,
+                           wtvec=wtvec)
       coefs[, i] <- sbi$fd$coefs
     }
     if(is.null(fdnames)){
@@ -159,8 +159,8 @@ smooth.basis2 <- function(argvals, y, fdParobj,
 ## 3.  ndy = 3
 ##
 #  3.1.  argvals[, 1]
-    sb1 <- smooth.basis1(argvals[, 1], y[, 1, ], fdParobj,
-                         wtvec)
+    sb1 <- smooth.basis1(argvals[, 1], y=y[, 1, ], fdParobj=fdParobj,
+                         wtvec=wtvec)
 #  3.2.  set up output object
     coef1 <- sb1$fd$coefs
     dimc1 <- dim(coef1)
@@ -191,8 +191,8 @@ smooth.basis2 <- function(argvals, y, fdParobj,
     coefs[, 1, ] <- coef1
 #
     for(i in seq(2, length=dimy[2]-1)){
-      sbi <- smooth.basis1(argvals[, i], y[, i, ], fdParobj,
-                           wtvec, fdnames)
+      sbi <- smooth.basis1(argvals[, i], y=y[, i, ], fdParobj=fdParobj,
+                           wtvec=wtvec, fdnames=fdnames)
       coefs[, i, ] <- sbi$fd$coefs
     }
     if(is.null(fdnames)){
@@ -220,7 +220,7 @@ smooth.basis2 <- function(argvals, y, fdParobj,
 }
 
 smooth.basis1 <- function (argvals, y, fdParobj,
-                          wtvec=rep(1,length(argvals)), fdnames=NULL)
+                          wtvec=NULL, fdnames=NULL)
 {
 # ARGVALS ... A set of argument values, set by default to equally spaced
 #             on the unit interval (0,1).
