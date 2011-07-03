@@ -57,7 +57,7 @@ function [fdobj, df, gcv, SSE, penmat, y2cMap, argvals, y] = ...
 %  ARGVALS ... the input set of argument values.
 %  Y       ... the input array containing values of curves
 
-%  Last modified 20 July 2010 by Jim Ramsay
+%  Last modified 28 March 2011 by Jim Ramsay
 
 if nargin < 3
     error('There is not at least three arguments.');
