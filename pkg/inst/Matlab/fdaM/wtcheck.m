@@ -5,9 +5,9 @@ function [wtvec, onewt, matwt] = wtcheck(n, wtvec)
 %  If the weight vector is empty, it is set up as a vector of ones of
 %  the appropriate length.  In this case output ONEWT has value 1.
 %  If weight is a matrix, it is checked for dimensions and being
-%  positive definite.
+%  positive definite, and matwt is set to 1, otherwise matwt is 0.
 
-%  Last modified 8 November 2010 by Jim Ramsay
+%  Last modified 9 July 2011 by Jim Ramsay
 
 if nargin < 2,  wtvec = [];  end
 if nargin < 1,  error('Argument n is missing.');  end
