@@ -37,7 +37,6 @@ smooth.basisPar <- function(argvals, y, fdobj=NULL, Lfdobj=NULL,
         }
       }
     }
-  }
 ##
 ## 2.  fdPar:  set up the functional parameter object from arguments
 ##
@@ -47,6 +46,6 @@ smooth.basisPar <- function(argvals, y, fdobj=NULL, Lfdobj=NULL,
 ## 3.  smooth.basis:  carry out smoothing by a call to smooth.basis and
 ##     return the smoothList object that this function returns
 ##
-  smooth.basis(argvals, y, fdP, wtvec=wtvec, fdnames=fdnames, covariates=NULL, 
-               method="chol", dfscale=1)
+  smooth.basis(argvals, y, fdP, wtvec=wtvec, fdnames=fdnames, 
+               covariates=covariates, method="chol", dfscale=1)
 }
