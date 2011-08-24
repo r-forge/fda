@@ -317,6 +317,7 @@ points(argvals,x, pch="*")
 #  freedom.  It does require a bit more effort, though.
 #  First, we define a little display function for showing how df, gcv and RMSE
 #  depend on the log10 smoothing parameter
+
 plotGCVRMSE.fd = function(lamlow, lamhi, lamdel, x, argvals, y, fdParobj,
                           covariates=NULL)  {
 loglamvec = seq(lamlow, lamhi, lamdel)
@@ -346,6 +347,7 @@ plot(loglamvec, loglamout[,4], type="b")
 title("Mean gcv")
 return(loglamout)
 }
+
 #  Use the data that you used in Example 1, or run the following code:
 n = 51
 argvals = seq(0,1,len=n)
