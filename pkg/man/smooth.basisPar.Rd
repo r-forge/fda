@@ -5,27 +5,48 @@
 }
 \description{
   Smooth (argvals, y) data with roughness penalty defined by the
-  remaining arguments.
+  remaining arguments.  This function acts as a wrapper for those who want 
+  to bypass the step of setting up a functional parameter object before invoking 
+  function \code{smooth.basis}.  This function simply does this setup for the 
+  user.   See the help file for functions \code{smooth.basis} and \code{fdPar} 
+  for further details, and more complete descriptions of the arguments.
 }
 \usage{
 smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
       lambda=0, estimate=TRUE, penmat=NULL,
-      wtvec=NULL, fdnames=NULL)
+      wtvec=NULL, fdnames=NULL, covariates=NULL, 
+                         method="chol", dfscale=1)
 }
 \arguments{
   \item{argvals}{
-    a vector of argument values correspond to the observations in array
-    \code{y}.
+    a set of argument values corresponding to the observations in array
+    \code{y}.  In most applications these values will be common to all curves
+    and all variables, and therefore be defined as a vector or as a matrix
+    with a single column.  But it is possible that these argument values
+    will vary from one curve to another, and in this case \code{argvals} will
+    be input as a matrix with rows corresponding to observation points and
+    columns corresponding to curves.  Argument values can even vary from one
+    variable to another, in which case they are input as an array with
+    dimensions corresponding to observation points, curves and variables,
+    respectively.  Note, however, that the number of observation points per
+    curve and per variable may NOT vary.  If it does, then curves and variables
+    must be smoothed individually rather than by a single call to this function.
+    The default value for \code{argvals} are the integers 1 to \code{n}, where
+    \code{n} is the size of the first dimension in argument \code{y}.
   }
   \item{y}{
-    an array containing values of curves at discrete sampling points or
-    argument values. If the array is a matrix, the rows must correspond
-    to argument values and columns to replications, and it will be
+    an set of values of curves at discrete sampling points or
+    argument values. If the set is supplied as a matrix object, the rows must
+    correspond to argument values and columns to replications, and it will be
     assumed that there is only one variable per observation.  If
     \code{y} is a three-dimensional array, the first dimension
     corresponds to argument values, the second to replications, and the
     third to variables within replications.  If \code{y} is a vector,
-    only one replicate and variable are assumed.
+    only one replicate and variable are assumed.  If the data
+    come from a single replication but multiple vectors, such as data
+    on coordinates for a single space curve, then be sure to coerce
+    the data into an array object by using the \code{as.array} function
+    with one as the central dimension length.
   }
   \item{fdobj}{
     One of the following:
@@ -43,7 +64,7 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
 	a functional parameter object (class \code{fdPar})
       }
       \item{integer}{
-	an integer giving the order of a B-spline basis, which is
+	a positive integer giving the order of a B-spline basis, which is
 	further converted to a functional data object with the identity
 	matrix as the coefficient matrix.
       }
@@ -88,16 +109,12 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
     calculations.
   }
   \item{wtvec}{
-    a vector of the same length as the first dimension of \code{y}
-    containing weights for the values to be smoothed.  Defaults to 1.
+    typically a vector of length \code{n} that is the length of \code{argvals}
+    containing weights for the values to be smoothed, However, it may also
+    be a symmetric matrix of order \code{n}.  If \code{wtvec} is a vector,
+    all values must be positive, and if it is a symmetric matrix, this must
+    be positive definite.  Defaults to all weights equal to 1.
   }
-%  \item{dffactor}{
-%    Chong Gu in his book \emph{Smoothing Spline ANOVA Models} suggests a
-%    modification of the GCV criterion using a factor modifying the
-%    effective degrees of freedom of the smooth.  He suggests that values
-%    like 1.2 are effective at avoiding undersmoothing of the data.  The
-%    default value of 1 is the classic definition.
-%  }
   \item{fdnames}{
     a list of length 3 containing character vectors of names for the
     following:
@@ -115,6 +132,40 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
 	(per 'args') for each 'rep'.
       }
     }
+  }
+  \item{covariates}{
+    the observed values in \code{y} are assumed to be primarily determined
+    the the height of the curve being estimates, but from time to time
+    certain values can also be influenced by other known variables.  For
+    example, multi-year sets of climate variables may be also determined by
+    the presence of absence of an El Nino event, or a volcanic eruption.
+    One or more of these covariates can be supplied as an \code{n} by
+    \code{p} matrix, where \code{p} is the number of such covariates.  When
+    such covariates are available, the smoothing is called "semi-parametric."
+    Matrices or arrays of regression coefficients are then estimated that
+    define the impacts of each of these covariates for each cueve and each
+    variable.
+  }
+  \item{method}{
+    by default the function uses the usual textbook equations for computing
+    the coefficients of the basis function expansions.  But, as in regression
+    analysis, a price is paid in terms of rounding error for such
+    computations since they involved cross-products of  basis function
+    values.  Optionally, if \code{method} is set equal to the string "qr",
+    the computation uses an algorithm based on the qr-decomposition which
+    is more accurate, but will require substantially more computing time
+    when \code{n} is large, meaning more than 500 or so.  The default
+    is "chol", referring the Choleski decomposition of a symmetric positive
+    definite matrix.
+  }
+  \item{dfscale}{
+    the generalized cross-validation or "gcv" criterion that is often used
+    to determine the size of the smoothing parameter involves the
+    subtraction of an measue of degrees of freedom from \code{n}.  Chong
+    Gu has argued that multiplying this degrees of freedom measure by
+    a constant slightly greater than 1, such as 1.2, can produce better
+    decisions about the level of smoothing to be used.  The default value
+    is, however, 1.0.
   }
 }
 \details{
