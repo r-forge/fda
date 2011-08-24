@@ -11,8 +11,10 @@
   may not be a satisfactory smooth of the data, and consequently that it
   may be necessary to use function \code{smooth.basis} instead, the help
   file for which provides a great deal more information than is provided
-  here.  Also, this function can swap the first two arguments, \code{argvals}
-  and \code{y} if it appears that they have been included in reverse order.
+  here.  
+  Also, function \code{Data2fd} can swap the first two arguments, 
+  \code{argvals} and \code{y} if it appears that they have been included 
+  in reverse order.  A warning message is returned if this swap takes place.
   Any such automatic decision, though, has the possibility of being wrong,
   and the results should be carefully checked.  Preferably, the order of
   the arguments should be respected: \code{argvals} comes first and 
