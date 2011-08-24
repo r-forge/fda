@@ -761,9 +761,9 @@ nfourierbasis = 13
 fourierbasis = create.fourier.basis(c(0,1),nfourierbasis)
 #  Set up some random coefficients, with declining contributions from
 #  higher order basis functions
-coef = matrix(rnorm(nfourierbasis*N),nfourierbasis,N)*
-         (exp(-(1:nfourierbasis)/3) %*% matrix(1,1,N))
-xfd = fd(coef, fourierbasis)
+basiswt = matrix(exp(-(1:nfourierbasis)/3),nfourierbasis,N)
+xcoef = matrix(rnorm(nfourierbasis*N),nfourierbasis,N)*basiswt
+xfd = fd(xcoef, fourierbasis)
 x = matrix(0,n,N)
 for (i in 1:N) x[,i] = eval.fd(argvals[,i], xfd[i])
 #  Add independent Gaussian noise to the data with std. dev. 0.2
