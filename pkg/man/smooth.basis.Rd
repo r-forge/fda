@@ -84,6 +84,24 @@ smooth.basis(argvals=1:n, y, fdParobj, wtvec=NULL, fdnames=NULL,
     all values must be positive, and if it is a symmetric matrix, this must
     be positive definite.  Defaults to all weights equal to 1.
   }
+  \item{fdnames}{
+    a list of length 3 containing character vectors of names for the
+    following:
+
+    \itemize{
+      \item{args}{
+        name for each observation or point in time at which data are
+        collected for each 'rep', unit or subject.
+      }
+      \item{reps}{
+        name for each 'rep', unit or subject.
+      }
+      \item{fun}{
+        name for each 'fun' or (response) variable measured repeatedly
+        (per 'args') for each 'rep'.
+      }
+    }
+  }
   \item{covariates}{
     the observed values in \code{y} are assumed to be primarily determined
     the the height of the curve being estimates, but from time to time
@@ -108,24 +126,6 @@ smooth.basis(argvals=1:n, y, fdParobj, wtvec=NULL, fdnames=NULL,
     when \code{n} is large, meaning more than 500 or so.  The default
     is "chol", referring the Choleski decomposition of a symmetric positive
     definite matrix.
-  }
-  \item{fdnames}{
-    a list of length 3 containing character vectors of names for the
-    following:
-
-    \itemize{
-      \item{args}{
-        name for each observation or point in time at which data are
-        collected for each 'rep', unit or subject.
-      }
-      \item{reps}{
-        name for each 'rep', unit or subject.
-      }
-      \item{fun}{
-        name for each 'fun' or (response) variable measured repeatedly
-        (per 'args') for each 'rep'.
-      }
-    }
   }
   \item{dfscale}{
     the generalized cross-validation or "gcv" criterion that is often used
