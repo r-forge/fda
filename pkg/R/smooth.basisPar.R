@@ -1,6 +1,6 @@
 smooth.basisPar <- function(argvals, y, fdobj=NULL, Lfdobj=NULL,
       lambda=0, estimate=TRUE, penmat=NULL,
-      wtvec=rep(1, length(argvals)), fdnames=NULL, covariates=NULL, 
+      wtvec=NULL, fdnames=NULL, covariates=NULL, 
                          method="chol", dfscale=1 ) {
 #  This function acts as a wrapper for those who don't want to take the
 #  step of setting up a functional parameter object before invoking function
