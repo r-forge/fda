@@ -80,7 +80,7 @@ fd(coef=NULL, basisobj=NULL, fdnames=NULL)
 }
 \seealso{
   \code{\link{smooth.basis}}
-  \code{\link{smoothPar.basis}}
+  \code{\link{smooth.basisPar}}
   \code{\link{Data2fd}}
   \code{\link{density.fd}}
   \code{\link{create.bspline.basis}}

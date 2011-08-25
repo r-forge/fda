@@ -68,7 +68,7 @@ daybasis65 <- create.fourier.basis(c(0, 365), nbasis=65, period=365)
 harmaccelLfd <- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
 harmfdPar     <- fdPar(daybasis65, harmaccelLfd, lambda=1e5)
 daytempfd <- smooth.basis(day.5, CanadianWeather$dailyAv[,,"Temperature.C"],
-                     daybasis65, argnames=list("Day", "Station", "Deg C"))
+                     daybasis65, fdnames=list("Day", "Station", "Deg C"))
 
 daytemppcaobj <- pca.fd(daytempfd, nharm=4, harmfdPar)
 #  plot harmonics, asking before each new page after the first:  

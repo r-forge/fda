@@ -67,10 +67,10 @@ daybasis3 <- create.fourier.basis(c(0, 365))
 daybasis5 <- create.fourier.basis(c(0, 365), 5)
 tempfd3 <- with(CanadianWeather, smooth.basis(
        day.5, dailyAv[,,"Temperature.C"], 
-       daybasis3, argnames=list("Day", "Station", "Deg C")) )
+       daybasis3, fdnames=list("Day", "Station", "Deg C")) )
 precfd5 <- with(CanadianWeather, smooth.basis(
        day.5, dailyAv[,,"log10precip"], 
-       daybasis5, argnames=list("Day", "Station", "Deg C")) )
+       daybasis5, fdnames=list("Day", "Station", "Deg C")) )
 
 # Correlation matrix for a single functional data object
 (tempCor3 <- cor.fd(seq(0, 356, length=4), tempfd3))
@@ -85,10 +85,10 @@ precfd5 <- with(CanadianWeather, smooth.basis(
 daybasis65 <- create.fourier.basis(rangeval=c(0, 365), nbasis=65)
 daytempfd <- with(CanadianWeather, smooth.basis(
        day.5, dailyAv[,,"Temperature.C"], 
-       daybasis65, argnames=list("Day", "Station", "Deg C")) )
+       daybasis65, fdnames=list("Day", "Station", "Deg C")) )
 dayprecfd <- with(CanadianWeather, smooth.basis(
        day.5, dailyAv[,,"log10precip"], 
-       daybasis65, argnames=list("Day", "Station", "log10(mm)")) )
+       daybasis65, fdnames=list("Day", "Station", "log10(mm)")) )
 
 str(tempPrecCor <- cor.fd(weeks, daytempfd, weeks, dayprecfd))
 # dim(tempPrecCor)= c(53, 53)
