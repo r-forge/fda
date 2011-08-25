@@ -324,7 +324,7 @@ points(argvals,x, pch="*")
 #  depend on the log10 smoothing parameter
 
 plotGCVRMSE.fd = function(lamlow, lamhi, lamdel, x, argvals, y, fdParobj,
-                          covariates=NULL)  {
+                          wtvec=NULL, fdnames=NULL, covariates=NULL)  {
 loglamvec = seq(lamlow, lamhi, lamdel)
 loglamout = matrix(0,length(loglamvec),4)
 m = 0
@@ -332,7 +332,8 @@ for (loglambda in loglamvec) {
   m = m + 1
   loglamout[m,1] = loglambda
   fdParobj$lambda = 10^(loglambda)
-  smoothlist = smooth.basis(argvals, y, fdParobj)
+  smoothlist = smooth.basis(argvals, y, fdParobj, wtvec=wtvec, fdnames=fdnames,
+                            covariates=covariates)
   xfd = smoothlist$fd   #  the curve smoothing the data
   loglamout[m,2] = smoothlist$df   #  degrees of freedom in the smoothing curve
   loglamout[m,3] = sqrt(mean((eval.fd(argvals, xfd) - x)^2))
@@ -490,30 +491,32 @@ for (i in 1:n) {
 }
 #  Compute the Choleski factor of the correlation matrix
 Lerr = chol(Rerr)
-#  Generate auto-correlated errors by multipling independent errors by the
-#  transpose of the Choleski factor
-err = crossprod(Lerr,matrix(rnorm(x),n,1))*sigerr
-#  See the long-run errors that are genrated
-plot(argvals, err)
 #  set up some data
 n = 51
 argvals = seq(0,1,len=n)
 x = sin(4*pi*argvals)
+#  Generate auto-correlated errors by multipling independent errors by the
+#  transpose of the Choleski factor
+sigerr = 0.2
+err = as.vector(crossprod(Lerr,matrix(rnorm(x),n,1))*sigerr)
+#  See the long-run errors that are genrated
+plot(argvals, err)
 y = x + err
 #  Our values of y were:
-y = c(-0.03, 0.36, 0.59, 0.71, 0.97,  1.2,  1.1, 0.96, 0.79,  0.68,  0.56,  
-       0.25,  0.01, -0.43, -0.69, -1, -1.09, -1.29, -1.16, -1.09, -0.93,  
+y = c(-0.03, 0.36, 0.59, 0.71, 0.97,  1.2,  1.1, 0.96, 0.79,  0.68,  0.56,
+       0.25,  0.01, -0.43, -0.69, -1, -1.09, -1.29, -1.16, -1.09, -0.93,
        -0.9, -0.78, -0.47,  -0.3, -0.01,  0.29,  0.47,  0.77,  0.85,  0.87,
         0.97,   0.9,  0.72,  0.48,  0.25, -0.17, -0.39, -0.47, -0.71, -1.07,
        -1.28, -1.33, -1.39, -1.45,  -1.3, -1.25, -1.04, -0.82, -0.55,  -0.2)
 #  Retaining the above data, now set up a basis system with a knot at every data
 #  point:  the number of basis functions will equal the number of interior knots
-#  plus the order, which in this case is still 4. 
+#  plus the order, which in this case is still 4.
 #  19 interior knots + order 4 = 23 basis functions
 nbasis = n + 2
 basisobj = create.bspline.basis(c(0,1),nbasis)
+fdParobj = fdPar(basisobj)
 #  Smooth these results for a range of log10(lambda) values
-loglamout = plotGCVRMSE.fd(-6, -3, 0.25, x, argvals, y, basisobj)
+loglamout = plotGCVRMSE.fd(-6, -3, 0.25, x, argvals, y, fdParobj)
 #  Our results without weighting were:
 # -6.000 30.385  0.261  0.004
 # -5.750 26.750  0.260  0.005
@@ -528,15 +531,15 @@ loglamout = plotGCVRMSE.fd(-6, -3, 0.25, x, argvals, y, basisobj)
 # -3.500  8.177  0.248  0.028
 # -3.250  7.217  0.267  0.055
 # -3.000  6.385  0.310  0.102
-#  Now GCV still is firm on the fact that log10(lambda) over -4 is 
-#  over-smoothing, but is quite unhelpful about what constitutes 
+#  Now GCV still is firm on the fact that log10(lambda) over -4 is
+#  over-smoothing, but is quite unhelpful about what constitutes
 #  undersmoothing.  In real data applications you will have to make the final
 #  call.
 #  Now set up a weight matrix equal to the inverse of the correlation matrix
 wtmat = solve(Rerr)
 #  Smooth these results for a range of log10(lambda) values using the
 #  weight matrix
-loglamout = plotGCVRMSE.fd(-6, -3, 0.25, x, argvals, y, basisobj, wtvec=wtmat)
+loglamout = plotGCVRMSE.fd(-6, -3, 0.25, x, argvals, y, fdParobj, wtvec=wtmat)
 #  Our results with weighting were:
 # -6.000 46.347  0.263  0.005
 # -5.750 43.656  0.262  0.005
@@ -553,7 +556,7 @@ loglamout = plotGCVRMSE.fd(-6, -3, 0.25, x, argvals, y, basisobj, wtvec=wtmat)
 # -3.000  6.356  0.397  0.260
 #  GCV is still not clear about what the right smoothing level is.
 #  But, comparing the two results, we see an optimal RMSE without smoothing
-#  of 0.244 at log10(lambda) = -3.75, and with smoothing 0.229 at 
+#  of 0.244 at log10(lambda) = -3.75, and with smoothing 0.229 at
 #  log10(lambda) = -4.  Weighting improved the RMSE.  At log10(lambda) = -4
 #  the improvement is 9%.
 #  Smooth the data with and without the weight matrix at log10(lambda) = -4
@@ -577,7 +580,7 @@ par(mfrow=c(1,1))
 plot(fdobjnowt)
 lines(fdobjwt,lty=2)
 points(argvals, y)
-#  Homework:  
+#  Homework:
 #  Repeat these analyses with various values of rho, perhaps using multiple
 #  curves to get more stable indications of relative performance.  Be sure to
 #  include some negative rho's.
