@@ -234,7 +234,7 @@ smooth.basisPar(argvals, y, fdobj=NULL, Lfdobj=NULL,
 ##
 ## simplest call
 ##
-girlGrowthSm <- with(growth, smooth.basisPar(argvals=age, y=hgtf))
+girlGrowthSm <- with(growth, smooth.basisPar(argvals=age, y=hgtf, lambda=0.1))
 plot(girlGrowthSm$fd, xlab="age", ylab="height (cm)",
          main="Girls in Berkeley Growth Study" )
 plot(deriv(girlGrowthSm$fd), xlab="age", ylab="growth rate (cm / year)",
@@ -247,11 +247,8 @@ plot(deriv(girlGrowthSm$fd, 2), xlab="age",
 ##
 ## Another simple call
 ##
-lipSm <- smooth.basisPar(liptime, lip)
+lipSm <- smooth.basisPar(liptime, lip, lambda=1e-9)
 plot(lipSm)
-#  Undersmoothed with lambda = 0
-plot(smooth.basisPar(liptime, lip, lambda=1e-9))
-# more sensible
 
 ##
 ## A third example
@@ -265,7 +262,7 @@ y <- x + 3*exp(-6*x^2) + sin(1:101)/2
 #  set up a saturated B-spline basis
 basisobj101 <- create.bspline.basis(x)
 fdParobj101 <- fdPar(basisobj101, 2, lambda=1)
-result101  <- smooth.basis(x, y, fdParobj101)
+result101   <- smooth.basis(x, y, fdParobj101)
 
 resultP <- smooth.basisPar(argvals=x, y=y, fdobj=basisobj101, lambda=1)
 \dontshow{stopifnot(}
@@ -295,25 +292,14 @@ plot(result4.4)
 lines(result4, col='green')
 lines(result4$fd, col='green') # same as lines(result4, ...)
 
-result4.0 <- smooth.basisPar(x, y, basisobj101, lambda=0)
-
-result4.0a <- smooth.basisPar(x, y, lambda=0)
-\dontshow{stopifnot(}
-all.equal(result4.0, result4.0a)
-\dontshow{)}
-
-with(result4.0, c(df, gcv)) #  display df and gcv measures
-# no smoothing, degrees of freedom = number of points
-# but generalized cross validation = Inf
-# suggesting overfitting.
-
 ##
 ## fdnames?
 ##
-girlGrow12 <- with(growth, smooth.basisPar(argvals=age, y=hgtf[, 1:2],
-              fdnames=c('age', 'girl', 'height')) )
+girlGrow12 <- with(growth, smooth.basisPar(argvals=age, y=hgtf[, 1:2], 
+              fdnames=c('age', 'girl', 'height'), lambda=0.1) )
 girlGrow12. <- with(growth, smooth.basisPar(argvals=age, y=hgtf[, 1:2],
-    fdnames=list(age=age, girl=c('Carol', 'Sally'), value='height')) )
+    fdnames=list(age=age, girl=c('Carol', 'Sally'), value='height'),
+    lambda = 0.1) )
 
 ##
 ## Fourier basis with harmonic acceleration operator
