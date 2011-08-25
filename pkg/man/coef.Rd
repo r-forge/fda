@@ -86,7 +86,7 @@ stopifnot(all.equal(coef(WfdParobj), coefficients(WfdParobj)))
 ## coef.fdSmooth
 ##
 
-girlGrowthSm <- with(growth, smooth.basisPar(argvals=age, y=hgtf))
+girlGrowthSm <- with(growth, smooth.basisPar(argvals=age, y=hgtf, lambda=0.1))
 coef(girlGrowthSm)
 \dontshow{stopifnot(
 all.equal(coef(girlGrowthSm), coefficients(girlGrowthSm)) 
