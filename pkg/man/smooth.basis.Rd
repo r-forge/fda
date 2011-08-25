@@ -236,11 +236,16 @@ smooth.basis(argvals=1:n, y, fdParobj, wtvec=NULL, fdnames=NULL,
   \item{argvals, y}{input arguments}
 }
 \seealso{
-  \code{\link{data2fd}},    \code{\link{df2lambda}},
-  \code{\link{lambda2df}},  \code{\link{lambda2gcv}},
-  \code{\link{plot.fd}},    \code{\link{project.basis}},
-  \code{\link{smooth.fd}},  \code{\link{smooth.monotone}},
-  \code{\link{smooth.pos}}, \code{\link{smooth.basisPar}}
+  \code{\link{lambda2df}},  
+  \code{\link{lambda2gcv}},
+  \code{\link{df2lambda}},
+  \code{\link{plot.fd}},    
+  \code{\link{project.basis}},
+  \code{\link{smooth.fd}},  
+  \code{\link{smooth.monotone}},
+  \code{\link{smooth.pos}}, 
+  \code{\link{smooth.basisPar}}
+  \code{\link{Data2fd}},    
 }
 
 \examples{

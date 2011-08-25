@@ -192,8 +192,8 @@ list(x=as.array3(x4a), y=as.array3(y4))
 # as used in plotfit.fd
 daybasis65 <- create.fourier.basis(c(0, 365), 65)
 
-daytempfd <- with(CanadianWeather, data2fd(
-       dailyAv[,,"Temperature.C"], day.5,
+daytempfd <- with(CanadianWeather, smooth.basis(
+       day.5, dailyAv[,,"Temperature.C"], 
        daybasis65, argnames=list("Day", "Station", "Deg C")) )
 
 defaultNms <- with(daytempfd, c(fdnames[2], fdnames[3], x='x'))
