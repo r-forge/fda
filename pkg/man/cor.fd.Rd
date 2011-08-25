@@ -65,11 +65,11 @@ cor.fd(evalarg1, fdobj1, evalarg2=evalarg1, fdobj2=fdobj1)
 \examples{
 daybasis3 <- create.fourier.basis(c(0, 365))
 daybasis5 <- create.fourier.basis(c(0, 365), 5)
-tempfd3 <- with(CanadianWeather, data2fd(
-       dailyAv[,,"Temperature.C"], day.5,
+tempfd3 <- with(CanadianWeather, smooth.basis(
+       day.5, dailyAv[,,"Temperature.C"], 
        daybasis3, argnames=list("Day", "Station", "Deg C")) )
-precfd5 <- with(CanadianWeather, data2fd(
-       dailyAv[,,"log10precip"], day.5,
+precfd5 <- with(CanadianWeather, smooth.basis(
+       day.5, dailyAv[,,"log10precip"], 
        daybasis5, argnames=list("Day", "Station", "Deg C")) )
 
 # Correlation matrix for a single functional data object
@@ -83,11 +83,11 @@ precfd5 <- with(CanadianWeather, data2fd(
 # The following produces contour and perspective plots
 
 daybasis65 <- create.fourier.basis(rangeval=c(0, 365), nbasis=65)
-daytempfd <- with(CanadianWeather, data2fd(
-       dailyAv[,,"Temperature.C"], day.5,
+daytempfd <- with(CanadianWeather, smooth.basis(
+       day.5, dailyAv[,,"Temperature.C"], 
        daybasis65, argnames=list("Day", "Station", "Deg C")) )
-dayprecfd <- with(CanadianWeather, data2fd(
-       dailyAv[,,"log10precip"], day.5,
+dayprecfd <- with(CanadianWeather, smooth.basis(
+       day.5, dailyAv[,,"log10precip"], 
        daybasis65, argnames=list("Day", "Station", "log10(mm)")) )
 
 str(tempPrecCor <- cor.fd(weeks, daytempfd, weeks, dayprecfd))
@@ -114,7 +114,7 @@ par(op)
 # Correlations and cross correlations
 # in a bivariate functional data object
 gaitbasis5 <- create.fourier.basis(nbasis=5)
-gaitfd5 <- data2fd(gait, basisobj=gaitbasis5)
+gaitfd5 <- Data2fd(gait, basisobj=gaitbasis5)
 
 gait.t3 <- (0:2)/2
 (gaitCor3.5 <- cor.fd(gait.t3, gaitfd5))

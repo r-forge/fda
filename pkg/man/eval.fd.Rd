@@ -80,8 +80,8 @@ daybasis <- create.fourier.basis(c(0, 365), nbasis=65)
 #  See analyses of weather data.
 #  Set up sampling points at mid days
 #  Convert the data to a functional data object
-tempfd <- data2fd(CanadianWeather$dailyAv[,,"Temperature.C"],
-                   day.5, daybasis)
+tempfd <- smooth.basis(day.5,  CanadianWeather$dailyAv[,,"Temperature.C"],
+                       daybasis)
 #   set up the harmonic acceleration operator
 Lbasis  <- create.constant.basis(c(0, 365))
 Lcoef   <- matrix(c(0,(2*pi/365)^2,0),1,3)
