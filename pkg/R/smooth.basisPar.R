@@ -47,5 +47,5 @@ smooth.basisPar <- function(argvals, y, fdobj=NULL, Lfdobj=NULL,
 ##     return the smoothList object that this function returns
 ##
   smooth.basis(argvals, y, fdP, wtvec=wtvec, fdnames=fdnames, 
-               covariates=covariates, method="chol", dfscale=1)
+               covariates=covariates, method="chol", dfscale=dfscale)
 }
