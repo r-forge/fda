@@ -1,6 +1,6 @@
 Package: fda
-Version: 2.2.6
-Date: 2010-06
+Version: 2.2.7
+Date: 2011-08
 Title: Functional Data Analysis
 Author: J. O. Ramsay <ramsay@psych.mcgill.ca>, Hadley Wickham
         <h.wickham@gmail.com>, Spencer Graves
@@ -18,6 +18,25 @@ Description: These functions were developed to support functional data
         Matlab (Springer). The package includes data sets and script
         files working many examples including all but one of the 76
         figures in this latter book.
+        The principal changes to version 2.2.6 are:
+        1.  Major enhancements to function smooth.basis as well as the
+        functions that call it.  New or revised arguments are:
+            "wtvec" may now be a positive symmetric matrix as well as
+                 a vector
+            "covariates" for inputting covariate matrices that explain
+                 some fraction of the data to be smoothed (often called
+            "semiparametric smoothing")
+            "method=qr" enables an algorithm based on the qr-
+                 decomposition that will be more accurate than the
+                 usual approach relying on the Choleski decomposition.
+                 It will, however, be slower.
+        2.  Greatly expanded examples in the smooth.basis.Rd file
+        that show a wider range of uses of this function.
+        3.  Function data2fd has been replaced by function Data2fd
+        for simple smoothing problems.  Data2fd is designed to be
+        invoked with various argument configurations.
+        4.  And the usual fixes of reported bugs, especially in
+        the registraton functions, landmarkreg and register.fd.
 License: GPL (>= 2)
 URL: http://www.functionaldata.org
 LazyData: true
