@@ -88,7 +88,7 @@ argvalsy.swap = function(argvals=NULL, y=NULL, basisobj=NULL)
 #
       yrng <- range(y)
       if((a01[1]<=yrng[1]) && (yrng[2]<=a01[2])){
-        cat(paste(("'argvals' is NOT contained in basisobj$rangeval",
+        cat(paste("'argvals' is NOT contained in basisobj$rangeval",
                 ", but 'y' is;  swapping 'argvals' and 'y'.\n"))
         return(list(argvals=y, y=argvals, basisobj=basisobj)) 
       }
