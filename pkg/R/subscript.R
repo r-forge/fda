@@ -1,7 +1,7 @@
 "[.fd" <- function(fdobj, i=TRUE, j=TRUE, drop=TRUE) {
   #  select subsets of curves in a functional data object
 
-  coef    <- as.matrix(fdobj$coefs)
+  coef    <- as.array(fdobj$coefs)
   fdnames <- fdobj$fdnames
   coefdim <- dim(coef)
   ndim    <- length(coefdim)
