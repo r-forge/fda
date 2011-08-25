@@ -47,9 +47,9 @@ y <- x + 3*exp(-6*x^2) + sin(1:101)/2
 # sin not rnorm to make it easier to compare
 # results across platforms 
 
-result4. <- smooth.basisPar(argvals=x, y=y, lambda=1)
-result4.4 <- smooth.basisPar(argvals=x, y=y, lambda=1e-4)
-result4.0 <- smooth.basisPar(x, y, lambda=0)
+result4.  <- smooth.basisPar(argvals=x, y=y, lambda=1)$fd
+result4.4 <- smooth.basisPar(argvals=x, y=y, lambda=1e-4)$fd
+result4.0 <- smooth.basisPar(x, y, lambda=0)$fd
 
 plot(x, y)
 lines(result4.)

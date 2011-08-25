@@ -194,7 +194,7 @@ daybasis65 <- create.fourier.basis(c(0, 365), 65)
 
 daytempfd <- with(CanadianWeather, smooth.basis(
        day.5, dailyAv[,,"Temperature.C"], 
-       daybasis65, argnames=list("Day", "Station", "Deg C")) )
+       daybasis65, fdnames=list("Day", "Station", "Deg C"))$fd )
 
 defaultNms <- with(daytempfd, c(fdnames[2], fdnames[3], x='x'))
 subset <- checkDims3(CanadianWeather$dailyAv[, , "Temperature.C"],

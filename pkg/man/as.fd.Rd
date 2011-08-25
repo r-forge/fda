@@ -134,7 +134,8 @@ as.fd(x, ...)
 ##
 ## as.fd.fdSmooth
 ##
-girlGrowthSm <- with(growth, smooth.basisPar(argvals=age, y=hgtf, lambda=0.1))
+girlGrowthSm <- with(growth, smooth.basisPar(argvals=age, y=hgtf, 
+                                             lambda=0.1)@fd)
 girlGrowth.fd <- as.fd(girlGrowthSm)
 
 ##
