@@ -247,7 +247,7 @@ plot(deriv(girlGrowthSm$fd, 2), xlab="age",
 ##
 ## Another simple call
 ##
-lipSm <- smooth.basisPar(liptime, lip, lambda=1e-9)
+lipSm <- smooth.basisPar(liptime, lip, lambda=1e-9)$fd
 plot(lipSm)
 
 ##

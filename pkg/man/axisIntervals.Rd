@@ -86,7 +86,7 @@ daybasis65 <- create.fourier.basis(c(0, 365), 65)
 
 daytempfd <- with(CanadianWeather, smooth.basis(
        day.5,  dailyAv[,,"Temperature.C"], 
-       daybasis65, fdnames=list("Day", "Station", "Deg C")) )$fd
+       daybasis65, fdnames=list("Day", "Station", "Deg C"))$fd )
 
 with(CanadianWeather, plotfit.fd(
       dailyAv[,,"Temperature.C"], argvals=day.5,
