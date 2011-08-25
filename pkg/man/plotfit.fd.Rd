@@ -203,7 +203,7 @@ Daytempfd <- with(CanadianWeather, smooth.basis(day.5,
          dailyAv[,,"Temperature.C"], daybasis65) )
 daytempfd <- with(CanadianWeather, smooth.basis(day.5,
          dailyAv[,,"Temperature.C"], 
-         daybasis65, argnames=list("Day", "Station", "Deg C")) )
+         daybasis65, fdnames=list("Day", "Station", "Deg C")) )
 #  Plot the temperature data along with the fit to the data for the first
 #  station, St. John's Newfoundland
 # If you want only the fitted functions, use plot(daytempfd)

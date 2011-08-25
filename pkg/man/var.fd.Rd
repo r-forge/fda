@@ -67,10 +67,10 @@ daybasis3 <- create.fourier.basis(c(0, 365))
 daybasis5 <- create.fourier.basis(c(0, 365), 5)
 tempfd3 <- with(CanadianWeather, smooth.basis(day.5, 
        dailyAv[,,"Temperature.C"], 
-       daybasis3, argnames=list("Day", "Station", "Deg C")) )
+       daybasis3, fdnames=list("Day", "Station", "Deg C")) )
 precfd5 <- with(CanadianWeather, smooth.basis(day.5, 
        dailyAv[,,"log10precip"],
-       daybasis5, argnames=list("Day", "Station", "Deg C")) )
+       daybasis5, fdnames=list("Day", "Station", "Deg C")) )
 
 # Compare with structure described above under 'value':
 str(tempPrecVar3.5 <- var.fd(tempfd3, precfd5))
@@ -112,7 +112,7 @@ daybasis65 <- create.fourier.basis(rangeval=c(0, 365), nbasis=65)
 
 daytempfd <- with(CanadianWeather, smooth.basis(day.5, 
        dailyAv[,,"Temperature.C"],
-       daybasis65, argnames=list("Day", "Station", "Deg C")) )
+       daybasis65, fdnames=list("Day", "Station", "Deg C")) )
 str(tempvarbifd <- var.fd(daytempfd))
 
 str(tempvarmat  <- eval.bifd(weeks,weeks,tempvarbifd))
