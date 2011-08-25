@@ -112,7 +112,7 @@ daybasis65 <- create.fourier.basis(rangeval=c(0, 365), nbasis=65)
 
 daytempfd <- with(CanadianWeather, smooth.basis(day.5, 
        dailyAv[,,"Temperature.C"],
-       daybasis65, fdnames=list("Day", "Station", "Deg C")) )
+       daybasis65, fdnames=list("Day", "Station", "Deg C"))$fd )
 str(tempvarbifd <- var.fd(daytempfd))
 
 str(tempvarmat  <- eval.bifd(weeks,weeks,tempvarbifd))

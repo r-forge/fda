@@ -200,10 +200,10 @@ daybasis65 <- create.fourier.basis(c(0, 365), 65,
                     axes=list("axesIntervals"))
 #  smooth the average temperature data using function data2fd
 Daytempfd <- with(CanadianWeather, smooth.basis(day.5, 
-         dailyAv[,,"Temperature.C"], daybasis65) )
+         dailyAv[,,"Temperature.C"], daybasis65)$fd )
 daytempfd <- with(CanadianWeather, smooth.basis(day.5,
          dailyAv[,,"Temperature.C"], 
-         daybasis65, fdnames=list("Day", "Station", "Deg C")) )
+         daybasis65, fdnames=list("Day", "Station", "Deg C"))$fd )
 #  Plot the temperature data along with the fit to the data for the first
 #  station, St. John's Newfoundland
 # If you want only the fitted functions, use plot(daytempfd)
