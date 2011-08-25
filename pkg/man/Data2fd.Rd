@@ -298,13 +298,6 @@ tempfd <- Data2fd(CanadianWeather$dailyAv[,,"Temperature.C"],
 par(mfrow=c(1,1))
 plot(tempfd)
 
-# Smooth using the default smoothing parameter used by Data2fd
-girl.data2fd1 <- with(growth, Data2fd(age, hgtf, hgtbasis))
-girlPred1 <- eval.fd(age2, girl.data2fd1)
-matplot(age2, girlPred1, type="l")
-with(growth, matpoints(age, hgtf))
-# problems splikes disappear with the default lambda
-
 }
 
 % docclass is function
