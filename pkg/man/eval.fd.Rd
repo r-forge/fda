@@ -127,16 +127,6 @@ all.equal(pred.2, pred.2.)
 lipSm9 <- smooth.basisPar(liptime, lip, lambda=1e-9)$fd
 plot(lipSm9)
 
-pred.lipSm9 <- predict(lipSm9)
-\dontshow{stopifnot(}
-all.equal(pred.lipSm9, fitted(lipSm9))
-\dontshow{)}
-
-resid.lipSm9 <- resid(lipSm9)
-\dontshow{stopifnot(}
-all.equal(resid.lipSm9, residuals(lipSm9))
-\dontshow{)}
-
 }
 % docclass is function
 \keyword{smooth}

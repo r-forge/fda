@@ -130,7 +130,7 @@ coef0    <- Wfdobj$coefs
 
 #  check WTVEC
 
-wtvec <- wtcheck(n, wtvec)
+wtvec <- wtcheck(n, wtvec)$wtvec
 
 #  check ZMAT
 
@@ -534,7 +534,7 @@ fngrad.smooth.monotone <- function(yi, argvals, zmat, wtvec, cveci, lambda,
   yroot  <- yi*wtroot
   xroot  <- xmat*wtrtmt
   #  compute regression coefs.
-  betai  <- lsfit(xmat, yi, wtvec, intercept=FALSE)$coef
+  betai  <- lsfit(xmat, yi, wt=wtvec, intercept=FALSE)$coef
   #  update fitted values
   yhat   <- xmat %*% betai
   #  update residuals and function values
