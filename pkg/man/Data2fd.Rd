@@ -22,7 +22,8 @@
 }
 \usage{
 Data2fd(argvals=NULL, y=NULL, basisobj=NULL, nderiv=NULL,
-        lambda=3e-8/diff(range(argvals)), fdnames=NULL)
+        lambda=3e-8/diff(range(argvals)), fdnames=NULL, covariates=NULL, 
+                         method="chol", dfscale=1)
 }
 \arguments{
   \item{argvals}{
@@ -109,6 +110,40 @@ Data2fd(argvals=NULL, y=NULL, basisobj=NULL, nderiv=NULL,
 
     If fdnames is a list, the components provide labels for the levels
     of the corresponding dimension of \code{y}.
+  }
+  \item{covariates}{
+    the observed values in \code{y} are assumed to be primarily determined
+    the the height of the curve being estimates, but from time to time
+    certain values can also be influenced by other known variables.  For
+    example, multi-year sets of climate variables may be also determined by
+    the presence of absence of an El Nino event, or a volcanic eruption.
+    One or more of these covariates can be supplied as an \code{n} by
+    \code{p} matrix, where \code{p} is the number of such covariates.  When
+    such covariates are available, the smoothing is called "semi-parametric."
+    Matrices or arrays of regression coefficients are then estimated that
+    define the impacts of each of these covariates for each cueve and each
+    variable.
+  }
+  \item{method}{
+    by default the function uses the usual textbook equations for computing
+    the coefficients of the basis function expansions.  But, as in regression
+    analysis, a price is paid in terms of rounding error for such
+    computations since they involved cross-products of  basis function
+    values.  Optionally, if \code{method} is set equal to the string "qr",
+    the computation uses an algorithm based on the qr-decomposition which
+    is more accurate, but will require substantially more computing time
+    when \code{n} is large, meaning more than 500 or so.  The default
+    is "chol", referring the Choleski decomposition of a symmetric positive
+    definite matrix.
+  }
+  \item{dfscale}{
+    the generalized cross-validation or "gcv" criterion that is often used
+    to determine the size of the smoothing parameter involves the
+    subtraction of an measue of degrees of freedom from \code{n}.  Chong
+    Gu has argued that multiplying this degrees of freedom measure by
+    a constant slightly greater than 1, such as 1.2, can produce better
+    decisions about the level of smoothing to be used.  The default value
+    is, however, 1.0.
   }
 }
 \details{
@@ -262,24 +297,6 @@ tempfd <- Data2fd(CanadianWeather$dailyAv[,,"Temperature.C"],
 #  plot the temperature curves
 par(mfrow=c(1,1))
 plot(tempfd)
-
-##
-## Interpolation of female growth data:  what can go wrong without smoothing
-##
-hgtbasis <- with(growth, create.bspline.basis(range(age),
-                                              breaks=age, norder=6))
-girl.data2fd <- with(growth, Data2fd(hgtf, age, hgtbasis, lambda=0))
-age2 <- with(growth, sort(c(age, (age[-1]+age[-length(age)])/2)))
-girlPred <- eval.fd(age2, girl.data2fd)
-range(growth$hgtf)
-range(growth$hgtf-girlPred[seq(1, by=2, length=31),])
-# 5.5e-6 0.028 <
-# The predictions are consistently too small
-# but by less than 0.05 percent
-matplot(age2, girlPred, type="l")
-with(growth, matpoints(age, hgtf))
-# girl.data2fd fits the data fine but goes berzerk
-# between points
 
 # Smooth using the default smoothing parameter used by Data2fd
 girl.data2fd1 <- with(growth, Data2fd(age, hgtf, hgtbasis))
