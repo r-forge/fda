@@ -426,6 +426,11 @@ precip.Temp.f <- fRegress(annualprec ~ tempfd)
 ##
 
 precip.Temp.mdl <- fRegress(annualprec ~ tempfd, method='m')
+# First confirm we get the same answer as above:
+precip.Temp.m <- do.call('fRegress', precip.Temp.mdl)
+\dontshow{stopifnot(}
+all.equal(precip.Temp.m, precip.Temp.f)
+\dontshow{)}
 
 #  set up a smaller basis than for temperature
 nbetabasis  <- 21
@@ -434,14 +439,19 @@ betafd2.     <- fd(rep(0, nbetabasis), betabasis2.)
 # add smoothing
 betafdPar2.  <- fdPar(betafd2., lambda=10)
 
-# Now do it.
-precip.Temp.m <- do.call('fRegress', precip.Temp.mdl)
+precip.Temp.mdl2 <- precip.Temp.mdl
+precip.Temp.mdl2[['betalist']][['tempfd']] <- betafdPar2.
 
-# With the change in betalist, the answers may be different
-# Without that change, the answers will be the same.
-\dontshow{stopifnot(}
-all.equal(precip.Temp.m, precip.Temp.f)
-\dontshow{)}
+# Now do it.
+precip.Temp.m2 <- do.call('fRegress', precip.Temp.mdl2)
+
+# Compare the two fits
+precip.Temp.f[['df']] # 26
+precip.Temp.m2[['df']]# 22 = saved 4 degrees of freedom
+
+(var.e.f <- mean(with(precip.Temp.f, (yhatfdobj-yfdPar)^2)))
+(var.e.m2 <- mean(with(precip.Temp.m2, (yhatfdobj-yfdPar)^2)))
+# with a modest increase in lack of fit.
 
 ##
 ## Manual construction of xfdlist and betalist
