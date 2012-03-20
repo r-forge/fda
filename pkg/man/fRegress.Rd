@@ -438,7 +438,7 @@ betafdPar2.  <- fdPar(betafd2., lambda=10)
 precip.Temp.m <- do.call('fRegress', precip.Temp.mdl)
 
 # With the change in betalist, the answers may be different
-# Without that change, the answes will be the same.
+# Without that change, the answers will be the same.
 \dontshow{stopifnot(}
 all.equal(precip.Temp.m, precip.Temp.f)
 \dontshow{)}
