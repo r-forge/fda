@@ -62,7 +62,7 @@ smooth.basis <- function(argvals=1:n, y, fdParobj,
 #   PENMAT  the penalty matrix.
 #   Y2CMAP  the matrix mapping the data to the coefficients.
 
-# last modified 18 August 2011  by Jim Ramsay
+# last modified 22 March 2012  by Jim Ramsay
 
 #  This version of smooth.basis, introduced in March 2011, permits ARGVALS
 #  to be a matrix, with the same dimensions as the first two dimensions of Y
@@ -428,7 +428,7 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 #   PENMAT  the penalty matrix.
 #   Y2CMAP  the matrix mapping the data to the coefficients.
 
-# last modified 18 August 2011  by Jim Ramsay
+# last modified 22 March 2012  by Jim Ramsay
 
 #  This version of smooth.basis, introduced in March 2011, permits ARGVALS
 #  to be a matrix, with the same dimensions as the first two dimensions of Y
@@ -444,16 +444,19 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 
 #  check Y  and set nrep, nvar and ndim
 
-if (is.vector(y)) y <- matrix(y,length(y),1)
+if (is.vector(y)) {
+  y <- matrix(y,length(y),1)
+}
 dimy <- dim(y)
 n    <- dimy[1]
+
 ycheck <- ycheck(y, n)
-y     <- ycheck$y
-y0    <- y  #  preserve a copy of Y
-nrep  <- ycheck$ncurve
-nvar  <- ycheck$nvar
-ndim  <- ycheck$ndim
-ydim  <- dim(y)
+y      <- ycheck$y
+y0     <- y  #  preserve a copy of Y
+nrep   <- ycheck$ncurve
+nvar   <- ycheck$nvar
+ndim   <- ycheck$ndim
+ydim   <- dim(y)
 
 #  check ARGVALS
 
@@ -481,8 +484,6 @@ wtlist <- wtcheck(n, wtvec)
 wtvec  <- wtlist$wtvec
 onewt  <- wtlist$onewt
 matwt  <- wtlist$matwt
-
-if (matwt) wtmat <- wtvec else wtmat <- diag(as.vector(wtvec))
 
 #  extract information from fdParobj
 
@@ -692,7 +693,7 @@ if (method == "chol") {
     
     if (!onewt) {
         if (matwt) {
-          wtfac <- chol(wtmat)
+          wtfac <- chol(wtvec)
           basismat.aug <- wtfac %*% basismat
           if (ndim < 3) {
             y <- wtfac %*% y
@@ -855,8 +856,7 @@ if (onewt) {
 
 #  compute degrees of freedom of smooth
 
-A   <- basismat %*% y2cMap
-df. <- sum(diag(A))
+    df. <- sum(diag(y2cMap %*% basismat))
 
 #  compute error sum of squares
 
@@ -882,7 +882,7 @@ if (is.null(vnames)) vnames <- paste("value", 1:nvar, sep="")
 
 #  compute  GCV index
 
-if (df. < n) {
+if (!is.null(df.) && df. < n) {
     if (ndim < 3) {
       gcv <- rep(0,nrep)
       for (i in 1:nrep) {
@@ -901,7 +901,7 @@ if (df. < n) {
       dimnames(gcv) <- list(ynames, vnames)
     }
 } else {
-    gcv <- Inf
+    gcv <- NULL
 }
 
 #------------------------------------------------------------------

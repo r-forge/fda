@@ -88,8 +88,8 @@ y     = y    (:,index,:);
 res   = res  (:,index,:);
 yfine = yfine(:,index,:);
 MSE   = MSE  (:,index);
-if ~isempty(casenames), casenames = casenames(index,:); end
-casenum = casenum(index);
+% if ~isempty(casenames), casenames = casenames(index,:); end
+% casenum = casenum(index);
 nrep    = length(index);
 
 %  select values in ARGVALS, Y, and YHAT within RNG

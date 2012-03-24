@@ -107,7 +107,7 @@ function [fdobj, df, gcv, beta, SSE, penmat, y2cMap, argvals, y] = ...
 %  ARGVALS ... the input set of argument values.
 %  Y       ... the input array containing values of curves
 
-%  Last modified 21 December 2011 by Jim Ramsay
+%  Last modified 23 March 2012 by Jim Ramsay
 
 %  Note: (21 December 2011) The factor sum(wtvec)/n for matwt == 0
 %  or trace(wtvec)/n if matwt ~= 0 has been added to the multiplier
@@ -570,7 +570,7 @@ if onewt
     y2cMap = L\MapFac;
 else
     if ~matwt
-        wtmat  = diag(wtvec);
+        wtmat  = sparse(diag(wtvec));
     end
     temp   = basismat'*wtmat*basismat;
     if ~isempty(penmat)
@@ -583,8 +583,7 @@ end
 
 %  compute degrees of freedom of smooth
 
-A  = basismat*y2cMap;
-df = trace(A);
+df = trace(y2cMap*basismat);
 
 %  compute error sum of squares
 
