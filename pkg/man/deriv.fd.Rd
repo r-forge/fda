@@ -11,7 +11,7 @@ where a derivative is to be manipulated as a functional data object
 rather than simply evaluated.
 }
 \usage{
-deriv.fd(expr, Lfdobj=int2Lfd(1), ...)
+\method{deriv}{fd}(expr, Lfdobj=int2Lfd(1), ...)
 }
 \arguments{
 \item{expr}{
@@ -36,7 +36,7 @@ and therefore this must have enough basis functions to represent
 the variation in the derivative satisfactorily.
 }
 \seealso{
-\code{\link{getbasismatrix}}, 
+\code{\link{getbasismatrix}},
 \code{\link{eval.basis}}
 \code{\link{deriv}}
 }

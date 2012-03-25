@@ -1,5 +1,5 @@
 smooth.basis <- function(argvals=1:n, y, fdParobj,
-                         wtvec=NULL,   fdnames=NULL, covariates=NULL, 
+                         wtvec=NULL,   fdnames=NULL, covariates=NULL,
                          method="chol", dfscale=1) {
 #  Arguments:
 # ARGVALS  A set of N argument values, set by default to equally spaced
@@ -29,21 +29,21 @@ smooth.basis <- function(argvals=1:n, y, fdParobj,
 # COVARIATES  A N by Q matrix Z of covariate values used to augment
 #             the smoothing function, where N is the number of
 #             data values to be smoothed and Q is the number of
-#             covariates.  The process of augmenting a smoothing 
-#             function in this way is often called "semi-parametric 
+#             covariates.  The process of augmenting a smoothing
+#             function in this way is often called "semi-parametric
 #             regression".  The default is the null object NULL.
-# METHOD      The method for computing coefficients.  The usual method computes 
-#             cross-product matrices of the basis value matrix, adds the 
-#             roughness penalty, and uses the Choleski decomposition of this to 
-#             compute coefficients, analogous to using the normal equations
-#             in least squares fitting.  But this approach, while fast,
-#             contributes unnecessary rounding error, and theqr decomposition 
-#             of the augmented basis matrix is prefererable.   
-#             But nothing comes for free, and thecomputational overhead of the 
-#             qr approach can be a serious problem for large problems 
-#             (n of 1000 or more).  For this reason, the default is 
-#             "method" = "chol", but if 'method' == 'qr', the qr decomposition
-#             is used.
+# METHOD      The method for computing coefficients.  The usual method
+#             computes cross-product matrices of the basis value matrix,
+#             adds the roughness penalty, and uses the Choleski
+#             decomposition of this to compute coefficients, analogous
+#             to using the normal equations in least squares fitting.
+#             But this approach, while fast, contributes unnecessary
+#             rounding error, and the qr decomposition of the augmented
+#             basis matrix is prefererable.  But nothing comes for free,
+#             and the computational overhead of the qr approach can be a
+#             serious problem for large problems (n of 1000 or more).
+#             For this reason, the default is "method" = "chol", but if
+#             'method' == 'qr', the qr decomposition is used.
 # DFFACTOR A multiplier of df in GCV, set to one by default
 #
 # Returns a list containing:
@@ -93,27 +93,27 @@ if (ndy < nda) stop("argvals has ", nda, " dimensions  y has only ", ndy)
 
 if (nda < 3 ) {
   if (dima[2] == 1) {
- 
+
       sb2 <- smooth.basis1(argvals, y, fdParobj,
-                           wtvec=wtvec,   fdnames=fdnames, 
-                           covariates=covariates, 
+                           wtvec=wtvec,   fdnames=fdnames,
+                           covariates=covariates,
                            method=method, dfscale=dfscale)
-                             
+
   } else {
-      
+
       sb2 <- smooth.basis2(argvals, y=y, fdParobj=fdParobj,
-                           wtvec=wtvec,   fdnames=fdnames, 
-                           covariates=covariates, 
+                           wtvec=wtvec,   fdnames=fdnames,
+                           covariates=covariates,
                            method=method, dfscale=dfscale)
-                             
+
   }
   return(sb2)
 }
 
 if (nda < 4) {
   return(smooth.basis3(argvals, y=y, fdParobj=fdParobj,
-                       wtvec=wtvec,   fdnames=fdnames, 
-                       covariates=covariates, 
+                       wtvec=wtvec,   fdnames=fdnames,
+                       covariates=covariates,
                        method=method, dfscale=dfscale) )
 } else {
       #  dimensions of argval inconsistent with those of y, throw error
@@ -129,13 +129,13 @@ if (nda < 4) {
 ################################################################################
 
 smooth.basis3 <- function(argvals=array(1:n,c(n,N,M)), y, fdParobj,
-                          wtvec=NULL,   fdnames=NULL, covariates=NULL, 
-                          method="chol", dfscale=1) 
+                          wtvec=NULL,   fdnames=NULL, covariates=NULL,
+                          method="chol", dfscale=1)
 {
 ##
 ## 1.  check dimensions of argval and y
 ##
- 
+
 dimy <- dim(y)
 ndy <- length(dimy)
 n   <- dimy[1]
@@ -156,8 +156,8 @@ if (nda < 3) stop("length(dim(argvals)) must be 3  is ", nda)
 ##
 #  2.1.  argvals[, , 1]
 sb1 <- smooth.basis2(argvals[, , 1], y=y[, , 1], fdParobj=fdParobj,
-                     wtvec=wtvec,   fdnames=fdnames, 
-                     covariates=covariates, 
+                     wtvec=wtvec,   fdnames=fdnames,
+                     covariates=covariates,
                      method=method, dfscale=dfscale)
 #  2.2.  set up output object
 coef1 <- sb1$fd$coefs
@@ -182,8 +182,8 @@ if (!is.null(covariates)) {
 #
 for (i in seq(2, length=dimy[3]-1)) {
     sbi <- smooth.basis2(argvals[,,i], y=y[,,i], fdParobj=fdParobj,
-                         wtvec=wtvec,   fdnames=fdnames, 
-                         covariates=covariates, 
+                         wtvec=wtvec,   fdnames=fdnames,
+                         covariates=covariates,
                          method=method, dfscale=dfscale)
     coefs[,,i] <- sbi$fd$coefs
     if (!is.null(covariates)) {
@@ -225,7 +225,7 @@ sb
 ################################################################################
 
 smooth.basis2 <- function(argvals=matrix(1:n,n,N), y, fdParobj,
-                          wtvec=NULL,   fdnames=NULL, covariates=NULL, 
+                          wtvec=NULL,   fdnames=NULL, covariates=NULL,
                           method="chol", dfscale=1) {
 ##
 ## 1.  number of  dimensions of y = 2 or 3?
@@ -243,10 +243,10 @@ if (ndy < 3) {
     #  2.1.  Start by smoothing first record using argvals[, 1]
 
     sb1 <- smooth.basis1(argvals[, 1], y=y[, 1], fdParobj=fdParobj,
-                         wtvec=wtvec,   fdnames=fdnames, 
-                         covariates=covariates, 
+                         wtvec=wtvec,   fdnames=fdnames,
+                         covariates=covariates,
                          method=method, dfscale=dfscale)
-                         
+
     #  2.2.  set up output object
     dimc1   <- dim(sb1$fd$coefs)
     dimc    <- c(dimc1[1], dimy[-1])
@@ -264,15 +264,15 @@ if (ndy < 3) {
     } else {
       beta. <- NULL
     }
-    #   now loop through remaining records, smoothing each in term, 
+    #   now loop through remaining records, smoothing each in term,
     #   using argvals[,1]
     for (i in seq(2, length=dimy[2]-1)) {
-    
+
       sbi <- smooth.basis1(argvals[, i], y=y[, i], fdParobj=fdParobj,
-                           wtvec=wtvec,   fdnames=fdnames, 
-                           covariates=covariates, 
+                           wtvec=wtvec,   fdnames=fdnames,
+                           covariates=covariates,
                            method=method, dfscale=dfscale)
-                           
+
       coefs[, i] <- sbi$fd$coefs
       if (!is.null(covariates)) {
         beta.[,i] <- sbi$beta
@@ -296,8 +296,8 @@ if (ndy < 3) {
 ##
     #  3.1.  argvals[, 1]
     sb1 <- smooth.basis1(argvals[, 1], y=y[, 1, ], fdParobj=fdParobj,
-                         wtvec=wtvec,   fdnames=fdnames, 
-                         covariates=covariates, 
+                         wtvec=wtvec,   fdnames=fdnames,
+                         covariates=covariates,
                          method=method, dfscale=dfscale)
     #  3.2.  set up output object
     coef1 <- sb1$fd$coefs
@@ -326,8 +326,8 @@ if (ndy < 3) {
     #
     for (i in seq(2, length=dimy[2]-1)) {
       sbi <- smooth.basis1(argvals[, i], y=y[, i, ], fdParobj=fdParobj,
-                           wtvec=wtvec,   fdnames=fdnames, 
-                           covariates=covariates, 
+                           wtvec=wtvec,   fdnames=fdnames,
+                           covariates=covariates,
                            method=method, dfscale=dfscale)
       coefs[, i, ] <- sbi$fd$coefs
       if (!is.null(covariates)) {
@@ -364,7 +364,7 @@ sb
 ################################################################################
 
 smooth.basis1 <- function (argvals=1:n, y, fdParobj,
-                           wtvec=NULL,   fdnames=NULL, covariates=NULL, 
+                           wtvec=NULL,   fdnames=NULL, covariates=NULL,
                            method="chol", dfscale=1)
 {
 #  Arguments:
@@ -395,21 +395,21 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 # COVARIATES  A N by Q matrix Z of covariate values used to augment
 #             the smoothing function, where N is the number of
 #             data values to be smoothed and Q is the number of
-#             covariates.  The process of augmenting a smoothing 
-#             function in this way is often called "semi-parametric 
+#             covariates.  The process of augmenting a smoothing
+#             function in this way is often called "semi-parametric
 #             regression".  The default is the null object NULL.
-# METHOD      The method for computing coefficients.  The usual method computes 
-#             cross-product matrices of the basis value matrix, adds the 
-#             roughness penalty, and uses the Choleski decomposition of this to 
-#             compute coefficients, analogous to using the normal equations
-#             in least squares fitting.  But this approach, while fast,
-#             contributes unnecessary rounding error, and theqr decomposition 
-#             of the augmented basis matrix is prefererable.   
-#             But nothing comes for free, and thecomputational overhead of the 
-#             qr approach can be a serious problem for large problems 
-#             (n of 1000 or more).  For this reason, the default is 
-#             "method" = "chol", but if 'method' == 'qr', the qr decomposition
-#             is used.
+# METHOD      The method for computing coefficients.  The usual method
+#             computes cross-product matrices of the basis value matrix,
+#             adds the roughness penalty, and uses the Choleski decomposition
+#             of this to compute coefficients, analogous to using the
+#             normal equations in least squares fitting.  But this approach,
+#             while fast, contributes unnecessary rounding error, and the qr
+#             decomposition of the augmented basis matrix is prefererable.
+#             But nothing comes for free, and the computational overhead of
+#             the qr approach can be a serious problem for large problems
+#             (n of 1000 or more).  For this reason, the default is
+#             "method" = "chol", but if 'method' == 'qr', the qr
+#             decomposition is used.
 # DFFACTOR A multiplier of df in GCV, set to one by default
 #
 # Returns a list containing:
@@ -427,8 +427,9 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 #              GCV.
 #   PENMAT  the penalty matrix.
 #   Y2CMAP  the matrix mapping the data to the coefficients.
-
-# last modified 22 March 2012  by Jim Ramsay
+#
+# last modified 2012.03.25 by Spencer Graves
+# previously modified 22 March 2012  by Jim Ramsay
 
 #  This version of smooth.basis, introduced in March 2011, permits ARGVALS
 #  to be a matrix, with the same dimensions as the first two dimensions of Y
@@ -484,6 +485,8 @@ wtlist <- wtcheck(n, wtvec)
 wtvec  <- wtlist$wtvec
 onewt  <- wtlist$onewt
 matwt  <- wtlist$matwt
+
+# if (matwt) wtmat <- wtvec #  else wtmat <- diag(as.vector(wtvec))
 
 #  extract information from fdParobj
 
@@ -552,9 +555,9 @@ if (method == "chol") {
 
   if (n > nbasis + q || lambda > 0) {
 
-    #  augment BASISMAT0 and BASISMAT by the covariate matrix 
+    #  augment BASISMAT0 and BASISMAT by the covariate matrix
     #  if it is supplied
-    
+
     if (!is.null(covariates)) {
         ind1 <- 1:n
         ind2 <- (nbasis+1):(nbasis+q)
@@ -572,9 +575,9 @@ if (method == "chol") {
         rtwtmat <- matrix(rtwtvec,n,nrep)
         basisw <- (wtvec %*% matrix(1,1,nbasis+q))*basismat
     }
-    
+
     #  the weighted crossproduct of the basis matrix
-    
+
     Bmat  <- crossprod(basisw,basismat)
     Bmat0 <- Bmat
 
@@ -588,7 +591,7 @@ if (method == "chol") {
             Dmat[,,ivar] <- crossprod(basisw,y[,,ivar])
         }
     }
-    
+
     if (lambda > 0) {
       #  smoothing required, add the contribution of the penalty term
       if (is.null(penmat)) penmat <- eval.penalty(basisobj, Lfdobj)
@@ -639,7 +642,7 @@ if (method == "chol") {
         } else {
             beta. <- NULL
         }
-    } else { 
+    } else {
         coef <- array(0, c(nbasis, nrep, nvar))
         if (!is.null(covariates)) {
           beta. <- array(0, c(q, nrep, nvar))
@@ -656,7 +659,7 @@ if (method == "chol") {
           }
         }
     }
-			
+
   } else {
 
     if (n == nbasis + q) {
@@ -671,7 +674,7 @@ if (method == "chol") {
     } else {
 
       #  n < nbasis+q:  this is treated as an error
-      
+
       stop("The number of basis functions = ", nbasis+q, " exceeds ",
               n, " = the number of points to be smoothed.")
     }
@@ -683,14 +686,14 @@ if (method == "chol") {
   #  computation of coefficients using the qr decomposition of the
   #  augmented basis value matrix
   #  -------------------------------------------------------------
-    
+
   if (n > nbasis || lambda > 0) {
 
-    #  Multiply the basis matrix and the data pointwise by the square root 
+    #  Multiply the basis matrix and the data pointwise by the square root
     #  of the weight vector if the weight vector is not all ones.
-    #  If the weights are in a matrix, multiply the basis matrix by its 
+    #  If the weights are in a matrix, multiply the basis matrix by its
     #  Choleski factor.
-    
+
     if (!onewt) {
         if (matwt) {
           wtfac <- chol(wtvec)
@@ -701,7 +704,7 @@ if (method == "chol") {
             for (ivar in 1:nvar) {
                 y[,,ivar] <- wtfac %*% y[,,ivar]
             }
-          }          
+          }
         } else {
           rtwtvec  <- sqrt(wtvec)
           basismat.aug <- matrix(rtwtvec,n,nbasis) * basismat
@@ -716,11 +719,11 @@ if (method == "chol") {
     } else {
       basismat.aug <- basismat
     }
-    
+
     #  set up additional rows of the least squares problem for the
     #  penalty term.
 
-    if (lambda > 0) {    
+    if (lambda > 0) {
         if (is.null(penmat)) penmat <- eval.penalty(basisobj, Lfdobj)
         eiglist <- eigen(penmat)
         Dvec    <- eiglist$values
@@ -730,8 +733,8 @@ if (method == "chol") {
         neiglow <- nbasis - nderiv
         naug    <- n + neiglow
         if (Dvec[neiglow] <= 0) {
-            stop(paste("smooth_basis:eig", 
-                       "Eigenvalue(NBASIS-NDERIV) of penalty matrix ", 
+            stop(paste("smooth_basis:eig",
+                       "Eigenvalue(NBASIS-NDERIV) of penalty matrix ",
                        "is not positive check penalty matrix."))
         }
         #  Compute the square root of the penalty matrix in the subspace
@@ -754,10 +757,10 @@ if (method == "chol") {
     } else {
         penmat <- NULL
     }
-        
+
     #  augment BASISMAT0 and BASISMAT by the covariate matrix
     #  if it is supplied
-        
+
     if (!is.null(covariates)) {
         ind1 <- 1:n
         ind2 <- (nbasis+1):(nbasis+q)
@@ -767,7 +770,7 @@ if (method == "chol") {
                 basismat.aug[ind1,ind2]  <- wtfac %*% covariates
             } else {
                 wtfac <- matrix(rtwtvec,n,q)
-                basismat.aug[ind1,ind2]  <- wtfac*covariates                
+                basismat.aug[ind1,ind2]  <- wtfac*covariates
             }
         } else {
             basismat.aug[ind1,ind2]  <- covariates
@@ -778,7 +781,7 @@ if (method == "chol") {
 
     #  solve the least squares problem using the QR decomposition with
     #  one iteration to improve accuracy
-    
+
     qr <- qr(basismat.aug)
     if (ndim < 3) {
         coef <- qr.coef(qr,y)
@@ -805,7 +808,7 @@ if (method == "chol") {
             }
         }
     }
-    
+
   } else {
 
     if (n == nbasis + q) {
@@ -820,7 +823,7 @@ if (method == "chol") {
             coef[,,ivar] <- solve(basismat, y[,,ivar])
       }
       penmat <- NULL
-      
+
     } else {
 
       stop(paste("The number of basis functions = ", nbasis, " exceeds ",
@@ -845,13 +848,18 @@ if (onewt) {
     MapFac <- solve(t(L),t(basismat))
     y2cMap <- solve(L,MapFac)
 } else {
-    temp   <- crossprod(basismat,(wtmat %*% basismat))
+    if(matwt){
+        temp <- crossprod(basismat, wtvec%*%basismat)
+    } else temp   <- crossprod(basismat,(as.vector(wtvec)*basismat))
+#
     if  (lambda > 0) {
         temp <- temp + lambda*penmat
     }
     L      <- chol(temp)
     MapFac <- solve(t(L),t(basismat))
-    y2cMap <- solve(L,MapFac %*% wtmat)
+    if(matwt){
+        y2cMap <- solve(L, MapFac%*%wtvec)
+    } else y2cMap <- solve(L,MapFac*rep(as.vector(wtvec), e=nrow(MapFac)))
 }
 
 #  compute degrees of freedom of smooth
@@ -925,11 +933,11 @@ if (ndim < 3) {
 
 #  return penalty matrix to original state if there were covariates
 
-if (!is.null(penmat) && !is.null(covariates)) 
+if (!is.null(penmat) && !is.null(covariates))
                  penmat <- penmat[1:nbasis,1:nbasis]
-       
+
 #  assemble the fdSmooth object returned by the function
-          
+
 smoothlist <- list(fd=fdobj, df=df., gcv=gcv, beta=beta.,
                    SSE=SSE, penmat=penmat, y2cMap=y2cMap,
                    argvals=argvals, y=y0)
