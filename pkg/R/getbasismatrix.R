@@ -26,7 +26,7 @@ getbasismatrix <- function(evalarg, basisobj, nderiv=0) {
 #  Note that the first two arguments may be interchanged.
 #
 
-#  Last modified 27 October 2008 by Jim Ramsay
+#  Last modified 25 March 2012 by Jim Ramsay
 
 #  Exchange the first two arguments if the first is an BASIS.FD object
 #    and the second numeric
