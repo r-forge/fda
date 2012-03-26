@@ -40,7 +40,7 @@ eval.basis <- function(evalarg, basisobj, Lfdobj=0) {
 
 #  Note that the first two arguments may be interchanged.
 
-#  Last modified 22 December 2007
+#  Last modified 25 March 2012
 
 #  Exchange the first two arguments if the first is an BASIS.FD object
 #    and the second numeric
@@ -84,7 +84,6 @@ oneb      <- matrix(1,1,nbasis)
 #  evaluated here if the operator is not defined by an
 #  integer and the order of derivative is positive.
 
-
 if (nderiv > 0) {
 	nonintwrd <- FALSE
 	for (j in 1:nderiv) {
@@ -104,7 +103,11 @@ if (nderiv > 0) {
     }
 }
 
-return(evalarray)
+if (basisobj$type == "bspline") {
+    return(Matrix(evalarray))
+} else {
+    return(evalarray)
+}
 
 }
 

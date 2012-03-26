@@ -18,7 +18,7 @@ bsplineS <- function (x, breaks, norder=4, nderiv=0)
 #  Return is a matrix with length(X) rows and number of columns equal to
 #                   number of b-splines
 
-#  last modified 27 October 2008 by Jim Ramsay
+#  last modified 25 March 2012 by Jim Ramsay
 
   x <- as.vector(x)
   n <- length(x)
@@ -45,7 +45,8 @@ bsplineS <- function (x, breaks, norder=4, nderiv=0)
   derivs <- rep(nderiv,n)
   nbasis <- nbreaks + norder - 2
   if (nbasis >= norder) {
-  	basismat <- spline.des(knots, x, norder, derivs)$design
+  	basismat <- Matrix(spline.des(knots, x, norder, derivs)$design)
+      return(basismat)
   } else {
       stop("NBASIS is less than NORDER.")
   }
