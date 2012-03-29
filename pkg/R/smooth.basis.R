@@ -62,7 +62,7 @@ smooth.basis <- function(argvals=1:n, y, fdParobj,
 #   PENMAT  the penalty matrix.
 #   Y2CMAP  the matrix mapping the data to the coefficients.
 
-# last modified 22 March 2012  by Jim Ramsay
+# last modified 28 March 2012  by Jim Ramsay
 
 #  This version of smooth.basis, introduced in March 2011, permits ARGVALS
 #  to be a matrix, with the same dimensions as the first two dimensions of Y
@@ -595,7 +595,7 @@ if (method == "chol") {
     if (lambda > 0) {
       #  smoothing required, add the contribution of the penalty term
       if (is.null(penmat)) penmat <- eval.penalty(basisobj, Lfdobj)
-      Bnorm   <- sqrt(sum(c(Bmat0)^2))
+      Bnorm   <- sqrt(sum(diag(crossprod(Bmat0,Bmat0))))
       pennorm <- sqrt(sum(c(penmat)^2))
       condno  <- pennorm/Bnorm
       if (lambda*condno > 1e12) {
