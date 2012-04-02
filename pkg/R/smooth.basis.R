@@ -544,7 +544,7 @@ if (!is.null(covariates)) {
 
 #  set up matrix of basis function values
 
-basismat  <- eval.basis(as.vector(argvals), basisobj)
+basismat <- eval.basis(as.vector(argvals), basisobj)
 
 if (method == "chol") {
 
