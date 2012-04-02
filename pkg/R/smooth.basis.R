@@ -573,7 +573,7 @@ if (method == "chol") {
     } else {
         rtwtvec <- sqrt(wtvec)
         rtwtmat <- matrix(rtwtvec,n,nrep)
-        basisw <- (wtvec %*% matrix(1,1,nbasis+q))*basismat
+        basisw  <- (wtvec %*% matrix(1,1,nbasis+q))*basismat
     }
 
     #  the weighted crossproduct of the basis matrix
