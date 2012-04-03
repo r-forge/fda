@@ -91,6 +91,7 @@ if (type == "bspline") {
       }
    	norder   <- nbasis - length(breaks) + 2
    	basismat <- bsplineS(evalarg, breaks, norder, nderiv)
+print(basismat)
 
 #  -----------------------------  Constant basis  --------------------
 

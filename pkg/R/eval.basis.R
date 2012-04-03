@@ -76,9 +76,9 @@ bwtlist <- Lfdobj$bwtlist
 
 #  get highest order of basis matrix
 
-evalarray <- as.matrix(getbasismatrix(evalarg, basisobj, nderiv))
-nbasis    <- dim(evalarray)[2]
-oneb      <- matrix(1,1,nbasis)
+basismat <- getbasismatrix(evalarg, basisobj, nderiv)
+nbasis   <- dim(basismat)[2]
+oneb     <- matrix(1,1,nbasis)
 
 #  Compute the weighted combination of derivatives is
 #  evaluated here if the operator is not defined by an
@@ -97,17 +97,13 @@ if (nderiv > 0) {
             if (!all(c(bfd$coefs) == 0.0)) {
                 wjarray   <- eval.fd(evalarg, bfd)
                 Dbasismat <- getbasismatrix(evalarg, basisobj, j-1)
-                evalarray <- evalarray + (wjarray %*% oneb)*Dbasismat
+                basismat  <- basismat + (wjarray %*% oneb)*Dbasismat
             }
         }
     }
 }
 
-if (basisobj$type == "bspline") {
-    return(Matrix(evalarray))
-} else {
-    return(evalarray)
-}
+return(basismat)
 
 }
 
