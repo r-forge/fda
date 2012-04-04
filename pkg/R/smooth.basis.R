@@ -577,18 +577,18 @@ if (method == "chol") {
     }
 
     #  the weighted crossproduct of the basis matrix
-print("crossprod 1")
+#print("crossprod 1")
 print(basisw)
-print(basismat)
-    Bmat  <- t(basisw) %*% basismat    
+#print(basismat)
+    Bmat  <- t(basisw) %*% basismat
     #  Bmat  <- crossprod(basisw,basismat)
     Bmat0 <- Bmat
 
     #  set up right side of normal equations
 
     if (ndim < 3) {
-print("crossprod 2")
-print(y)
+#print("crossprod 2")
+#print(y)
         Dmat <- t(basisw) %*% y
         # Dmat <- crossprod(basisw,y)
     } else {
@@ -602,7 +602,7 @@ print(y)
       #  smoothing required, add the contribution of the penalty term
       if (is.null(penmat)) penmat <- eval.penalty(basisobj, Lfdobj)
       Bnorm   <- sqrt(sum(diag(t(Bmat0) %*% Bmat0)))
-      pennorm <- sqrt(sum(c(penmat)^2))
+      pennorm <- sqrt(sum(penmat*penmat))
       condno  <- pennorm/Bnorm
       if (lambda*condno > 1e12) {
         lambda <- 1e12/condno
@@ -846,7 +846,7 @@ print(y)
 #  compute map from y to c
 
 if (onewt) {
-print(basismat)
+#print(basismat)
     temp   <- t(basismat) %*% basismat
     if (lambda > 0) {
         temp <- temp + lambda*penmat
@@ -856,7 +856,7 @@ print(basismat)
     y2cMap <- solve(L,MapFac)
 } else {
     if(matwt){
-        q()qtemp <- t(basismat) %*% wtvec %*% basismat
+        temp <- t(basismat) %*% wtvec %*% basismat
     } else {
         temp <- t(basismat) %*% (as.vector(wtvec)*basismat)
     }

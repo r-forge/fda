@@ -135,7 +135,7 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
   #  evaluate LFDOBJ(FDOBJ) at the argument values
 
   fdmat    <- eval.fd(y, fdobj, Lfdobj)
-  rangey   <- range(c(fdmat))
+  rangey   <- range(fdmat)
   if (is.null(ylim)) ylim <- rangey
 
   #  set up axis labels and,
