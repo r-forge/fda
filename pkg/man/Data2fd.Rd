@@ -205,6 +205,9 @@ eval.fd(seq(0, 1, .2), fd1.1.5)
 ##
 ## step function smoothing
 ##
+sessionInfo()
+find("crossprod")
+
 # 2 step basis functions: order 1 = degree 0 = step functions
 b1.2 <- create.bspline.basis(nbasis=2, norder=1)
 #  fit the data without smoothing

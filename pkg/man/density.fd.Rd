@@ -4,19 +4,18 @@
   Compute a Probability Density Function
 }
 \description{
- Like the regular S-PLUS function \code{density}, this function
-computes a probability density function for a sample of values of a
-random variable.  However, in this case the density function is defined
-by a functional parameter object \code{WfdParobj} along with a normalizing
-constant \code{C}.
+  Like the regular S-PLUS function \code{density}, this function
+  computes a probability density function for a sample of values of a
+  random variable.  However, in this case the density function is
+  defined by a functional parameter object \code{WfdParobj} along with a
+  normalizing constant \code{C}.
 
- The density function $p(x)$ has the form
-\code{p(x) = C exp[W(x)]}
-where function $W(x)$ is defined by the functional data object
-\code{WfdParobj}.
+  The density function $p(x)$ has the form \code{p(x) = C exp[W(x)]}
+  where function $W(x)$ is defined by the functional data object
+  \code{WfdParobj}.
 }
 \usage{
-density.fd(x, WfdParobj, conv=0.0001, iterlim=20,
+\method{density}{fd}(x, WfdParobj, conv=0.0001, iterlim=20,
            active=2:nbasis, dbglev=1, ...)
 }
 \arguments{
