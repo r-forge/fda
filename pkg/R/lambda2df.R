@@ -33,8 +33,8 @@ lambda2df <- function (argvals, basisobj, wtvec=rep(1,n), Lfdobj=NULL, lambda=0)
   basisw   <- basismat*outer(wtvec,rep(1,nbasis))
   Bmat     <- crossprod(basisw,basismat)
   penmat   <- getbasispenalty(basisobj, Lfdobj)
-  Bnorm    <- sqrt(sum(c(Bmat)^2))
-  pennorm  <- sqrt(sum(c(penmat)^2))
+  Bnorm    <- sqrt(sum(Bmat^2))
+  pennorm  <- sqrt(sum(penmat^2))
   condno   <- pennorm/Bnorm
   if (lambda*condno > 1e12) {
     lambda <- 1e12/condno

@@ -34,20 +34,20 @@ density.fd <- function(x, WfdParobj, conv=0.0001, iterlim=20,
 #  constant C.
 
 # last modified 3 January 2008 by Jim Ramsay
-# Previously modified 2007 May 3 by Spencer Graves   
+# Previously modified 2007 May 3 by Spencer Graves
 	#  check WfdParobj
-	
+
 	if (!inherits(WfdParobj, "fdPar"))
 		if (inherits(WfdParobj, "fd") || inherits(WfdParobj, "basisfd"))
 			WfdParobj <- fdPar(WfdParobj)
 		else stop("WFDPAROBJ is not a fdPar object")
-					
+
 	#  set up WFDOBJ
 
 	Wfdobj   <- WfdParobj$fd
 
 	#  set up LFDOBJ
-	
+
 	Lfdobj <- WfdParobj$Lfd
 	Lfdobj <- int2Lfd(Lfdobj)
 
@@ -56,7 +56,7 @@ density.fd <- function(x, WfdParobj, conv=0.0001, iterlim=20,
 	basisobj <- Wfdobj$basis
 	nbasis   <- basisobj$nbasis
 	rangex   <- basisobj$rangeval
-	
+
 	x    <- as.matrix(x)
 	xdim <- dim(x)
 	N    <- xdim[1]
@@ -157,9 +157,9 @@ density.fd <- function(x, WfdParobj, conv=0.0001, iterlim=20,
 	}
 	iterhist <- matrix(0,iterlim+1,length(status))
 	iterhist[1,]  <- status
-	
+
 	#  quit if ITERLIM == 0
-	
+
 	if (iterlim == 0) {
     	Flist     <- Foldstr
     	iterhist <- iterhist[1,]
@@ -352,7 +352,7 @@ Varfnden <- function(x, basisobj, cvec) {
    	Varphi  <- EDwDwt - crossprod(EDw)
 	return(Varphi)
 }
-	
+
 
 #  ---------------------------------------------------------------
 
@@ -462,43 +462,43 @@ expectden.phi <- function(basisobj, cvec, Cval=1, nderiv=0, rng=rangeval,
 
   	#  check arguments, and convert basis objects to functional data objects
 
-  	if (!inherits(basisobj, "basisfd"))
+    if (!inherits(basisobj, "basisfd"))
     	stop("First argument must be a basis function object.")
 
-  	nbasis <- basisobj$nbasis
-  	oneb   <- matrix(1,1,nbasis)
-  	rangeval <- basisobj$rangeval
+    nbasis <- basisobj$nbasis
+    oneb   <- matrix(1,1,nbasis)
+    rangeval <- basisobj$rangeval
 
   	#  set up first iteration
 
-  	width <- rng[2] - rng[1]
-  	JMAXP <- JMAX + 1
-  	h <- matrix(1,JMAXP,1)
-  	h[2] <- 0.25
-  	#  matrix SMAT contains the history of discrete approximations to the integral
-  	smat <- matrix(0,JMAXP,nbasis)
-  	sumj <- matrix(0,1,nbasis)
+    width <- rng[2] - rng[1]
+    JMAXP <- JMAX + 1
+    h <- matrix(1,JMAXP,1)
+    h[2] <- 0.25
+#  matrix SMAT contains the history of discrete approximations to the integral
+    smat <- matrix(0,JMAXP,nbasis)
+    sumj <- matrix(0,1,nbasis)
   	#  the first iteration uses just the }points
-  	x  <- rng
-  	nx <- length(x)
-  	ox <- matrix(1,nx,nx)
-  	fx <- getbasismatrix(x, basisobj)
-  	wx <- fx %*% cvec
-  	wx[wx < -50] <- -50
-  	px <- exp(wx)/Cval
-  	if (nderiv == 0) {
+    x  <- rng
+    nx <- length(x)
+    ox <- matrix(1,nx,nx)
+    fx <- getbasismatrix(x, basisobj)
+    wx <- fx %*% cvec
+    wx[wx < -50] <- -50
+    px <- exp(wx)/Cval
+    if (nderiv == 0) {
     	Dfx <- fx
   	} else {
     	Dfx <- getbasismatrix(x, basisobj, 1)
   	}
-  	sumj <- t(Dfx) %*% px
-  	smat[1,]  <- width*sumj/2
-  	tnm <- 0.5
-  	j   <- 1
+    sumj <- t(Dfx) %*% px
+    smat[1,]  <- width*as.vector(sumj)/2
+    tnm <- 0.5
+    j   <- 1
 
   	#  now iterate to convergence
 
-  	for (j in 2:JMAX) {
+    for (j in 2:JMAX) {
     	tnm  <- tnm*2
     	del  <- width/tnm
     	if (j == 2) {
@@ -517,7 +517,7 @@ expectden.phi <- function(basisobj, cvec, Cval=1, nderiv=0, rng=rangeval,
       		Dfx <- getbasismatrix(x, basisobj, 1)
     	}
     	sumj <- t(Dfx) %*% px
-    	smat[j,] <- (smat[j-1,] + width*sumj/tnm)/2
+    	smat[j,] <- (smat[j-1,] + width*as.vector(sumj)/tnm)/2
     	if (j >= 5) {
       		ind <- (j-4):j
       		temp <- smat[ind,]
@@ -531,9 +531,9 @@ expectden.phi <- function(basisobj, cvec, Cval=1, nderiv=0, rng=rangeval,
     	}
     	smat[j+1,] <- smat[j,]
     	h[j+1] <- 0.25*h[j]
-  	}
-  	warning(paste("No convergence after ",JMAX," steps in EXPECTDEN.PHI"))
-	return(ss)
+    }
+    warning(paste("No convergence after ",JMAX," steps in EXPECTDEN.PHI"))
+    return(ss)
 }
 
 #  ---------------------------------------------------------------
@@ -594,7 +594,7 @@ expectden.phiphit <- function(basisobj, cvec, Cval=1, nderiv1=0, nderiv2=0,
   	}
   	oneb <- matrix(1,1,nbasis)
   	sumj <- t(Dfx1) %*% ((px %*% oneb) * Dfx2)
-  	smat[1,,]  <- width*sumj/2
+  	smat[1,,]  <- width*as.matrix(sumj)/2
   	tnm <- 0.5
   	j   <- 1
 
@@ -623,7 +623,7 @@ expectden.phiphit <- function(basisobj, cvec, Cval=1, nderiv1=0, nderiv2=0,
       		Dfx2 <- getbasismatrix(x, basisobj, 1)
     	}
     	sumj <- t(Dfx1) %*% ((px %*% oneb) * Dfx2)
-    	smat[j,,] <- (smat[j-1,,] + width*sumj/tnm)/2
+    	smat[j,,] <- (smat[j-1,,] + width*as.matrix(sumj)/tnm)/2
     	if (j >= 5) {
       		ind <- (j-4):j
       		temp <- smat[ind,,]

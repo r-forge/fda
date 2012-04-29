@@ -14,7 +14,7 @@ inprod <- function(fdobj1, fdobj2=NULL, Lfdobj1=int2Lfd(0), Lfdobj2=int2Lfd(0),
 #               If inner products for multivariate objects are needed,
 #               use a loop and call inprod(FDOBJ1[i],FDOBJ2[i]).
 #     If FDOBJ2 is not provided or is NULL, it defaults to a function
-#     having a constant basis and coefficient 1 for all replications. 
+#     having a constant basis and coefficient 1 for all replications.
 #     This permits the evaluation of simple integrals of functional data
 #     objects.
 #  LFDOBJ1 and LFDOBJ2  order of derivatives for inner product for
@@ -41,7 +41,7 @@ basisobj1 <- fdobj1$basis
 type1     <- basisobj1$type
 range1    <- basisobj1$rangeval
 
-#  Default FDOBJ2 to a constant function, using a basis that matches 
+#  Default FDOBJ2 to a constant function, using a basis that matches
 #  that of FDOBJ1 if possible.
 
 if (is.null(fdobj2)) {
@@ -170,7 +170,7 @@ for (irng  in  2:nrng) {
         wtd <- eval.fd(rngi,wtfd)
         fx2 <- matrix(wtd,dim(wtd)[1],dim(fx2)[2]) * fx2
     }
-    s[1,,] <- width*crossprod(fx1,fx2)/2
+    s[1,,] <- width*as.numeric(crossprod(fx1,fx2))/2
     tnm  <- 0.5
     iter <- 1
 
@@ -190,7 +190,7 @@ for (irng  in  2:nrng) {
             wtd <- eval.fd(wtfd, x)
             fx2 <- matrix(wtd,dim(wtd)[1],dim(fx2)[2]) * fx2
         }
-        chs <- width*crossprod(fx1,fx2)/tnm
+        chs <- width*as.numeric(crossprod(fx1,fx2))/tnm
         s[iter,,] <- (s[iter-1,,] + chs)/2
         if (iter >= 5) {
             ind <- (iter-4):iter

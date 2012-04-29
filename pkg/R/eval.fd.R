@@ -1,26 +1,30 @@
-predict.fdSmooth <- function(object, newdata=NULL, Lfdobj=0, ...){
+predict.fdSmooth <- function(object, newdata=NULL, Lfdobj=0,
+                             returnMatrix=FALSE, ...){
   if(is.null(newdata)){
     newdata <- object$argvals
   }
-  eval.fd(newdata, object$fd, Lfdobj)
+  eval.fd(newdata, object$fd, Lfdobj, returnMatrix=returnMatrix)
 }
 
-fitted.fdSmooth <- function(object, ...){
+fitted.fdSmooth <- function(object, returnMatrix=FALSE, ...){
   newdata <- object$argvals
-  eval.fd(newdata, object$fd)
+  eval.fd(newdata, object$fd, returnMatrix=returnMatrix)
 }
 
-residuals.fdSmooth <- function(object, ...){
+residuals.fdSmooth <- function(object, returnMatrix=FALSE, ...){
   newdata <- object$argvals
-  pred <- eval.fd(newdata, object$fd)
+  pred <- eval.fd(newdata, object$fd, returnMatrix=returnMatrix)
   object$y-pred
 }
 
-predict.fdPar <- function(object, newdata=NULL, Lfdobj=0, ...){
-  predict.fd(object$fd, newdata, Lfdobj, ...)
+predict.fdPar <- function(object, newdata=NULL, Lfdobj=0,
+                          returnMatrix=FALSE, ...){
+  predict.fd(object$fd, newdata, Lfdobj,
+             returnMatrix=returnMatrix, ...)
 }
 
-predict.fd <- function(object, newdata=NULL, Lfdobj=0, ...){
+predict.fd <- function(object, newdata=NULL, Lfdobj=0,
+                       returnMatrix=FALSE, ...){
   if(is.null(newdata)){
     basis <- object$basis
     type <- basis$type
@@ -33,12 +37,12 @@ predict.fd <- function(object, newdata=NULL, Lfdobj=0, ...){
       else basis$rangeval
     }
   }
-  eval.fd(newdata, object, Lfdobj)
+  eval.fd(newdata, object, Lfdobj, returnMatrix=returnMatrix)
 }
 
 #  ----------------------------------------------------------------------------
 
-eval.fd <- function(evalarg, fdobj, Lfdobj=0) {
+eval.fd <- function(evalarg, fdobj, Lfdobj=0, returnMatrix=FALSE) {
 
 #  EVAL_FD evaluates a functional data observation at argument
 #  values EVALARG.
@@ -141,6 +145,8 @@ if (is.vector(evalarg)) {
 
     if (ndim <= 2) {
       evalarray <- basismat %*% coef
+#     needed because dimnames may malfunction with Matrix basismat
+      dimnames(evalarray) <- list(rownames(basismat), colnames(coef))
     } else {
        evalarray <- array(0,c(n,nrep,nvar))
        for (ivar in 1:nvar) evalarray[,,ivar] <- basismat %*% coef[,,ivar]
@@ -176,7 +182,9 @@ if (is.vector(evalarg)) {
 
 }
 
-return(evalarray)
-
+if((length(dim(evalarray))==2) && !returnMatrix) {
+    return(as.matrix(evalarray))
+} else
+    return(evalarray)
 }
 
