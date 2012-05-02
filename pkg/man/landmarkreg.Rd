@@ -114,28 +114,28 @@ densY <- sapply(x, function(z){
             density(z, from=from, to=to, n=nb, na.rm=TRUE)$y
         })
 
-argvals <- seq(from, to, len=nb) 
-fdobj   <- smooth.basis(argvals, densY, wbasis, 
+argvals <- seq(from, to, len=nb)
+fdobj   <- smooth.basis(argvals, densY, wbasis,
                    fdnames = c("x", "samples", "density"))$fd
 
-regDens <- landmarkreg(fdobj, landmark, WfdPar=WfdPar, monwrd=TRUE)
+regDens   <- landmarkreg(fdobj, landmark, WfdPar=WfdPar, monwrd=TRUE)
 warpfdobj <- regDens$warpfd
-warpedX <- eval.fd(warpfdobj, argvals)
-funs <-  apply(warpedX, 2, approxfun, argvals)
-newDat <- list()
-for (i in 1:length(funs))
-  newDat[[names(funs)[i]]] <- data.frame(data=funs[[i]](x[[i]][,1]),
-                                         which=names(funs)[i])
+warpedX   <- as.matrix(eval.fd(warpfdobj, argvals))
+funs      <- apply(warpedX, 2, approxfun, argvals)
+## newDat <- list()
+## for (i in 1:length(funs))
+##   newDat[[names(funs)[i]]] <- data.frame(data=funs[[i]](x[[i]][,1]),
+##                                          which=names(funs)[i])
 ## visualization
-lattice::densityplot(~ data | which, sampleData,
-                    layout=c(1,5), col="#A6CEE3", n=120,
-                     main="Original data set")
-dev.new()
-lattice::densityplot( ~ data | which, layout=c(1,length(newDat)),
-                     do.call(rbind, newDat), col="#A6CEE3", n=120,
-                     main="After warping")
+## lattice::densityplot(~ data | which, sampleData,
+##                    layout=c(1,5), col="#A6CEE3", n=120,
+##                     main="Original data set")
+## dev.new()
+## lattice::densityplot( ~ data | which, layout=c(1,length(newDat)),
+##                      do.call(rbind, newDat), col="#A6CEE3", n=120,
+##                      main="After warping")
 
 
-}
+## }
 % docclass is function
 \keyword{smooth}

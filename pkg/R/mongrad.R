@@ -52,16 +52,15 @@ mongrad <- function(x, Wfdobj, basislist=vector("list",JMAX)) {
   } else {
       bmat <- basislist[[j]]
   }
-  fx   <- exp(bmat %*% coef)
-  fval <- outer(c(fx),onebas)*bmat
+  fx   <- as.matrix(exp(bmat %*% coef))
+  fval <- as.matrix(outer(c(fx),onebas)*bmat)
   smat[1,]  <- width*apply(fval,2,sum)/2
   tnm <- 0.5
 
   #  now iterate to convergence
   for (iter in 2:JMAX) {
     tnm  <- tnm*2
-    del  <- width/tnm
-   
+    del  <- width/tnm  
     flag <- ifelse(rangeval[1]+del/2 >= rangeval[2]-del/2, -1, 1)
     tj   <- seq(rangeval[1]+del/2, rangeval[2]-del/2, by=flag*abs(del))
     tval <- c(tval, tj)
@@ -71,8 +70,8 @@ mongrad <- function(x, Wfdobj, basislist=vector("list",JMAX)) {
     } else {
         bmat <- basislist[[iter]]
     }
-    fx   <- exp(bmat %*% coef)
-    gval <- outer(c(fx),onebas)*bmat
+    fx   <- as.matrix(exp(bmat %*% coef))
+    gval <- as.matrix(outer(c(fx),onebas)*bmat)
     fval <- rbind(fval,gval)
     smat[iter,] <- (smat[iter-1,] + width*apply(fval,2,sum)/tnm)/2
     if (iter >= max(c(5,JMIN))) {

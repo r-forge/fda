@@ -497,6 +497,9 @@ loglamout = plotGCVRMSE.fd(-6, -3, 0.25, x, argvals, y, fdParobj)
 #  in the smooth curve.  This code sets up the error correlation matrix
 #  for first-order autoregressive errors, or AR(1).
 rho = 0.9
+n = 51
+argvals = seq(0,1,len=n)
+x = sin(4*pi*argvals)
 Rerr = matrix(0,n,n)
 for (i in 1:n) {
   for (j in 1:n) Rerr[i,j] =  rho^abs(i-j)
@@ -504,9 +507,6 @@ for (i in 1:n) {
 #  Compute the Choleski factor of the correlation matrix
 Lerr = chol(Rerr)
 #  set up some data
-n = 51
-argvals = seq(0,1,len=n)
-x = sin(4*pi*argvals)
 #  Generate auto-correlated errors by multipling independent errors by
 #  the transpose of the Choleski factor
 sigerr = 0.2
