@@ -22,6 +22,8 @@ Description: These functions were developed to support functional data
         The principal changes to version 2.2.8 are:
         1.  The use of sparse matrix representation for spline basis
         functions and in function smooth.basis.
+        2.  The correction of a bug in function pca.fd.  Analyses using
+        the earlier version should be redone.
 License: GPL (>= 2)
 URL: http://www.functionaldata.org
 LazyData: true
