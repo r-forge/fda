@@ -64,7 +64,7 @@ eval.fd <- function(evalarg, fdobj, Lfdobj=0, returnMatrix=FALSE) {
 #  Returns:  An array of function values corresponding to the evaluation
 #              arguments in EVALARG
 
-#  Last modified 3 January 2008 by Jim Ramsay
+#  Last modified 2 May 2012 by Jim Ramsay
 
 #  Check LFDOBJ
 
@@ -169,13 +169,14 @@ if (is.vector(evalarg)) {
        #  evaluate the functions at arguments in EVALARG
 
        if (ndim == 2) {
-           evalarray[  index, i] <- basismat %*% coef[,i]
+           evalarray[  index, i] <- as.vector(basismat %*% coef[,i])
            evalarray[!(index),i] <- NA
        }
        if (ndim == 3) {
            for (ivar in 1:nvar) {
-             evalarray[   index,i,ivar] <- basismat %*% coef[,i,ivar]
-               evalarray[!(index),i,ivar] <- NA
+             evalarray[   index,i,ivar] <- 
+                                as.vector(basismat %*% coef[,i,ivar])
+             evalarray[!(index),i,ivar] <- NA
            }
        }
   }

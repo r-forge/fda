@@ -561,6 +561,7 @@ if (method == "chol") {
     if (!is.null(covariates)) {
         ind1 <- 1:n
         ind2 <- (nbasis+1):(nbasis+q)
+        basismat  <- as.matrix(basismat)
         basismat  <- cbind(basismat,  matrix(0,dim(basismat) [1],q))
         basismat[ind1,ind2]  <- covariates
     }
@@ -577,9 +578,6 @@ if (method == "chol") {
     }
 
     #  the weighted crossproduct of the basis matrix
-#print("crossprod 1")
-print(basisw)
-#print(basismat)
     Bmat  <- t(basisw) %*% basismat
     #  Bmat  <- crossprod(basisw,basismat)
     Bmat0 <- Bmat
@@ -587,8 +585,6 @@ print(basisw)
     #  set up right side of normal equations
 
     if (ndim < 3) {
-#print("crossprod 2")
-#print(y)
         Dmat <- t(basisw) %*% y
         # Dmat <- crossprod(basisw,y)
     } else {
@@ -846,7 +842,6 @@ print(basisw)
 #  compute map from y to c
 
 if (onewt) {
-#print(basismat)
     temp   <- t(basismat) %*% basismat
     if (lambda > 0) {
         temp <- temp + lambda*penmat
@@ -864,11 +859,13 @@ if (onewt) {
     if  (lambda > 0) {
         temp <- temp + lambda*penmat
     }
-    L      <- chol(temp)
+    L      <- chol((temp+t(temp))/2)
     MapFac <- solve(t(L),t(basismat))
     if(matwt){
         y2cMap <- solve(L, MapFac%*%wtvec)
-    } else y2cMap <- solve(L,MapFac*rep(as.vector(wtvec), e=nrow(MapFac)))
+    } else {
+        y2cMap <- solve(L,MapFac*rep(as.vector(wtvec), e=nrow(MapFac)))
+    }
 }
 
 #  compute degrees of freedom of smooth

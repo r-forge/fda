@@ -15,7 +15,7 @@ monhess <- function(x, Wfd, basislist)
 #  D2H   values of D2 h wrt c
 #  TVAL  Arguments used for trapezoidal approximation to integral
 
-#  Last modified 21 October 2008 by Jim Ramsay
+#  Last modified 2 May 2012 by Jim Ramsay
 
 #  set some constants
 
@@ -60,13 +60,14 @@ if (is.null(basislist[[iter]])) {
 } else {
     bmat <- basislist[[iter]]
 }
-fx   <- exp(bmat %*% coef)
+fx   <- as.matrix(exp(bmat %*% coef))
 D2fx <- matrix(0,2,nbaspr)
 m <- 0
 for (ib in 1:nbasis) {
    for (jb in 1:ib) {
       m <- m + 1
-      D2fx[,m] <- fx*bmat[,ib]*bmat[,jb]
+      D2fxij   <- as.matrix(fx*bmat[,ib]*bmat[,jb])
+      D2fx[,m] <- D2fxij
    }
 }
 D2fval <- D2fx
@@ -87,13 +88,14 @@ for (iter in 2:JMAX) {
    } else {
       bmat <- basislist[[iter]]
    }
-   fx   <- exp(bmat%*%coef)
+   fx   <- as.matrix(exp(bmat%*%coef))
    D2fx <- matrix(0,length(xiter),nbaspr)
    m <- 0
    for (ib in 1:nbasis) {
       for (jb in 1:ib) {
          m <- m + 1
-         D2fx[,m] <- fx*bmat[,ib]*bmat[,jb]
+         D2fxij   <- as.matrix(fx*bmat[,ib]*bmat[,jb])
+         D2fx[,m] <- D2fxij
       }
    }
    D2fval <- rbind(D2fval, D2fx)

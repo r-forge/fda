@@ -70,8 +70,9 @@ intensity.fd <- function(x, WfdParobj, conv=0.0001, iterlim=20, dbglev=1) {
 	#  initialize matrix Kmat defining penalty term
 
 	lambda <- WfdParobj$lambda
-	if (lambda > 0)
+	if (lambda > 0) {
 	  	Kmat <- lambda*getbasispenalty(basisobj, Lfdobj)
+      }
 
 	#  evaluate log likelihood
 	#    and its derivatives with respect to these coefficients
@@ -420,14 +421,14 @@ expect.phi <- function(basisobj, cvec, nderiv=0, rng=rangeval,
   	x  <- rng
   	nx <- length(x)
   	ox <- matrix(1,nx,nx)
-  	fx <- getbasismatrix(x, basisobj)
+  	fx <- as.matrix(getbasismatrix(x, basisobj))
   	wx <- fx %*% cvec
   	wx[wx < -50] <- -50
   	px <- exp(wx)
   	if (nderiv == 0) {
-    	Dfx <- fx
+    	  Dfx <- fx
   	} else {
-    	Dfx <- getbasismatrix(x, basisobj, 1)
+    	  Dfx <- as.matrix(getbasismatrix(x, basisobj, 1))
   	}
   	sumj <- t(Dfx) %*% px
   	smat[1,]  <- width*sumj/2
@@ -440,19 +441,19 @@ expect.phi <- function(basisobj, cvec, nderiv=0, rng=rangeval,
     	tnm  <- tnm*2
     	del  <- width/tnm
     	if (j == 2) {
-      		x <- (rng[1] + rng[2])/2
+        x <- (rng[1] + rng[2])/2
     	} else {
-      		x <- seq(rng[1]+del/2, rng[2], del)
+        x <- seq(rng[1]+del/2, rng[2], del)
     	}
     	nx <- length(x)
-    	fx <- getbasismatrix(x, basisobj)
+    	fx <- as.matrix(getbasismatrix(x, basisobj))
     	wx <- fx %*% cvec
     	wx[wx < -50] <- -50
     	px <- exp(wx)
     	if (nderiv == 0) {
-      		Dfx <- fx
+        Dfx <- fx
     	} else {
-      		Dfx <- getbasismatrix(x, basisobj, 1)
+        Dfx <- as.matrix(getbasismatrix(x, basisobj, 1))
     	}
     	sumj <- t(Dfx) %*% px
     	smat[j,] <- (smat[j-1,] + width*sumj/tnm)/2
@@ -515,19 +516,19 @@ expect.phiphit <- function(basisobj, cvec, nderiv1=0, nderiv2=0,
   	#  the first iteration uses just the }points
   	x  <- rng
   	nx <- length(x)
-  	fx <- getbasismatrix(x, basisobj)
+  	fx <- as.matrix(getbasismatrix(x, basisobj))
   	wx <- fx %*% cvec
   	wx[wx < -50] <- -50
   	px <- exp(wx)
   	if (nderiv1 == 0) {
-    	Dfx1 <- fx
+    	  Dfx1 <- fx
   	} else {
-    	Dfx1 <- getbasismatrix(x, basisobj, 1)
+    	  Dfx1 <- as.matrix(getbasismatrix(x, basisobj, 1))
   	}
   	if (nderiv2 == 0) {
-    	Dfx2 <- fx
+    	  Dfx2 <- fx
   	} else {
-    	Dfx2 <- getbasismatrix(x, basisobj, 1)
+    	  Dfx2 <- as.matrix(getbasismatrix(x, basisobj, 1))
   	}
   	oneb <- matrix(1,1,nbasis)
   	sumj <- t(Dfx1) %*% ((px %*% oneb) * Dfx2)
@@ -540,24 +541,24 @@ expect.phiphit <- function(basisobj, cvec, nderiv1=0, nderiv2=0,
     	tnm  <- tnm*2
     	del  <- width/tnm
     	if (j == 2) {
-      		x <- (rng[1] + rng[2])/2
+        x <- (rng[1] + rng[2])/2
     	} else {
-      		x <- seq(rng[1]+del/2, rng[2], del)
+        x <- seq(rng[1]+del/2, rng[2], del)
     	}
     	nx <- length(x)
-    	fx <- getbasismatrix(x, basisobj)
+    	fx <- as.matrix(getbasismatrix(x, basisobj))
     	wx <- fx %*% cvec
     	wx[wx < -50] <- -50
     	px <- exp(wx)
     	if (nderiv1 == 0) {
-      		Dfx1 <- fx
+        Dfx1 <- fx
     	} else {
-      		Dfx1 <- getbasismatrix(x, basisobj, 1)
+        Dfx1 <- as.matrix(getbasismatrix(x, basisobj, 1))
     	}
     	if (nderiv2 == 0) {
-      		Dfx2 <- fx
+        Dfx2 <- fx
     	} else {
-      		Dfx2 <- getbasismatrix(x, basisobj, 1)
+        Dfx2 <- as.matrix(getbasismatrix(x, basisobj, 2))
     	}
     	sumj <- t(Dfx1) %*% ((px %*% oneb) * Dfx2)
     	smat[j,,] <- (smat[j-1,,] + width*sumj/tnm)/2

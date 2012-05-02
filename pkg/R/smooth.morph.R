@@ -20,10 +20,6 @@ smooth.morph <- function(x, y, WfdPar, wt=rep(1,nobs),
 #  WT      ...  a vector of weights
 #  CONV    ...  convergence criterion, 0.0001 by default
 #  ITERLIM ...  maximum number of iterations, 20 by default
-#  ACTIVE  ...  vector of 1's and 0's indicating which coefficients
-#               are to be optimized (1) or remain fixed (0).  All values
-#               are 1 by default, except that if a B-spline basis is used,
-#               the first value is set to 0.
 #  DBGLEV  ...  Controls the level of output on each iteration.  If 0,
 #               no output, if 1, output at each iteration, if higher, output
 #               at each line search iteration. 1 by default.
@@ -36,7 +32,7 @@ smooth.morph <- function(x, y, WfdPar, wt=rep(1,nobs),
 #  ITERNUM   ...  number of iterations
 #  ITERHIST  ...  ITERNUM+1 by 5 array containing iteration history
 
-# last modified 3 January 2008 by Jim Ramsay
+# last modified 2 May 2012 by Jim Ramsay
 
 #  initialize some arrays
 

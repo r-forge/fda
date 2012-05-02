@@ -114,13 +114,15 @@ eval.monfd <- function(evalarg, Wfdobj, Lfdobj=int2Lfd(0)) {
     for (icurve in 1:ncurve) {
 
   	if (nderiv == 0) {
-    	  if (ndim == 2) 
+    	  if (ndim == 2) {
           if (ncurve == 1) {
             hmat[,icurve,ivar] <- monfn(evalarg, Wfdobj)
           } else {
             hmat[,icurve,ivar] <- monfn(evalarg, Wfdobj[icurve])
           }
-        else           hmat[,icurve,ivar] <- monfn(evalarg, Wfdobj[icurve,ivar])
+        } else {          
+            hmat[,icurve,ivar] <- monfn(evalarg, Wfdobj[icurve,ivar])
+        }
   	}
 
   	if (nderiv == 1) {
@@ -130,23 +132,25 @@ eval.monfd <- function(evalarg, Wfdobj, Lfdobj=int2Lfd(0)) {
 
   	if (nderiv == 2) {
         if (ndim == 2) {
-    	    hmat[,icurve,ivar] <- (Dwmat %*% coef[,icurve])*
+          temp = (Dwmat %*% coef[,icurve])*
                                  exp(eval.fd(evalarg, Wfdobj[icurve]))
+    	    hmat[,icurve,ivar] <- as.vector(temp)
         } else {
-    	    hmat[,icurve,ivar] <- (Dwmat %*% coef[,icurve,ivar])*
+          temp = (Dwmat %*% coef[,icurve])*
                                  exp(eval.fd(evalarg, Wfdobj[icurve,ivar]))
+    	    hmat[,icurve,ivar] <- as.vector(temp)
         }
   	}
 
   	if (nderiv == 3) {
         if (ndim == 2) {
-    	    hmat[,icurve,ivar] <- ((D2wmat %*% coef[,icurve]) +
+    	    hmat[,icurve,ivar] <- as.vector(((D2wmat %*% coef[,icurve]) +
                                  (Dwmat  %*% coef[,icurve])^2)*
-                                  exp(eval.fd(evalarg, Wfdobj[icurve]))
+                                  exp(eval.fd(evalarg, Wfdobj[icurve])))
         } else {
-    	    hmat[,icurve,ivar] <- ((D2wmat %*% coef[,icurve,ivar]) +
+    	    hmat[,icurve,ivar] <- as.vector(((D2wmat %*% coef[,icurve,ivar]) +
                                  (Dwmat  %*% coef[,icurve,ivar])^2)*
-                                  exp(eval.fd(evalarg, Wfdobj[icurve,ivar]))
+                                  exp(eval.fd(evalarg, Wfdobj[icurve,ivar])))
         }
   	}
 

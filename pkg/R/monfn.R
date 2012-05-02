@@ -53,7 +53,7 @@ monfn <- function(argvals, Wfdobj, basislist=vector("list",JMAX)) {
   } else {
       bmat <- basislist[[j]]
   }
-  fx   <- exp(bmat %*% coef)
+  fx   <- as.matrix(exp(bmat %*% coef))
   fval <- fx
   smat[1,]  <- width*apply(fx,2,sum)/2
   tnm <- 0.5
@@ -69,7 +69,7 @@ monfn <- function(argvals, Wfdobj, basislist=vector("list",JMAX)) {
     } else {
         bmat <- basislist[[j]]
     }
-    fx   <- exp(bmat %*% coef)
+    fx   <- as.matrix(exp(bmat %*% coef))
     fval <- c(fval,fx)
     smat[j] <- (smat[j-1] + width*apply(fx,2,sum)/tnm)/2
     if (j >= JMIN) {
