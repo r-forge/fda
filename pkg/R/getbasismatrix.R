@@ -98,7 +98,8 @@ if (type == "bspline") {
    	    breaks   <- c(rangeval[1], params, rangeval[2])
       }
    	norder   <- nbasis - length(breaks) + 2
-   	basismat <- bsplineS(evalarg, breaks, norder, nderiv)
+   	basismat <- bsplineS(evalarg, breaks, norder, nderiv,
+                             returnMatrix)
 
 #  -----------------------------  Constant basis  --------------------
 
