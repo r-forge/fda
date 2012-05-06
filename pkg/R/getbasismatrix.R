@@ -1,4 +1,5 @@
-getbasismatrix <- function(evalarg, basisobj, nderiv=0) {
+getbasismatrix <- function(evalarg, basisobj, nderiv=0,
+                           returnMatrix=FALSE) {
 #  Computes the basis matrix evaluated at arguments in EVALARG associated
 #    with basis.fd object BASISOBJ.  The basis matrix contains the values
 #    at argument value vector EVALARG of applying the nonhomogeneous
@@ -6,9 +7,11 @@ getbasismatrix <- function(evalarg, basisobj, nderiv=0) {
 #    LFD is 0, and the basis functions are simply evaluated at argument
 #    values in EVALARG.
 #
-#  If LFD is a functional data object with m + 1 functions c_1, ... c_{m+1}, then it
-#    is assumed to define the order m HOMOGENEOUS linear differential operator
-#  Lx(t) = c_1(t) + c_2(t)x(t) + c_3(t)Dx(t) + ... + c_{m+1}D^{m-1}x(t) + D^m x(t).
+#  If LFD is a functional data object with m + 1 functions c_1, ... c_{m+1},
+#    then it is assumed to define the order m HOMOGENEOUS linear
+#    differential operator
+#  Lx(t) = c_1(t) + c_2(t)x(t) + c_3(t)Dx(t) + ... +
+#                             c_{m+1}D^{m-1}x(t) + D^m x(t).
 #
 #  If the basis type is either polygonal or constant, LFD is ignored.
 #
@@ -25,8 +28,8 @@ getbasismatrix <- function(evalarg, basisobj, nderiv=0) {
 #
 #  Note that the first two arguments may be interchanged.
 #
-
-#  Last modified 25 March 2012 by Jim Ramsay
+#  Last modified 5 May 2012 by Spencer Graves
+#  Previously modified 25 March 2012 by Jim Ramsay
 
 #  Exchange the first two arguments if the first is an BASIS.FD object
 #    and the second numeric
@@ -40,9 +43,9 @@ if (is.numeric(basisobj) && inherits(evalarg, "basisfd")) {
 #  check EVALARG
 
 if (!(is.numeric(evalarg)))  stop("Argument EVALARG is not numeric.")
-	
+
 #  check basisobj
-	
+
 if (!(inherits(basisobj, "basisfd"))) stop(
     "Second argument is not a basis object.")
 
@@ -70,7 +73,12 @@ if (!(length(basisobj$basisvalues) == 0 || is.null(basisobj$basisvalues))) {
             }
         }
     }
-    if (OK) return(basismat)
+    if (OK){
+        if((!returnMatrix) && (length(dim(basismat)) == 2)){
+            return(as.matrix(basismat))
+        }
+        return(basismat)
+    }
 }
 
 #  Extract information about the basis
@@ -135,11 +143,14 @@ if (type == "bspline") {
 } else {
    	stop("Basis type not recognizable")
 }
-	
+
 #  remove columns for bases to be dropped
 
 if (length(dropind) > 0) basismat <- basismat[,-dropind]
 
+if((!returnMatrix) && (length(dim(basismat)) == 2)){
+    return(as.matrix(basismat))
+}
 return(basismat)
 
 }
