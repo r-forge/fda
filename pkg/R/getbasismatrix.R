@@ -1,5 +1,4 @@
-getbasismatrix <- function(evalarg, basisobj, nderiv=0,
-                           returnMatrix=FALSE) {
+getbasismatrix <- function(evalarg, basisobj, nderiv=0, returnMatrix=FALSE) {
 #  Computes the basis matrix evaluated at arguments in EVALARG associated
 #    with basis.fd object BASISOBJ.  The basis matrix contains the values
 #    at argument value vector EVALARG of applying the nonhomogeneous
@@ -24,12 +23,14 @@ getbasismatrix <- function(evalarg, basisobj, nderiv=0,
 #              of number of evaluation points.
 #  BASISOBJ ... A basis object
 #  NDERIV   ... A nonnegative integer indicating a derivative to be evaluated.
-
+#  RETURNMATRIX ... If False, a matrix in sparse storage model can be returned
+#               from a call to function BsplineS.  See this function for
+#               enabling this option.
+   
 #
 #  Note that the first two arguments may be interchanged.
 #
-#  Last modified 5 May 2012 by Spencer Graves
-#  Previously modified 25 March 2012 by Jim Ramsay
+#  Last modified 7 May 2012 by Jim Ramsay
 
 #  Exchange the first two arguments if the first is an BASIS.FD object
 #    and the second numeric

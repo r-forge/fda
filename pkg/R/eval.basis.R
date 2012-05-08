@@ -1,4 +1,5 @@
-predict.basisfd <- function(object, newdata=NULL, Lfdobj=0, ...){
+predict.basisfd <- function(object, newdata=NULL, Lfdobj=0, 
+                            returnMatrix=FALSE, ...){
   if(is.null(newdata)){
     type <- object$type
     if(length(type) != 1)
@@ -10,10 +11,10 @@ predict.basisfd <- function(object, newdata=NULL, Lfdobj=0, ...){
       else object$rangeval
     }
   }
-  eval.basis(newdata, object, Lfdobj)
+  eval.basis(newdata, object, Lfdobj, returnMatrix)
 }
 
-eval.basis <- function(evalarg, basisobj, Lfdobj=0) {
+eval.basis <- function(evalarg, basisobj, Lfdobj=0, returnMatrix=FALSE) {
 #  Computes the basis matrix evaluated at arguments in EVALARG associated
 #    with basis.fd object BASISOBJ.  The basis matrix contains the values
 #    at argument value vector EVALARG of applying the nonhomogeneous
@@ -37,10 +38,13 @@ eval.basis <- function(evalarg, basisobj, Lfdobj=0) {
 #  BASISOBJ ... A basis object
 #  LFDOBJ   ... A linear differential operator object
 #               applied to the basis functions before they are to be evaluated.
+#  RETURNMATRIX ... If False, a matrix in sparse storage model can be returned
+#               from a call to function BsplineS.  See this function for
+#               enabling this option.
 
 #  Note that the first two arguments may be interchanged.
 
-#  Last modified 25 March 2012
+#  Last modified 7 May 2012 by Jim Ramsay
 
 #  Exchange the first two arguments if the first is an BASIS.FD object
 #    and the second numeric
@@ -76,7 +80,7 @@ bwtlist <- Lfdobj$bwtlist
 
 #  get highest order of basis matrix
 
-basismat <- getbasismatrix(evalarg, basisobj, nderiv)
+basismat <- getbasismatrix(evalarg, basisobj, nderiv, returnMatrix)
 nbasis   <- dim(basismat)[2]
 oneb     <- matrix(1,1,nbasis)
 
@@ -96,13 +100,17 @@ if (nderiv > 0) {
             bfd   <- bwtlist[[j]]
             if (!all(c(bfd$coefs) == 0.0)) {
                 wjarray   <- eval.fd(evalarg, bfd)
-                Dbasismat <- getbasismatrix(evalarg, basisobj, j-1)
+                Dbasismat <- getbasismatrix(evalarg, basisobj, j-1, 
+                                             returnMatrix)
                 basismat  <- basismat + (wjarray %*% oneb)*Dbasismat
             }
         }
     }
 }
 
+if((!returnMatrix) && (length(dim(basismat)) == 2)){
+    return(as.matrix(basismat))
+}
 return(basismat)
 
 }
