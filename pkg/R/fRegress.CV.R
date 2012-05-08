@@ -1,4 +1,5 @@
-fRegress.CV <- function(y, xfdlist, betalist, wt=NULL, CVobs=1:N, ...)
+fRegress.CV <- function(y, xfdlist, betalist, wt=NULL, CVobs=1:N, 
+                        returnMatrix=FALSE, ...)
 {
 
 # FREGRESS.CV computes cross-validated error sum of squares
@@ -6,7 +7,7 @@ fRegress.CV <- function(y, xfdlist, betalist, wt=NULL, CVobs=1:N, ...)
 # generalized cross validation scores are now returned by fRegress
 # when scalar responses are used.
 
-# last modified June 21 2010 by Giles Hooker
+# last modified 8 May 2012 by Jim Ramsay
 
 argList  <- fRegressArgCheck(y, xfdlist, betalist, wt)
 yfdPar   <- argList$yfdPar
@@ -57,8 +58,8 @@ if (inherits(yfdPar, "numeric"))  {
         nfine      <- max(501, bbasisj$nbasis*10+1)
         tfine      <- seq(rangej[1], rangej[2], len=nfine)
         delta      <- tfine[2]-tfine[1]
-        betavec    <- eval.fd(tfine, betafdj)
-        xveci      <- eval.fd(tfine, xfdj[i])
+        betavec    <- eval.fd(tfine, betafdj, 0, returnMatrix)
+        xveci      <- eval.fd(tfine, xfdj[i], 0, returnMatrix)
         yhati      <- yhati + delta*(sum(xveci*betavec) -
                                     0.5*( xveci[1]    *betavec[1] +
                                           xveci[nfine]*betavec[nfine] ))
