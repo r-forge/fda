@@ -99,8 +99,7 @@ if (type == "bspline") {
    	    breaks   <- c(rangeval[1], params, rangeval[2])
       }
    	norder   <- nbasis - length(breaks) + 2
-   	basismat <- bsplineS(evalarg, breaks, norder, nderiv,
-                             returnMatrix)
+   	basismat <- bsplineS(evalarg, breaks, norder, nderiv, returnMatrix)
 
 #  -----------------------------  Constant basis  --------------------
 
@@ -151,8 +150,11 @@ if (type == "bspline") {
 if (length(dropind) > 0) basismat <- basismat[,-dropind]
 
 if((!returnMatrix) && (length(dim(basismat)) == 2)){
+    #  coerce basismat to be nonsparse
     return(as.matrix(basismat))
+} else {
+    #  allow basismat to be sparse if it already is
+    return(basismat)
 }
-return(basismat)
 
 }

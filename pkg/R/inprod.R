@@ -1,5 +1,5 @@
 inprod <- function(fdobj1, fdobj2=NULL, Lfdobj1=int2Lfd(0), Lfdobj2=int2Lfd(0),
-                   rng = range1, wtfd = 0)
+                   rng = range1, wtfd = 0, returnMatrix=FALSE)
 {
 
 #  computes matrix of inner products of functions by numerical
@@ -24,12 +24,15 @@ inprod <- function(fdobj1, fdobj2=NULL, Lfdobj1=int2Lfd(0), Lfdobj2=int2Lfd(0),
 #  WTFD   A functional data object defining a weight
 #  JMAX   maximum number of allowable iterations
 #  EPS    convergence criterion for relative stop
+#  RETURNMATRIX ... If False, a matrix in sparse storage model can be returned
+#               from a call to function BsplineS.  See this function for
+#               enabling this option.
 
 #  Return:
 #  A matrix of NREP1 by NREP2 of inner products for each possible pair
 #  of functions.
 
-#  Last modified 2 February 2010
+#  Last modified 8 May 2012 by Jim Ramsay
 
 #  Check FDOBJ1 and get no. replications and basis object
 
@@ -163,11 +166,11 @@ for (irng  in  2:nrng) {
     s <- array(0,c(JMAXP,nrep1,nrep2))
     sdim <- length(dim(s))
     #  the first iteration uses just the endpoints
-    fx1 <- eval.fd(rngi, fdobj1, Lfdobj1)
-    fx2 <- eval.fd(rngi, fdobj2, Lfdobj2)
+    fx1 <- eval.fd(rngi, fdobj1, Lfdobj1, returnMatrix)
+    fx2 <- eval.fd(rngi, fdobj2, Lfdobj2, returnMatrix)
     #  multiply by values of weight function if necessary
     if (!is.numeric(wtfd)) {
-        wtd <- eval.fd(rngi,wtfd)
+        wtd <- eval.fd(rngi, wtfd, 0, returnMatrix)
         fx2 <- matrix(wtd,dim(wtd)[1],dim(fx2)[2]) * fx2
     }
     s[1,,] <- width*as.numeric(crossprod(fx1,fx2))/2
@@ -184,10 +187,10 @@ for (irng  in  2:nrng) {
             del <- width/tnm
             x   <- seq(rngi[1]+del/2, rngi[2]-del/2, del)
         }
-        fx1 <- eval.fd(x, fdobj1, Lfdobj1)
-        fx2 <- eval.fd(x, fdobj2, Lfdobj2)
+        fx1 <- eval.fd(x, fdobj1, Lfdobj1, returnMatrix)
+        fx2 <- eval.fd(x, fdobj2, Lfdobj2, returnMatrix)
         if (!is.numeric(wtfd)) {
-            wtd <- eval.fd(wtfd, x)
+            wtd <- eval.fd(wtfd, x, 0, returnMatrix)
             fx2 <- matrix(wtd,dim(wtd)[1],dim(fx2)[2]) * fx2
         }
         chs <- width*as.numeric(crossprod(fx1,fx2))/tnm
@@ -239,7 +242,13 @@ for (irng  in  2:nrng) {
 
 }
 
-return(inprodmat)
+if((!returnMatrix) && (length(dim(inprodmat)) == 2)) {
+    #  coerce inprodmat to be nonsparse
+    return(as.matrix(inprodmat))
+} else {
+    #  allow inprodmat to be sparse if it already is
+    return(inprodmat)
+}
 
 }
 

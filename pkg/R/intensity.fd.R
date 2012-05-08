@@ -369,7 +369,7 @@ normint.phi <- function(basisobj, cvec, JMAX=15, EPS=1e-7, returnMatrix) {
 #  ---------------------------------------------------------------
 
 expect.phi <- function(basisobj, cvec, nderiv=0, rng=rangeval,
-                     JMAX=15, EPS=1e-7) {
+                     JMAX=15, EPS=1e-7, returnMatrix) {
 #  Computes expectations of basis functions with respect to intensity
 #      p(x) <- exp t(c)*phi(x)
 #  by numerical integration using Romberg integration
@@ -411,14 +411,14 @@ expect.phi <- function(basisobj, cvec, nderiv=0, rng=rangeval,
   	x  <- rng
   	nx <- length(x)
   	ox <- matrix(1,nx,nx)
-  	fx <- as.matrix(getbasismatrix(x, basisobj))
+  	fx <- as.matrix(getbasismatrix(x, basisobj, 0, returnMatrix))
   	wx <- fx %*% cvec
   	wx[wx < -50] <- -50
   	px <- exp(wx)
   	if (nderiv == 0) {
     	  Dfx <- fx
   	} else {
-    	  Dfx <- as.matrix(getbasismatrix(x, basisobj, 1))
+    	  Dfx <- as.matrix(getbasismatrix(x, basisobj, 1, returnMatrix))
   	}
   	sumj <- t(Dfx) %*% px
   	smat[1,]  <- width*sumj/2
@@ -436,14 +436,14 @@ expect.phi <- function(basisobj, cvec, nderiv=0, rng=rangeval,
         x <- seq(rng[1]+del/2, rng[2], del)
     	}
     	nx <- length(x)
-    	fx <- as.matrix(getbasismatrix(x, basisobj))
+    	fx <- as.matrix(getbasismatrix(x, basisobj, 0, returnMatrix))
     	wx <- fx %*% cvec
     	wx[wx < -50] <- -50
     	px <- exp(wx)
     	if (nderiv == 0) {
         Dfx <- fx
     	} else {
-        Dfx <- as.matrix(getbasismatrix(x, basisobj, 1))
+        Dfx <- as.matrix(getbasismatrix(x, basisobj, 1, returnMatrix))
     	}
     	sumj <- t(Dfx) %*% px
     	smat[j,] <- (smat[j-1,] + width*sumj/tnm)/2
@@ -468,7 +468,7 @@ expect.phi <- function(basisobj, cvec, nderiv=0, rng=rangeval,
 #  ---------------------------------------------------------------
 
 expect.phiphit <- function(basisobj, cvec, nderiv1=0, nderiv2=0,
-                           rng=rangeval, JMAX=15, EPS=1e-7) {
+                           rng=rangeval, JMAX=15, EPS=1e-7, returnMatrix) {
 
 #  Computes expectations of cross product of basis functions with
 #  respect to intensity
@@ -506,19 +506,19 @@ expect.phiphit <- function(basisobj, cvec, nderiv1=0, nderiv2=0,
   	#  the first iteration uses just the }points
   	x  <- rng
   	nx <- length(x)
-  	fx <- as.matrix(getbasismatrix(x, basisobj))
+  	fx <- as.matrix(getbasismatrix(x, basisobj, 0, returnMatrix))
   	wx <- fx %*% cvec
   	wx[wx < -50] <- -50
   	px <- exp(wx)
   	if (nderiv1 == 0) {
     	  Dfx1 <- fx
   	} else {
-    	  Dfx1 <- as.matrix(getbasismatrix(x, basisobj, 1))
+    	  Dfx1 <- as.matrix(getbasismatrix(x, basisobj, 1, returnMatrix))
   	}
   	if (nderiv2 == 0) {
     	  Dfx2 <- fx
   	} else {
-    	  Dfx2 <- as.matrix(getbasismatrix(x, basisobj, 1))
+    	  Dfx2 <- as.matrix(getbasismatrix(x, basisobj, 1, returnMatrix))
   	}
   	oneb <- matrix(1,1,nbasis)
   	sumj <- t(Dfx1) %*% ((px %*% oneb) * Dfx2)
@@ -536,19 +536,19 @@ expect.phiphit <- function(basisobj, cvec, nderiv1=0, nderiv2=0,
         x <- seq(rng[1]+del/2, rng[2], del)
     	}
     	nx <- length(x)
-    	fx <- as.matrix(getbasismatrix(x, basisobj))
+    	fx <- as.matrix(getbasismatrix(x, basisobj, 0, returnMatrix))
     	wx <- fx %*% cvec
     	wx[wx < -50] <- -50
     	px <- exp(wx)
     	if (nderiv1 == 0) {
         Dfx1 <- fx
     	} else {
-        Dfx1 <- as.matrix(getbasismatrix(x, basisobj, 1))
+        Dfx1 <- as.matrix(getbasismatrix(x, basisobj, 1, returnMatrix))
     	}
     	if (nderiv2 == 0) {
         Dfx2 <- fx
     	} else {
-        Dfx2 <- as.matrix(getbasismatrix(x, basisobj, 2))
+        Dfx2 <- as.matrix(getbasismatrix(x, basisobj, 2, returnMatrix))
     	}
     	sumj <- t(Dfx1) %*% ((px %*% oneb) * Dfx2)
     	smat[j,,] <- (smat[j-1,,] + width*sumj/tnm)/2
