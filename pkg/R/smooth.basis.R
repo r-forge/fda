@@ -1,6 +1,6 @@
 smooth.basis <- function(argvals=1:n, y, fdParobj,
                          wtvec=NULL,   fdnames=NULL, covariates=NULL,
-                         method="chol", dfscale=1) {
+                         method="chol", dfscale=1, returnMatrix=FALSE) {
 #  Arguments:
 # ARGVALS  A set of N argument values, set by default to equally spaced
 #             on the unit interval (0,1).
@@ -71,6 +71,11 @@ smooth.basis <- function(argvals=1:n, y, fdParobj,
 #  depending on whether ARGVALS is a vector (case 1) or a matrix (case 2)
 #  The earlier version of smooth.basis is found at the end of the file where
 #  it is named smooth.basis1.
+#  RETURNMATRIX ... If False, a matrix in sparse storage model can be returned
+#               from a call to function BsplineS.  See this function for
+#               enabling this option.
+
+#  Last modified 8 May 2012 by Jim Ramsay
 
 #  check y
 
@@ -544,7 +549,7 @@ if (!is.null(covariates)) {
 
 #  set up matrix of basis function values
 
-basismat <- eval.basis(as.vector(argvals), basisobj)
+basismat <- eval.basis(as.vector(argvals), basisobj, 0, returnMatrix)
 
 if (method == "chol") {
 
