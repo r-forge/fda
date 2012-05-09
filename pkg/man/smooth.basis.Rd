@@ -27,7 +27,7 @@
 }
 \usage{
 smooth.basis(argvals=1:n, y, fdParobj, wtvec=NULL, fdnames=NULL,
-             covariates=NULL, method="chol", dfscale=1)
+             covariates=NULL, method="chol", dfscale=1, returnMatrix=FALSE)
 }
 \arguments{
   \item{argvals}{
@@ -137,6 +137,10 @@ smooth.basis(argvals=1:n, y, fdParobj, wtvec=NULL, fdnames=NULL,
     a constant slightly greater than 1, such as 1.2, can produce better
     decisions about the level of smoothing to be used.  The default value
     is, however, 1.0.
+  }
+  \item{returnMatrix}{
+    logical:  If TRUE,  a two-dimensional is returned using a
+    special class from the Matrix package.
   }
 }
 \details{

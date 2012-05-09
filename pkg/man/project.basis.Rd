@@ -13,7 +13,7 @@ This function is used with function \code{data2fd}, and is not
 normally used directly in a functional data analysis.
 }
 \usage{
-project.basis(y, argvals, basisobj, penalize=FALSE)
+project.basis(y, argvals, basisobj, penalize=FALSE, returnMatrix=FALSE)
 }
 \arguments{
 \item{y}{
@@ -30,6 +30,10 @@ a basis object.
 a logical variable.  If TRUE, a small roughness penalty is applied
 to ensure that the linear equations defining the least squares
 solution are linearly independent or nonsingular.
+}
+\item{returnMatrix}{
+logical:  If TRUE,  a two-dimensional is returned using a
+special class from the Matrix package.
 }
 }
 \value{

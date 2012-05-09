@@ -45,16 +45,18 @@
 fRegress(y, ...)
 \method{fRegress}{formula}(y, data=NULL, betalist=NULL, wt=NULL,
                  y2cMap=NULL, SigmaE=NULL,
-                 method=c('fRegress', 'model'), sep='.', ...)
+                 method=c('fRegress', 'model'), sep='.',
+                 returnMatrix=FALSE, ...)
 \method{fRegress}{character}(y, data=NULL, betalist=NULL, wt=NULL,
                  y2cMap=NULL, SigmaE=NULL,
-                 method=c('fRegress', 'model'), sep='.', ...)
+                 method=c('fRegress', 'model'), sep='.',
+                 returnMatrix=FALSE, ...)
 \method{fRegress}{fd}(y, xfdlist, betalist, wt=NULL,
-                     y2cMap=NULL, SigmaE=NULL, ...)
+                     y2cMap=NULL, SigmaE=NULL, returnMatrix=FALSE, ...)
 \method{fRegress}{fdPar}(y, xfdlist, betalist, wt=NULL,
-                     y2cMap=NULL, SigmaE=NULL, ...)
+                     y2cMap=NULL, SigmaE=NULL, returnMatrix=FALSE, ...)
 \method{fRegress}{numeric}(y, xfdlist, betalist, wt=NULL,
-                     y2cMap=NULL, SigmaE=NULL, ...)
+                     y2cMap=NULL, SigmaE=NULL, returnMatrix=FALSE, ...)
 }
 \arguments{
   \item{y}{
@@ -186,6 +188,10 @@ fRegress(y, ...)
     variables on the right hand side of the \code{formula} \code{y}.
     This happens with multidimensional \code{fd} objects as well as with
     categorical variables.
+  }
+  \item{returnMatrix}{
+    logical:  If TRUE,  a two-dimensional is returned using a
+    special class from the Matrix package.
   }
   \item{\dots}{ optional arguments }
 }

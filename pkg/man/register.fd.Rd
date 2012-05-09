@@ -16,7 +16,8 @@
 }
 \usage{
 register.fd(y0fd=NULL, yfd=NULL, WfdParobj=NULL,
-            conv=1e-04, iterlim=20, dbglev=1, periodic=FALSE, crit=2)
+            conv=1e-04, iterlim=20, dbglev=1, periodic=FALSE, crit=2,
+            returnMatrix=FALSE)
 }
 \arguments{
   \item{y0fd}{
@@ -93,6 +94,10 @@ register.fd(y0fd=NULL, yfd=NULL, WfdParobj=NULL,
     is least squares, and if 2, the criterion is the minimum eigenvalue
     of a cross-product matrix.  In general, criterion 2 is to be
     preferred.
+  }
+  \item{returnMatrix}{
+    logical:  If TRUE,  a two-dimensional is returned using a
+    special class from the Matrix package.
   }
 }
 \value{
@@ -256,7 +261,7 @@ nwbasis   <- 7
 wbasis    <- create.bspline.basis(gaitrange,nwbasis,3)
 Warpfd    <- fd(matrix(0,nwbasis,nBoys),wbasis)
 WarpfdPar <- fdPar(Warpfd)
-#  register the functions 
+#  register the functions
 gaitreglist <- register.fd(D2gaitmeanfd, D2gaitfd[1:nBoys], WarpfdPar,
                            periodic=TRUE)
 #  plot the results

@@ -17,7 +17,7 @@ function. It must be strictly increasing and smooth.
 }
 \usage{
 landmarkreg(fdobj, ximarks, x0marks=xmeanmarks,
-            WfdPar, monwrd=FALSE, ylambda=1e-10)
+            WfdPar, monwrd=FALSE, ylambda=1e-10, returnMatrix=FALSE)
 }
 \arguments{
   \item{fdobj}{
@@ -53,6 +53,10 @@ landmarkreg(fdobj, ximarks, x0marks=xmeanmarks,
     that are not seen in the unregistered versions.  In this case,
     this parameter should be increased to the point where they
     disappear.
+  }
+  \item{returnMatrix}{
+    logical:  If TRUE,  a two-dimensional is returned using a
+    special class from the Matrix package.
   }
 }
 \value{

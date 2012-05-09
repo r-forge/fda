@@ -8,12 +8,12 @@ predict.fdSmooth <- function(object, newdata=NULL, Lfdobj=0,
 
 fitted.fdSmooth <- function(object, returnMatrix=FALSE, ...){
   newdata <- object$argvals
-  eval.fd(newdata, object$fd, returnMatrix=returnMatrix)
+  eval.fd(newdata, object$fd, 0, returnMatrix=returnMatrix)
 }
 
 residuals.fdSmooth <- function(object, returnMatrix=FALSE, ...){
   newdata <- object$argvals
-  pred <- eval.fd(newdata, object$fd, returnMatrix=returnMatrix)
+  pred <- eval.fd(newdata, object$fd, 0, returnMatrix=returnMatrix)
   object$y-pred
 }
 
@@ -58,13 +58,16 @@ eval.fd <- function(evalarg, fdobj, Lfdobj=0, returnMatrix=FALSE) {
 #  FDOBJ   ... Functional data object
 #  LFDOBJ  ... A linear differential operator object
 #              applied to the functions before they are evaluated.
+#  RETURNMATRIX ... If False, a matrix in sparse storage model can be returned
+#               from a call to function BsplineS.  See this function for
+#               enabling this option.
 
 #  Note that the first two arguments may be interchanged.
 
 #  Returns:  An array of function values corresponding to the evaluation
 #              arguments in EVALARG
 
-#  Last modified 2 May 2012 by Jim Ramsay
+#  Last modified 9 May 2012 by Jim Ramsay
 
 #  Check LFDOBJ
 
@@ -139,7 +142,7 @@ if (is.vector(evalarg)) {
 
     evalarg[evalarg < rangeval[1]-1e-10] <- NA
     evalarg[evalarg > rangeval[2]+1e-10] <- NA
-    basismat <- eval.basis(evalarg, basisobj, Lfdobj)
+    basismat <- eval.basis(evalarg, basisobj, Lfdobj, returnMatrix)
 
     #  evaluate the functions at arguments in EVALARG
 
@@ -164,7 +167,7 @@ if (is.vector(evalarg)) {
     index    <- !(is.na(evalargi) | evalargi < rangeval[1] |
                                     evalargi > rangeval[2])
     evalargi <- evalargi[index]
-       basismat <- eval.basis(evalargi, basisobj, Lfdobj)
+       basismat <- eval.basis(evalargi, basisobj, Lfdobj, returnMatrix)
 
        #  evaluate the functions at arguments in EVALARG
 

@@ -21,8 +21,8 @@ getbasismatrix(evalarg, basisobj, nderiv=0, returnMatrix=FALSE)
     a nonnegative integer specifying the derivative to be evaluated.
   }
   \item{returnMatrix}{
-    logical:  Should a 2-dimensional array to be returned using a
-    special class from the Matrix package if appropriate?
+    logical:  If TRUE,  a two-dimensional is returned using a
+    special class from the Matrix package.
   }
 }
 \value{

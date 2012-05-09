@@ -1,6 +1,7 @@
 smooth.monotone <- function(argvals, y, WfdParobj, wtvec=rep(1,n),
                             zmat=NULL, conv=.0001, iterlim=50,
-                            active=rep(TRUE,nbasis), dbglev=1)
+                            active=rep(TRUE,nbasis), dbglev=1,
+                            returnMatrix=FALSE)
 {
 #  Smooths the relationship of Y to ARGVALS using weights in WTVEC by
 #  fitting a monotone function of the form
@@ -57,6 +58,9 @@ smooth.monotone <- function(argvals, y, WfdParobj, wtvec=rep(1,n),
 #  DBGLEV  ...  Controls the level of output on each iteration.  If 0,
 #               no output, if 1, output at each iteration, if higher,
 #               output at each line search iteration. 1 by default.
+#  RETURNMATRIX ... If False, a matrix in sparse storage model can be returned
+#               from a call to function BsplineS.  See this function for
+#               enabling this option.
 
 #  Returns are:
 #  WFD     ...  Functional data object for W.
@@ -91,8 +95,7 @@ smooth.monotone <- function(argvals, y, WfdParobj, wtvec=rep(1,n),
 #  FLIST and Y2CMAP objects are indexed linear with curves varying
 #  inside variables.
 
-# last modified 2008.11.22 by Spencer Graves
-# previously modified 26 September 2008 by Jim Ramsay
+# last modified 8September 2012 by Jim Ramsay
 
 #  check ARGVALS
 
@@ -205,7 +208,7 @@ for (ivar in 1:nvar) {
   #  Compute initial function and gradient values
 
   result <- fngrad.smooth.monotone(yi, argvals, zmat, wtvec, cveci, lambda,
-                                   basisobj, Kmat, inact, basislist)
+                                   basisobj, Kmat, inact, basislist, returnMatrix)
   Flisti <- result[[1]]
   betai  <- result[[2]]
   Dyhat  <- result[[3]]
@@ -334,7 +337,8 @@ for (ivar in 1:nvar) {
         #  compute new function value and gradient
         cvecnew <- cveci + linemat[1,5]*deltac
         result  <- fngrad.smooth.monotone(yi, argvals, zmat, wtvec, cvecnew, lambda,
-                                          basisobj, Kmat, inact, basislist)
+                                          basisobj, Kmat, inact, basislist,
+                                          returnMatrix)
         Flisti  <- result[[1]]
         betai   <- result[[2]]
         Dyhat   <- result[[3]]
@@ -464,7 +468,7 @@ if (is.null(zmat)) {
       yhatmat[,icurve] <- beta[1,icurve] +
                           beta[2,icurve]*hmat[,icurve]
     }
-    yhatcoef <- project.basis(yhatmat, evalarg, basisobj) 
+    yhatcoef <- project.basis(yhatmat, evalarg, basisobj)
     yhatfd   <- fd(yhatcoef, basisobj)
   } else {
     yhatcoef <- array(0,c(nbasis,ncurve,nvar))
@@ -508,7 +512,7 @@ linesearch.smooth.monotone <- function(Flisti, hessmat, dbglev)
 #  ----------------------------------------------------------------
 
 fngrad.smooth.monotone <- function(yi, argvals, zmat, wtvec, cveci, lambda,
-                                   basisobj, Kmat, inact, basislist)
+                                   basisobj, Kmat, inact, basislist, returnMatrix)
 {
   if (!is.null(zmat)) {
     ncov   <- ncol(zmat)
@@ -520,8 +524,8 @@ fngrad.smooth.monotone <- function(yi, argvals, zmat, wtvec, cveci, lambda,
   n      <- length(argvals)
   nbasis <- basisobj$nbasis
   Wfdobj <- fd(cveci, basisobj)
-  h      <- monfn(argvals, Wfdobj, basislist)
-  Dyhat  <- mongrad(argvals, Wfdobj, basislist)
+  h      <- monfn(argvals, Wfdobj, basislist, returnMatrix)
+  Dyhat  <- mongrad(argvals, Wfdobj, basislist, returnMatrix)
   if (!is.null(zmat)) {
     xmat <- cbind(zmat,h)
   } else {

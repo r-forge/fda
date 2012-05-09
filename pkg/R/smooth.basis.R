@@ -45,6 +45,9 @@ smooth.basis <- function(argvals=1:n, y, fdParobj,
 #             For this reason, the default is "method" = "chol", but if
 #             'method' == 'qr', the qr decomposition is used.
 # DFFACTOR A multiplier of df in GCV, set to one by default
+#  RETURNMATRIX ... If False, a matrix in sparse storage model can be returned
+#               from a call to function BsplineS.  See this function for
+#               enabling this option.
 #
 # Returns a list containing:
 #   FDOBJ   an object of class fd containing coefficients.
@@ -62,7 +65,7 @@ smooth.basis <- function(argvals=1:n, y, fdParobj,
 #   PENMAT  the penalty matrix.
 #   Y2CMAP  the matrix mapping the data to the coefficients.
 
-# last modified 28 March 2012  by Jim Ramsay
+# last modified 8 March 2012 by Jim Ramsay
 
 #  This version of smooth.basis, introduced in March 2011, permits ARGVALS
 #  to be a matrix, with the same dimensions as the first two dimensions of Y
