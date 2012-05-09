@@ -99,7 +99,7 @@ if (nderiv > 0) {
         for (j in 1:nderiv) {
             bfd   <- bwtlist[[j]]
             if (!all(c(bfd$coefs) == 0.0)) {
-                wjarray   <- eval.fd(evalarg, bfd)
+                wjarray   <- eval.fd(evalarg, bfd, 0, returnBasis)
                 Dbasismat <- getbasismatrix(evalarg, basisobj, j-1, 
                                              returnMatrix)
                 basismat  <- basismat + (wjarray %*% oneb)*Dbasismat

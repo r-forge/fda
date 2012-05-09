@@ -12,7 +12,7 @@
 }
 \usage{
 smooth.pos(argvals, y, WfdParobj, wtvec=rep(1,n),
-           conv=.0001, iterlim=50, dbglev=1)
+           conv=.0001, iterlim=50, dbglev=1, returnMatrix=FALSE)
 }
 \arguments{
   \item{argvals}{
@@ -75,10 +75,10 @@ smooth.pos(argvals, y, WfdParobj, wtvec=rep(1,n),
   \item{argvals, y}{
     the corresponding input arguments
   }
-%  \item{iternum}{the number of iterations.}
-%  \item{iterhist}{
-%    a \code{iternum+1} by 5 matrix containing the iteration history.
-%  }
+  \item{returnMatrix}{
+    logical:  If TRUE,  a two-dimensional is returned using a
+    special class from the Matrix package.
+  }
 }
 \seealso{
   \code{\link{smooth.monotone}},

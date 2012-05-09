@@ -15,7 +15,7 @@
   and not sampling covariances.
 }
 \usage{
-fRegress.stderr(y, y2cMap, SigmaE, ...)
+fRegress.stderr(y, y2cMap, SigmaE, returnMatrix=FALSE, ...)
 }
 \arguments{
   \item{y}{
@@ -38,6 +38,10 @@ fRegress.stderr(y, y2cMap, SigmaE, ...)
     respectively.  This object has a number of replications equal to the
     length of the dependent variable object.  It contains an estimate of
     the variance-covariance matrix or function for the residuals.
+  }
+  \item{returnMatrix}{
+    logical:  If TRUE,  a two-dimensional is returned using a
+    special class from the Matrix package.
   }
   \item{\dots}{
     optional arguments not used by \code{fRegress.stderr} but needed for

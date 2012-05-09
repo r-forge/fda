@@ -16,7 +16,7 @@
 }
 \usage{
 \method{density}{fd}(x, WfdParobj, conv=0.0001, iterlim=20,
-           active=2:nbasis, dbglev=1, ...)
+           active=2:nbasis, dbglev=1, returnMatrix=FALSE, ...)
 }
 \arguments{
 \item{x}{
@@ -51,6 +51,10 @@ either 0, 1, or 2.  This controls the amount information printed out on
 each iteration, with 0 implying no output, 1 intermediate output level,
 and 2 full output.  If levels 1 and 2 are used, it is helpful to
 turn off the output buffering option in S-PLUS.
+}
+\item{returnMatrix}{
+logical:  If TRUE,  a two-dimensional is returned using a
+special class from the Matrix package.
 }
 \item{...}{Other arguments to match the generic function 'density'}
 }

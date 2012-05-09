@@ -11,7 +11,7 @@ where a derivative is to be manipulated as a functional data object
 rather than simply evaluated.
 }
 \usage{
-\method{deriv}{fd}(expr, Lfdobj=int2Lfd(1), ...)
+\method{deriv}{fd}(expr, Lfdobj=int2Lfd(1), returnMatrix=FALSE, ...)
 }
 \arguments{
 \item{expr}{
@@ -24,7 +24,15 @@ the derivative to be computed.
 \item{Lfdobj}{
 either a positive integer or a linear differential operator object.
 }
+\item{returnMatrix}{
+logical:  If TRUE,  a two-dimensional is returned using a
+special class from the Matrix package.
+}
 \item{...}{Other arguments to match generic for 'deriv'}
+  \item{returnMatrix}{
+    logical:  If TRUE,  a two-dimensional is returned using a
+    special class from the Matrix package.
+  }
 }
 \value{
 a functional data object for the derivative
