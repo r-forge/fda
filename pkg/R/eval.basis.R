@@ -22,14 +22,17 @@ eval.basis <- function(evalarg, basisobj, Lfdobj=0, returnMatrix=FALSE) {
 #    LFD is 0, and the basis functions are simply evaluated at argument
 #    values in EVALARG.
 #
-#  If LFD is a functional data object with m + 1 functions c_1, ... c_{m+1}, then it
-#    is assumed to define the order m HOMOGENEOUS linear differential operator
-#  Lx(t) = c_1(t) + c_2(t)x(t) + c_3(t)Dx(t) + ... + c_{m+1}D^{m-1}x(t) + D^m x(t).
+#  If LFD is a functional data object with m + 1 functions c_1, ... c_{m+1}, 
+#   then it is assumed to define the order m HOMOGENEOUS linear differential 
+#   operator
+#
+#            Lx(t) = c_1(t) + c_2(t)x(t) + c_3(t)Dx(t) + ... + 
+#                    c_{m+1}D^{m-1}x(t) + D^m x(t).
 #
 #  If the basis type is either polygonal or constant, LFD is ignored.
 #
 #  Arguments:
-#  EVALARG ... Either a vector of values at which all functions are to evaluated,
+#  EVALARG ... Either a vector of values at which all functions are evaluated,
 #              or a matrix of values, with number of columns corresponding to
 #              number of functions in argument FD.  If the number of evaluation
 #              values varies from curve to curve, pad out unwanted positions in
@@ -99,7 +102,7 @@ if (nderiv > 0) {
         for (j in 1:nderiv) {
             bfd   <- bwtlist[[j]]
             if (!all(c(bfd$coefs) == 0.0)) {
-                wjarray   <- eval.fd(evalarg, bfd, 0, returnBasis)
+                wjarray   <- eval.fd(evalarg, bfd, 0, returnMatrix)
                 Dbasismat <- getbasismatrix(evalarg, basisobj, j-1, 
                                              returnMatrix)
                 basismat  <- basismat + (wjarray %*% oneb)*Dbasismat

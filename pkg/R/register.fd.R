@@ -267,7 +267,7 @@ for (icurve in 1:ncurve) {
 
   #  first evaluate warping function and its derivative at fine mesh
 
-  ffine  <-   monfn(xfine, Wfdi, basislist)
+  ffine  <-   monfn(xfine, Wfdi, basislist, returnMatrix)
   Dffine <- mongrad(xfine, Wfdi, basislist, returnMatrix)
   fmax   <- ffine[nfine]
   Dfmax  <- Dffine[nfine,]
@@ -283,7 +283,7 @@ for (icurve in 1:ncurve) {
   #  compute initial criterion value and gradient
 
   Flist <- regfngrad(xfine, y0fine, Dhfine, yregfdi, Wfdi,
-                    Kmat, periodic, crit)
+                     Kmat, periodic, crit, returnMatrix)
 
   #  compute the initial expected Hessian
 
@@ -309,7 +309,7 @@ for (icurve in 1:ncurve) {
   }
 
   hessmat <- reghess(xfine, y0fine, Dhfine, D2hwrtc, yregfdi,
-                     Kmat, periodic, crit)
+                     Kmat, periodic, crit, returnMatrix)
 
   #  evaluate the initial update vector for correcting the initial cvec
 
@@ -405,7 +405,7 @@ for (icurve in 1:ncurve) {
         cvectmp[1] <- 0
         Wfdtmpi <- Wfdnewi
         Wfdtmpi[[1]] <- cvectmp
-        ffine  <-    monfn(xfine, Wfdtmpi, basislist)
+        ffine  <-   monfn(xfine, Wfdtmpi, basislist, returnMatrix)
         Dffine <- mongrad(xfine, Wfdtmpi, basislist, returnMatrix)
         fmax   <- ffine[nfine]
         Dfmax  <- Dffine[nfine,]
@@ -416,7 +416,7 @@ for (icurve in 1:ncurve) {
         #  register curves given current Wfdi
         yregfdi <- regyfn(xfine, yfine, hfine, yfdi, Wfdnewi, periodic)
         Flist    <- regfngrad(xfine, y0fine, Dhfine, yregfdi, Wfdnewi,
-                             Kmat, periodic, crit)
+                             Kmat, periodic, crit, returnMatrix)
         linemat[3,5] <- Flist$f
         #  compute new directional derivative
         linemat[2,5] <- sum(deltac*Flist$grad)
@@ -508,7 +508,7 @@ for (icurve in 1:ncurve) {
            D2hwrtc <- NULL
         }
         hessmat <- reghess(xfine, y0fine, Dhfine, D2hwrtc, yregfdi,
-                           Kmat, periodic, crit)
+                           Kmat, periodic, crit, returnMatrix)
         #  update the line search direction vector
         result   <- linesearch(Flist, hessmat, dbglev)
         deltac   <- result[[1]]
@@ -584,7 +584,7 @@ return(reglist)
 #  ----------------------------------------------------------------
 
 regfngrad <- function(xfine, y0fine, Dhwrtc, yregfd, Wfd,
-                      Kmat, periodic, crit)
+                      Kmat, periodic, crit, returnMatrix=FALSE)
 {
   y0dim <- dim(y0fine)
   if (length(y0dim) == 3) nvar <- y0dim[3] else nvar <- 1
@@ -652,7 +652,7 @@ regfngrad <- function(xfine, y0fine, Dhwrtc, yregfd, Wfd,
 #  ---------------------------------------------------------------
 
 reghess <- function(xfine, y0fine, Dhfine, D2hwrtc, yregfd,
-                    Kmat, periodic, crit)
+                    Kmat, periodic, crit, returnMatrix=FALSE)
 {
 	#cat("\nreghess")
   y0dim <- dim(y0fine)

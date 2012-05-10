@@ -56,6 +56,10 @@ smooth.pos(argvals, y, WfdParobj, wtvec=rep(1,n),
     level, and 2 full output.  If either level 1 or 2 is specified, it
     can be helpful to turn off the output buffering feature of S-PLUS.
   }
+  \item{returnMatrix}{
+    logical:  If TRUE,  a two-dimensional is returned using a
+    special class from the Matrix package.
+  }
 }
 \value{
   an object of class \code{posfd}, being a list with 4 components:

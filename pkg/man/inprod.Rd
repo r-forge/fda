@@ -22,7 +22,7 @@ also be used to define weights for the inner product.
 \usage{
 inprod(fdobj1, fdobj2,
        Lfdobj1=int2Lfd(0), Lfdobj2=int2Lfd(0),
-       rng = range1, wtfd = 0, returnMatrix=FALS)
+       rng = range1, wtfd = 0, returnMatrix=FALSE)
 }
 \arguments{
 \item{fdobj1}{

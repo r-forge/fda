@@ -323,7 +323,7 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
 ##
 ## 9.  Done
 ##
-  if(!is.null(axes))basisobj$axes <- axes
+##  if(!is.null(axes))basisobj$axes <- axes
   basisobj
 
 }

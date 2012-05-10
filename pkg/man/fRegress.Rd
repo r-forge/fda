@@ -45,12 +45,10 @@
 fRegress(y, ...)
 \method{fRegress}{formula}(y, data=NULL, betalist=NULL, wt=NULL,
                  y2cMap=NULL, SigmaE=NULL,
-                 method=c('fRegress', 'model'), sep='.',
-                 returnMatrix=FALSE, ...)
+                 method=c('fRegress', 'model'), sep='.', ...)
 \method{fRegress}{character}(y, data=NULL, betalist=NULL, wt=NULL,
                  y2cMap=NULL, SigmaE=NULL,
-                 method=c('fRegress', 'model'), sep='.',
-                 returnMatrix=FALSE, ...)
+                 method=c('fRegress', 'model'), sep='.', ...)
 \method{fRegress}{fd}(y, xfdlist, betalist, wt=NULL,
                      y2cMap=NULL, SigmaE=NULL, returnMatrix=FALSE, ...)
 \method{fRegress}{fdPar}(y, xfdlist, betalist, wt=NULL,

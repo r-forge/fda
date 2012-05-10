@@ -139,8 +139,9 @@ register.fd(y0fd=NULL, yfd=NULL, WfdParobj=NULL,
 \seealso{
   \code{\link{smooth.monotone}},
   \code{\link{smooth.morph}}
-  \code{\link{register.fd0}}
   \code{\link{plotreg.fd}}
+  \code{\link{register.fd0}}
+  \code{\link{register.newfd}}
 }
 \examples{
 #See the analyses of the growth data for examples.
