@@ -36,7 +36,7 @@ density.fd <- function(x, WfdParobj, conv=0.0001, iterlim=20,
 #  exponentiate the resulting vector, and then divide by the normalizing
 #  constant C.
 
-# last modified 7 May 2012 by Jim Ramsay
+# last modified 10 May 2012 by Jim Ramsay
 
 	#  check WfdParobj
 
@@ -111,7 +111,7 @@ density.fd <- function(x, WfdParobj, conv=0.0001, iterlim=20,
 
 	lambda <- WfdParobj$lambda
 	if (lambda > 0)
-	  	Kmat <- lambda*getbasispenalty(basisobj, Lfdobj, returnMatrix)
+	  	Kmat <- lambda*getbasispenalty(basisobj, Lfdobj)
 
 	#  evaluate log likelihood
 	#    and its derivatives with respect to these coefficients
@@ -166,8 +166,9 @@ density.fd <- function(x, WfdParobj, conv=0.0001, iterlim=20,
 	if (iterlim == 0) {
     	Flist     <- Foldstr
     	iterhist <- iterhist[1,]
-    	C        <- normden.phi(basisobj, cvec0, returnMatrix)
-    	return( list(Wfdobj=Wfdobj, C=C, Flist=Flist, iternum=iternum, iterhist=iterhist) )
+    	C        <- normden.phi(basisobj, cvec0, returnMatrix=returnMatrix)
+    	return( list(Wfdobj=Wfdobj, C=C, Flist=Flist, iternum=iternum, 
+                   iterhist=iterhist) )
 	} else {
 		gvec <- gvec0
 		hmat <- hmat0
@@ -216,11 +217,11 @@ density.fd <- function(x, WfdParobj, conv=0.0001, iterlim=20,
      	#  output initial results for stepsize 0
       	stepiter  <- 0
       	if (dbglev > 1) {
-			cat("              ")
-			cat(format(stepiter))
-			cat(format(linemat[,1]))
-			cat("\n")
-		}
+			    cat("              ")
+			    cat(format(stepiter))
+			    cat(format(linemat[,1]))
+			    cat("\n")
+		    }
       	ips <- 0
       	#  first step set to trial
       	linemat[1,5]  <- trial
@@ -231,10 +232,10 @@ density.fd <- function(x, WfdParobj, conv=0.0001, iterlim=20,
         	#  check the step size
         	result <- stepchk(linemat[1,5], cvec, deltac, limwrd, ind,
                             climit, active, dbgwrd)
-			linemat[1,5] <- result[[1]]
-			ind          <- result[[2]]
-			limwrd       <- result[[3]]
-       	if (linemat[1,5] <= 1e-9) {
+			    linemat[1,5] <- result[[1]]
+			    ind          <- result[[2]]
+			    limwrd       <- result[[3]]
+       	  if (linemat[1,5] <= 1e-9) {
           		#  Current step size too small  terminate
           		Flist   <- Foldstr
           		cvecnew <- cvec
@@ -245,9 +246,9 @@ density.fd <- function(x, WfdParobj, conv=0.0001, iterlim=20,
         	}
         	cvecnew <- cvec + linemat[1,5]*deltac
         	#  compute new function value and gradient
-			result  <- loglfnden(x, f, basisobj, cvecnew, returnMatrix)
-			logl    <- result[[1]]
-			Dlogl   <- result[[2]]
+			    result  <- loglfnden(x, f, basisobj, cvecnew, returnMatrix)
+			    logl    <- result[[1]]
+			    Dlogl   <- result[[2]]
         	Flist$f <- -logl
         	gvecnew <- -Dlogl
         	if (lambda > 0) {
@@ -260,17 +261,17 @@ density.fd <- function(x, WfdParobj, conv=0.0001, iterlim=20,
         	#  compute new directional derivative
         	linemat[2,5] <- sum(deltac*gvecnew)
       		if (dbglev > 1) {
-				cat("              ")
-				cat(format(stepiter))
-				cat(format(linemat[,1]))
-				cat("\n")
-			}
+				    cat("              ")
+				    cat(format(stepiter))
+				    cat(format(linemat[,1]))
+				    cat("\n")
+			    }
         	#  compute next step
-			result <- stepit(linemat, ips, dblwrd, MAXSTEP)
-			linemat <- result[[1]]
-			ips     <- result[[2]]
-			ind     <- result[[3]]
-			dblwrd  <- result[[4]]
+			    result <- stepit(linemat, ips, dblwrd, MAXSTEP)
+			    linemat <- result[[1]]
+			    ips     <- result[[2]]
+			    ind     <- result[[3]]
+			    dblwrd  <- result[[4]]
         	trial   <- linemat[1,5]
         	#  ind == 0 implies convergence
         	if (ind == 0 | ind == 5) break
@@ -294,7 +295,7 @@ density.fd <- function(x, WfdParobj, conv=0.0001, iterlim=20,
 
      	if (abs(Flist$f-Foldstr$f) < conv) {
        	iterhist <- iterhist[1:(iternum+1),]
-  			C <- normden.phi(basisobj, cvec, returnMatrix)
+  			C <- normden.phi(basisobj, cvec, returnMatrix=returnMatrix)
 			denslist <- list("Wfdobj" = Wfdobj, "C" = C, "Flist" = Flist,
 			          			"iternum" = iternum, "iterhist" = iterhist)
 			return( denslist )
@@ -319,15 +320,15 @@ density.fd <- function(x, WfdParobj, conv=0.0001, iterlim=20,
 		#  end of iterations
   	}
   #  compute final normalizing constant
- 	C <- normden.phi(basisobj, cvec, returnMatrix)
+ 	C <- normden.phi(basisobj, cvec, returnMatrix=returnMatrix)
 	denslist <- list("Wfdobj" = Wfdobj, "C" = C, "Flist" = Flist,
-			          "iternum" = iternum, "iterhist" = iterhist)
+			             "iternum" = iternum, "iterhist" = iterhist)
  	return( denslist )
 }
 
-#  ---------------------------------------------------------------
+#  -----------------------------------------------------------------------------
 
-loglfnden <- function(x, f, basisobj, cvec, returnMatrix) {
+loglfnden <- function(x, f, basisobj, cvec, returnMatrix=FALSE) {
 	#  Computes the log likelihood and its derivative with
 	#    respect to the coefficients in CVEC
    	N       <- length(x)
@@ -335,51 +336,37 @@ loglfnden <- function(x, f, basisobj, cvec, returnMatrix) {
    	fmat    <- outer(f, rep(1,nbasis))
    	fsum    <- sum(f)
    	nobs    <- length(x)
-   	phimat  <- getbasismatrix(x, basisobj, 0, returnMatrix)
-   	cval    <- normden.phi(basisobj, cvec, returnMatrix)
+   	phimat  <- getbasismatrix(x, basisobj)
+   	cval    <- normden.phi(basisobj, cvec, , returnMatrix=returnMatrix)
    	logl    <- sum((phimat %*% cvec) * f - fsum*log(cval)/N)
-   	EDW     <- outer(rep(1,nobs),expectden.phi(basisobj, cvec, cval, 
-                       returnMatrix))
+   	EDW     <- outer(rep(1,nobs),expectden.phi(basisobj, cvec, 
+                                               returnMatrix=returnMatrix))
    	Dlogl   <- apply((phimat - EDW)*fmat,2,sum)
 	return( list(logl, Dlogl) )
 }
 
-#  ---------------------------------------------------------------
+#  -----------------------------------------------------------------------------
 
-Varfnden <- function(x, basisobj, cvec, returnMatrix) {
+Varfnden <- function(x, basisobj, cvec, returnMatrix=FALSE) {
 	#  Computes the expected Hessian
    	nbasis  <- basisobj$nbasis
    	nobs    <- length(x)
-   	cval    <- normden.phi(basisobj, cvec, returnMatrix)
+   	cval    <- normden.phi(basisobj, cvec, returnMatrix=returnMatrix)
    	EDw     <- outer(rep(1,nobs),
-               expectden.phi(basisobj, cvec, cval, returnMatrix))
-   	EDwDwt  <- nobs*expectden.phiphit(basisobj, cvec, cval, returnMatrix)
+                    expectden.phi(basisobj, cvec, returnMatrix=returnMatrix))
+   	EDwDwt  <- nobs*expectden.phiphit(basisobj, cvec, returnMatrix=returnMatrix)
    	Varphi  <- EDwDwt - crossprod(EDw)
 	return(Varphi)
 }
 
 
-#  ---------------------------------------------------------------
+#  -----------------------------------------------------------------------------
 
-normden.phi <- function(basisobj, cvec, JMAX=15, EPS=1e-7, returnMatrix) {
+normden.phi <- function(basisobj, cvec, JMAX=15, EPS=1e-7, returnMatrix=FALSE) {
 
 #  Computes integrals of
 #      p(x) = exp phi"(x) %*% cvec
 #  by numerical integration using Romberg integration
-
-#  Arguments:
-#  BASISOBJ ... Basis function object with basis functions phi.
-#  CVEC     ... coefficient vector defining density, of length NBASIS
-#  MU       ... mean values to be subtracted from variates
-#  SIGMA    ... standard deviation to define u = (x - mu)/sigma
-#  RNG      ... vector of length 2 giving the interval over which the
-#               integration is to take place.  Multiply a standard interval
-#               like (-5,5) by sigma to make it scale free
-#  JMAX     ... maximum number of allowable iterations
-#  EPS      ... convergence criterion for relative stop
-
-#  Return:
-#  The integral of the function.
 
   	#  check arguments, and convert basis objects to functional data objects
 
@@ -396,13 +383,13 @@ normden.phi <- function(basisobj, cvec, JMAX=15, EPS=1e-7, returnMatrix) {
   	JMAXP <- JMAX + 1
   	h <- matrix(1,JMAXP,1)
   	h[2] <- 0.25
-  	#  matrix SMAT contains the history of discrete approximations to the integral
+  	#  matrix SMAT contains history of discrete approximations to the integral
   	smat <- matrix(0,JMAXP,1)
   	#  the first iteration uses just the }points
   	x  <- rng
   	nx <- length(x)
   	ox <- matrix(1,nx,1)
-  	fx <- getbasismatrix(x, basisobj, 0, returnMatrix)
+  	fx <- getbasismatrix(x, basisobj, returnMatrix=returnMatrix)
   	wx <- fx %*% cvec
   	wx[wx < -50] <- -50
   	px <- exp(wx)
@@ -419,7 +406,7 @@ normden.phi <- function(basisobj, cvec, JMAX=15, EPS=1e-7, returnMatrix) {
     	} else {
       		x <- seq(rng[1]+del/2, rng[2], del)
     	}
-    	fx <- getbasismatrix(x, basisobj, 0, returnMatrix)
+    	fx <- getbasismatrix(x, basisobj, returnMatrix=returnMatrix)
     	wx <- fx %*% cvec
     	wx[wx < -50] <- -50
     	px <- exp(wx)
@@ -441,38 +428,22 @@ normden.phi <- function(basisobj, cvec, JMAX=15, EPS=1e-7, returnMatrix) {
 	return(ss)
 }
 
-#  ---------------------------------------------------------------
+#  -----------------------------------------------------------------------------
 
-expectden.phi <- function(basisobj, cvec, Cval=1, nderiv=0, rng=rangeval,
-                     JMAX=15, EPS=1e-7, returnMatrix) {
+expectden.phi <- function(basisobj, cvec, Cval=1, nderiv=0,
+                     JMAX=15, EPS=1e-7, returnMatrix=FALSE) {
 #  Computes expectations of basis functions with respect to density
 #      p(x) <- Cval^{-1} exp t(c)*phi(x)
 #  by numerical integration using Romberg integration
-
-#  Arguments:
-#  BASISOBJ ... A basis function object object.
-#  CVEC     ... coefficient vector defining density, of length NBASIS
-#  CVAL     ... normalizing constant defining density
-#  MU       ... mean value to be subtracted from variates
-#  SIGMA    ... standard deviation to define u = (x - mu)/sigma
-#  RNG      ... vector of length 2 giving the interval over which the
-#             integration is to take place
-#  NDERIV   ... order of derivative required for basis function expectation
-#  UWRD     ... if (TRUE, expectation is of (D PHI)*U
-#  JMAX     ... maximum number of allowable iterations
-#  EPS      ... convergence criterion for relative stop
-
-#  Return:
-#  A vector SS of length NBASIS of integrals of functions.
 
   	#  check arguments, and convert basis objects to functional data objects
 
     if (!inherits(basisobj, "basisfd"))
     	stop("First argument must be a basis function object.")
 
-    nbasis   <- basisobj$nbasis
-    oneb     <- matrix(1,1,nbasis)
-    rangeval <- basisobj$rangeval
+    nbasis <- basisobj$nbasis
+    rng    <- basisobj$rangeval
+    oneb   <- matrix(1,1,nbasis)
 
   	#  set up first iteration
 
@@ -541,36 +512,25 @@ expectden.phi <- function(basisobj, cvec, Cval=1, nderiv=0, rng=rangeval,
     return(ss)
 }
 
-#  ---------------------------------------------------------------
+#  -----------------------------------------------------------------------------
 
 expectden.phiphit <- function(basisobj, cvec, Cval=1, nderiv1=0, nderiv2=0,
-                             rng=rangeval, JMAX=15, EPS=1e-7, returnMatrix) {
+                              JMAX=15, EPS=1e-7, 
+                              returnMatrix=FALSE) {
 
 #  Computes expectations of cross product of basis functions with
 #  respect to density
 #      p(x) = Cval^{-1} exp t(c) %*% phi(x)
 #  by numerical integration using Romberg integration
 
-#  Arguments:
-#  BASISOBJ ... A basis function object.
-#  CVEC     ... coefficient vector defining density
-#  CVAL     ... normalizing constant defining density
-#  RNG      ... vector of length 2 giving the interval over which the
-#               integration is to take place
-#  JMAX     ... maximum number of allowable iterations
-#  EPS      ... convergence criterion for relative stop
-
-#  Return:
-#  A matrix of order NBASIS of integrals of functions.
-
   	#  check arguments, and convert basis objects to functional data objects
 
   	if (!inherits(basisobj, "basisfd"))
     	stop("First argument must be a basis function object.")
 
-  	nbasis   <- basisobj$nbasis
-  	oneb     <- matrix(1,1,nbasis)
-  	rangeval <- basisobj$rangeval
+  	nbasis <- basisobj$nbasis
+  	rng    <- basisobj$rangeval
+  	oneb   <- matrix(1,1,nbasis)
 
   	#  set up first iteration
 
@@ -578,7 +538,7 @@ expectden.phiphit <- function(basisobj, cvec, Cval=1, nderiv1=0, nderiv2=0,
   	JMAXP <- JMAX + 1
   	h <- matrix(1,JMAXP,1)
   	h[2] <- 0.25
-  	#  matrix SMAT contains the history of discrete approximations to the integral
+  	#  matrix SMAT contains history of discrete approximations to the integral
   	smat <- array(0,c(JMAXP,nbasis,nbasis))
   	#  the first iteration uses just the }points
   	x  <- rng
@@ -646,7 +606,7 @@ expectden.phiphit <- function(basisobj, cvec, Cval=1, nderiv1=0, nderiv2=0,
   	warning(paste("No convergence after ",JMAX," steps in EXPECTDEN.PHIPHIT"))
 	return(ss)
 }
-#  ---------------------------------------------------------------
+#  -----------------------------------------------------------------------------
 
 polintarray <- function(xa, ya, x0) {
   	#  YA is an array with up to 4 dimensions

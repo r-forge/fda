@@ -461,7 +461,7 @@ if (is.null(zmat)) {
   rangeval <- basisobj$rangeval
   narg     <- 10*nbasis+1
   evalarg  <- seq(rangeval[1], rangeval[2], len=narg)
-  hmat     <- eval.monfd(evalarg, Wfdobj)
+  hmat     <- eval.monfd(evalarg, Wfdobj, 0, returnMatrix)
   if (ndim == 2) {
     yhatmat <- matrix(0,narg,ncurve)
     for (icurve in 1:ncurve) {
@@ -512,7 +512,8 @@ linesearch.smooth.monotone <- function(Flisti, hessmat, dbglev)
 #  ----------------------------------------------------------------
 
 fngrad.smooth.monotone <- function(yi, argvals, zmat, wtvec, cveci, lambda,
-                                   basisobj, Kmat, inact, basislist, returnMatrix)
+                                   basisobj, Kmat, inact, basislist, 
+                                   returnMatrix=FALSE)
 {
   if (!is.null(zmat)) {
     ncov   <- ncol(zmat)

@@ -1,4 +1,5 @@
-predict.posfd <- function(object, newdata=NULL, Lfdobj=0, ...){
+predict.posfd <- function(object, newdata=NULL, Lfdobj=0, 
+                          returnMatrix=FALSE, ...){
 #  Last modified  7 May 2012 by Jim Ramsay
   if (is.null(newdata)) newdata <- object$argvals
   evalPos <- eval.posfd(newdata, object$Wfdobj, Lfdobj, returnMatrix=FALSE)

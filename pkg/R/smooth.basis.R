@@ -105,14 +105,14 @@ if (nda < 3 ) {
       sb2 <- smooth.basis1(argvals, y, fdParobj,
                            wtvec=wtvec,   fdnames=fdnames,
                            covariates=covariates,
-                           method=method, dfscale=dfscale)
+                           method=method, dfscale=dfscale, returnMatrix=returnMatrix)
 
   } else {
 
       sb2 <- smooth.basis2(argvals, y=y, fdParobj=fdParobj,
                            wtvec=wtvec,   fdnames=fdnames,
                            covariates=covariates,
-                           method=method, dfscale=dfscale)
+                           method=method, dfscale=dfscale, returnMatrix=returnMatrix)
 
   }
   return(sb2)
@@ -122,7 +122,7 @@ if (nda < 4) {
   return(smooth.basis3(argvals, y=y, fdParobj=fdParobj,
                        wtvec=wtvec,   fdnames=fdnames,
                        covariates=covariates,
-                       method=method, dfscale=dfscale) )
+                       method=method, dfscale=dfscale, returnMatrix=returnMatrix) )
 } else {
       #  dimensions of argval inconsistent with those of y, throw error
       cat("dim(argvals) =", paste(dima, collapse=", "), "\n")
@@ -138,7 +138,7 @@ if (nda < 4) {
 
 smooth.basis3 <- function(argvals=array(1:n,c(n,N,M)), y, fdParobj,
                           wtvec=NULL,   fdnames=NULL, covariates=NULL,
-                          method="chol", dfscale=1)
+                          method="chol", dfscale=1, returnMatrix=FALSE)
 {
 ##
 ## 1.  check dimensions of argval and y
@@ -166,7 +166,7 @@ if (nda < 3) stop("length(dim(argvals)) must be 3  is ", nda)
 sb1 <- smooth.basis2(argvals[, , 1], y=y[, , 1], fdParobj=fdParobj,
                      wtvec=wtvec,   fdnames=fdnames,
                      covariates=covariates,
-                     method=method, dfscale=dfscale)
+                     method=method, dfscale=dfscale, returnMatrix=returnMatrix)
 #  2.2.  set up output object
 coef1 <- sb1$fd$coefs
 dimc1 <- dim(coef1)
@@ -192,7 +192,7 @@ for (i in seq(2, length=dimy[3]-1)) {
     sbi <- smooth.basis2(argvals[,,i], y=y[,,i], fdParobj=fdParobj,
                          wtvec=wtvec,   fdnames=fdnames,
                          covariates=covariates,
-                         method=method, dfscale=dfscale)
+                         method=method, dfscale=dfscale, returnMatrix=returnMatrix)
     coefs[,,i] <- sbi$fd$coefs
     if (!is.null(covariates)) {
       beta.[,,i] <- sbi$beta
@@ -234,7 +234,7 @@ sb
 
 smooth.basis2 <- function(argvals=matrix(1:n,n,N), y, fdParobj,
                           wtvec=NULL,   fdnames=NULL, covariates=NULL,
-                          method="chol", dfscale=1) {
+                          method="chol", dfscale=1, returnMatrix=FALSE) {
 ##
 ## 1.  number of  dimensions of y = 2 or 3?
 ##
@@ -253,7 +253,7 @@ if (ndy < 3) {
     sb1 <- smooth.basis1(argvals[, 1], y=y[, 1], fdParobj=fdParobj,
                          wtvec=wtvec,   fdnames=fdnames,
                          covariates=covariates,
-                         method=method, dfscale=dfscale)
+                         method=method, dfscale=dfscale, returnMatrix=returnMatrix)
 
     #  2.2.  set up output object
     dimc1   <- dim(sb1$fd$coefs)
@@ -279,7 +279,7 @@ if (ndy < 3) {
       sbi <- smooth.basis1(argvals[, i], y=y[, i], fdParobj=fdParobj,
                            wtvec=wtvec,   fdnames=fdnames,
                            covariates=covariates,
-                           method=method, dfscale=dfscale)
+                           method=method, dfscale=dfscale, returnMatrix=returnMatrix)
 
       coefs[, i] <- sbi$fd$coefs
       if (!is.null(covariates)) {
@@ -306,7 +306,7 @@ if (ndy < 3) {
     sb1 <- smooth.basis1(argvals[, 1], y=y[, 1, ], fdParobj=fdParobj,
                          wtvec=wtvec,   fdnames=fdnames,
                          covariates=covariates,
-                         method=method, dfscale=dfscale)
+                         method=method, dfscale=dfscale, returnMatrix=returnMatrix)
     #  3.2.  set up output object
     coef1 <- sb1$fd$coefs
     dimc1 <- dim(coef1)
@@ -373,7 +373,7 @@ sb
 
 smooth.basis1 <- function (argvals=1:n, y, fdParobj,
                            wtvec=NULL,   fdnames=NULL, covariates=NULL,
-                           method="chol", dfscale=1)
+                           method="chol", dfscale=1, returnMatrix=FALSE)
 {
 #  Arguments:
 # ARGVALS  A set of N argument values, set by default to equally spaced

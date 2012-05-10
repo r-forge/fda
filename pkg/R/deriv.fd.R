@@ -16,9 +16,9 @@ deriv.fd <- function(expr, Lfdobj=int2Lfd(1), returnMatrix=FALSE, ...)
   rangeval <- basisobj$rangeval
 
   evalarg  <- seq(rangeval[1], rangeval[2], len=10*nbasis+1)
-  Lfdmat   <- eval.fd(evalarg, fdobj, Lfdobj, returnBasis)
+  Lfdmat   <- eval.fd(evalarg, fdobj, Lfdobj, returnMatrix)
 
-  Lfdcoef  <- project.basis(Lfdmat, evalarg, basisobj, returnBasis)
+  Lfdcoef  <- project.basis(Lfdmat, evalarg, basisobj, returnMatrix)
 
   Dfdnames <- fdobj$fdnames
   Dfdnames[[3]] <- paste("D",Dfdnames[[3]])

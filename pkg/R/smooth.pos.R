@@ -358,7 +358,8 @@ for (ivar in 1:nvar) {
 
 #  ---------------------------------------------------------------
 
-PENSSEfun <- function(argvals, yi, basisobj, cveci, Kmat, wtvec) {
+PENSSEfun <- function(argvals, yi, basisobj, cveci, Kmat, wtvec, 
+                      returnMatrix=FALSE) {
 	#  Computes the log likelihood and its derivative with
 	#    respect to the coefficients in CVEC
 	N       <- length(argvals)
@@ -374,7 +375,8 @@ PENSSEfun <- function(argvals, yi, basisobj, cveci, Kmat, wtvec) {
 
 #  ---------------------------------------------------------------
 
-PENSSEhess <- function(argvals, yi, basisobj, cveci, Kmat, wtvec) {
+PENSSEhess <- function(argvals, yi, basisobj, cveci, Kmat, wtvec, 
+                       returnMatrix=FALSE) {
 	#  Computes the expected Hessian
    	n       <- length(argvals)
    	nbasis  <- basisobj$nbasis

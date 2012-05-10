@@ -258,7 +258,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
     if (nforce > 0) {
         uarray <- array(0,c(nfine,ncurve,nforce))
         for (iu in 1:nforce)
-            uarray[,,iu] <- eval.fd(tx, ufdlist[[iu]], 0, returnMatrix)
+            uarray[,,iu] <- eval.fd(tx, ufdlist[[iu]], returnMatrix=returnMatrix)
     }
 
 #  set up array YPROD to hold mean of products of values in YARRAY
@@ -353,7 +353,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
         for (iu in 1:nforce) {
             if (!is.null(awtlist[[iu]])) {
                 afdPari     <- awtlist[[iu]]
-                aarray[,iu] <- eval.fd(tx, afdPari$fd, 0, returnMatrix)
+                aarray[,iu] <- eval.fd(tx, afdPari$fd,returnMatrix=returnMatrix)
             }
         }
     }
@@ -361,7 +361,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
     for (j1 in 1:difeorder) {
         if (!is.null(bwtlist[[j1]])) {
             bfdParj     <- bwtlist[[j1]]
-            barray[,j1] <- eval.fd(tx, bfdParj$fd, 0, returnMatrix)
+            barray[,j1] <- eval.fd(tx, bfdParj$fd, returnMatrix=returnMatrix)
         }
     }
 
@@ -377,7 +377,8 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
                 afdPari1   <- awtlist[[iu1]]
                 if (afdPari1$estimate) {
                     abasisi1    <- afdPari1$fd$basis
-                    abasismati1 <- getbasismatrix(tx, abasisi1, 0, returnMatrix)
+                    abasismati1 <- getbasismatrix(tx, abasisi1, 
+                                                  returnMatrix=returnMatrix)
                     mi11 <- mi12 + 1
                     mi12 <- mi12 + abasisi1$nbasis
                     indexi1 <- mi11:mi12
@@ -406,7 +407,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
                             if (afdPari2$estimate) {
                                 abasisi2    <- afdPari2$fd$basis
                                 abasismati2 <- getbasismatrix(tx, abasisi2,
-                                                              0, returnMatrix)
+                                                      returnMatrix=returnMatrix)
                                 weighti2    <- uprod[,iu1,iu2]
                                 Cprod  <- trapzmat(abasismati1, abasismati2,
                                                    deltax, weighti2)
@@ -427,7 +428,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
                             if (bfdParj2$estimate) {
                                 bbasisij2    <- bfdParj2$fd$basis
                                 bbasismatij2 <- getbasismatrix(tx, bbasisij2,
-                                                               0, returnMatrix)
+                                                      returnMatrix=returnMatrix)
                                 weightij12   <- -yuprod[,iu1,j2]
                                 Cprod <- trapzmat(abasismati1,bbasismatij2,
                                                   deltax,weightij12)
@@ -443,7 +444,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
                     if (lambdai1 > 0) {
                         Lfdobj <- afdPari1$Lfd
                         penmat <- lambdai1*eval.penalty(abasisi1, Lfdobj)
-                        cmat[indexi1,indexi1] <- cmat[indexi1,indexi1] + penmat;
+                        cmat[indexi1,indexi1] <- cmat[indexi1,indexi1] + penmat
                     }
                 }
             }
@@ -458,7 +459,8 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
             bfdParj1 <- bwtlist[[j1]]
             if (bfdParj1$estimate) {
                 bbasisij1    <- bfdParj1$fd$basis
-                bbasismatij1 <- getbasismatrix(tx,bbasisij1, 0, returnMatrix)
+                bbasismatij1 <- getbasismatrix(tx,bbasisij1, 
+                                               returnMatrix=returnMatrix)
                 mij11 <- mij12 + 1
                 mij12 <- mij12 + bbasisij1$nbasis
                 indexij1 <- mij11:mij12
@@ -490,7 +492,8 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
               afdPari2 <- awtlist[[iu2]]
               if (afdPari2$estimate) {
                 abasisi2    <- afdPari2$fd$basis
-                abasismati2 <- getbasismatrix(tx, abasisi2, 0, returnMatrix)
+                abasismati2 <- getbasismatrix(tx, abasisi2, 
+                                              returnMatrix=returnMatrix)
                 weighti2    <- -yuprod[,iu2,j1]
                 Cprod <- trapzmat(bbasismatij1,abasismati2,deltax,weighti2)
                 mi21 <- mi22 + 1
@@ -508,7 +511,8 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
             bfdParj2  <- bwtlist[[j2]]
             bbasisij2 <- bfdParj2$fd$basis
             if (bfdParj2$estimate) {
-              bbasismatij2 <- getbasismatrix(tx, bbasisij2, 0, returnMatrix)
+              bbasismatij2 <- getbasismatrix(tx, bbasisij2, 
+                                             returnMatrix=returnMatrix)
               weightij22   <- yprod[,j1,j2]
               Cprod <- trapzmat(bbasismatij1,bbasismatij2,deltax,weightij22)
               mij21 <- mij22 + 1
@@ -577,8 +581,9 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
       for (iu in 1:nforce) {
 	if (!is.null(awtlist[[iu]])) {
           afdPari  <- awtlist[[iu]]
-          aveci    <- as.vector(eval.fd(tx, afdPari$fd, 0, returnMatrix))
-          umati    <- eval.fd(tx, ufdlist[[iu]], 0, returnMatrix)
+          aveci    <- as.vector(eval.fd(tx, afdPari$fd, 
+                                        returnMatrix=returnMatrix))
+          umati    <- eval.fd(tx, ufdlist[[iu]], returnMatrix=returnMatrix)
           aumati   <- outer(aveci,onesncurve)*umati
           resmat   <- resmat - aumati
         }
@@ -588,7 +593,8 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
     for (j in 1:difeorder) {
         if (!is.null(bwtlist[[j]])) {
             bfdParj <- bwtlist[[j]]
-            bmatij  <- as.vector(eval.fd(tx, bfdParj$fd), 0, returnMatrix)
+            bmatij  <- as.vector(eval.fd(tx, bfdParj$fd, 
+                                         returnMatrix=returnMatrix))
             xmatij  <- eval.fd(tx, xfdobj, j-1, returnMatrix)
             resmat  <- resmat + bmatij*xmatij
         }
@@ -790,7 +796,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
               nforce <- length(ufdlist[[ivar]])
               for (iu in 1:nforce)
                 uarray[[ivar]][[iu]] <- eval.fd(tx, ufdlist[[ivar]][[iu]],
-                                                0, returnMatrix)
+                                                returnMatrix=returnMatrix)
             }
         }
       }
@@ -931,7 +937,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
           for (iu in 1:nforce) {
             if (!is.null(awtlist[[ivar]][[iu]])) {
                 afdPari <- awtlist[[ivar]][[iu]]
-                aarray[,iu] <- eval.fd(tx, afdPari$fd, 0, returnMatrix)
+                aarray[,iu] <- eval.fd(tx, afdPari$fd, returnMatrix=returnMatrix)
             }
           }
         }
@@ -943,7 +949,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
                 if (!is.null(bwtlist[[ivar]][[i]][[j]])) {
                     bfdParij     <- bwtlist[[ivar]][[i]][[j]]
                     barray[[i]][,j] <- as.matrix(eval.fd(tx, bfdParij$fd),
-                                                    0, returnMatrix)
+                                                    returnMatrix=returnMatrix)
                 }
             }
         }
@@ -960,7 +966,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
               afdPari1   <- awtlist[[ivar]][[iu1]]
               if (afdPari1$estimate) {
                 abasisi1    <- afdPari1$fd$basis
-                abasismati1 <- getbasismatrix(tx, abasisi1, 0, returnMatrix)
+                abasismati1 <- getbasismatrix(tx, abasisi1, returnMatrix=returnMatrix)
                 mi11 <- mi12 + 1
                 mi12 <- mi12 + abasisi1$nbasis
                 indexi1 <- mi11:mi12
@@ -991,7 +997,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
                     if (afdPari2$estimate) {
                       abasisi2    <- afdPari2$fd$basis
                       abasismati2 <- getbasismatrix(tx, abasisi2,
-                                                    0, returnMatrix)
+                                                    returnMatrix=returnMatrix)
                       weighti2    <- uprod[[ivar]][,iu1,iu2]
                       Cprod       <- trapzmat(abasismati1, abasismati2,
                                               deltax, weighti2)
@@ -1014,7 +1020,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
                       if (bfdParij2$estimate) {
                         bbasisij2    <- bfdParij2$fd$basis
                         bbasismatij2 <- getbasismatrix(tx, bbasisij2,
-                                                       0, returnMatrix)
+                                                       returnMatrix=returnMatrix)
                         weightij12   <- -yuprod[[i2]][[iu1]][,j2]
                         Cprod        <- trapzmat(abasismati1,bbasismatij2,
                                            deltax,weightij12)
@@ -1048,7 +1054,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
           bfdParij1 <- bwtlist[[ivar]][[i1]][[j1]]
           if (bfdParij1$estimate) {
             bbasisij1    <- bfdParij1$fd$basis
-            bbasismatij1 <- getbasismatrix(tx, bbasisij1, 0, returnMatrix)
+            bbasismatij1 <- getbasismatrix(tx, bbasisij1, returnMatrix=returnMatrix)
             mij11 <- mij12 + 1
             mij12 <- mij12 + bbasisij1$nbasis
             indexij1 <- mij11:mij12
@@ -1079,7 +1085,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
                   afdPari2  <- awtlist[[ivar]][[iu2]]
                   if (afdPari2$estimate) {
                     abasisi2    <- afdPari2$fd$basis
-                    abasismati2 <- getbasismatrix(tx, abasisi2, 0, returnMatrix)
+                    abasismati2 <- getbasismatrix(tx, abasisi2, returnMatrix=returnMatrix)
                     weighti2    <- -yuprod[[i1]][[iu2]][,j1]
                     Cprod <- trapzmat(bbasismatij1,abasismati2,deltax,weighti2)
                     mi21 <- mi22 + 1
@@ -1098,7 +1104,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
                 if (!is.null(bwtlist[[ivar]][[i2]][[j2]])) {
                   bfdParij2 <- bwtlist[[ivar]][[i2]][[j2]]
                   bbasisij2    <- bfdParij2$fd$basis
-                  bbasismatij2 <- getbasismatrix(tx, bbasisij2, 0, returnMatrix)
+                  bbasismatij2 <- getbasismatrix(tx, bbasisij2, returnMatrix=returnMatrix)
                   weightij22   <- yprod[[i1]][[i2]][,j1,j2]
                   Cprod <- trapzmat(bbasismatij1,bbasismatij2,deltax,weightij22)
                   if (bfdParij2$estimate) {
@@ -1183,8 +1189,8 @@ for (ivar in 1:nvar) {
     	for (iu in 1:nforce) {
     	  if (!is.null(awtlist[[ivar]][[iu]])) {
 	        afdPari  <- awtlist[[ivar]][[iu]]
-          amati    <- as.vector(eval.fd(tx, afdPari$fd, 0, returnMatrix))
-          umati    <- eval.fd(tx, ufdlist[[ivar]][[iu]], 0, returnMatrix)
+          amati    <- as.vector(eval.fd(tx, afdPari$fd, returnMatrix=returnMatrix))
+          umati    <- eval.fd(tx, ufdlist[[ivar]][[iu]], returnMatrix=returnMatrix)
 	        if (ncurve == 1) aumati <- amati*umati
 	        else             aumati <- outer(amati,onesncurve)*umati
           resmat   <- resmat - aumati
@@ -1199,7 +1205,7 @@ for (ivar in 1:nvar) {
       if (!is.null(bwtlist[[ivar]][[i1]][[j1]])) {
         bfdParij <- bwtlist[[ivar]][[i1]][[j1]]
         bfdij    <- bfdParij$fd
-        bvecij   <- as.vector(eval.fd(tx, bfdij, 0, returnMatrix))
+        bvecij   <- as.vector(eval.fd(tx, bfdij, returnMatrix=returnMatrix))
         if (ncurve == 1) {
           bmatij <- bvecij
         }  else  {
