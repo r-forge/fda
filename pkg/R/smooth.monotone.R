@@ -95,7 +95,7 @@ smooth.monotone <- function(argvals, y, WfdParobj, wtvec=rep(1,n),
 #  FLIST and Y2CMAP objects are indexed linear with curves varying
 #  inside variables.
 
-# last modified 8September 2012 by Jim Ramsay
+# last modified 11 May 2012 by Spencer Graves
 
 #  check ARGVALS
 
@@ -512,7 +512,7 @@ linesearch.smooth.monotone <- function(Flisti, hessmat, dbglev)
 #  ----------------------------------------------------------------
 
 fngrad.smooth.monotone <- function(yi, argvals, zmat, wtvec, cveci, lambda,
-                                   basisobj, Kmat, inact, basislist, 
+                                   basisobj, Kmat, inact, basislist,
                                    returnMatrix=FALSE)
 {
   if (!is.null(zmat)) {
