@@ -289,7 +289,9 @@ legend('bottom', paste(fig1.11Stns, ' (', StnLtrs, ')', sep=''),
 yearRng      = c(0,365)
 Lbasis       = create.constant.basis(yearRng,
                                   axes=list("axesIntervals"))
+
 Lcoef        = matrix(c(0,(2*pi/365)^2,0),1,3)
+
 bfdobj       = fd(Lcoef,Lbasis)
 bwtlist      = fd2list(bfdobj)
 harmaccelLfd = Lfd(3, bwtlist)

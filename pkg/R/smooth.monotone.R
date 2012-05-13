@@ -150,7 +150,7 @@ if (!is.null(zmat)) {
 ncovp1 <- ncov + 1  #  index for regression coef. for monotone fn.
 wtroot <- sqrt(wtvec)
 wtrtmt <- wtroot %*% matrix(1,1,ncovp1)
-yroot  <- y*wtroot
+yroot  <- y*as.numeric(wtroot)
 climit <- c(-100*rep(1,nbasis), 100*rep(1,nbasis))
 inact  <- !active   #  indices of inactive coefficients
 
@@ -536,7 +536,7 @@ fngrad.smooth.monotone <- function(yi, argvals, zmat, wtvec, cveci, lambda,
   Dxmat[,ncovp1,] <- Dyhat
   wtroot <- sqrt(wtvec)
   wtrtmt <- wtroot %*% matrix(1,1,ncovp1)
-  yroot  <- yi*wtroot
+  yroot  <- yi*as.numeric(wtroot)
   xroot  <- xmat*wtrtmt
   #  compute regression coefs.
   betai  <- lsfit(xmat, yi, wt=as.vector(wtvec), intercept=FALSE)$coef
