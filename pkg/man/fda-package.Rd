@@ -48,6 +48,7 @@
 ##
 ## These figures can be found and run as follows:
 ##
+\dontrun{
 scriptsDir <- system.file('scripts', package='fda')
 Rscripts <- dir(scriptsDir, full.names=TRUE, pattern='R$')
 fdarm <- grep('fdarm', Rscripts, value=TRUE)
@@ -59,7 +60,7 @@ for(ch in 1:chapters){
   cat('Running', fdarm[ch], '\n')
   invisible(source(fdarm[ch]))
 }
-
+}
 
 ##
 ## Simple smoothing
