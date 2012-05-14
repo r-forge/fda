@@ -81,7 +81,7 @@ landmarkreg <- function(fdobj, ximarks, x0marks=xmeanmarks,
   #  check WFDPAR
 
   WfdPar <- fdParcheck(WfdPar)
-		
+
   #  set up WFD0 and WBASIS
 
   Wfd0   <- WfdPar$fd
@@ -127,7 +127,9 @@ landmarkreg <- function(fdobj, ximarks, x0marks=xmeanmarks,
     #  smooth relation between this curve"s values and target"s values
     if (monwrd) {
        #  use monotone smoother
-       Wfd       <- smooth.morph(xval, yval, WfdPar)$Wfdobj
+#       Wfd       <- smooth.morph(xval, yval, WfdPar)$Wfdobj
+       Wfds       <- smooth.morph(xval, yval, WfdPar)
+       Wfd <- Wfds$Wfdobj
        h         <- monfn(x, Wfd, returnMatrix=returnMatrix)
        b         <- (rangeval[2]-rangeval[1])/(h[n]-h[1])
        a         <- rangeval[1] - b*h[1]
@@ -190,7 +192,7 @@ landmarkreg <- function(fdobj, ximarks, x0marks=xmeanmarks,
         for (ivar in 1:nvar) {
             # evaluate curve as a function of h at sampling points
             yregfd <- smooth.basis(hinv, y[,icurve,ivar], fdParobj)$fd
-            yregmat[,icurve,ivar] <- eval.fd(x, yregfd, 
+            yregmat[,icurve,ivar] <- eval.fd(x, yregfd,
                                              returnMatrix=returnMatrix)
         }
      }

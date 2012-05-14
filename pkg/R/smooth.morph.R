@@ -15,8 +15,8 @@ smooth.morph <- function(x, y, WfdPar, wt=rep(1,nobs),
 #  X       ...  vector of argument values
 #  Y       ...  vector of function values to be fit
 #  WFDPAR  ...  functional parameter object for W(x).  The coefficient array
-#               for WFDPAROBJ$FD has a single column, and these are the
-#               starting values for the iterative minimization of mean squared error.
+#          for WFDPAROBJ$FD has a single column, and these are the starting
+#          values for the iterative minimization of mean squared error.
 #  WT      ...  a vector of weights
 #  CONV    ...  convergence criterion, 0.0001 by default
 #  ITERLIM ...  maximum number of iterations, 20 by default
@@ -32,7 +32,8 @@ smooth.morph <- function(x, y, WfdPar, wt=rep(1,nobs),
 #  ITERNUM   ...  number of iterations
 #  ITERHIST  ...  ITERNUM+1 by 5 array containing iteration history
 
-# last modified 2 May 2012 by Jim Ramsay
+# last modified 13 may 2012 by Spencer Graves
+# previously modified 2 May 2012 by Jim Ramsay
 
 #  initialize some arrays
 
@@ -64,9 +65,9 @@ smooth.morph <- function(x, y, WfdPar, wt=rep(1,nobs),
   ncvec    <- length(cvec)
 
   if (type == "bspline" || type == "fourier") {
-      active <- c(F, rep(T, nbasis-1))
+      active <- c(FALSE, rep(TRUE, nbasis-1))
   } else {
-      active <- rep(T, nbasis)
+      active <- rep(TRUE, nbasis)
   }
 
 #  check some arguments
