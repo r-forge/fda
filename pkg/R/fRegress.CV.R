@@ -1,4 +1,4 @@
-fRegress.CV <- function(y, xfdlist, betalist, wt=NULL, CVobs=1:N, 
+fRegress.CV <- function(y, xfdlist, betalist, wt=NULL, CVobs=1:N,
                         returnMatrix=FALSE, ...)
 {
 
@@ -13,7 +13,7 @@ argList  <- fRegressArgCheck(y, xfdlist, betalist, wt)
 yfdPar   <- argList$yfdPar
 xfdlist  <- argList$xfdlist
 betalist <- argList$betalist
-wt       <- argList$wt 
+wt       <- argList$wt
 
 p <- length(xfdlist)
 N <- dim(xfdlist[[1]]$coef)[2]
@@ -26,7 +26,7 @@ if (inherits(yfdPar, "numeric"))  {
     SSE.CV <- 0
     errfd  <- c()
     for (m in 1:M) {
-      i        <- CVobs[m]  
+      i        <- CVobs[m]
       xfdlisti <- vector("list",p)
       for (j in 1:p) {
         xfdj          <- xfdlist[[j]]
@@ -67,19 +67,20 @@ if (inherits(yfdPar, "numeric"))  {
       errfd[i] = yvec[i] - yhati;
       SSE.CV <- SSE.CV + errfd[i]^2
     }
- } else { 
+ } else {
     yfd      <- yfdPar$fd
     SSE.CV   <- 0
     errcoefs <- c()
     for(m in 1:N){
+#        cat(m, " ")
       i <-  CVobs[m]
-      txfdlist <- xfdlist           
+      txfdlist <- xfdlist
       for(k in 1:p){
         txfdlist[[k]] <- xfdlist[[k]][-i]
       }
       wti = wt[-i]
       tres <- fRegress(yfd[-i],txfdlist,betalist,wti)
-      yhat <- 0                       
+      yhat <- 0
       for(k in 1:p){
         yhat <- yhat + xfdlist[[k]][i]*tres$betaestlist[[k]]$fd
       }
