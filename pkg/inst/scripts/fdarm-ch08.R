@@ -351,6 +351,7 @@ WfdParCR  = fdPar(Wfd0CR, 1, lambdaCR)
 registerlistCR = register.fd(accelmeanfdLM, accelfdLM, WfdParCR)
 
 accelfdCR = registerlistCR$regfd
+warpfdCR  = registerlistCR$warpfd
 WfdCR     = registerlistCR$Wfd
 
 #  plot landmark and continuously registered curves for the
