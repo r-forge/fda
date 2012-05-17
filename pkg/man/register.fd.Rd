@@ -173,9 +173,9 @@ smBv <- deriv(hgtmfd.all, 1)
 ## 2.  Register the first 10 Berkeley boys using the default basis
 ##     for the warping function
 ##
-# register.fd takes time, so use only 10 curves as an illustration
+# register.fd takes time, so use only 3 curves as an illustration
 # to minimize compute time in these examples
-nBoys <- 10
+nBoys <- 3
 #  Define the target function as the mean of the first nBoys records
 smBv0 = mean.fd(smBv[1:nBoys])
 #  Register these curves.  The default choice for the functional
