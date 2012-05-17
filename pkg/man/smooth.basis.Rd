@@ -287,7 +287,17 @@ plot(basisobj)
 #  Smooth the data, outputting only the functional data object for the
 #  fitted curve.  Note that in this simple case we can supply the basis
 #  object as the "fdParobj" parameter
-xfd = smooth.basis(argvals=argvals, y=y, fdParobj=basisobj)$fd
+ys = smooth.basis(argvals=argvals, y=y, fdParobj=basisobj)
+Ys = smooth.basis(argvals=argvals, y=y, fdParobj=basisobj,
+                  returnMatrix=TRUE)
+# Ys[[7]] = Ys$y2cMap is sparse;  everything else is the same
+\dontshow{stopifnot(}
+all.equal(ys[-7], Ys[-7])
+\dontshow{)}
+
+xfd = ys$fd
+Xfd = Ys$fd
+
 #  Plot the curve along with the data
 plotfit.fd(y, argvals, xfd)
 #  Compute the root-mean-squared-error (RMSE) of the fit relative to the
@@ -304,8 +314,9 @@ print(RMSE)  #  We obtained 0.069
 #  likes.
 for (nbasis in 4:12) {
   basisobj = create.bspline.basis(c(0,1),nbasis)
-  xfd = smooth.basis(argvals, y, basisobj)$fd
-  gcv = smooth.basis(argvals, y, basisobj)$gcv
+  ys = smooth.basis(argvals, y, basisobj)
+  xfd = ys$fd
+  gcv = ys$gcv
   RMSE = sqrt(mean((eval.fd(argvals, xfd) - x)^2))
   cat(paste(nbasis,round(RMSE,3),round(gcv,3),"\n"))
 }
