@@ -5,8 +5,8 @@
 }
 \description{
   Performs a stability analysis of the result of \code{pda.fd}, returning
-  the real and imaginary parts of the eigenfunctions associated with the linear
-  differential operator.
+  the real and imaginary parts of the eigenfunctions associated with the
+  linear differential operator.
 }
 \usage{
 eigen.pda(pdaList,plotresult=TRUE,npts=501,...)
