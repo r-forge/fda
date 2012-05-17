@@ -154,7 +154,7 @@ if((!returnMatrix) && (length(dim(basismat)) == 2)){
     return(as.matrix(basismat))
 } else {
     #  allow basismat to be sparse if it already is
-    return(basismat)
+    return(as.matrix(basismat))
 }
 
 }
