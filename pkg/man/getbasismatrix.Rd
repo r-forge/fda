@@ -48,8 +48,10 @@ M2 <- getbasismatrix(seq(0, 1, .2), bspl2.2, returnMatrix=TRUE)
 
 M2. <- Matrix(c(1,.6,.2,0,0,0, 0,.4,.8,.8,.4,0, 0,0,0,.2,.6,1), 6)
 
+(M2-M2.)
+
 \dontshow{stopifnot(}
-all.equal(M2, M2.)
+all(abs(M2-M2.)<1e-15)
 \dontshow{)}
 
 }
