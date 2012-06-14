@@ -27,6 +27,9 @@ if(!isVec){
     if(is.null(bdim))
         stop('first argument is neither a linear differential operator ',
              'nor a vector (but is numeric)')
+    if(length(bdim)>2)
+        stop('first argument is neither a linear differential operator ',
+             'nore a vector (but is an array of more than 2 dimensions).')
     if(!(1 %in% bdim))
         stop('first argument is neither a linear differential operator ',
              'nor a vector (but is a numeric matrix)')
