@@ -817,11 +817,10 @@ times.fd <- function(e1, e2, basisobj=NULL)
 #  power method for "fd"
 #  -------------------------------------------------------------------
 
-"^.fd" <- function(e1, e2)
-{
+"^.fd" <- function(e1, e2){
 #  A positive integer pointwise power of a functional data object with
-#  a B-splinebasis.  powerfd = fdobj^a.  
-#  Generic arguments e1 = fdobj and e2 = a.  
+#  a B-splinebasis.  powerfd = fdobj^a.
+#  Generic arguments e1 = fdobj and e2 = a.
 #
 #  The basis is tested for being a B-spline basis.  The function then
 #  sets up a new spline basis with the same knots but with an order
@@ -846,64 +845,81 @@ times.fd <- function(e1, e2, basisobj=NULL)
 #  values over a suitable mesh.  This is especially true for fourier
 #  bases.
 
-#  Last modified 3 Novem ber 2009
+#  Last modified 2012.06.15 by Spencer Graves
+#  previously modified 3 November 2009
 
 #  check first two arguments
 
-fdobj = e1
-a     = e2
-tol   = 1e-4
+  fdobj = e1
+  a     = e2
+  tol   = 1e-4
 
-if ((!(inherits(fdobj, "fd"))))
+  if ((!(inherits(fdobj, "fd"))))
         stop("First argument for ^ is not a functional data object.")
-if ((!(is.numeric(a))))
+  if ((!(is.numeric(a))))
         stop("Second argument for ^ is not numeric.")
 
 #  extract basis
 
-basisobj = fdobj$basis
+  basisobj = fdobj$basis
 
 #  test the basis for being of B-spline type
 
-if (basisobj$type != "bspline")
-    stop("FDOBJ does not have a spline basis.")
+  if (basisobj$type != "bspline"){
+#    stop("FDOBJ does not have a spline basis.")
+    a1 <- round(a)
+    if(abs(a-a1)>.Machine$double.eps^.75)
+        stop('Fractional power not allowed of an fd object ',
+             'without a spline basis.')
+    if(a1<0)
+        stop('Negative powers not allowed of an fd object ',
+             'without a spline basis.')
+    if(a1==0){
+        rng <- basisobj$rangeval
+        fdNames <- list(fdobj$fdnames$args, NULL, NULL)
+        fdout <- fd(1, const, fdNames)
+        return(fdout)
+    }
+    fdout <- fdobj
+    for(i in seq(length=a1-1)) fdout <- fdout*fdobj
+    return(fdout)
+  }
 
-
-nbasis        = basisobj$nbasis
-rangeval      = basisobj$rangeval
-interiorknots = basisobj$params
-norder        = nbasis - length(interiorknots)
+  nbasis        = basisobj$nbasis
+  rangeval      = basisobj$rangeval
+  interiorknots = basisobj$params
+  norder        = nbasis - length(interiorknots)
 
 #  Number of points at which to evaluate the power.  Even low
 #  order bases can generate steep slopes and sharp curvatures,
 #  especially if powers less than 1 are involved.
 
-nmesh = max(10*nbasis+1,501)
+  nmesh = max(10*nbasis+1,501)
 
 #  determine number curves and variables
 
-coefmat = fdobj$coef
-coefd   = dim(coefmat)
-ncurve  = coefd[2]
-if (length(coefd) == 2) {
+  coefmat = fdobj$coef
+  coefd   = dim(coefmat)
+  ncurve  = coefd[2]
+  if (length(coefd) == 2) {
     nvar = 1
-} else {
+  } else {
     nvar = coefd[3]
-}
+  }
 
 #  evaluate function over this mesh
 
-tval = seq(rangeval[1],rangeval[2],len=nmesh)
-fmat = eval.fd(tval, fdobj)
+  tval = seq(rangeval[1],rangeval[2],len=nmesh)
+  fmat = eval.fd(tval, fdobj)
 
 #  find the minimum value over this mesh.  If the power is less than
 #  one, return an error message.
 
-fmin = min(c(fmat))
+  fmin = min(c(fmat))
 
 #  a == 0:  set up a constant basis and return the unit function(s)
 
-if (a == 0) {
+  if (a == 0) {
     newbasis = create.constant.basis(rangeval)
     if (nvar == 1) {
       powerfd = fd(matrix(1,1,ncurve), newbasis)
@@ -911,25 +927,25 @@ if (a == 0) {
       powerfd = fd(array(1,c(1,ncurve,nvar)), newbasis)
     }
     return(powerfd)
-}
+  }
 
 #  a == 1:  return the function
 
-if (a == 1) {
+  if (a == 1) {
     powerfd = fdobj
     return(powerfd)
-}
+  }
 
 #  Otherwise:
 
-m = ceiling(a)
+  m = ceiling(a)
 
 #  Check the size of the power.  If greater than one, estimating the
 #  functional data object is relatively safe since the curvatures
 #  involved are mild.  If not, then taking the power is a dangerous
 #  business.
 
-if (m == a && m > 1) {
+  if (m == a && m > 1) {
 
     #  a is an integer greater than one
 
@@ -941,7 +957,7 @@ if (m == a && m > 1) {
     }
     nbreaks   = length(newbreaks)
     newnbasis = newnorder + nbreaks - 2
-    newbasis  = create.bspline.basis(rangeval, newnbasis, newnorder, 
+    newbasis  = create.bspline.basis(rangeval, newnbasis, newnorder,
                                      newbreaks)
     ymat    = fmat^a
     ytol    = max(abs(c(ymat)))*tol
@@ -972,7 +988,7 @@ if (m == a && m > 1) {
 
     return(powerfd)
 
-} else {
+  } else {
 
     #  a is fractional or negative
 
@@ -1032,7 +1048,7 @@ if (m == a && m > 1) {
 
     return(powerfd)
 
-}
+  }
 
 }
 

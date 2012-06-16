@@ -6,6 +6,7 @@
 \alias{minus.fd}
 \alias{*.fd}
 \alias{times.fd}
+\alias{^.fd}
 \title{
   Arithmetic on functional data ('fd') objects
 }
@@ -16,6 +17,7 @@
 \method{+}{fd}(e1, e2)
 \method{-}{fd}(e1, e2)
 \method{*}{fd}(e1, e2)
+\method{^}{fd}(e1, e2)
 plus.fd(e1, e2, basisobj=NULL)
 minus.fd(e1, e2, basisobj=NULL)
 times.fd(e1, e2, basisobj=NULL)
@@ -132,6 +134,28 @@ all.equal(coef(-parab4.5), coefneg)
 plot(parab4.5-1)
 
 plot(1-parab4.5)
+
+##
+## ^.fd
+##
+
+basis3 <- create.fourier.basis(nbasis=3)
+plot(basis3) # max = sqrt(2)
+
+# sin(theta)
+fdsin <- fd(c(0,sqrt(0.5),0), basis3)
+plot(fdsin)
+
+fdsin2 <- fdsin^2
+
+# check
+fdsinsin <- fdsin*fdsin
+# sin^2(pi*time) = 0.5*(1-cos(2*pi*theta) basic trig identity
+plot(fdsinsin) # good
+
+\dontshow{stopifnot(}
+all.equal(fdsin2, fdsinsin)
+\dontshow{)}
 
 }
 % docclass is function

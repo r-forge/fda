@@ -85,6 +85,7 @@ fd(coef=NULL, basisobj=NULL, fdnames=NULL)
   \code{\link{Data2fd}}
   \code{\link{density.fd}}
   \code{\link{create.bspline.basis}}
+  \code{\link{arithmetic.fd}}
 }
 \examples{
 ##
