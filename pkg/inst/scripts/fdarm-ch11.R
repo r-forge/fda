@@ -123,7 +123,7 @@ eigenres = eigen.pda(pdaList)
 ##
 
 WfdPar = fdPar(lipfd$basis,2,1e-16)
-lipmeanmarks= mean(lipmarks)
+lipmeanmarks= colMeans(lipmarks)
 
 lipreglist  = landmarkreg(lipfd, as.matrix(lipmarks),
                          lipmeanmarks, WfdPar)
