@@ -281,6 +281,10 @@ Bspi <- create.bspline.basis(c(1, 60), nbasis=round(sqrt(40)),
 all.equal(Birreg, Bspi)
 \dontshow{)}
 
+\dontshow{
+
+
+}
 }
 % docclass is function
 \keyword{smooth}
