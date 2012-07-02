@@ -307,9 +307,11 @@ exponentiate.fd <- function(e1, e2,
 ##
 ## e2<0?
 ##
-  if(e2<0)
+  if(e2<0){
+    if(e1$type=='bspline')return(e1^e2)
     stop('Negative powers not allowed of fd objects without ',
          'a spline basis;  power = ', e2)
+  }
 ##
 ## Fourier basis
 ##
@@ -372,8 +374,8 @@ exponentiate.fd <- function(e1, e2,
     if(e2.==0)
       stop('powers near zero of fd objects without ',
            'a spline basis not allowed;  power = ', e2)
-    fdout <- fdobj
-    for(i in seq(length=a1-1)) fdout <- fdout*fdobj
+    fdout <- e1
+    for(i in seq(length=e2.-1)) fdout <- fdout*e1
     return(fdout)
   }
 }
