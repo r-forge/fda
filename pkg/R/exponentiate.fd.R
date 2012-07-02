@@ -30,7 +30,7 @@
 #  values over a suitable mesh.  This is especially true for fourier
 #  bases.
 
-#  Last modified 2012.06.16 by Spencer Graves
+#  Last modified 2012.07.01 by Spencer Graves
 #  previously modified 3 November 2009
 
 #  check first two arguments
@@ -281,7 +281,7 @@ exponentiate.fd <- function(e1, e2,
        tolint=.Machine$double.eps^0.75, basisobj=e1$basis,
        tolfd=sqrt(.Machine$double.eps)*
           sqrt(sum(e1$coefs^2)+.Machine$double.eps)^abs(e2),
-       maxbasis=NULL, npoints=NULL, e1name=NULL){
+       maxbasis=NULL, npoints=NULL){
 ##
 ## e2=0?
 ##

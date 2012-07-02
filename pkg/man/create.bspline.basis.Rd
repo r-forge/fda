@@ -1,5 +1,6 @@
 \name{create.bspline.basis}
 \alias{create.bspline.basis}
+\alias{create.bspline.irregular}
 \title{
   Create a B-spline Basis
 }
@@ -20,6 +21,12 @@
 create.bspline.basis(rangeval=NULL, nbasis=NULL, norder=4,
       breaks=NULL, dropind=NULL, quadvals=NULL, values=NULL,
       basisvalues=NULL, names="bspl")
+create.bspline.irregular(argvals,
+      nbasis=max(norder, round(sqrt(length(argvals)))),
+      norder=4,
+      breaks=quantile(argvals, seq(0, 1, length.out=nbasis-2)),
+      dropind=NULL, quadvals=NULL, values=NULL,
+      basisvalues=NULL, names="bspl", plot.=TRUE, ...)
 }
 \arguments{
   \item{rangeval}{
@@ -35,12 +42,20 @@ create.bspline.basis(rangeval=NULL, nbasis=NULL, norder=4,
     are provided, this extra long \code{rangeval} argument is assigned
     to \code{breaks}, and then \code{rangeval = range(breaks)}.
   }
+  \item{argvals}{
+    vector of values used to create \code{rangeval} and \code{breaks} in
+    a call to \code{create.bspline.basis}.
+  }
   \item{nbasis}{
     an integer variable specifying the number of basis functions.
     Default value NULL.
 
     This 'nbasis' argument is ignored if 'breaks' is supplied, in which
-    case nbasis = nbreaks + norder - 2, where nbreaks = length(breaks).
+    case
+
+    nbasis = nbreaks + norder - 2,
+
+    where nbreaks = length(breaks).
   }
   \item{norder}{
     an integer specifying the order of b-splines, which is one higher
@@ -101,19 +116,20 @@ create.bspline.basis(rangeval=NULL, nbasis=NULL, norder=4,
     1:nbasis, sep="")}.  For example, if \code{norder = 4}, this
     defaults to \code{'bspl4.1', 'bspl4.2'}, ... .
   }
-}
-\value{
-  a basis object of the type \code{bspline}
+  \item{plot.}{
+    logical:  If TRUE, plot argvals and knots.
+  }
+  \item{\dots}{ optional arguments passed to \code{plot} }
 }
 \details{
   Spline functions are constructed by joining polynomials end-to-end at
   argument values called \emph{break points} or \emph{knots}. First, the
   interval is subdivided into a set of adjoining intervals
-  separated the knots.  Then a polynomial of order $m$ and
-  degree $m-1$ is defined for each interval.  In order to make the
-  resulting piece-wise polynomial smooth, two adjoining polynomials are
-  constrained to have their values and all their derivatives up to order
-  $m-2$ match at the point where they join.
+  separated the knots.  Then a polynomial of order $m$ (degree $m-1$) is
+  defined for each interval.  To make the resulting piecewise polynomial
+  smooth, two adjoining polynomials are constrained to have their values
+  and all their derivatives up to order $m-2$ match at the point where
+  they join.
 
   Consider as an illustration the very common case where the order is 4
   for all polynomials, so that degree of each polynomials is 3.  That
@@ -138,7 +154,7 @@ create.bspline.basis(rangeval=NULL, nbasis=NULL, norder=4,
   equation is not satisfied.
 
   \emph{B-splines} are a set of special spline functions that can be
-  used to construct any such piece-wise polynomial by computing the
+  used to construct any such piecewise polynomial by computing the
   appropriate linear combination.  They derive their computational
   convience from the fact that any B-spline basis function is nonzero
   over at most m adjacent intervals.  The number of basis functions is
@@ -149,7 +165,7 @@ create.bspline.basis(rangeval=NULL, nbasis=NULL, norder=4,
   position of the knots also plays a role.  Where do we position the
   knots?  There is room for judgment here, but two considerations must
   be kept in mind:  (1) you usually want at least one argument value
-  between two adjacent knots, and (2)  there should be more knots where
+  between two adjacent knots, and (2) there should be more knots where
   the curve needs to have sharp curvatures such as a sharp peak or
   valley or an abrupt change of level, but only a few knots are required
   where the curve is changing very slowly.
@@ -160,8 +176,18 @@ create.bspline.basis(rangeval=NULL, nbasis=NULL, norder=4,
   \code{splines} package do NOT automatically replicate the end points.
   To compare answers, the end knots must be replicated manually when
   using \link[splines]{splineDesign} or \link[splines]{spline.des}.
+
+  create.bspline.irregular first calls create.bspline.basis then creates
+  a plot of argvals and breaks vs. the argvals index.
+}
+\value{
+  a basis object of the type \code{bspline}
 }
 \references{
+  Ramsay, James O., Hooker, Giles, and Graves, Spencer (2009),
+    \emph{Functional data analysis with R and Matlab}, Springer, New
+    York.
+
   Ramsay, James O., and Silverman, Bernard W. (2005), \emph{Functional
     Data Analysis, 2nd ed.}, Springer, New York.
 
@@ -239,6 +265,22 @@ bSpl.growth <- create.bspline.basis(growth$age)
 
 bSpl.growth6 <- create.bspline.basis(growth$age,norder=6)
 # quintic spline (order 6)
+
+##
+## irregular
+##
+Time <- c(1:20, 41:60)
+Birreg <- create.bspline.irregular(Time)
+plot(Birreg)
+
+# check
+bks <- quantile(Time, seq(0, 1, length=4))
+Bspi <- create.bspline.basis(c(1, 60), nbasis=round(sqrt(40)),
+          breaks=bks)
+\dontshow{stopifnot(}
+all.equal(Birreg, Bspi)
+\dontshow{)}
+
 }
 % docclass is function
 \keyword{smooth}
