@@ -30,8 +30,10 @@ create.bspline.irregular <- function (argvals,
 #
     N <- length(argvals)
     Knots <- knots(bsp)
-    qtiles <- sapply(Knots, function(x)mean(argvals<=x))
-    points(N*qtiles, Knots, ...)
+    Knots. <- c(bsp$rangeval[1], Knots, bsp$rangeval[2])
+    qtiles <- sapply(Knots., function(x)mean(argvals<=x))
+
+    points(N*qtiles, Knots., ...)
   }
 ##
 ## 3.  Done
