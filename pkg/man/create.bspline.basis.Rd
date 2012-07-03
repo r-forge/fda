@@ -41,10 +41,16 @@ create.bspline.irregular(argvals,
     If length(rangeval)>2 and neither \code{breaks} nor \code{nbasis}
     are provided, this extra long \code{rangeval} argument is assigned
     to \code{breaks}, and then \code{rangeval = range(breaks)}.
+
+    NOTE:  Nonnumerics are also accepted provided
+    \code{sum(is.na(as.numeric(rangeval))) == 0}.  However, as of July
+    2, 2012, nonnumerics may not work for \code{argvals} in other
+    \code{fda} functions.
   }
   \item{argvals}{
     vector of values used to create \code{rangeval} and \code{breaks} in
-    a call to \code{create.bspline.basis}.
+    a call to \code{create.bspline.basis}.  Must also satisfy
+    \code{sum(is.na(as.numeric(argvals))) == 0} as for rangeval.
   }
   \item{nbasis}{
     an integer variable specifying the number of basis functions.
@@ -69,6 +75,9 @@ create.bspline.irregular(argvals,
     \code{breaks[nbreaks] = rangeval[2]}, where \code{nbreaks} is the
     length of \code{breaks}.  There must be at least 2 values in
     \code{breaks}.
+
+    As for rangeval, must satisfy \code{sum(is.na(as.numeric(breaks)))
+      == 0}.
   }
   \item{dropind}{
     a vector of integers specifiying the basis functions to
@@ -281,10 +290,21 @@ Bspi <- create.bspline.basis(c(1, 60), nbasis=round(sqrt(40)),
 all.equal(Birreg, Bspi)
 \dontshow{)}
 
-\dontshow{
+##
+## Nonnumeric rangeval
+##
+# Date
+July4.1776 <- as.Date('1776-07-04')
+Apr30.1789 <- as.Date('1789-04-30')
+AmRev <- c(July4.1776, Apr30.1789)
+BspRevolution <- create.bspline.basis(AmRev)
 
+# POSIXct
+July4.1776ct <- as.POSIXct1970('1776-07-04')
+Apr30.1789ct <- as.POSIXct1970('1789-04-30')
+AmRev.ct <- c(July4.1776ct, Apr30.1789ct)
+BspRev.ct <- create.bspline.basis(AmRev.ct)
 
-}
 }
 % docclass is function
 \keyword{smooth}
