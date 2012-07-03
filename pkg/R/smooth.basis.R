@@ -65,8 +65,6 @@ smooth.basis <- function(argvals=1:n, y, fdParobj,
 #   PENMAT  the penalty matrix.
 #   Y2CMAP  the matrix mapping the data to the coefficients.
 
-# last modified 8 March 2012 by Jim Ramsay
-
 #  This version of smooth.basis, introduced in March 2011, permits ARGVALS
 #  to be a matrix, with the same dimensions as the first two dimensions of Y
 #  This allows the sampling points to vary from one record to another.
@@ -78,58 +76,78 @@ smooth.basis <- function(argvals=1:n, y, fdParobj,
 #               from a call to function BsplineS.  See this function for
 #               enabling this option.
 
-#  Last modified 8 May 2012 by Jim Ramsay
+# last modified July 3, 2012 by Spencer Graves
+#    to allow argvals to have class Date or POSIXct
+# previously modified 8 May 2012 by Jim Ramsay
 
 #  check y
 
-if (!is.numeric(y)) stop("'y' is not numeric.")
-if (is.vector(y)) y <- as.matrix(y)
-dimy <- dim(y)
-ndy  <- length(dimy)
-n    <- dimy[1]
+  if (!is.numeric(y)) stop("'y' is not numeric.")
+  if (is.vector(y)) y <- as.matrix(y)
+  dimy <- dim(y)
+  ndy  <- length(dimy)
+  n    <- dimy[1]
 
 #  check argvals
 
-if (!is.numeric(argvals)) stop("'argvals' is not numeric.")
-if (is.vector(argvals)) argvals <- as.matrix(argvals)
-dima <- dim(argvals)
-nda  <- length(dima)
-if (ndy < nda) stop("argvals has ", nda, " dimensions  y has only ", ndy)
+#if (!is.numeric(argvals)) stop("'argvals' is not numeric.")
+  if(is.null(argvals))stop('argvals required;  is NULL.')
+  Argvals <- argvals
+# turn off warnings in checking if argvals can be converted to numeric.
+  op <- options(warn=-1)
+  argvals <- as.numeric(Argvals)
+  options(op)
+  nNA <- sum(is.na(argvals))
+  if(nNA>0)
+      stop('as.numeric(argvals) contains ', nNA,
+           ' NA', c('', 's')[1+(nNA>1)],
+           ';  class(argvals) = ', class(argvals))
+#
+  if (is.vector(argvals)) argvals <- as.matrix(argvals)
+  dima <- dim(argvals)
+  nda  <- length(dima)
+  if (ndy < nda) stop("argvals has ", nda, " dimensions  y has only ", ndy)
 
 #  select which version of smooth.basis to use, according to dim. of argvals
 #  are all dimensions of argvals equal to the first nda of those of y?
 
-if (nda < 3 ) {
-  if (dima[2] == 1) {
+  if (nda < 3 ) {
+    if (dima[2] == 1) {
 
       sb2 <- smooth.basis1(argvals, y, fdParobj,
                            wtvec=wtvec,   fdnames=fdnames,
                            covariates=covariates,
-                           method=method, dfscale=dfscale, returnMatrix=returnMatrix)
-
-  } else {
+                           method=method, dfscale=dfscale,
+                           returnMatrix=returnMatrix)
+      sb2$argvals <- Argvals
+# With class(argvals) == Date or POSIXct,
+# argvals can NOT be a matrix or 3-d array.
+    } else {
 
       sb2 <- smooth.basis2(argvals, y=y, fdParobj=fdParobj,
                            wtvec=wtvec,   fdnames=fdnames,
                            covariates=covariates,
-                           method=method, dfscale=dfscale, returnMatrix=returnMatrix)
+                           method=method, dfscale=dfscale,
+                           returnMatrix=returnMatrix)
 
+    }
+    return(sb2)
   }
-  return(sb2)
-}
+# end if(nda<3)
 
-if (nda < 4) {
-  return(smooth.basis3(argvals, y=y, fdParobj=fdParobj,
+  if (nda < 4) {
+    return(smooth.basis3(argvals, y=y, fdParobj=fdParobj,
                        wtvec=wtvec,   fdnames=fdnames,
                        covariates=covariates,
-                       method=method, dfscale=dfscale, returnMatrix=returnMatrix) )
-} else {
+                       method=method, dfscale=dfscale,
+                       returnMatrix=returnMatrix) )
+  } else {
       #  dimensions of argval inconsistent with those of y, throw error
       cat("dim(argvals) =", paste(dima, collapse=", "), "\n")
       cat("dim(y)      = ", paste(dimy, collapse=", "), "\n")
       stop("Dimensions of argvals do not match those of y")
       return()
-}
+  }
 
 }
 

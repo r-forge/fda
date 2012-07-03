@@ -98,7 +98,7 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
 #  Last modified July 1, 2012 by Spencer Graves to allow nonnumeric rangeval
 #  Last modified  7 May 2012 by Jim Ramsay
 
-#  -----------------------------------------------------------------------------
+#  -------------------------------------------------------------------------
 #  Default basis for missing arguments:  A B-spline basis over [0,1] of
 #    of specified norder with norder basis functions.
 #    norder = 1 = one basis function = constant 1
@@ -111,7 +111,7 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
 #    norder = 3 = three basis functions:  x^2, x-(x-.5)^2, (x-1)^2
 #    norder = 4 = default = 4 basis functions
 #      = the simplest cubic spline basis
-#  -----------------------------------------------------------------------------
+#  -------------------------------------------------------------------------
 
   type        <- "bspline"
 
@@ -130,9 +130,9 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
 #    return(basisobj)
 #  }
 
-#  -----------------------------------------------------------------------------
+#  ------------------------------------------------------------------------
 #                     Set up non-default basis
-#  -----------------------------------------------------------------------------
+#  ------------------------------------------------------------------------
 
 ##
 ## 1.  check RANGEVAL
