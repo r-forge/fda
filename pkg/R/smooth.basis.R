@@ -100,7 +100,7 @@ smooth.basis <- function(argvals=1:n, y, fdParobj,
 #     stop("'argvals' is not numeric.")
 # turn off warnings in checking if argvals can be converted to numeric.
     op <- options(warn=-1)
-    argvals <- as.numeric(Argvals)
+    argvals <- as.matrix(as.numeric(Argvals))
     options(op)
     nNA <- sum(is.na(argvals))
     if(nNA>0)
