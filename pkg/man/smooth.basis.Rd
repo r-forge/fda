@@ -855,7 +855,6 @@ Bsp <- create.bspline.basis(N, 9)
 set.seed(1) # to ensure the same results across platforms
 system.time(fit <- smooth.basis(1:N, runif(N), Bsp))
 }
-}
 
 ##
 ## 10.  with argvals of class Date and POSIXct
@@ -869,17 +868,15 @@ BspRevolution <- create.bspline.basis(AmRev)
 (AmRevLinear <- as.numeric(AmRevYears-July4.1776))
 fitLin <- smooth.basis(AmRevYears, AmRevLinear)
 
-
 # POSIXct
 July4.1776ct <- as.POSIXct1970('1776-07-04')
 Apr30.1789ct <- as.POSIXct1970('1789-04-30')
 AmRev.ct <- c(July4.1776ct, Apr30.1789ct)
 BspRev.ct <- create.bspline.basis(AmRev.ct)
 (AmRevYrs.ct <- seq(July4.1776, Apr30.1789, length.out=14))
+AmRevBas.ct <- predict(BspRev.ct, AmRevYrs.ct)
 (AmRevLin.ct <- as.numeric(AmRevYrs.ct-July4.1776ct))
 fitLin.ct <- smooth.basis(AmRevYrs.ct, AmRevLin.ct)
-
-
-
+}
 % docclass is function
 \keyword{smooth}

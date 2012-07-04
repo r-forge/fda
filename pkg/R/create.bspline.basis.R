@@ -182,7 +182,7 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
 #    options(op)
     nNAr <- sum(is.na(Rangeval))
     if(nNAr>0)
-      stop('as.numeric(rangeval) contains ', Nnar,
+      stop('as.numeric(rangeval) contains ', nNAr,
            ' NA', c('', 's')[1+(nNAr>1)],
            ';  class(rangeval) = ', class(rangeval) )
   }
