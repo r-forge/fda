@@ -125,6 +125,29 @@ basisMat. <- predict(weatherBasis, day.5)
 all.equal(basisMat, basisMat.)
 \dontshow{)}
 
+##
+## 4.  Date and POSIXct
+##
+# Date
+July4.1776 <- as.Date('1776-07-04')
+Apr30.1789 <- as.Date('1789-04-30')
+AmRev <- c(July4.1776, Apr30.1789)
+BspRevolution <- create.bspline.basis(AmRev)
+AmRevYears <- seq(July4.1776, Apr30.1789, length.out=14)
+AmRevBases <- predict(BspRevolution, AmRevYears)
+matplot(AmRevYears, AmRevBases, type='b')
+# Image is correct, but
+# matplot does not recogize the Date class of x
+
+# POSIXct
+AmRev.ct <- as.POSIXct1970(c('1776-07-04', '1789-04-30'))
+BspRev.ct <- create.bspline.basis(AmRev.ct)
+AmRevYrs.ct <- seq(AmRev.ct[1], AmRev.ct[2], length.out=14)
+AmRevBas.ct <- predict(BspRev.ct, AmRevYrs.ct)
+matplot(AmRevYrs.ct, AmRevBas.ct, type='b')
+# Image is correct, but
+# matplot does not recognize the POSIXct class of x
+
 }
 % docclass is function
 \keyword{smooth}
