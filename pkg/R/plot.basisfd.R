@@ -96,11 +96,18 @@ plot.basisfd <- function(x, knots=TRUE, axes=NULL, ...) {
 #           xlim=c(argvals[1],argvals[nx]),
 #           ylim=, ...)
 
+  dot.args$x <- range(argvals)
+  dot.args$y <- range(basismat)
+  type <- dot.args$type
+  dot.args$type <- 'n'
+
+#  do.call('matplot', dot.args)
+  do.call(plot, dot.args)
+#
   dot.args$x <- argvals
   dot.args$y <- basismat
-
-  do.call('matplot', dot.args)
-
+  dot.args$type <- type
+  do.call(matlines, dot.args)
 # knots?
   if(knots && (x$type=='bspline'))
     abline(v=knots(x), lty='dotted', col='red')
