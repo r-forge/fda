@@ -860,13 +860,17 @@ system.time(fit <- smooth.basis(1:N, runif(N), Bsp))
 ## 10.  with argvals of class Date and POSIXct
 ##
 # Date
-July4.1776 <- as.Date('1776-07-04')
-Apr30.1789 <- as.Date('1789-04-30')
-AmRev <- c(July4.1776, Apr30.1789)
-BspRevolution <- create.bspline.basis(AmRev)
-(AmRevYears <- seq(July4.1776, Apr30.1789, length.out=14))
-(AmRevLinear <- as.numeric(AmRevYears-July4.1776))
-fitLin <- smooth.basis(AmRevYears, AmRevLinear, BspRevolution)
+invasion1 <- as.Date('1775-09-04')
+invasion2 <- as.Date('1812-07-12')
+earlyUS.Canada <- c(invasion1, invasion2)
+BspInvasion <- create.bspline.basis(earlyUS.Canada)
+
+earlyUSyears <- seq(invasion1, invasion2, length.out=7)
+(earlyUScubic <- (as.numeric(earlyUSyears-invasion1)/365.24)^3)
+fitCubic <- smooth.basis(earlyUSyears, earlyUScubic, BspInvasion)
+fitCubic$fd$coefs
+# earlyUScubic is proportional to the fourth basis function
+
 
 # POSIXct
 AmRev.ct <- as.POSIXct1970(c('1776-07-04', '1789-04-30'))
