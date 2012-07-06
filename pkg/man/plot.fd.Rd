@@ -183,7 +183,6 @@ AmRevYrs.ct <- seq(AmRev.ct[1], AmRev.ct[2], length.out=14)
 fitLin.ct <- smooth.basis(AmRevYrs.ct, AmRevLin.ct, BspRev.ct)
 plot(fitLin.ct)
 
-
 }
 % docclass is function
 \keyword{smooth}
