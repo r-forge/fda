@@ -48,7 +48,7 @@ basisobj <- create.monomial.basis(c(-1,1),nbasis)
 penmat <- monomialpen(basisobj, 2)
 
 ##
-## with Date and POSIXct rangevals
+## with rng of class Date and POSIXct
 ##
 # Date
 invasion1 <- as.Date('1775-09-04')
