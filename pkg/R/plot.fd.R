@@ -40,9 +40,9 @@ plot.fd <- function(x, y, Lfdobj=0, href=TRUE, titles=NULL,
   #    must be set up before calling plot by using something such as
   #    par(mfrow=c(1,nvar),pty="s")
 
-# last modified July 5, 2012 by Spencer Graves
+# last modified July 6, 2012 by Spencer Graves
 #   for argvals of class Date and POSIXct
-# Last modified 2 May 2012 by Jim Ramsay
+# Prevously modified 2 May 2012 by Jim Ramsay
 ##
 ## 1.  Basic checks
 ##

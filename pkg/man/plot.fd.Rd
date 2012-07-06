@@ -172,8 +172,8 @@ BspInvasion <- create.bspline.basis(earlyUS.Canada)
 
 earlyUSyears <- seq(invasion1, invasion2, length.out=7)
 (earlyUScubic <- (as.numeric(earlyUSyears-invasion1)/365.24)^3)
-fitQuad <- smooth.basis(earlyUSyears, earlyUScubic, BspInvasion)
-plot(fitQuad)
+fitCubic <- smooth.basis(earlyUSyears, earlyUScubic, BspInvasion)
+plot(fitCubic)
 
 # POSIXct
 AmRev.ct <- as.POSIXct1970(c('1776-07-04', '1789-04-30'))
