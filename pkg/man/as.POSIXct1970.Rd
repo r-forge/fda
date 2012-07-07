@@ -14,7 +14,7 @@ as.POSIXct1970(x, tz="GMT", ...)
 \arguments{
   \item{x}{
     a numeric vector of times in seconds since the start of 1970.  (If
-    \code{x} is not numeric, call \code{as.POSIXct}.) 
+    \code{x} is not numeric, call \code{as.POSIXct}.)
   }
   \item{tz}{
     A timezone specification to be used for the conversion, if one is
@@ -31,13 +31,13 @@ as.POSIXct1970(x, tz="GMT", ...)
   as.POSIXct(x, origin=o1970.)
 }
 \value{
-  Returns a vector of class \code{POSIXct}.  
+  Returns a vector of class \code{POSIXct}.
 }
 \author{
   Spencer Graves
 }
 \seealso{
-  \code{\link{as.POSIXct}}
+  \code{\link{as.POSIXct}}, \code{\link{ISOdate}},
   \code{\link{strptime}}
 }
 %\references{}
