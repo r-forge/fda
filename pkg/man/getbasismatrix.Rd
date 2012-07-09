@@ -40,8 +40,11 @@ getbasismatrix(evalarg, basisobj, nderiv=0, returnMatrix=FALSE)
 bspl1.1 <- create.bspline.basis(norder=1, breaks=0:1)
 m <- getbasismatrix(seq(0, 1, .2), bspl1.1)
 
+# check
+m. <- matrix(rep(1, 6), 6,
+    dimnames=list(NULL, 'bspl') )
 \dontshow{stopifnot(}
-all.equal(m, matrix(rep(1, 6), 6))
+all.equal(m, m.)
 \dontshow{)}
 
 ##

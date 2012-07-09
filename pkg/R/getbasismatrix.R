@@ -30,9 +30,9 @@ getbasismatrix <- function(evalarg, basisobj, nderiv=0, returnMatrix=FALSE) {
 #
 #  Note that the first two arguments may be interchanged.
 #
-#  Last modified July 4, 2012 by Spencer Graves
-#    for evalarg of class Date and POSIXct
-#  Previously modified 7 May 2012 by Jim Ramsay
+#  Last modified July 8, 2012 by Spencer Graves
+#    to add column names
+
 ##
 ##  Exchange the first two arguments if the first is an BASIS.FD object
 ##    and the second numeric
@@ -87,6 +87,9 @@ getbasismatrix <- function(evalarg, basisobj, nderiv=0, returnMatrix=FALSE) {
           }
       }
     }
+#   dimnames
+    dimnames(basismat) <- list(NULL, basisobj$names)
+
     if (OK){
         if((!returnMatrix) && (length(dim(basismat)) == 2)){
             return(as.matrix(basismat))
@@ -157,6 +160,8 @@ getbasismatrix <- function(evalarg, basisobj, nderiv=0, returnMatrix=FALSE) {
   } else {
    	stop("Basis type not recognizable")
   }
+#  dimnames
+  dimnames(basismat) <- list(NULL, basisobj$names)
 
 #  remove columns for bases to be dropped
 
