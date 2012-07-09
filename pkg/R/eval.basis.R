@@ -53,12 +53,13 @@ eval.basis <- function(evalarg, basisobj, Lfdobj=0, returnMatrix=FALSE) {
 
 #  Note that the first two arguments may be interchanged.
 
-#  Last modified July 4, 2012 by Spencer Graves
-#    for evalarg of class Date and POSIXct
-#  Previously modified 7 May 2012 by Jim Ramsay
-
-#  Exchange the first two arguments if the first is a BASIS.FD object
-#    and the second numeric
+#  Last modified July 8, 2012 by Spencer Graves
+#    to add dimnames
+##
+## 1.  check
+##
+#   Exchange the first two arguments if the first is a BASIS.FD object
+#     and the second numeric
 
   if (is.numeric(basisobj) && inherits(evalarg, "basisfd")) {
     temp     <- basisobj
@@ -94,7 +95,9 @@ eval.basis <- function(evalarg, basisobj, Lfdobj=0, returnMatrix=FALSE) {
 #  check LFDOBJ
 
   Lfdobj <- int2Lfd(Lfdobj)
-
+##
+## 2.  set up
+##
 #  determine the highest order of derivative NDERIV required
 
   nderiv <- Lfdobj$nderiv
@@ -102,7 +105,9 @@ eval.basis <- function(evalarg, basisobj, Lfdobj=0, returnMatrix=FALSE) {
 #  get weight coefficient functions
 
   bwtlist <- Lfdobj$bwtlist
-
+##
+## 3.  Do
+##
 #  get highest order of basis matrix
 
   basismat <- getbasismatrix(evalarg, basisobj, nderiv, returnMatrix)

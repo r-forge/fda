@@ -11,7 +11,8 @@
 }
 \usage{
 eval.basis(evalarg, basisobj, Lfdobj=0, returnMatrix=FALSE)
-\method{predict}{basisfd}(object, newdata=NULL, Lfdobj=0, returnMatrix=FALSE, ...)
+\method{predict}{basisfd}(object, newdata=NULL, Lfdobj=0,
+                          returnMatrix=FALSE, ...)
 }
 \arguments{
   \item{evalarg, newdata}{
@@ -70,6 +71,13 @@ eval.basis(evalarg, basisobj, Lfdobj=0, returnMatrix=FALSE)
 # a single step function
 bspl1.1 <- create.bspline.basis(norder=1, breaks=0:1)
 eval.bspl1.1 <- eval.basis(seq(0, 1, .2), bspl1.1)
+
+# check
+eval.bspl1.1. <- matrix(rep(1, 6), 6,
+       dimnames=list(NULL, 'bspl') )
+\dontshow{stopifnot(}
+all.equal(eval.bspl1.1, eval.bspl1.1.)
+\dontshow{)}
 
 # The second simplest basis:
 # 2 step functions, [0, .5], [.5, 1]
