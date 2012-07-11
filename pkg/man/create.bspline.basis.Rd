@@ -24,9 +24,9 @@ create.bspline.basis(rangeval=NULL, nbasis=NULL, norder=4,
 create.bspline.irregular(argvals,
       nbasis=max(norder, round(sqrt(length(argvals)))),
       norder=4,
-      breaks=quantile(argvals, seq(0, 1, length.out=nbasis-2)),
+      breaks=quantile(argvals, seq(0, 1, length.out=nbasis-norder+2)),
       dropind=NULL, quadvals=NULL, values=NULL,
-      basisvalues=NULL, names="bspl", plot.=TRUE, ...)
+      basisvalues=NULL, names="bspl", plot.=FALSE, ...)
 }
 \arguments{
   \item{rangeval}{
@@ -53,15 +53,18 @@ create.bspline.irregular(argvals,
     \code{sum(is.na(as.numeric(argvals))) == 0} as for rangeval.
   }
   \item{nbasis}{
-    an integer variable specifying the number of basis functions.
-    Default value NULL.
-
-    This 'nbasis' argument is ignored if 'breaks' is supplied, in which
+    an integer variable specifying the number of basis functions.  This
+    'nbasis' argument is ignored if \code{breaks} is supplied, in which
     case
 
     nbasis = nbreaks + norder - 2,
 
-    where nbreaks = length(breaks).
+    where nbreaks = length(breaks).  If \code{breaks} is not supplied
+    and \code{nbasis} is, then
+
+    nbreaks = nbasis - norder + 2,
+
+    and breaks = seq(rangevals[1], rangevals[2], nbreaks).
   }
   \item{norder}{
     an integer specifying the order of b-splines, which is one higher
