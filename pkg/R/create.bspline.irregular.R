@@ -1,9 +1,9 @@
 create.bspline.irregular <- function (argvals,
       nbasis=max(norder, round(sqrt(length(argvals)))),
       norder=4,
-      breaks=quantile(argvals, seq(0, 1, length.out=nbasis-2)),
+      breaks=quantile(argvals, seq(0, 1, length.out=nbasis-norder+2)),
       dropind=NULL, quadvals=NULL, values=NULL,
-      basisvalues=NULL, names="bspl", plot.=TRUE, ...){
+      basisvalues=NULL, names="bspl", plot.=FALSE, ...){
 ##
 ## 1.  create.bspline.basis
 ##
