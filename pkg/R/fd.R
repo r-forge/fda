@@ -8,37 +8,37 @@
 
 fd <- function (coef=NULL, basisobj=NULL, fdnames=NULL)
 {
-  #  This function creates a functional data object.
-  #    A functional data object consists of a basis for expanding a functional
-  #    observation and a set of coefficients defining this expansion.
-  #    The basis is contained in a "basisfd" object that is, a realization
-  #    of the "basisfd" class.
+# This function creates a functional data object.
+#    A functional data object consists of a basis for expanding a functional
+#    observation and a set of coefficients defining this expansion.
+#    The basis is contained in a "basisfd" object that is, a realization
+#    of the "basisfd" class.
 
-  #  Arguments
-  #  COEF ... An array containing coefficient values for the expansion of each
-  #             set of function values in terms of a set of basis functions.
-  #           If COEF is a three-way array, then the first dimension
-  #             corresponds to basis functions, the second to replications,
-  #             and the third to variables.
-  #           If COEF is a matrix, it is assumed that there is only
-  #             one variable per replication, and then
-  #                 rows    correspond to basis functions
-  #                 columns correspond to replications
-  #           If COEF is a vector, it is assumed that there is only one
-  #             replication and one variable.
-  #  BASISOBJ ... a functional data basis object
-  #  FDNAMES  ... The analogue of the dimnames attribute of an array, this is
-  #               a list of length 3 with members containing:
-  #               1. a character vector of names for the argument values
-  #               2. a character vector of names for the replications or cases
-  #               3. a character vector of names for the functions
-  #               Each of these vectors can have a name referring to the modality
-  #                 of the data.  An example would be "time", "reps", "values"
+#  Arguments
+#  COEF ... An array containing coefficient values for the expansion of each
+#             set of function values in terms of a set of basis functions.
+#           If COEF is a three-way array, then the first dimension
+#             corresponds to basis functions, the second to replications,
+#             and the third to variables.
+#           If COEF is a matrix, it is assumed that there is only
+#             one variable per replication, and then
+#                 rows    correspond to basis functions
+#                 columns correspond to replications
+#           If COEF is a vector, it is assumed that there is only one
+#             replication and one variable.
+#  BASISOBJ ... a functional data basis object
+#  FDNAMES  ... The analogue of the dimnames attribute of an array, this is
+#               a list of length 3 with members containing:
+#               1. a character vector of names for the argument values
+#               2. a character vector of names for the replications or cases
+#               3. a character vector of names for the functions
+#               Each of these vectors can have a name referring to the modality
+#                 of the data.  An example would be "time", "reps", "values"
 
-  #  Returns:
-  #  FD ... a functional data object
+#  Returns:
+#  FD ... a functional data object
 
-  #  Last modified 3 February 2010 by Jim Ramsay
+#  Last modified 3 February 2010 by Jim Ramsay
 
 ##
 ## 1.  check coef and get its dimensions
@@ -669,7 +669,7 @@ times.fd <- function(e1, e2, basisobj=NULL)
     #  e1 is single,  e2 has replications
 
     if (coefd1[2] == 1 && coefd2[2] > 1) {
-      if     (ndim1 == 2) {
+      if (ndim1 == 2) {
         coef1 <- matrix(coef1,coefd1[1],coefd2[2])
       } else if (ndim1 == 3) {
         temp <- array(0,coefd2)
