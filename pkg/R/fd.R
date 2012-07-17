@@ -781,7 +781,7 @@ times.fd <- function(e1, e2, basisobj=NULL)
     if ((!(is.numeric(e1) || is.numeric(e2))))
       stop("Neither argument for * is numeric.")
     #  make the numerical factor the first objec
-    if        (is.numeric(e1) && inherits(e2, "fd")) {
+    if (is.numeric(e1) && inherits(e2, "fd")) {
       fac   <- e1
       fdobj <- e2
     } else if (is.numeric(e2) && inherits(e1, "fd")) {
