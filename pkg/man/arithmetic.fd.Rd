@@ -102,11 +102,43 @@ dimnames(coef2.) <- list(NULL, 'rep1')
 all.equal(coef(para4.5.3-para4.5.2), coef2.)
 \dontshow{)}
 
-#str(para4.5.3*para4.5.2)
+##
+## product
+##
+quart <- para4.5.3*para4.5.2
+
 # interior knots of the sum
 # = union(interior knots of the summands);
 # ditto for difference and product.
-plot(para4.5.3*para4.5.2)
+\dontshow{stopifnot(}
+all.equal(knots(quart), c(knots(para4.5.3), knots(para4.5.2)))
+\dontshow{)}
+
+# norder(quart) = norder(para4.5.2)+norder(para4.5.3)-1 = 7
+\dontshow{stopifnot(}
+norder(quart) == (norder(para4.5.2)+norder(para4.5.3)-1)
+\dontshow{)}
+
+# para4.5.2 with knot at 0.5 and para4.5.3 with knot at 1/3
+# both have (2 end points + 1 interior knot) + norder-2
+#     = 5 basis functions
+# quart has (2 end points + 2 interior knots)+norder-2
+#     = 9 basis functions
+# coefficients look strange because the knots are at
+# (1/3, 1/2) and not symmetrical
+
+\dontshow{stopifnot(}
+all.equal(as.numeric(coef(quart)),
+0.1*c(90, 50, 14, -10, 6, -2, -2, 30, 90)/9)
+\dontshow{)}
+
+plot(para4.5.3*para4.5.2) # quartic, not parabolic ...
+
+##
+## product with Fourier bases
+##
+f3 <- fd(c(0,0,1), create.fourier.basis())
+f3^2 # number of basis functions = 7?
 
 ##
 ## fd+numeric
