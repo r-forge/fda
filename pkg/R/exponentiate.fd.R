@@ -335,7 +335,9 @@ exponentiate.fd <- function(e1, e2,
 #
     rng <- outbasis$rangeval
     if(is.null(maxbasis)) maxbasis <- 2*outbasis$nbasis+1
-    if(is.null(npoints))npoints <- 2*maxbasis-1
+    if(is.null(npoints))
+        npoints <- max(10*maxbasis+1, 501)
+#
     Time <- seq(rng[1], rng[2], length=npoints)
     e1. <- predict(e1, Time)
     e1.2 <- e1.^e2

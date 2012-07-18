@@ -124,7 +124,7 @@ all.equal(fdsin2, fdsinsin)
 ##
 plot(fdsin2)
 fdsin. <- sqrt(fdsin2)
-plot(fdsin)
+plot(fdsin, main='fdsin and sqrt(fdsin^2)')
 lines(fdsin., col='red')
 # fdsin is positive and negative
 # fdsin. = sqrt(fdsin^2)
