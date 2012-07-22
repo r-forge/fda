@@ -48,7 +48,7 @@
 \seealso{
   \code{\link{basisfd}}
 }
-\example{
+\examples{
   f1 <- create.fourier.basis()
   f1.2 <- f1*f1
   \dontshow{stopifnot(}
