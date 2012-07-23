@@ -108,11 +108,9 @@ pdaParlist= list(pdaPar, pdaPar)
 bwtlist   = list( list(pdaParlist,pdaParlist),
                   list(pdaParlist,pdaParlist) )
 
-# This can take some time to compute, so time it:
-pdaTime   = system.time({
-pdaList   = pda.fd(xfdlist, bwtlist)} )
-pdaTime/60
-# 20 minutes on a dual core;  2009.03.21
+# This can take some time to compute:
+
+pdaList = pda.fd(xfdlist, bwtlist)
 
 # Figure 11.5
 

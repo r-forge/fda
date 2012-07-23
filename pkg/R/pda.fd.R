@@ -772,7 +772,7 @@ pda.fd  <-  function(xfdlist, bwtlist=NULL, awtlist=NULL, ufdlist=NULL,
         difeordp1 <- difeorder + 1
         yarray[[ivar]] <- array(0,c(nfine,ncurve,difeordp1))
         for (j in 1:difeordp1){
-            yj <- eval.fd(tx, xfdlist[[ivar]], j-1, returnMatrix)
+            yj <- eval.fd(tx, xfdlist[[ivar]], j-1, returnMatrix=returnMatrix)
             yarray[[ivar]][,,j] <- as.matrix(yj)
         }
       }

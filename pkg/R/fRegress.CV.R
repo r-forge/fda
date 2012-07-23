@@ -22,6 +22,8 @@ M <- length(CVobs)
 
 if (inherits(yfdPar, "numeric"))  {
 
+    #  scalar dependent variable case
+
     yvec   <- yfdPar
     SSE.CV <- 0
     errfd  <- c()
@@ -68,11 +70,14 @@ if (inherits(yfdPar, "numeric"))  {
       SSE.CV <- SSE.CV + errfd[i]^2
     }
  } else {
+
+    #  functional dependent variable case
+
     yfd      <- yfdPar$fd
     SSE.CV   <- 0
     errcoefs <- c()
-    for(m in 1:N){
-#        cat(m, " ")
+    for(m in 1:length(CVobs)){
+      #  cat(m, " ")
       i <-  CVobs[m]
       txfdlist <- xfdlist
       for(k in 1:p){

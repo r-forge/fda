@@ -353,8 +353,12 @@ exponentiate.fd <- function(e1, e2,
 #
     morebases <- (maxbasis-outbasis$nbasis+1)
     for(i in 1:morebases){
+      nbasisi <- outbasis$nbasis+2
+      if (nbasisi == (nbasisi/2)*2) {
+        nbasisi = nbasisi + 1;
+      }
       outbasis <- create.fourier.basis(rng,
-          nbasis=outbasis$nbasis+2, period=diff(rng) )
+          nbasis=nbasisi, period=diff(rng) )
 #      fd1.2 <- Data2fd(Time, e1.2, npoints)
       fd1.2 <- smooth.basis(Time, e1.2, outbasis)
       d1.2 <- (e1.2-predict(fd1.2, Time))
