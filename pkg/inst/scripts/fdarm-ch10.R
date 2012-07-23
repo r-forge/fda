@@ -299,9 +299,6 @@ par(op)
 #  Choose the level of smoothing by minimizing cross-validated
 #  error sums of squares.
 
-#  This analysis took about 22 minutes on the author's notebook computer
-#  that was purchased in 2008.
-
 loglam = seq(-2,4,0.25)
 SSE.CV = rep(0,length(loglam))
 betafdPari = betafdPar1
@@ -310,7 +307,7 @@ for(i in 1:length(loglam)){
     betafdPari$lambda = 10^loglam[i]
     betalisti = betalist
     for (j in 1:2) betalisti[[j]] = betafdPari
-    CVi = fRegress.CV(birdfd3, xfdlist, betalisti,CVobs=1:26)
+    CVi = fRegress.CV(birdfd3, xfdlist, betalisti, CVobs=1:26)
     SSE.CV[i] = CVi$SSE.CV
 }
 
