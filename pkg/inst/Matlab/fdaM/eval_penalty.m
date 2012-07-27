@@ -34,7 +34,10 @@ function [penaltymat, iter] = eval_penalty(basisobj, Lfdobj, rng)
 %                 it is called.  Otherwise 0.
 %
 
-%  last modified 27 September 2011
+%  modified by Kris Villez in August 2011 from an original file in the
+%  FDA toolbox by Jim Ramsay
+
+%  last modified 20 June 2012 by Jim Ramsay
 %  get BASISOBJ
 
 if isa_fd(basisobj)
@@ -66,8 +69,8 @@ if nargin < 3, rng = getbasisrange(basisobj);  end
 if nargin < 2, Lfdobj = Lfd_default;           end
 
 %  check LFDOBJ
-
 Lfdobj = int2Lfd(Lfdobj);
+
 
 %  determine basis type
 
@@ -91,14 +94,14 @@ switch type
         penaltymat = fourierpen(basisobj, Lfdobj);
     case 'monom'
         penaltymat = monompen(basisobj,   Lfdobj);
-    case 'naturalbspline'
-        [penaltymat, iter] = naturalbsplinepen(basisobj, Lfdobj, rng);        
+    case 'nspline'
+        [penaltymat, iter] = nsplinepen(basisobj, Lfdobj, rng);        
     case 'polyg'
         penaltymat = polygpen(basisobj,   Lfdobj);
     case 'power'
-        penaltymat = powerpen(basisobj,   Lfdobj);   
-    case 'FEM'
-        penaltymat = FEMpen(basisobj,     Lfdobj);   
+        penaltymat = powerpen(basisobj,   Lfdobj);  
+    case 'IRT3PL'
+        penaltymat = IRT3PLpen(basisobj,  Lfdobj);
     otherwise
         error('Basis type not recognizable');
 end
@@ -121,4 +124,5 @@ if length(dropind) > 0
     end
     penaltymat = penaltymat(index,index);
 end
+
 
