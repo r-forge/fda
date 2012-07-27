@@ -504,8 +504,7 @@ for (i in index) {
 }
 
 #  ------------------------------------------------------------
-#  analysis for Y: a third order equation forced by a 
-#  constant and time
+#                   Analysis for coordinate Y
 #  ------------------------------------------------------------
 
 #  Define the variable
@@ -647,7 +646,7 @@ ystart[3,3] <- D2fdameanmat[1,2]
 #   if you have a lot of this kind of work to do.)
 
 EPSval = 1e-4
-odeList <- odesolv(bestwtlist, ystart, EPS=EPSval, MAXSTP=1e6)ystart
+odeList <- odesolv(bestwtlist, ystart, EPS=EPSval, MAXSTP=1e6)
 tY <- odeList[[1]]
 yY <- odeList[[2]]
 
@@ -698,23 +697,6 @@ for (i in index) {
             type="l", lty=c(1,3), cex=1.2, 
             xlim=c(0, 2300), ylim=c(-0.04, 0.04),   
             main=paste("Y curve ",i))
-}
-
-#  -------------  Look at fit to script  -------------------
-
-#  plot fit to each script  hit any key after each plot
-
-par(mfrow=c(1,1), ask=TRUE, pty="m")
-index   <- 1:20
-zmatx   <- cbind(matrix(1,1401,1),umatx)
-zmaty   <- cbind(matrix(1,1401,1),umaty)
-for (i in index) {
-    xhat <- fdamat[,i,1] - lsfit(umatx, fdamat[,i,1])$residual
-    yhat <- fdamat[,i,2] - lsfit(umaty, fdamat[,i,2])$residual
-    plot(xhat, yhat, type="l", cex=cexval,
-         xlim=c(-0.05,0.05), ylim=c(-0.05,0.05),
-         xlab="X", ylab="Y", main=paste("Script ",i))
-    lines(fdamat[,i,1], fdamat[,i,2], lty=3)
 }
 
 #  plot the two weight functions for the second derivative
