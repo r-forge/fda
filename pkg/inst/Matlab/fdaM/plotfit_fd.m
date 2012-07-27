@@ -45,6 +45,7 @@ y = reshape(y, n, nrep, nvar);
 %  set up number of points at which to evaluate the curves
 
 nfine = max([201, 10*nbasis+1]);
+nfine = min(nfine,4001);
 
 %  set up labels for arguments, cases and variables.
 
@@ -143,7 +144,7 @@ if residual
            max(max(max(max(y))),max(max(max(yfine))))];
     for i = 1:nrep 
         for j = 1:nvar
-	        phdl = plot(argvals, y(:,i,j), '.', xfine, yfine(:,i,j), 'b-');
+	        phdl = plot(argvals, y(:,i,j), 'o', xfine, yfine(:,i,j), 'b-');
             set(phdl, 'LineWidth', 1.5)
             axis([rng(1),rng(2),ylimit(1),ylimit(2)])
 	        xlabel(['\fontsize{12} ',argname])

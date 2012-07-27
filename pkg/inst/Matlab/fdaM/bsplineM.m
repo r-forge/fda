@@ -1,5 +1,5 @@
 function bsplinemat = bsplineM(x, breaks, norder, nderiv, sparsewrd)
-%  BSPLINEM  Computes values or derivative values of B-spline basis functions
+%  BSPLINEM  Computes values or derivatives of B-spline basis functions
 %  Arguments:
 %  X         ... Argument values for which function values are computed
 %  BREAKS    ... Increasing knot sequence spanning argument range
