@@ -1,57 +1,43 @@
-function monommat = monomial(evalarg, exponents, nderiv)
-%  MONOMIAL Values of monomials, or their derivatives.
+function phimat = IRT3PL(evalarg, nbasis, shift, nderiv)
+%  IRT3PL Values of monomials, or their derivatives, combined with
+%  log(exp(x) + shift).
 %  The powers of EVALARG are the NBASIS nonnegative integers in EXPONENTS.
 %  The default is 1, meaning EVALARG itself.
 %  Arguments are as follows:
 %  EVALARG   ... array of values at which the polynomials are to
 %                evaluated
-%  EXPONENTS ... array of nonnegative integer exponents of EVALARG
-%  NDERIV    ... order of derivative to be returned.
+%  SHIFT     ... Shift parameter.   Defaults to 1.
+%  NDERIV    ... Order of derivative to be returned.  Max. 2.
 %  Return is:
 %  A matrix with length(EVALARG) rows and NBASIS columns containing
 %    the values of the monomials or their derivatives
 
-%  last modified 17 June 2011
+%  last modified 19 June 2012
 
 % set default arguments
 
-if nargin < 3
-    nderiv = 0;
-end
+if nargin < 4,  nderiv = 0;  end
+if nargin < 3,  shift  = 1;  end
+if nargin < 2,  nbasis = 3;  end
 
-if nargin < 2
-    exponents = 1;
+if nderiv > 2
+    error('NDERIV exceeds 2.');
 end
 
 evalarg = evalarg(:);
 n = length(evalarg);
 
-nbasis = length(exponents);
+exponents = 0:(nbasis-2);
 
-%  check whether exponents are nonnegative integers
-
-for ibasis=1:nbasis
-    if exponents(ibasis) - round(exponents(ibasis)) ~= 0
-        error('An exponent is not an integer.');
-    end
-    if exponents(ibasis) < 0
-        error('An exponent is negative.');
-    end
-end
-
-% check if there are duplicate exponents
-
-if min(diff(sort(exponents))) == 0
-    error('There are duplicate exponents.');
-end
-
-monommat = zeros(n,nbasis);
+phimat = zeros(n,nbasis);
 
 if nderiv == 0
     %  use the recursion formula to compute monomnomial values
-    for ibasis=1:nbasis, monommat(:,ibasis) = evalarg.^exponents(ibasis); end
+    for ibasis=1:nbasis-1
+        phimat(:,ibasis) = evalarg.^exponents(ibasis); 
+    end
 else
-    for ibasis=1:nbasis
+    for ibasis=1:nbasis-1
         disp(ibasis)
         degree = exponents(ibasis);
         if nderiv <= degree 
@@ -60,8 +46,12 @@ else
                 disp(ideriv)
                 fac = fac*(degree-ideriv+1);
             end
-            monommat(:,ibasis) = fac.*evalarg.^(degree-nderiv);
+            phimat(:,ibasis) = fac.*evalarg.^(degree-nderiv);
         end
     end
 end
+
+%  add log(exp(x) + shift)
+
+phimat(:,nbasis) = log(exp(evalarg) + shift);
 
