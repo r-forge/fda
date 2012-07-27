@@ -84,6 +84,7 @@ pda.overlay(pdaList)
 ##
 ## Section 11.4 PDA of the Handwriting Data
 ##
+
 fdabasis= create.bspline.basis(norder=7, breaks=handwritTime)
 
 fdafd0 = fd(array(0, c(fdabasis$nbasis, dim(handwrit)[-1])), fdabasis)

@@ -408,9 +408,9 @@ plot(gaitSmoothStats[, c(1, 3)], type='b')
 #  allowing for larger fonts
 
 op = par(mfrow=c(2,1))
+par(op)
 plot(gaitSmoothStats[, c(1, 3)], type="b", log="y")
 plot(gaitSmoothStats[, 1:2], type="b", log="y")
-par(op)
 
 #    GCV is minimized with lambda = 10^(-1.5).
 
