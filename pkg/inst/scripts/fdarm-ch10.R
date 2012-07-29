@@ -5,19 +5,19 @@
 
 #  Remarks and disclaimers
 
-#  These R commands are either those in this book, or designed to 
+#  These R commands are either those in this book, or designed to
 #  otherwise illustrate how R can be used in the analysis of functional
-#  data.  
-#  We do not claim to reproduce the results in the book exactly by these 
+#  data.
+#  We do not claim to reproduce the results in the book exactly by these
 #  commands for various reasons, including:
 #    -- the analyses used to produce the book may not have been
 #       entirely correct, possibly due to coding and accuracy issues
-#       in the functions themselves 
-#    -- we may have changed our minds about how these analyses should be 
+#       in the functions themselves
+#    -- we may have changed our minds about how these analyses should be
 #       done since, and we want to suggest better ways
 #    -- the R language changes with each release of the base system, and
 #       certainly the functional data analysis functions change as well
-#    -- we might choose to offer new analyses from time to time by 
+#    -- we might choose to offer new analyses from time to time by
 #       augmenting those in the book
 #    -- many illustrations in the book were produced using Matlab, which
 #       inevitably can imply slightly different results and graphical
@@ -552,20 +552,20 @@ lines(gaitt3, kneeAccel.R2, lty='dashed', lwd=2)
 ## Section 10.4 A Functional Linear Model for Swedish Mortality
 ##
 
-#  The Swedish mortality data are proprietary, and therefore we do not
-#  provide them with the fda package.  In order to use the following
-#  code for their analysis, you must first obtain the data.  The following
-#  details are provided to help you to obtain them.
+#  The Swedish mortality data are proprietary, so these data are not
+#  included in the fda package.  To use the following code, you must
+#  first obtain the data.  The following details are provided to help
+#  you to obtain these data.
 
-#  Mortality data for 37 countries can be obtained from the 
-#  Human Mortality Database (http://www.mortality.org/). 
-#  For example, the Swedish mortality data can be found at 
+#  Mortality data for 37 countries can be obtained from the
+#  Human Mortality Database (http://www.mortality.org/).
+#  For example, the Swedish mortality data can be found at
 #  (http://www.mortality.org/cgi-bin/hmd/country.php?cntr=SWE&level=1).
 
 #  Citation:
 
-#  Human Mortality Database. University of California, Berkeley (USA), 
-#  and Max Planck Institute for Demographic Research (Germany). 
+#  Human Mortality Database. University of California, Berkeley (USA),
+#  and Max Planck Institute for Demographic Research (Germany).
 
 #   Two data objects are required for these analyses:
 
@@ -660,7 +660,7 @@ Swede.beta1mat = eval.bifd(Swede.ages, Swede.ages, Swede.linmod$beta1estbifd)
 
 # Figure 10.11
 
-persp(Swede.ages, Swede.ages, Swede.beta1mat, 
+persp(Swede.ages, Swede.ages, Swede.beta1mat,
       xlab="age", ylab="age",zlab="beta(s,t)",
       cex.lab=1.5,cex.axis=1.5)
 
@@ -695,7 +695,7 @@ tres = tperm.fd(hgtffd$fd,hgtmfd$fd)
 # Section 10.5.2 Functional F-Tests
 
 #  ---------------  Testing for no effect of climate zone  ----------------
-  
+
 # temp36fd, regionList, betaList from Section 10.1.1 above
 
 F.res = Fperm.fd(temp36fd, regionList, betaList)
