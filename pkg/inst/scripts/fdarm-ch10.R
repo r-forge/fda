@@ -602,7 +602,15 @@ read.hmd <- function(country,sex,file="Mx_1x1.txt",username,password)
         xname="Age",yname=yname),class=c("fts","fds")))
 }
 
-SwedeLogHazard = as.matrix(SwedeMat)
+## Assuming you have the female cohort lifetable (file fltcoh_1x1.txt) loaded 
+# into 'Sweden' the following creates the log hazard values that you need.                                                                      trs
+
+SwedeMat = matrix(log(Sweden[,3]),111,164,byrow=FALSE)
+
+Swede1920 = SwedeMat[1:81,164]
+SwedeLogHazard = SwedeMat[1:81,1:44]
+
+# SwedeLogHazard = as.matrix(SwedeMat)
 
 dimnames(SwedeLogHazard)[[2]] <- paste('b', 1751:1894, sep='')
 
