@@ -604,6 +604,9 @@ read.hmd <- function(country,sex,file="Mx_1x1.txt",username,password)
 
 ## Assuming you have the female cohort lifetable (file fltcoh_1x1.txt) loaded 
 # into 'Sweden' the following creates the log hazard values that you need.                                                                      trs
+#
+# If the function above works, it should be called as
+# Sweden = read.hmd('SWE','M','fltcoh_1x1.txt',username,password)
 
 SwedeMat = matrix(log(Sweden[,3]),111,164,byrow=FALSE)
 
