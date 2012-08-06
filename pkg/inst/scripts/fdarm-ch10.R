@@ -574,44 +574,20 @@ lines(gaitt3, kneeAccel.R2, lty='dashed', lwd=2)
 #             and years 1751 through 1884
 #  Swede1920: a vector object containing log hazard values for 1914
 
-#  Han Lin Shang at Monash University in Australia has kindly provided
-#  the following R function to assist you.  It requires a username and
-#  password for accessing the data, which you must obtain from the above
-#  web site.
 
-read.hmd <- function(country,sex,file="Mx_1x1.txt",username,password)
-{
-    require(RCurl)
-    path <- paste("http://www.mortality.org/hmd/",country,"/STATS/",file,sep="")
-    userpwd <- paste(username,":",password,sep="")
-    txt <- getURL(path,userpwd=userpwd)
-    con <- textConnection(txt)
-    hmd <- read.table(con,skip=2,header=T,na.strings=".")
-    close(con)
-    j <- hmd[,"Year"]==hmd[1,"Year"]
-    x <- as.numeric(gsub("\\+","",as.character(hmd[j,"Age"])))
-    col <- match(tolower(sex),tolower(colnames(hmd)))
-    y <- matrix(as.numeric(hmd[,col]),nrow=length(x))
-    colnames(y) <- unique(hmd[,"Year"])
-    rownames(y) <- as.character(hmd[j,"Age"])
-    if(substr(file,1,2)=="Mx")
-        yname <- "Mortality rate"
-    else
-        yname <- "Unknown"
-    return(structure(list(x=x,y=y,time=sort(unique(hmd[,"Year"])),
-        xname="Age",yname=yname),class=c("fts","fds")))
-}
+## The function readHMD will download and reformat entries in the databases
+# lifetables for you which we can then use. Note that this function requires
+# the packages RCurl which has sometimes been unavailable on Windows computers. 
+# If this is the case, the desired entries can be found in the third column 
+# ('qx') of the Swedish Female Lifetable (file fltcoh_1x1.txt) which must then
+# be reformatted to a matrix giving age (rows) and year of birth (columns). 
 
-## Assuming you have the female cohort lifetable (file fltcoh_1x1.txt) loaded 
-# into 'Sweden' the following creates the log hazard values that you need.                                                                      trs
-#
-# If the function above works, it should be called as
-# Sweden = read.hmd('SWE','M','fltcoh_1x1.txt',username,password)
+Sweden = readHMD(USERNAME,PASSWORD,'SWE',ltCol='q')
 
-SwedeMat = matrix(log(Sweden[,3]),111,164,byrow=FALSE)
+SwedeMat = log(Sweden$y[1:81,])
 
-Swede1920 = SwedeMat[1:81,164]
-SwedeLogHazard = SwedeMat[1:81,1:44]
+Swede1920 = SwedeMat[,164]
+SwedeLogHazard = SwedeMat[,1:44]
 
 # SwedeLogHazard = as.matrix(SwedeMat)
 
