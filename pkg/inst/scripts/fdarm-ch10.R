@@ -537,8 +537,11 @@ abline(v=c(7.5, 14.7), lty='dashed')
 kneeAccel.pred = predict(gaitAccelRegr$yhatfd$fd, gaitt3)
 kneeAccel.     = predict(kneefd.accel, gaitt3)
 
-MS.pred = sd(t(kneeAccel.pred))^2
-MS.accelfd = sd(t(kneeAccel.))^2
+#MS.pred0 = sd(t(kneeAccel.pred))^2
+# warning: sd(matrix) depricated;  use apply(*.2, sd)
+MS.pred = apply(kneeAccel.pred, 1, var)
+#MS.accelfd0 = sd(t(kneeAccel.))^2
+MS.accelfd = apply(kneeAccel., 1, var)
 kneeAccel.R2 = (MS.pred / MS.accelfd)
 
 lines(gaitt3, kneeAccel.R2, lty='dashed', lwd=2)
