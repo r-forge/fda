@@ -25,7 +25,7 @@ readHMD(username, password,
                   ESP='Spain', SWE='Sweden', CHE='Switzerland',
                   TWN='Taiwan', GBR='U.K.', USA='U.S.A.',
                   UKR='Ukraine'),
-        sex=c('m', 'f'), HMDurl='http://www.mortality.org/hmd',
+        sex=c('m', 'f', 'b'), HMDurl='http://www.mortality.org/hmd',
         dataType = 'lt',
         ltCol=c('m', 'q', 'a', 'l', 'd', 'L', 'T', 'e'),
         cohper = c(coh='cohort', per='periodic'),
@@ -42,7 +42,8 @@ readHMD(username, password,
     3-letter code.
   }
   \item{sex}{
-    gender for which data are required, specified via a single letter.
+    gender for which data are required (male, female or both), specified
+    via a single letter.
   }
   \item{HMDurl}{
     character string giving the URL of HMD.

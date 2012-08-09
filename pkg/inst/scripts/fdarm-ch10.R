@@ -577,79 +577,89 @@ lines(gaitt3, kneeAccel.R2, lty='dashed', lwd=2)
 
 ## The function readHMD will download and reformat entries in the databases
 # lifetables for you which we can then use. Note that this function requires
-# the packages RCurl which has sometimes been unavailable on Windows computers. 
-# If this is the case, the desired entries can be found in the third column 
+# the packages RCurl which has sometimes been unavailable on Windows computers.
+# If this is the case, the desired entries can be found in the third column
 # ('qx') of the Swedish Female Lifetable (file fltcoh_1x1.txt) which must then
-# be reformatted to a matrix giving age (rows) and year of birth (columns). 
+# be reformatted to a matrix giving age (rows) and year of birth (columns).
 
-Sweden = readHMD(USERNAME,PASSWORD,'SWE',ltCol='q')
+if(FALSE){
 
-SwedeMat = log(Sweden$y[1:81,])
+# Enter here your USERNAME and PASSWORD
+# for www.mortality.org
+  USERNAME <- 'jillUser'
+  PASSWORD <- 'JUpw123!'
 
-Swede1920 = SwedeMat[,164]
-SwedeLogHazard = SwedeMat[,1:44]
+  Sweden = readHMD(USERNAME,PASSWORD,'SWE',ltCol='q')
+
+  SwedeMat = log(Sweden$y[1:81,])
+
+  Swede1920 = SwedeMat[,164]
+  SwedeLogHazard = SwedeMat[,1:44]
 
 # SwedeLogHazard = as.matrix(SwedeMat)
 
-dimnames(SwedeLogHazard)[[2]] <- paste('b', 1751:1894, sep='')
+  dimnames(SwedeLogHazard)[[2]] <- paste('b', 1751:1894, sep='')
 
 # Figure 10.10
 
-Fig10.10data = cbind(SwedeLogHazard[, c('b1751', 'b1810', 'b1860')], Swede1920)
+  Fig10.10data = cbind(SwedeLogHazard[, c('b1751', 'b1810', 'b1860')],
+                       Swede1920)
 
-SwedeTime = 0:80;
-SwedeRng = c(0,80);
+  SwedeTime = 0:80;
+  SwedeRng = c(0,80);
 
-matplot(SwedeTime, Fig10.10data,
-        type='l',lwd=2,xlab='age',ylab='log Hazard',col=1,
-        cex.lab=1.5,cex.axis=1.5)
+  matplot(SwedeTime, Fig10.10data,
+          type='l',lwd=2,xlab='age',ylab='log Hazard',col=1,
+          cex.lab=1.5,cex.axis=1.5)
 
 #  smooth the log hazard observations
 
-nbasis = 85
-norder = 6
-SwedeBasis = create.bspline.basis(SwedeRng, nbasis, norder)
+  nbasis = 85
+  norder = 6
+  SwedeBasis = create.bspline.basis(SwedeRng, nbasis, norder)
 
-D2fdPar = fdPar(SwedeBasis, lambda=1e-7)
+  D2fdPar = fdPar(SwedeBasis, lambda=1e-7)
 
-SwedeLogHazfd = smooth.basis(SwedeTime, SwedeLogHazard, D2fdPar)$fd
+  SwedeLogHazfd = smooth.basis(SwedeTime, SwedeLogHazard, D2fdPar)$fd
 
 # The following requires manually clicking on the plot
 # for each of 144 birth year cohorts
 
-plotfit.fd(SwedeLogHazard,SwedeTime,SwedeLogHazfd)
+  plotfit.fd(SwedeLogHazard,SwedeTime,SwedeLogHazfd)
 
 # Set up for the list of regression coefficient fdPar objects
 
-nbasis     = 23
-SwedeRng   = c(0,80)
-SwedeBetaBasis = create.bspline.basis(SwedeRng,nbasis)
+  nbasis     = 23
+  SwedeRng   = c(0,80)
+  SwedeBetaBasis = create.bspline.basis(SwedeRng,nbasis)
 
-SwedeBeta0Par = fdPar(SwedeBetaBasis, 2, 1e-5)
+  SwedeBeta0Par = fdPar(SwedeBetaBasis, 2, 1e-5)
 
-SwedeBeta1fd  = bifd(matrix(0,23,23), SwedeBetaBasis, SwedeBetaBasis)
+  SwedeBeta1fd  = bifd(matrix(0,23,23), SwedeBetaBasis, SwedeBetaBasis)
 
-SwedeBeta1Par = bifdPar(SwedeBeta1fd, 2, 2, 1e3, 1e3)
+  SwedeBeta1Par = bifdPar(SwedeBeta1fd, 2, 2, 1e3, 1e3)
 
-SwedeBetaList = list(SwedeBeta0Par, SwedeBeta1Par)
+  SwedeBetaList = list(SwedeBeta0Par, SwedeBeta1Par)
 
 #  Define the dependent and independent variable objects
 
-NextYear = SwedeLogHazfd[2:144]
-LastYear = SwedeLogHazfd[1:143]
+  NextYear = SwedeLogHazfd[2:144]
+  LastYear = SwedeLogHazfd[1:143]
 
 #  Do the regression analysis
 
-Swede.linmod = linmod(NextYear, LastYear, SwedeBetaList)
+  Swede.linmod = linmod(NextYear, LastYear, SwedeBetaList)
 
-Swede.ages = seq(0, 80, 2)
-Swede.beta1mat = eval.bifd(Swede.ages, Swede.ages, Swede.linmod$beta1estbifd)
+  Swede.ages = seq(0, 80, 2)
+  Swede.beta1mat = eval.bifd(Swede.ages, Swede.ages, Swede.linmod$beta1estbifd)
 
 # Figure 10.11
 
-persp(Swede.ages, Swede.ages, Swede.beta1mat,
-      xlab="age", ylab="age",zlab="beta(s,t)",
-      cex.lab=1.5,cex.axis=1.5)
+  persp(Swede.ages, Swede.ages, Swede.beta1mat,
+        xlab="age", ylab="age",zlab="beta(s,t)",
+        cex.lab=1.5,cex.axis=1.5)
+}
+# End Sweden example
 
 ##
 ## Section 10.5 Permutation Tests of Functional Hypotheses
@@ -695,7 +705,8 @@ with(F.res,{
            ylims = c(min(c(Fvals, qval, qvals.pts)), max(c(Fobs,
                 qval)))
             plot(argvals, Fvals, type = "l", ylim = ylims, col = 1,
-                lwd = 2, xlab = "day", ylab = "F-statistic", cex.lab=1.5,cex.axis=1.5)
+                 lwd = 2, xlab = "day", ylab = "F-statistic",
+                 cex.lab=1.5,cex.axis=1.5)
             lines(argvals, qvals.pts, lty = 3, col = 1, lwd = 2)
             abline(h = qval, lty = 2, col = 1, lwd = 2)
             legendstr = c("Observed Statistic", paste("pointwise",
