@@ -171,6 +171,7 @@ readHMD(username, password,
 }
 \seealso{
   \code{\link{getURL}}
+  \code{\link[demography]{hmd.mx}}
 }
 \examples{
 \dontrun{
