@@ -30,6 +30,8 @@
 %  to time as we get new data illustrating new things, add functionality
 %  to the package, or just for fun.
 
+%  last modified 27 July 2012 by Jim Ramsay
+
 %
 % ch. Chapter 7  Exploring Variation: Functional Principal
 %                and Canonical Components analysis
@@ -42,7 +44,7 @@
 %  Path to the folder containing the Matlab functional data analysis
 %  software
 
-fdaMPath = 'c:/Program Files/MATLAB/R2009a/fdaM';
+fdaMPath = '../Matlab/fdaM';
 
 addpath(fdaMPath)
 
@@ -131,11 +133,11 @@ plot_pca_fd(logprec_pcastr)
 %  The expansion supplied by the function is too large,
 %  and here we supply a smaller value, 0.5
 
-plot_pca(logprec_pcastr, 1, 0, 0.5)
+plot_pca_fd(logprec_pcastr, 1, 0, 0.5)
 
 % Figure 7.2
 
-logprec_rotpcastr = varmx_pca_fd(logprec_pcastr);
+logprec_rotpcastr = varmx_pca(logprec_pcastr);
 plot_pca_fd(logprec_rotpcastr, 1, 0, 0.5)
 
 % Figure 7.3
@@ -193,11 +195,14 @@ addpath(handwritPath)
 
 %  load the data from file fda.mat
 
-load fda
+fid      = fopen('fdareg.dat','rt');
+fdaarray = reshape(fscanf(fid,'%f'), [20,2,1401]);
+fdaarray = permute(fdaarray,[3,1,2]);
+fdaarray = fdaarray/1000;   %  convert spatial unit to meters
 
-handwrit = fda.fdaarray;
-fdatime  = fda.fdatime;
-fdarange = fda.fdarange;
+handwrit = fdaarray;
+fdatime  = linspace(0, 2300, 1401)';
+fdarange = [0, 2300];
 
 nbasis = 105;
 norder = 6;
@@ -227,7 +232,7 @@ fdapcastr = pca_fd(fda_fd, nharm);
 
 plot_pca_fd(fdapcastr, 1, 0, 0.2);
 
-fdarotpcastr = varmx_pca_fd(fdapcastr);
+fdarotpcastr = varmx_pca(fdapcastr);
 
 plot_pca_fd(fdarotpcastr, 1, 0, 0.2)
 
@@ -271,6 +276,7 @@ for j = 1:3
 end
 
 j=3;
+subplot(1,1,1)
 plot(fdameanmat(:,1,1)-0.035,  fdameanmat(:,1,2), 'b-', ...
      harmplusmat(:,j,1)-0.035, harmplusmat(:,j,2), 'b:', ...
      harmminsmat(:,j,1)-0.035, harmminsmat(:,j,2), 'b:')
@@ -307,8 +313,8 @@ ccafdPar = fdPar(daybasis, ccaLfd, ccalambda);
 nharm = 3;
 ccastr  = cca_fd(temp_fd, logprec_fd, nharm, ccafdPar, ccafdPar);
 
-ccawt_temp    = ccastr.wtfdx;
-ccawt_logprec = ccastr.wtfdy;
+ccawt_temp    = ccastr.wtfd1;
+ccawt_logprec = ccastr.wtfd2;
 corrs         = ccastr.corrs;
 
 disp(corrs(1:3))
@@ -318,6 +324,7 @@ ccawtmat_logprec = eval_fd(time, ccawt_logprec);
 
 %  Figure 7.8
 
+subplot(1,1,1)
 phdl=plot(time, ccawtmat_temp(:,1),    'b-', ...
           time, ccawtmat_logprec(:,1), 'b--', ...
           yearRng, [0,0], 'b:');
@@ -329,8 +336,8 @@ legend('Temp.', 'Log Prec.', 'Location', 'SouthWest')
 
 %  Figure 7.9
 
-ccascr_temp    = ccastr.varx;
-ccascr_logprec = ccastr.vary;
+ccascr_temp    = ccastr.var1;
+ccascr_logprec = ccastr.var2;
 
 placeindex = [35,30,31,19,33,25,24,17,16,8,14,12,15,10,27,6,1,29];
 

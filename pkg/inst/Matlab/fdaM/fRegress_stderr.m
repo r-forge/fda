@@ -172,7 +172,7 @@ else
             tfine      = linspace(betarng(1), betarng(2), nfine)';
             bbasismat  = eval_basis(tfine, betabasisj);
             bstderrj   = sqrt(diag(bbasismat*bvarj*bbasismat'));
-            bstderrfdj = data2fd(bstderrj, tfine, betabasisj);
+            bstderrfdj = smooth_basis(tfine, bstderrj, betabasisj);
         else
             bstderrj   = sqrt(diag(bvarj));
             bstderrfdj = fd(bstderrj', onebasis);

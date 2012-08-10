@@ -69,7 +69,7 @@ end
 if nargin < 6,  SigmaE = [];  end
 if nargin < 5,  y2cMap = [];  end
 if nargin < 4,  wt     = [];  end
-
+          
 [yfdPar, xfdcell, betacell, wt, rangeval] = ...
                fRegress_argcheck(yfdPar, xfdcell, betacell, wt);
           
@@ -127,7 +127,7 @@ if isa_fdPar(yfdPar)
         if getestimate(betafdParj)
             betafdj    = getfd(betafdParj);
             betabasisj = getbasis(betafdj);
-            ncoefj     = length(getcoef(betafdj));
+            ncoefj     = getnbasis(betabasisj);
             %  row indices of CMAT and DMAT to fill
             mj1    = mj2 + 1;
             mj2    = mj2 + ncoefj;
@@ -149,7 +149,7 @@ if isa_fdPar(yfdPar)
                 if getestimate(betafdPark)
                     betafdk    = getfd(betafdPark);
                     betabasisk = getbasis(betafdk);
-                    ncoefk     = length(getcoef(getfd(betafdPark)));
+                    ncoefk     = getnbasis(betabasisk);
                     %  column indices of CMAT to fill
                     mk1 = mk2 + 1;
                     mk2 = mk2 + ncoefk;
@@ -162,17 +162,22 @@ if isa_fdPar(yfdPar)
                         xxfdjk = (xfdj.*wt).*xfdk;
                     end
                     wtfdjk = sum(xxfdjk);
-                    Cmatjk = inprod(betabasisj, betabasisk, 0, 0, rangeval, wtfdjk);
+                    Cmatjk = inprod(betabasisj, betabasisk, 0, 0, ...
+                                    rangeval, wtfdjk);
                     Cmat(indexj,indexk) = Cmatjk;
                     Cmat(indexk,indexj) = Cmatjk';
                 end
             end
             %  attach penalty term to diagonal block
-            lambda = getlambda(betafdParj);
-            if lambda > 0
-                Lfdj  = getLfd(betafdParj);
-                Rmatj = eval_penalty(getbasis(getfd(betafdParj)), Lfdj);
-                Cmat(indexj,indexj) = Cmat(indexj,indexj) + lambda.*Rmatj;
+            lambdaj = getlambda(betafdParj);
+            if lambdaj > 0
+                Rmatj = getpenmat(betafdParj);
+                if isempty(Rmatj)
+                    Lfdj  = getLfd(betafdParj);
+                    Rmatj = eval_penalty(betabasisj, Lfdj);
+                end
+                Cmat(indexj,indexj) = Cmat(indexj,indexj) + ...
+                                      lambdaj.*Rmatj;
             end
         end
     end
@@ -180,7 +185,7 @@ if isa_fdPar(yfdPar)
     Cmat = (Cmat + Cmat')./2;
     
     %  check Cmat for singularity
-    
+
     eigchk(Cmat);
     
     %  solve for coefficients defining BETA

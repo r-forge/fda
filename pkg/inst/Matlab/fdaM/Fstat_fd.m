@@ -9,7 +9,7 @@ if class(y) ~= class(yhat)
     error('Y and YHAT are not of the same class.');
 end
 
-if ~(isa_fd(y) || isa_double(y))
+if ~(isa_fd(y) || isnumeric(y))
     error('Y and YHAT are neither numeric nor FD objects.');
 end
 

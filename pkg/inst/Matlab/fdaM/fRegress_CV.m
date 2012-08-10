@@ -5,21 +5,29 @@ function [SSE_CV, errfd] = ...
 % generalized cross validation scores are now returned by fRegress
 % when scalar responses are used.
 
-%  Last modified 30 September 2009 by Jim Ramsay
+%  Last modified 28 July 2012 by Jim Ramsay
 
 if nargin < 4, wt = [];  end
 
+%  check the arguments
+
 [yfdPar, xfdcell, betacell, wt] = ...
                fRegress_argcheck(yfdPar, xfdcell, betacell, wt);
-          
+  
+%  extract dimensions of the data and the analysis
+
 p = length(xfdcell);
 N = size(getcoef(xfdcell{1}),2);
-
-if nargin < 5, CVobs = 1:N;  end
+%  default value for CVobs
+if nargin < 5 || isempty(CVobs), CVobs = 1:N;  end
 M = length(CVobs);
 
-if isnumeric(yfdPar)  
+%  branch to either scalar or functional dependent variable
+
+if isnumeric(yfdPar) 
+    
     %  Dependent variable is scalar
+    
     yvec   = yfdPar;
     SSE_CV = 0;
     errvec = zeros(M,1);
@@ -59,38 +67,57 @@ if isnumeric(yfdPar)
     end
     errfd = errvec;
 else
+    
     %  Dependent variable is functional
+    
     yfd      = getfd(yfdPar);
     SSE_CV   = 0;
     errcoefs = [];
     for m = 1:M
+        %  index of case to eliminate and indices of remaining
         i = CVobs(m);
         indexi = find((1:N) ~= i);
+        %  eliminate case i from the weights
         if ~isempty(wt)
             wti  = wt(indexi);
         else
             wti  = [];
         end
+        %  eliminate case i from covariates
         xfdcelli = cell(p,1);
         for j=1:p
             xfd = xfdcell{j};
             xfdcelli{j} = xfd(indexi);
         end
-        yfdi = yfd(indexi);        
+        yfdi = yfd(indexi); 
+        %  carry out the functional regression analysis
         fRegresscelli = fRegress(yfdi,xfdcelli,betacell,wti);
+% fRegressStruct = ...
+%         fRegress(yfdPar, xfdcell, betacell, wt, y2cMap, SigmaE)
+% yfdPar=yfdi;
+% xfdcell=xfdcelli;
+% wt=wti;
+        %  extract the regression coefficient functions
         betaestcelli = fRegresscelli.betahat;
+        %  compute the fit to the data for case i
         yhatfdi = 0;
         for j=1:p
             betafdParj = betaestcelli{j};
             betafdj    = getfd(betafdParj);
             xfdj       = xfdcell{j};
             xfdij      = xfdj(i);
-            yhatfdi    = yhatfdi + xfdij.*betafdj;
+            tempfd     = xfdij.*betafdj;
+            yhatfdi    = yhatfdi + tempfd;
         end
+        %  compute the residual function
         errfdi   = yfd(i) - yhatfdi;
+        %  increment the error sum of squares by the integral of the
+        %  square of the residual function
         SSE_CV   = SSE_CV + inprod(errfdi,errfdi);
+        %  add the coefficients for the resiudal function
         errcoefs = [errcoefs, getcoef(errfdi)];
     end
+    %  set up the functional data object for the residual fns
     if nargout > 1
         errfd = fd(errcoefs,getbasis(errfdi));
     end

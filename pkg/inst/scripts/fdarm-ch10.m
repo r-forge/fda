@@ -34,6 +34,8 @@
 % ch.  10.  Linear Models for Functional Responses
 %
 
+%  last modified 27 July 2012 by Jim Ramsay
+
 %  Set up some strings for constructing paths to folders.
 %  These strings should be modified so as to provided access
 %  to the specified folders on your computer.
@@ -41,14 +43,12 @@
 %  Path to the folder containing the Matlab functional data analysis
 %  software
 
-fdaMPath = 'c:/Program Files/MATLAB/R2009a/fdaM';
-
+fdaMPath = '../Matlab/fdaM';
 addpath(fdaMPath)
 
 %  Path to the folder containing the examples
 
 examplesPath = [fdaMPath,'/examples'];
-
 addpath(examplesPath)
 
 %
@@ -62,7 +62,6 @@ addpath(examplesPath)
 %  path to the daily weather data example folder
 
 weatherPath = [examplesPath,'/weather'];
-
 addpath(weatherPath)
 
 load daily
@@ -155,10 +154,15 @@ ylabel('\fontsize{13} Prediction')
 % 10.1.2 Trends = Sea Bird Populations on Kodiak Island
 
 seabirdPath = [examplesPath,'/seabirds'];
-
 addpath(seabirdPath)
 
+%  load the struct object seabirds
+
 load seabirds
+
+%  display the names of the fields in seabirds
+
+disp(seabirds)
 
 %  select only the data for sites Uyak and Uganik, which have data
 %  from 1986 to 2005, except for 1998
@@ -186,10 +190,11 @@ meanCounts = (birdcountmat(:, 1:13) + ...
 
 logCounts = log10(meanCounts);
 
-% Figure 10.2
-
 shellfishindex = [1,2,5,6,12,13];
 fishindex      = [3,4,7,8,9,10,11];
+
+% Figure 10.2
+
 logcountlim    = [min(min(logCounts)), max(max(logCounts))];
 
 meanShellfish = mean(meanCounts(:, shellfishindex), 2);
@@ -264,9 +269,11 @@ Intercept = ones(26,1);
 
 %  Crustacean/Mollusc feeding effect:  a contrast between the two groups
 
-foodindex = [1,2,5,6,12,13];
+foodindex = shellfishindex;
 fooddummy = zeros(26,1);
 fooddummy([foodindex,foodindex+13]) = 1;
+%  define fooddummy as a constrast between food effects
+fooddummy([fishindex,fishindex+13]) = -1;
 
 %  Bird effect, one for each species
 
@@ -288,8 +295,8 @@ birdcoef3 = [getcoef(birdfd2), zeros(19,2)];
 birdfd3   = fd(birdcoef3, birdbasis);
 
 Zmat = [Zmat0; zeros(2,15)];
-Zmat(28,fishindex+2) = 1;
-Zmat(27,shellfishindex+2)  = 1;
+Zmat(27,shellfishindex+2) = 1;
+Zmat(28,     fishindex+2) = 1;
 
 p = 15;
 xfdcell = cell(p,1);
@@ -302,8 +309,10 @@ end
 %  use cubic b-spline basis for intercept and food coefficients
 
 betabasis1 = create_bspline_basis([1,20],21,4,selYear);
-lambda     = 10;
-betafdPar1 = fdPar(betabasis1,2,lambda);
+Lfdobj1    = int2Lfd(2);
+Rmat1      = eval_penalty(betabasis1, Lfdobj1);
+lambda1    = 10;
+betafdPar1 = fdPar(betabasis1,Lfdobj1,lambda1,1,Rmat1);
 betacell{1} = betafdPar1;
 betacell{2} = betafdPar1;
 betabasis2 = create_constant_basis([1,20]);
@@ -314,7 +323,7 @@ end
 
 birdRegressStr = fRegress(birdfd3, xfdcell, betacell);
 
-betaestcell = birdRegressStr{4};
+betaestcell = birdRegressStr.betahat;
 
 % Figure 10.3 is produced = Section 10.2.2 below
 % after estimating the smoothing parameter = Section 10.1.3
@@ -322,17 +331,27 @@ betaestcell = birdRegressStr{4};
 % Here we plot the regression parameters
 % without the confidence intervals.
 
+nfine = 101;
+yearfine = linspace(1,20,nfine)';
 subplot(2,1,1)
-plot(getfd(betaestcell{1}))
+betafd1 = getfd(betaestcell{1});
+betavec1 = eval_fd(yearfine, betafd1);
+plot(yearfine,betavec1)
 subplot(2,1,2)
-plot(getfd(betaestcell{2}))
+betafd2 = getfd(betaestcell{2});
+betavec2 = eval_fd(yearfine, betafd2);
+plot(yearfine,betavec2)
 
 %
 % Section 10.1.3 Choosing Smoothing Parameters
 %
 
 %  Choose the level of smoothing by minimizing cross-validated
-%  error sums of squares.
+%  error sums of squares.  
+%  Only the first 26 observations are used (specified in
+%  vector CV_obs), since deleting the 27th and 28th observations results in
+%  a singularity in the matrix of covariate values.  These are
+%  "dummy" observations added to constrain effects to sum to 0.
 
 loglam = -2:0.25:4;
 SSE_CV = zeros(length(loglam),1);
@@ -352,18 +371,21 @@ end
 
 %  Figure 10.4
 
+subplot(1,1,1)
 phdl = plot(loglam, SSE_CV, 'bo-');
 set(phdl, 'LineWidth', 2)
 xlabel('\fontsize{13} log smoothing parameter')
 ylabel('\fontsize{13} cross validated sum of squares')
 
 %  Cross-validation is minimized at something like lambda = sqrt(10),
-%  although the discontinous nature of the CV function is disquieting.
 
 betafdPar1 = putlambda(betafdPar1, 10^0.5);
 for j = 1:2 
     betacell{j} = betafdPar1;
 end
+
+yfdPar = birdfd3;
+CVobs = 1:26;
 
 %  carry out the functional regression analysis
 
@@ -374,7 +396,7 @@ fRegressStr = fRegress(birdfd3, xfdcell, betacell);
 betanames{1} = 'Intercept';
 betanames{2} = 'Food Effect';
 
-birdBetaestcell = fRegressStr{4};
+birdBetaestcell = fRegressStr.betahat;
 
 for j = 1:2 
     subplot(2,1,j)
@@ -388,7 +410,7 @@ end
 
 %  plot predicted functions
 
-yhatfdobj = fRegressStr{5};
+yhatfdobj = fRegressStr.yhat;
 subplot(1,1,1)
 plotfit_fd(logCounts2, selYear, yhatfdobj(1:26))
 
@@ -403,9 +425,12 @@ birdYhatmat = eval_fd(selYear, yhatfdobj(1:26));
 rmatb       = logCounts2 - birdYhatmat;
 SigmaEb     = cov(rmatb');
 
-birdbetastderrCell = fRegress_stderr(fRegressStr, y2cMap, SigmaEb);
+birdbetastderrStr = fRegress_stderr(fRegressStr, y2cMap, SigmaEb);
 
-plotbeta(birdBetaestcell(1:2), birdbetastderrCell(1:2))
+birdBetaestCell    = fRegressStr.betahat;
+birdbetastderrCell = birdbetastderrStr.betastderr;
+
+plotbeta(birdBetaestCell(1:2), birdbetastderrCell(1:2))
 
 % Section 10.2.3 Knee Angle Predicted from Hip Angle
 
@@ -648,11 +673,11 @@ SigmaE = cov(resmat');
 
 %  compute cell array of standard error functions
 
-kneebetastderrCell = fRegress_stderr(kneefRegressStr, y2cMap, SigmaE);
+kneebetastderrStr = fRegress_stderr(kneefRegressStr, y2cMap, SigmaE);
 
 %  plot regression functions with 95% confidence intervals
 
-plotbeta(kneebetaestCell, kneebetastderrCell)
+plotbeta(kneebetaestStr.betahat, kneebetastderrStr.betastderr)
 
 % Figure 10.9
 

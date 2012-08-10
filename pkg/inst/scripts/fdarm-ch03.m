@@ -31,6 +31,8 @@
 %  to time as we get new data illustrating new things, add functionality
 %  to the package, or just for fun.
 
+%  last modified 27 July 2012 by Jim Ramsay
+
 %
 % ch. 3.  How to specify basis systems for building functions
 %
@@ -42,7 +44,7 @@
 %  Path to the folder containing the Matlab functional data analysis
 %  software
 
-fdaMPath = 'c:/Program Files/MATLAB/R2009a/fdaM';
+fdaMPath = '../Matlab/fdaM';
 
 addpath(fdaMPath)
 
@@ -92,7 +94,7 @@ zerobasis2 = daybasis65(2:65);
 nbasis = 3;
 fourier_basis3 = create_fourier_basis(unitRng, nbasis);
 
-help(create_fourier_basis)
+help create_fourier_basis
 
 %
 % Section 3.3 Spline series for Non-periodic Data and Functions
@@ -294,7 +296,7 @@ Dmonbmat_1 = eval_basis(t_1, monbasis, 1);
 % Section 3.6 The Structure of the basisfd or basis Class
 %
 
-help(basis)
+help basis
 
 %
 % Section 3.7 Some Things to Try

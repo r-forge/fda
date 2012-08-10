@@ -29,6 +29,8 @@
 %  to time as we get new data illustrating new things, add functionality
 %  to the package, or just for fun.
 
+%  last modified 27 July 2012 by Jim Ramsay
+
 %
 % ch. 6.  Descriptions of Functional Data
 %
@@ -40,7 +42,7 @@
 %  Path to the folder containing the Matlab functional data analysis
 %  software
 
-fdaMPath = 'c:/Program Files/MATLAB/R2009a/fdaM';
+fdaMPath = '../Matlab/fdaM';
 
 addpath(fdaMPath)
 
@@ -116,7 +118,7 @@ stddevlogprec = std_fd(logprec_fd);
 
 % Section 6.1.1 The Bivariate Covariance Function v(s; t)
 
-logprecvar_bifd = var_fd(logprec_fd);
+logprecvar_bifd = var(logprec_fd);
 
 weektime        = linspace(0,365,53);
 logprecvar_mat  = eval_bifd(weektime, weektime, logprecvar_bifd);
@@ -372,7 +374,7 @@ precLmat = inprod(precbasis, xifd);
 lambda      = 1e6;
 fdParobj    = fdPar(daybasis, harmaccelLfd, lambda);
 
-[logprec_fd, df, gcv, SSE, penmat, y2cMap] = ...
+[logprec_fd, df, gcv, beta, SSE, penmat, y2cMap] = ...
               smooth_basis(time, logprecav, fdParobj);
 fdnames{1}   = 'Day (July 1 to June 30)';
 fdnames{2,1} = 'Weather Station';
@@ -401,8 +403,8 @@ SigmaE      = diag(varvec);
 
 %  compute variance covariance matrix for fit
 
-c2rMap        = eval_basis(time, daybasis);
-Sigmayhat     = c2rMap * y2cMap * SigmaE * y2cMap' * c2rMap';
+c2rMap    = eval_basis(time, daybasis);
+Sigmayhat = c2rMap * y2cMap * SigmaE * y2cMap' * c2rMap';
 
 %  extract standard error function for yhat
 
@@ -413,8 +415,8 @@ logprec_stderr= sqrt(diag(Sigmayhat));
 logprecvec29 = eval_fd(time,logprec_fd(29));
 
 phdl = plot(time, logprecvec29,                 'b-', ...
-            time, logprec29 + 2*logprec_stderr, 'b--', ...
-            time, logprec29 - 2*logprec_stderr, 'b--', ...
+            time, logprecvec29 + 2*logprec_stderr, 'b--', ...
+            time, logprecvec29 - 2*logprec_stderr, 'b--', ...
             time, logprecav(:,29),              'bo');
 set(phdl, 'LineWidth', 2);
 xlabel('\fontsize{13} Day (July 1 to June 30)')

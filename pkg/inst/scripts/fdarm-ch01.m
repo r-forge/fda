@@ -3,6 +3,8 @@
 % Functional Data Analysis with R and Matlab (Springer)
 %
 
+%  last modified 27 July 2012 by Jim Ramsay
+
 %  Remarks and disclaimers
 
 %  These R commands are either those in this book, or designed to 
@@ -47,17 +49,11 @@
 %  Path to the folder containing the Matlab functional data analysis
 %  software
 
-fdaMPath = 'c:/Program Files/MATLAB/R2009a/fdaM';
+fdaMPath = '../Matlab/fdaM';
 
 addpath(fdaMPath)
 
 %  Path to the folder containing the examples
-
-%  Here is the full path name:
-
-examplesPath = 'c:/Program Files/MATLAB/R2009a/fdaM/examples';
-
-%  Here is a path name constructed from fdaMPath:
 
 examplesPath = [fdaMPath,'/examples'];
 
@@ -317,11 +313,14 @@ addpath(handwritPath)
 
 %  load the data from file fda.mat
 
-load fda
+fid      = fopen('fdareg.dat','rt');
+fdaarray = reshape(fscanf(fid,'%f'), [20,2,1401]);
+fdaarray = permute(fdaarray,[3,1,2]);
+fdaarray = fdaarray/1000;   %  convert spatial unit to meters
 
-handwrit = fda.fdaarray;
-fdatime  = fda.fdatime;
-fdarange = fda.fdarange;
+handwrit = fdaarray;
+fdatime  = linspace(0, 2300, 1401)';
+fdarange = [0, 2300];
 
 % Figure 1.8
 
@@ -447,7 +446,6 @@ TempBasis = create_fourier_basis(rng, 13);
 TempfdPar = fdPar(TempBasis, harmaccelLfd, 10^7);
 P_Rupert_Prec_fd  = smooth_basis(time, P_RupertPrecip, TempfdPar);
 P_Rupert_Prec_mat = eval_fd(day5, P_Rupert_Prec_fd);
-
 
 % Figure 1.13
 

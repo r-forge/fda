@@ -44,7 +44,7 @@ function [Wfdobj, Fstr, ysmth, iternum, iterhist] = ...
 %               and columns corresponding to it. number, function value,
 %               and mean squared gradient.
 
-%  Last modified 19 December 2007
+%  Last modified 27 July 2012
 
 %  initialize arguments that are not included
 
@@ -131,12 +131,10 @@ end
 %  Compute initial function and gradient values
 
 [Fstr, Dyhat] = fngrad(y, argvals, wt, Wfdobj, lambda, Kmat, inactive);
-disp(Fstr.grad)
 
 %  compute the initial expected Hessian
 
 hessmat = hesscal(Dyhat, wtroot, lambda, Kmat, inactive);  
-disp(hessmat)
 if dbglev > 2
     %  output eigenvalues of Hessian
     eigval = sort(eig(hessmat));

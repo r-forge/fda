@@ -71,7 +71,7 @@ if isa_fd(fdobj1) && isa_fd(fdobj2)
             error('Dimensions of coefficient matrices not compatible.');
         end
         coefd1 = size(coef1);
-        fdobj1    = putcoef(fdobj1, coef1);
+        fdobj1 = putcoef(fdobj1, coef1);
     end
     
     %  FDOBJ2 is single,  FDOBJ1 has replications
