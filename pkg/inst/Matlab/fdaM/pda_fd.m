@@ -28,6 +28,7 @@ function [bwtcell, awtcell, resfdcell] = ...
 %    for each scalar function in the system.  
 
 %  Arguments:
+%
 %  XFDCELL   ...  cell array of functional data objects for the 
 %                 functions whose derivatives define the DIFE
 %                 dimensions are J and 1
@@ -57,10 +58,12 @@ function [bwtcell, awtcell, resfdcell] = ...
 %                 dimension J and K
 %  RESFDCELL ...  FD object for residual functions.
 
-%  last modified 2 November 2008
+%  last modified 8 August 2012 by Jim Ramsay
+
+%  check that there are least the first two arguments
 
 if nargin < 2
-    error('There are less than three arguments.');
+    error('There are less than two arguments.');
 end
 
 %   set some default arguments
@@ -76,9 +79,9 @@ if nargin < 5,
     if length(bwtdims) > 3
         error('BWTCELL has more than three dimensions.');
     end
-    if all(bwtdims) == 1 || length(bwtdims) == 2
+    if all(bwtdims == 1) || length(bwtdims) == 2
         norder = 1;
-    else
+  else
         norder = bwtdims(3);
     end
 end
@@ -104,6 +107,9 @@ end
 %  ----------------------------------------------------------------
 
 if nvar == 1
+    
+    norder = length(bwtcell);
+    nordp1 = norder + 1;
     
     %  check the dimensions of UFDCELL and AWTCELL
     
@@ -143,25 +149,29 @@ if nvar == 1
         error('The dimensions of BWTCELL are incorrect.');
     end
     
-    %  check XFDCELL and extract NCURVE and XRANGE
+    %  extract NCURVE and XRANGE from XFDCELL{1}
     
     if ~isa_fd(xfdcell{1})
         error('XFDCELL{1} is not a functional data object.');
     end 
-    xbasis     = getbasis(xfdcell{1});
+    xfd        = xfdcell{1};
+    xbasis     = getbasis(xfd);
     xrange     = getbasisrange(xbasis);
     nxbasis    = getnbasis(xbasis);
-    ncurve     = size(getcoef(xfdcell{1}),2);
-    bfdnames   = getnames(xfdcell{1});
+    ncurve     = size(getcoef(xfd),2);
+    bfdnames   = getnames(xfd);
     resfdnames = bfdnames;
     
-    nbasmax = nxbasis;  %  This will be the maximum number of basis functions
+    %  Initialize the maximum number of basis functions
     
-    %  check UFDCELL and extract URANGE
-    %  Note:  XRANGE and URANGE are required to be identical 
-    %         in this version
+    nbasmax = nxbasis;  
+    
+    %  check UFDCELL and AWTCELL
     
     if nforce > 0
+        %  extract URANGE
+        %  Note:  XRANGE and URANGE are required to be identical 
+        %         in this version
         for k=1:nforce
             if k == 1
                 urange   = getbasisrange(getbasis(ufdcell{k}));
@@ -176,7 +186,7 @@ if nvar == 1
             end
         end
         
-        %  check AWTCELL and extract the max. no. basis fns.
+        %  check AWTCELL and update the max. no. basis fns.
         
         for k=1:nforce
             afdi = getfd(awtcell{k});
@@ -187,8 +197,7 @@ if nvar == 1
             if any(getbasisrange(basisi) ~= urange)
                 error('Ranges are incompatible for AWTCELL.');
             end
-            nbasi   = getnbasis(basisi);
-            nbasmax = max([nbasmax,nbasi]);
+            nbasmax = max([nbasmax,getnbasis(basisi)]);
         end
         
     end
@@ -614,6 +623,7 @@ else
         end
     end
     if norder > 1
+        disp([nvar,norder])
         if any(size(bwtcell) ~= [nvar, nvar, norder])
             error('The dimensions of BWTCELL are incorrect.');
         end
@@ -692,20 +702,18 @@ else
     if norder > 0
         for ivar1=1:nvar
             for ivar2=1:nvar
-                for j=1:norder
-                    if norder == 1
-                        bfdPar12 = bwtcell{ivar1,ivar2};
-                    else
-                        bfdPar12 = bwtcell{ivar1,ivar2,j};
-                    end
-                    if ~isa_fdPar(bfdPar12)
+                norder12  = size(bwtcell,3);
+                for j=1:norder12
+                    bfdPar = bwtcell{ivar1,ivar2,j};
+                    if ~isa_fdPar(bfdPar)
+                        disp(class(bfdPar))
                         error(['BWTCELL{',num2str(ivar1), ', ', ...
                              num2str(ivar2), ', ',              ...
                              num2str(j),                        ...
                              '} is not a functional parameter object.']);
                     end
-                    bfd12  = getfd(bfdPar12);
-                    basisi = getbasis(bfd12);
+                    bfd = getfd(bfdPar);
+                    basisi = getbasis(bfd);
                     if any(getbasisrange(basisi) ~= xrange)
                         error('Ranges are incompatible in BWTCELL.');
                     end
@@ -1118,9 +1126,9 @@ else
         resmat  = eval_fd(tx, xfdcell{ivar1}, norder);
         %  add contributions from weighted u-functions
         for k=1:nforce
-            amati    = eval_fd(tu, getfd(awtcell{ivar1,k}));
-            umati    = eval_fd(tu, ufdcell{ivar1,k});
-            resmat   = resmat + (amati*onesncurve).*umati;
+            amati  = eval_fd(tu, getfd(awtcell{ivar1,k}));
+            umati  = eval_fd(tu, ufdcell{ivar1,k});
+            resmat = resmat - (amati*onesncurve).*umati;
         end
         %  add contributions from weighted x-function derivatives
         for m1=1:nvar*norder;

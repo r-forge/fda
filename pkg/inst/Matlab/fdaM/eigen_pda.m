@@ -39,12 +39,12 @@ function [tfine,eigvals,limvals] = eigen_pda(bwtcell,awtcell,ufdcell,plotresult,
 %   - limvals: a matrix of stable points of the system, rows correspond to
 %   tfine. 
 
-% Last modified May 15, 2009
+% Last modified 8 August 2012
 
-if nargin < 5, npts = 501; end
+if nargin < 5, npts = 501;     end
 if nargin < 4, plotresult = 1; end
-if nargin < 3, ufdcell = []; end
-if nargin < 2, awtcell = []; end
+if nargin < 3, ufdcell = [];   end
+if nargin < 2, awtcell = [];   end
 
 rangval = getbasisrange(getbasis(getfd(bwtcell{1})));
 
@@ -66,7 +66,8 @@ if m == 1
     if ~isempty(awtcell)
         umat = matrix(0,npts,d);
         for i = 1:length(awtcell)
-            umat(:,1) = umat(:,1) + eval_fd(tfine,getfd(awtcell{i})).*eval_fd(tfine,ufdcell{i});
+            umat(:,1) = umat(:,1) + eval_fd(tfine,getfd(awtcell{i})).* ...
+                                    eval_fd(tfine,ufdcell{i});
         end
     end
 else
@@ -80,7 +81,8 @@ else
         for j = 1:m
             for i = 1:m
                 if ~isempty(bwtcell{i,j,k})
-                    betamat(:,j,m*(d-k)+i) = -eval_fd(tfine,getfd(bwtcell{i,j,k}));
+                    betamat(:,j,m*(d-k)+i) = ...
+                        -eval_fd(tfine,getfd(bwtcell{i,j,k}));
                 end
             end
             if k < d
@@ -94,7 +96,9 @@ else
         for k = 1:d
             for i = 1:length(awtcell{k})
                 if ~isempty(awtcell{k,i})
-                    umat(:,k) = umat(:,k) + eval_fd(tfine,getfd(awtcell{k,i})).*eval.fd(tfine,getfd(ufdcell{k,i}));
+                    umat(:,k) = umat(:,k) + ...
+                        eval_fd(tfine,getfd(awtcell{k,i})).* ...
+                        eval.fd(tfine,getfd(ufdcell{k,i}));
                 end
             end
         end

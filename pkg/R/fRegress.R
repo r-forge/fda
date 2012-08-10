@@ -155,18 +155,22 @@ if (inherits(yfdPar, "fdPar")) {
                         xxfdjk <- (xfdj*wt)*xfdk
                     }
                     wtfdjk <- sum(xxfdjk)
-                    Cmatjk <- inprod(betabasisj, betabasisk, 0, 0, rangeval, 
-                                     wtfdjk)
+                    Cmatjk <- inprod(betabasisj, betabasisk, 0, 0, 
+                                     rangeval, wtfdjk)
                     Cmat[indexj,indexk] <- Cmatjk
                     Cmat[indexk,indexj] <- t(Cmatjk)
                 }
             }
             #  attach penalty term to diagonal block
-            lambda <- betafdParj$lambda
-            if (lambda > 0) {
-                Lfdj  <- betafdParj$Lfd
-                Rmatj <- eval.penalty(betafdParj$fd$basis, Lfdj)
-                Cmat[indexj,indexj] <- Cmat[indexj,indexj] + lambda*Rmatj
+            lambdaj <- betafdParj$lambda
+            if (lambdaj > 0) {
+                Rmatj <- betafdParj$penmat
+                if (is.null(Rmatj) {
+                    Lfdj  <- betafdParj$Lfd
+                    Rmatj <- eval.penalty(betabasisj, Lfdj)
+                }
+                Cmat[indexj,indexj] <- Cmat[indexj,indexj] + 
+                                       lambdaj*Rmatj
             }
         }
     }
@@ -176,6 +180,7 @@ if (inherits(yfdPar, "fdPar")) {
     #  check Cmat for singularity
 
     eigchk(Cmat)
+
 
     #  solve for coefficients defining BETA
 

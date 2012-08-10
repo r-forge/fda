@@ -1,4 +1,4 @@
-function [] = pda_overlay(bfdcell,nfine,ncoarse)
+function [] = pda_overlay(bwtcell,nfine,ncoarse)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % pda_overlay
 %
@@ -6,7 +6,7 @@ function [] = pda_overlay(bfdcell,nfine,ncoarse)
 % differential analysis. 
 %
 % Arguments:
-%   - bfdcell: a cell array of functional data objects defining the
+%   - bwtcell: a cell array of functional data objects defining the
 %   coefficients of the principal differential analysis. This is returned
 %   by pda_cell. 
 %   
@@ -25,11 +25,11 @@ function [] = pda_overlay(bfdcell,nfine,ncoarse)
 if nargin < 3, ncoarse = 11; end
 if nargin < 2, nfine = 501; end
 
-fdrange = getbasisrange(getbasis(getfd(bfdcell{1})));
+fdrange = getbasisrange(getbasis(getfd(bwtcell{1})));
 
 tfine = linspace(fdrange(1),fdrange(2),nfine);
-beta0vals = eval_fd(tfine,getfd(bfdcell{1}));
-beta1vals = eval_fd(tfine,getfd(bfdcell{2}));
+beta0vals = eval_fd(tfine,getfd(bwtcell{1}));
+beta1vals = eval_fd(tfine,getfd(bwtcell{2}));
 
 beta0range = [min(beta0vals),max(beta0vals)];
 beta1range = [min(beta1vals),max(beta1vals)];
@@ -46,8 +46,8 @@ which = (bv/2).^2 < beta0range(2);
 plot(bv(which),(bv(which)/2).^2,'r')
 
 tcoarse = linspace(fdrange(1),fdrange(2),ncoarse);
-beta0valsc = eval_fd(tcoarse,getfd(bfdcell{1}));
-beta1valsc = eval_fd(tcoarse,getfd(bfdcell{2}));
+beta0valsc = eval_fd(tcoarse,getfd(bwtcell{1}));
+beta1valsc = eval_fd(tcoarse,getfd(bwtcell{2}));
 
 text(beta1valsc,beta0valsc,num2str(tcoarse'))
 hold off

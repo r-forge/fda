@@ -31,6 +31,8 @@
 %  to time as we get new data illustrating new things, add functionality
 %  to the package, or just for fun.
 
+%  last modified 27 July 2012 by Jim Ramsay
+
 %
 % ch. 5.  Smoothing: Computing Curves from Noisy Data
 %
@@ -42,7 +44,7 @@
 %  Path to the folder containing the Matlab functional data analysis
 %  software
 
-fdaMPath = 'c:/Program Files/MATLAB/R2009a/fdaM';
+fdaMPath = '../Matlab/fdaM';
 
 addpath(fdaMPath)
 
@@ -100,7 +102,7 @@ heighthatmat = basismat*heightcoef;
           
 %  compute
 
-y2cMap = (heightbasis12'*heightbasis12)\heightbasis12';
+y2cMap = (basismat'*basismat)\basismat';
 
 %
 % Section 5.2.  Data Smoothing with Roughness Penalties
@@ -520,8 +522,8 @@ axis([0,365,0.1,0.35])
 % Section 5.6 Details for the fdPar Class and smooth.basis Function
 %
 
-help(fdPar)
-help(smooth_basis)
+help fdPar
+help smooth_basis
 
 %
 % Section 5.8 Some Things to Try

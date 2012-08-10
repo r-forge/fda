@@ -30,6 +30,8 @@
 %  to time as we get new data illustrating new things, add functionality
 %  to the package, or just for fun.
 
+%  last modified 27 July 2012 by Jim Ramsay
+
 %
 % ch. 8.  Registration: Aligning Features
 %         for Samples of Curves
@@ -44,7 +46,7 @@
 %  Path to the folder containing the Matlab functional data analysis
 %  software
 
-fdaMPath = 'c:/Program Files/MATLAB/R2009a/fdaM';
+fdaMPath = '../Matlab/fdaM';
 
 addpath(fdaMPath)
 
@@ -66,13 +68,9 @@ addpath(examplesPath)
 
 %  set up a fine mesh of t-values for plotting, and define mu and sigma
 
-tvec  = linspace(-5,5,201);
-mu    = linspace(-1,1,  5);
-sigma = (1:5)/3;
-
-%  Here is function Dgauss that we use below to compute values
-%  of the first derivative of a Gaussian density:
-
+tvec  = linspace(-5,5,201)';
+mu    = linspace(-1,1,  5)';
+sigma = (1:5)'/3;
 
 %  Data to be plotted in the left panel
 

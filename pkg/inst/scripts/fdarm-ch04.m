@@ -30,6 +30,8 @@
 %  to time as we get new data illustrating new things, add functionality
 %  to the package, or just for fun.
 
+%  last modified 27 July 2012 by Jim Ramsay
+
 %
 % ch. 4  How to Build Functional Data Objects
 %
@@ -41,7 +43,7 @@
 %  Path to the folder containing the Matlab functional data analysis
 %  software
 
-fdaMPath = 'c:/Program Files/MATLAB/R2009a/fdaM';
+fdaMPath = '../Matlab/fdaM';
 
 addpath(fdaMPath)
 
@@ -154,7 +156,7 @@ ylabel('Line 1 ^2')
 %  square root of a line with negative values:  illegal
 
 a    = 0.5;
-fdrootobj = tstFn0.^a;
+fdrootobj = tstFn2.^a;
 subplot(3,1,3)
 plot(fdrootobj)
 
@@ -178,7 +180,7 @@ plot(fdrootobj)
 %  reciprocal of a function with zero values:  illegal operation
 
 a    = (-1);
-fdinvobj = tstFn0.^a;
+fdinvobj = tstFn2.^a;
 subplot(3,1,3)
 plot(fdinvobj)
 
@@ -218,10 +220,14 @@ axis([0,365,-35,20])
 
 %  evaluate the derivative of mean temperature and plot
 
+day5 = (1:365)' - 0.5;
 DmeanTempVec = eval_fd(day5, meanTempfd, 1);
 plot(day5, DmeanTempVec)
 
 %  evaluate and plot the harmonic acceleration of mean temperature
+
+dayrange  = [0,365];
+dayperiod = 365;
 
 Lbasis  = create_constant_basis(dayrange);  %  create a constant basis
 Lcoef   = [0,(2*pi/dayperiod)^2,0];    %  set up three coefficients
@@ -272,9 +278,7 @@ ylabel('\fontsize{13} f(t)')
 
 % Figure 4.3
 
-% The data are in file MontrealTemp.mat
-
-load MontrealTemp
+MontrealTemp = tempav(:,12);
 
 thawdata = MontrealTemp(16:47,:);
 thawtime = ((16:47)+0.5);

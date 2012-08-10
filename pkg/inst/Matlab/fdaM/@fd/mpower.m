@@ -23,13 +23,13 @@ function powerfd = mpower(fdobj, m)
 %  values over a suitable mesh.  This is especially true for fourier
 %  bases.
 
-%  Last modified 26 February 2009
+%  Last modified 8 August 2012
 
 if nargin < 2,  error('Number of arguments is less than two.');  end
 
 %  Test M for being a positive integer
 
-if ~isinteger(m) || m < 0
+if ~(m == floor(m)) || m < 0
     error('M is not a positive integer.');
 end
 
@@ -41,9 +41,9 @@ if ~strcmp('bspline',getbasistype(basisobj))
     error('FDOBJ does not have a spline basis.');
 end
 
-nbasis = getnbasis(basisobj);
-rangeval = getbasisrange(basisobj);
-interiorknots = getparams(basisobj);
+nbasis        = getnbasis(basisobj);
+rangeval      = getbasisrange(basisobj);
+interiorknots = getbasispar(basisobj);
 norder = nbasis - length(interiorknots);
 
 coefmat = getcoef(fdobj);
@@ -76,10 +76,10 @@ end
 
 %  M > 1:
 
-breaks = [rangeval(1), interiorknots, rangeval(2)];
+breaks   = [rangeval(1), interiorknots, rangeval(2)];
 newbasis = create_bspline_basis(rangeval, nbasis+m-1, norder+m-1, breaks);
-tval = linspace(rangeval(1),rangeval(2),10*nbasis+1);
-fmat = eval_fd(tval, fdobj);
-newfdPar = fdPar(newbasis, max([nbasis-2,0]),1e-10);
+tval     = linspace(rangeval(1),rangeval(2),10*nbasis+1);
+fmat     = eval_fd(tval, fdobj);
+newfdPar = fdPar(newbasis, max([norder-2,0]),1e-10);
 powerfd  = smooth_basis(tval, fmat, newfdPar);
 

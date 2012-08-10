@@ -155,12 +155,12 @@ logCounts = log10(meanCounts[selYear,])
 yearObs  = as.numeric(rownames(logCounts))
 yearCode = (1:20)[selYear]
 
-# Figure 10.2
-
 shellfishindex = c(1,2,5,6,12,13)
 fishindex      = (1:13)[-shellfishindex]
-ylim = range(logCounts)
 
+# Figure 10.2
+
+ylim = range(logCounts)
 op = par(mfrow=c(2,1), mar=c(2, 4, 4, 1)+.1)
 
 matplot(yearObs, logCounts[, shellfishindex], xlab='', ylab='',
@@ -257,8 +257,8 @@ birdfd3 = birdfd2
 birdfd3$coefs = cbind(birdfd3$coefs, matrix(0,19,2))
 
 Zmat = rbind(Zmat0, matrix(0,2,15))
-Zmat[27,shellfishindex+2]  = 1
-Zmat[28,fishindex+2] = 1
+Zmat[27,shellfishindex+2] = 1
+Zmat[28,     fishindex+2] = 1
 
 p = 15
 xfdlist = vector("list",p)
@@ -270,8 +270,10 @@ for (j in 1:p) xfdlist[[j]] = Zmat[,j]
 #  use cubic b-spline basis for intercept and food coefficients
 
 betabasis1 = create.bspline.basis(c(1,20),21,4,yearCode)
-lambda = 10
-betafdPar1 = fdPar(betabasis1,2,lambda)
+Lfdobj1    = int2Lfd(2);
+Rmat1      = eval.penalty(betabasis1, Lfdobj1)
+lambda1    = 10
+betafdPar1 = fdPar(betabasis1,Lfdobj1,lambda1,TRUE,Rmat1)
 betalist[[1]] = betafdPar1
 betalist[[2]] = betafdPar1
 betabasis2 = create.constant.basis(c(1,20))
@@ -321,6 +323,11 @@ plot(loglam,SSE.CV,type='b',cex.lab=1.5,cex.axis=1.5,lwd=2,
 
 betafdPar1$lambda = 10^0.5
 for (j in 1:2) betalist[[j]] = betafdPar1
+
+y = birdfd3
+wt = NULL
+CVobs = 1:26
+returnMatrix=FALSE
 
 #  carry out the functional regression analysis
 

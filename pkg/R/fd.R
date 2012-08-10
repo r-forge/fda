@@ -720,16 +720,16 @@ times.fd <- function(e1, e2, basisobj=NULL)
     nbasis1   <- basisobj1$nbasis
     nbasis2   <- basisobj2$nbasis
 
-    #  set default basis object
-
-    if(is.null(basisobj)) basisobj <- basisobj1*basisobj2
-
     #  check that the ranges match if a range not supplied
 
     rangeval1 <- basisobj1$rangeval
     rangeval2 <- basisobj2$rangeval
     if (any(rangeval1 != rangeval2))
       stop("The ranges of the arguments are not equal.")
+
+    #  set default basis object
+
+    if(is.null(basisobj)) basisobj <- basisobj1*basisobj2
 
     #  set up a fine mesh for evaluating the product
 

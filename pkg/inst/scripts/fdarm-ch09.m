@@ -30,6 +30,8 @@
 %  to time as we get new data illustrating new things, add functionality
 %  to the package, or just for fun.
 
+%  last modified 27 July 2012 by Jim Ramsay
+
 %
 % ch. 9.  Functional Linear Models for Scalar Response
 %
@@ -41,7 +43,7 @@
 %  Path to the folder containing the Matlab functional data analysis
 %  software
 
-fdaMPath = 'c:/Program Files/MATLAB/R2009a/fdaM';
+fdaMPath = '../Matlab/fdaM';
 
 addpath(fdaMPath)
 
@@ -258,17 +260,17 @@ ylabel('\fontsize{13} Cross-validation score')
 
 N       = length(annualprec);
 resid   = annualprec - annualprechat2;
-SigmaE  = sum(resid.^2)/(35-annPrecTemp{10});
+SigmaE  = sum(resid.^2)/(35-annPrecTempStr.df);
 SigmaE  = SigmaE.*diag(ones(N,1));
 
 %  obtain the standard error functions using function
 %  fRegress_stderr
 
-betastderrCell = fRegress_stderr(annPrecTemp, y2cMap, SigmaE);
-betastderrfd   = betastderrCell{2};
+betastderrStr = fRegress_stderr(annPrecTempStr, y2cMap, SigmaE);
+betastderrCell   = betastderrStr.betastderr;
 
-betafdPar      = betaestcell2{2};
-betafd         = getfd(betafdPar);
+betafd = getfd(betaestcell{2});
+betastderrfd = betastderrCell{2};
 
 % Figure 9.3
 
@@ -288,9 +290,9 @@ axis([yearRng, -6e-4, 1.2e-03])
 %  standard error functions, provided the last two arguments
 %  are supplied
 
-temp = fRegress(annualprec, tempcell, betacell2, ones(N,1), ...
+tempStr = fRegress(annualprec, tempcell, betacell2, ones(N,1), ...
                 y2cMap, SigmaE);
-betastderrCell = temp{13};
+betastderrCell = tempStr.betastderr;
 betastderrfd   = betastderrCell{2};
 
 % Section 9.4.5 Scalar Response Models by Functional Principal Components

@@ -35,8 +35,13 @@ function [regfd, warpfd, Wfd] = landmarkreg(fdobj, ximarks, x0marks, ...
 
 %  last modified 26 December 2011 by Jim Ramsay
 
-if nargin < 6, ylambda = 0; end
-if nargin < 5, monwrd  = 0; end
+%  set default argument values
+
+if nargin < 6, ylambda = 1e-10;  end
+if nargin < 5, monwrd  = 1;      end
+
+% if nargin < 6, ylambda = 0; end
+% if nargin < 5, monwrd  = 0; end
 
 %  check FDOBJ
 
@@ -77,11 +82,6 @@ if (length(x0marks) ~= nlandm)
             'number of curve landmarks.']);
 end
 if size(x0marks,2) == 1, x0marks = x0marks';  end
-
-%  set default argument values
-
-if nargin < 6, ylambda = 1e-10;  end
-if nargin < 5, monwrd  = 1;      end
 
 if nargin < 4
     basisobj  = getbasis(fdobj);
