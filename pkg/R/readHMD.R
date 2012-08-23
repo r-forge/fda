@@ -1,22 +1,22 @@
 readHMD <- function(username, password,
-       country=c(AUS='Australia', AUT='Austria', BLR='Belarus',
-                 BEL='Belgium', BGR='Bulgaria', CAN='Canada',
-                 CHL='Chile', CZE='Czech Republic', DNK='Denmark',
-                 EST='Estonia', FIN='Finland', FRA='France',
-                 DEU='Germany', HUN='Hungary', ISL='Iceland',
-                 IRL='Ireland', ISR='Israel', ITA='Italy',
-                 JPN='Japan', LVA='Latvia', LTU='Lithuania',
-                 LUX='Luxemburg', NDL='Netherlands', NZL='New Zealand',
-                 NOR='Norway', POL='Poland', PRT='Portugal',
-                 RUS='Russia', SVK='Slovakia', SVN='Slovenia',
-                 ESP='Spain', SWE='Sweden', CHE='Switzerland',
-                 TWN='Taiwan', GBR='U.K.', USA='U.S.A.',
-                 UKR='Ukraine'),
-       sex=c('m', 'f', 'b'), HMDurl='http://www.mortality.org/hmd',
-       dataType = 'lt',
-       ltCol=c('m', 'q', 'a', 'l', 'd', 'L', 'T', 'e'),
-       cohper = c(coh='cohort', per='periodic'), ageInterval=c(1, 5),
-       yearInterval=c(1, 5, 10), url, ... )
+  country=c(AUS='Australia', AUT='Austria', BLR='Belarus',
+            BEL='Belgium', BGR='Bulgaria', CAN='Canada',
+            CHL='Chile', CZE='Czech Republic', DNK='Denmark',
+            EST='Estonia', FIN='Finland', FRA='France',
+            DEU='Germany', HUN='Hungary', ISL='Iceland',
+            IRL='Ireland', ISR='Israel', ITA='Italy',
+            JPN='Japan', LVA='Latvia', LTU='Lithuania',
+            LUX='Luxemburg', NDL='Netherlands', NZL='New Zealand',
+            NOR='Norway', POL='Poland', PRT='Portugal',
+            RUS='Russia', SVK='Slovakia', SVN='Slovenia',
+            ESP='Spain', SWE='Sweden', CHE='Switzerland',
+            TWN='Taiwan', GBR='U.K.', USA='U.S.A.',
+            UKR='Ukraine'),
+  sex=c('m', 'f', 'b'), HMDurl='http://www.mortality.org/hmd',
+  dataType = 'lt',
+  ltCol=c('m', 'q', 'a', 'l', 'd', 'L', 'T', 'e'),
+  cohper = c(coh='cohort', per='periodic'), ageInterval=c(1, 5),
+  yearInterval=c(1, 5, 10), url, ... )
 {
 ##
 ## 1.  Construct the desired url
@@ -29,18 +29,18 @@ readHMD <- function(username, password,
           Ctry <- country
       } else {
           Ctries=c(AUS='Australia', AUT='Austria', BLR='Belarus',
-                 BEL='Belgium', BGR='Bulgaria', CAN='Canada',
-                 CHL='Chile', CZE='Czech Republic', DNK='Denmark',
-                 EST='Estonia', FIN='Finland', FRA='France',
-                 DEU='Germany', HUN='Hungary', ISL='Iceland',
-                 IRL='Ireland', ISR='Israel', ITA='Italy',
-                 JPN='Japan', LVA='Latvia', LTU='Lithuania',
-                 LUX='Luxemburg', NDL='Netherlands', NZL='New Zealand',
-                 NOR='Norway', POL='Poland', PRT='Portugal',
-                 RUS='Russia', SVK='Slovakia', SVN='Slovenia',
-                 ESP='Spain', SWE='Sweden', CHE='Switzerland',
-                 TWN='Taiwan', GBR='U.K.', USA='U.S.A.',
-                 UKR='Ukraine')
+            BEL='Belgium', BGR='Bulgaria', CAN='Canada',
+            CHL='Chile', CZE='Czech Republic', DNK='Denmark',
+            EST='Estonia', FIN='Finland', FRA='France',
+            DEU='Germany', HUN='Hungary', ISL='Iceland',
+            IRL='Ireland', ISR='Israel', ITA='Italy',
+            JPN='Japan', LVA='Latvia', LTU='Lithuania',
+            LUX='Luxemburg', NDL='Netherlands', NZL='New Zealand',
+            NOR='Norway', POL='Poland', PRT='Portugal',
+            RUS='Russia', SVK='Slovakia', SVN='Slovenia',
+            ESP='Spain', SWE='Sweden', CHE='Switzerland',
+            TWN='Taiwan', GBR='U.K.', USA='U.S.A.',
+            UKR='Ukraine')
           ct <- match.arg(country)
           sel <- (Ctries==ct)
           if(sum(sel)!=1)
@@ -64,7 +64,8 @@ readHMD <- function(username, password,
       } else {
           sel <- (ageInterval %in% c(1, 5))
           if(sum(sel)!=1)
-              stop('ageInterval must be 1 or 5; is ', ai)
+              stop('ageInterval must be 1 or 5; is ',
+                   ageInterval)
           AI <- ageInterval[sel]
       }
       if(length(yearInterval)>1){
@@ -72,7 +73,8 @@ readHMD <- function(username, password,
       } else {
           sel <- (yearInterval %in% c(1, 5, 10))
           if(sum(sel)!=1)
-              stop('yearInterval must be 1, 5 or 10;  is ', yi)
+              stop('yearInterval must be 1, 5 or 10;  is ',
+                   yearInterval)
           YI <- yearInterval[sel]
       }
       url <- paste(HMDurl, '/', Ctry, '/STATS/', sx, dataType, pc, '_',
