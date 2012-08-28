@@ -44,7 +44,7 @@ function [Wfdobj, Fstr, ysmth, iternum, iterhist] = ...
 %               and columns corresponding to it. number, function value,
 %               and mean squared gradient.
 
-%  Last modified 27 July 2012
+%  Last modified 15 July 2008
 
 %  initialize arguments that are not included
 
@@ -99,9 +99,6 @@ end
 
 %  check some arguments
 
-if any(diff(argvals) <= 0)
-    error('Values in ARGVALS not strictly increasing.');
-end
 if argvals(1) < rangeval(1) || argvals(nobs) > rangeval(2)
     error('Values in ARGVALS are out of bounds.');
 end
@@ -242,8 +239,9 @@ for iter = 1:iterlim
     %  complete fit to data by LS regression of y on f
     cvec  = cvecnew;
     Wfdobj   = Wfdobjnew;
-    ysmth = monfn(argvals, Wfdobj);
-    ysmth = y(1) + (y(nobs) - y(1)).*ysmth./ysmth(nobs);
+    hsmth  = monfn(argvals, Wfdobj);
+    hsmth2 = monfn(rangeval(2), Wfdobj);
+    ysmth  = rangeval(1) + (rangeval(2) - rangeval(1)).*hsmth./hsmth2;
     %  check that function value has not increased
     if Fstr.f > Foldstr.f
         %  if it has, terminate iterations with a warning
@@ -316,17 +314,18 @@ end
 
 function [Fstr, Dyhat] = fngrad(y, x, wt, Wfdobj, lambda, Kmat, inactive)
 nobs   = length(x);
-width  = y(nobs) - y(1);
+rng    = getbasisrange(getbasis(Wfdobj));
+width  = rng(2) - rng(1);
 cvec   = getcoef(Wfdobj);
 %  get unnormalized function and gradient values
 h      = monfn(x, Wfdobj);
 Dyhat  = mongrad(x, Wfdobj);
 %  adjust functions and derivatives for normalization
-hmax   = h(nobs);
-Dymax  = Dyhat(nobs,:);
+hmax   = monfn(rng(2), Wfdobj);
+Dymax  = mongrad(rng(2), Wfdobj);
 %  update residuals and function values
 Dyhat  = width.*(hmax.*Dyhat - h*Dymax)./hmax^2;
-h      = y(1) + width*h/hmax;
+h      = rng(1) + width*h/hmax;
 res    = y - h;
 Fstr.f = mean(res.^2.*wt);
 nbasis = size(Dyhat,2);

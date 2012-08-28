@@ -20,6 +20,7 @@ function basisobj = basis(basistype, rangeval, nbasis, params, ...
 %               'FEM'
 %               'TP'
 %               'fdVariance', 'fdV', fdVar'
+%               'IRT3PL'
 %  RANGEVAL ... an array of length 2 containing the lower and upper
 %               boundaries for the rangeval of argument values
 %  NBASIS   ... the number of basis functions
@@ -106,6 +107,7 @@ function basisobj = basis(basistype, rangeval, nbasis, params, ...
 %  CREATE_FEM_BASIS        ...  creates a finite element basis
 %  CREATE_TP_BASIS         ...  creates a tensor product basis
 %  CREATE_fdVariance_BASIS ...  creates a fdVariance basis
+%  CREATE_IRT3PL_BASIS     ...  creates a IRT3PL basis
 
 %  Last modified 25 May 2011
 
@@ -348,6 +350,10 @@ switch basistype
         if ~isstruct(params)
             error('Parameter not a struct object')
         end        
+    case 'IRT3PL'
+        if length(params) > 1
+            error('More than one parameter for a polynomial basis.');
+        end
     otherwise
         error('Unrecognizable basis');
 end
@@ -486,7 +492,7 @@ switch fdtype
     case 'TP'
         fdtype = 'TP';
 
-%  fdVariance basis
+    %  fdVariance basis
 
     case 'fdVariance'
         fdtype = 'fdVariance';
@@ -496,6 +502,20 @@ switch fdtype
         
     case 'fdVar'
         fdtype = 'fdVariance';
+        
+    %  IRT3PL basis
+        
+    case 'IRT3PL'
+        fdtype = 'IRT3PL';
+        
+    case 'irt3pl'
+        fdtype = 'IRT3PL';
+        
+    case '3PL'
+        fdtype = 'IRT3PL';
+        
+    case '3pl'
+        fdtype = 'IRT3PL';
         
     %  Not a recognizable basis
 

@@ -4,7 +4,7 @@ function basismat = getbasismatrix(evalarg, basisobj, nderiv)
 %    The returned basis matrix BASISMAT contains the basis
 %    derivatives of order NDERIV (0 by default).
 
-%  last modified 7 March 2011 by Jim Ramsay
+%  last modified 20 March 2012 by Jim Ramsay
 
 if nargin < 3,  nderiv = 0;  end
 
@@ -90,6 +90,9 @@ else
             delta = T./I;
             B = delta.*J;
             basismat = RstCellSetup(evalarg, T, B, delta);
+        case 'IRT3PL'
+            shift    = getbasispar(basisobj);
+            basismat = IRT3PL(evalarg, nbasis, shift, nderiv);
         otherwise
             error('Basis type not recognizable');
     end

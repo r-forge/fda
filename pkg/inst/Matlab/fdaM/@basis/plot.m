@@ -1,7 +1,7 @@
 function plot(basisobj, nx)
 %  Plot a basis object.
 
-%  Last modified 27 March 2012 by Jim Ramsay
+%  Last modified 2 May 2012 by Jim Ramsay
 
 typex   = getbasistype(basisobj);
 nbasisx = getnbasis(basisobj);
@@ -10,7 +10,7 @@ if ~strcmp(typex, 'FEM')
     
     %  set up fine mesh of values
     
-    if nargin < 2, nx = max([10*nbasisx+1, 201]);  end
+    if nargin < 2, nx = max([10*nbasisx+1, 501]);  end
     
     %  evaluate basis at a fine mesh of values
     
