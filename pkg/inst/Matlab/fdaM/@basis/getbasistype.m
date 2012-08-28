@@ -77,6 +77,8 @@ switch basisobj.type
         typestr = 'TP';
     case 'fdVariance'
         typestr = 'fdVariance';
+    case 'IRT3PL'
+        typestr = 'IRT3PL';
     otherwise
         error('Unknown type encountered');
 end

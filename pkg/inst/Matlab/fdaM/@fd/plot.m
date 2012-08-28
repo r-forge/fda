@@ -13,7 +13,7 @@ function Hline = plot(fdobj, Lfdobj, matplt, href, nx)
 %              is plotted.
 %  NX      ... The number of plotting points to be used.
 
-%  Last modified 24 December 2011
+%  Last modified 2 May 2012
 
 %  set default arguments
 
@@ -76,7 +76,7 @@ end
 %  set up fine mesh of evaluation points and evaluate curves
 
 if nargin < 5
-    nx = max([101, 10*nbasis+1]);
+    nx = max([501, 10*nbasis+1]);
 end
 
 x     = linspace(rangex(1),rangex(2),nx)';

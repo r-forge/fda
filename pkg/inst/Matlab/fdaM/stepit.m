@@ -10,9 +10,15 @@ function [linemat, ips, ind, dblwrd] = ...
 %                                 dblwrd(2) T means step doubled
 %  MAXSTEP:  maximum size of step
 
-%  Last modified 16 June 2007
+%  Last modified 9 April 2012
 
-test1 = abs(linemat(2,5)) < abs(linemat(2,1))/10;
+%  Wolfe condition 1
+test1_1 = linemat(3,5) <= linemat(3,1) + linemat(1,5)*linemat(2,1)/20;
+%  Wolfe condition 2
+test1_2 = abs(linemat(2,5)) <= abs(linemat(2,1))/10; 
+% disp([test1_1, test1_2])
+test1 = test1_1 && test1_2;
+% test1 = test1_2;
 test2 = linemat(3,5) > linemat(3,1);
 test3 = linemat(2,5) > 0;
 if (test1 || ~test3) && test2
