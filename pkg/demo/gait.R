@@ -122,6 +122,7 @@ par(op)
 plotfit.fd(gait, gaittime, gaitfd, cex=1.2, ask=FALSE)
 
 #  plot the residuals, sorting cases by residual sum of squares
+#  this produces 39 plots for each of knee and hip angle
 
 plotfit.fd(gait, gaittime, gaitfd, residual=TRUE, sort=TRUE, cex=1.2)
 
