@@ -7,7 +7,7 @@ nbasis   = 5
 
 library("splines")
 
-remove(basisobj)
+if(exists('basisobj'))remove(basisobj)
 basisobj = create.bspline.basis()
 basisobj
 
