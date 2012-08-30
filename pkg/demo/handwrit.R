@@ -225,6 +225,7 @@ for (i in 1:20) {
 D2mag  <- sqrt(D2fdamat[,,1]^2 + D2fdamat[,,2]^2)
 D2magmean <- apply(D2mag,1,mean)
 
+cexval <- 1.2
 par(mfrow=c(1,1), mar=c(5,5,4,2)+cexval+2, pty="m",ask=FALSE)
 matplot(fdatime, 1e6*D2mag, type="l", cex=1.2,
      xlab="Milliseconds", ylab="Metres/sec/sec",
@@ -702,7 +703,6 @@ for (i in index) {
 
 #  plot the two weight functions for the second derivative
 
-cexval <- 1.2
 par(mfrow=c(1,1), mar=c(5,5,4,2)+cexval+2, pty="m")
 matplot(fdatime, cbind(b2vecX, b2vecY), type="l", lty=1, col=c(2,4),
         xlim=c(0, 2300), ylim=c(0, 6e-3))
