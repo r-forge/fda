@@ -195,7 +195,7 @@ plotreg.fd(smB.reg.0)
 ##
 ## 3.  Define a more flexible basis for the warping functions
 ##
-Wnbasis   <- 5
+Wnbasis   <- 4
 Wbasis    <- create.bspline.basis(rng.growth, Wnbasis)
 Wfd0      <- fd(matrix(0,Wnbasis,1),Wbasis)
 #  set up the functional parameter object using only
@@ -259,7 +259,7 @@ D2gaitmeanfd$fdnames[[3]] <- c("Hip", "Knee")
 #  for each curve, which is a possibility when the data are periodic
 
 #  set up the basis for the warping functions
-nwbasis   <- 7
+nwbasis   <- 4
 wbasis    <- create.bspline.basis(gaitrange,nwbasis,3)
 Warpfd    <- fd(matrix(0,nwbasis,nBoys),wbasis)
 WarpfdPar <- fdPar(Warpfd)

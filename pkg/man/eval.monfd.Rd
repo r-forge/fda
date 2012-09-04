@@ -99,7 +99,7 @@ result <- smooth.monotone(age, hgt1, growfdPar)
 Wfd  <- result$Wfdobj
 beta <- result$beta
 #  Evaluate the fitted height curve over a fine mesh
-agefine <- seq(1,18,len=101)
+agefine <- seq(1,18,len=80)
 hgtfine <- beta[1] + beta[2]*eval.monfd(agefine, Wfd)
 #  Plot the data and the curve
 plot(age, hgt1, type="p")

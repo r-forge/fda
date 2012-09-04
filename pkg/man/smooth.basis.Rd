@@ -857,8 +857,8 @@ gaitfd <- gaitSmooth$fd
   system.time(fit <- smooth.basis(1:N, runif(N), Bsp))
 }
 
-} #  end of if (!CRAN) {
+} #  end of if (!CRAN)
 
-} #  end of examples {
+} #  end of examples
 % docclass is function
 \keyword{smooth}
