@@ -188,7 +188,7 @@ rng <- c(1,18)
 #  We use b-spline basis functions of order 6
 #  Knots are positioned at the ages of observation.
 norder <- 6
-nage   <- 31
+nage   <- length(age)
 nbasis <- nage + norder - 2
 wbasis <- create.bspline.basis(rng, nbasis, norder, age)
 #  starting values for coefficient
@@ -208,7 +208,7 @@ result <- smooth.monotone(age, hgt1, growfdPar, wgt)
 Wfd  <- result$Wfdobj
 beta <- result$beta
 #  Evaluate the fitted height curve over a fine mesh
-agefine <- seq(1,18,len=101)
+agefine <- seq(1,18,len=73)
 hgtfine <- beta[1] + beta[2]*eval.monfd(agefine, Wfd)
 #  Plot the data and the curve
 plot(age, hgt1, type="p")
