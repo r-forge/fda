@@ -1,9 +1,6 @@
-CRAN <- function(x='R_CHECK_TIMINGS'){
+CRAN <- function(x='_R_CHECK_TIMINGS_'){
     x. <- Sys.getenv(x)
-    xl <- as.logical(x.)
-    notCRAN <- is.na(xl) || xl
-#
-    return(!notCRAN)
+    nchar(as.character(x.))>0
 }
 
 
