@@ -347,34 +347,34 @@ points(argvals,x, pch="*")
 
 plotGCVRMSE.fd = function(lamlow, lamhi, lamdel, x, argvals, y,
             fdParobj, wtvec=NULL, fdnames=NULL, covariates=NULL)  {
-loglamvec = seq(lamlow, lamhi, lamdel)
-loglamout = matrix(0,length(loglamvec),4)
-m = 0
-for (loglambda in loglamvec) {
-  m = m + 1
-  loglamout[m,1] = loglambda
-  fdParobj$lambda = 10^(loglambda)
-  smoothlist = smooth.basis(argvals, y, fdParobj, wtvec=wtvec,
+  loglamvec = seq(lamlow, lamhi, lamdel)
+  loglamout = matrix(0,length(loglamvec),4)
+  m = 0
+  for (loglambda in loglamvec) {
+    m = m + 1
+    loglamout[m,1] = loglambda
+    fdParobj$lambda = 10^(loglambda)
+    smoothlist = smooth.basis(argvals, y, fdParobj, wtvec=wtvec,
              fdnames=fdnames, covariates=covariates)
-  xfd = smoothlist$fd   #  the curve smoothing the data
-  loglamout[m,2] = smoothlist$df
-#  degrees of freedom in the smoothing curve
-  loglamout[m,3] = sqrt(mean((eval.fd(argvals, xfd) - x)^2))
-  loglamout[m,4] = mean(smoothlist$gcv)  #  the mean of the N gcv values
-}
-cat("log10 lambda, deg. freedom, RMSE, gcv\n")
-for (i in 1:m) {
-  cat(format(round(loglamout[i,],3)))
-  cat("\n")
-}
-par(mfrow=c(3,1))
-plot(loglamvec, loglamout[,2], type="b")
-title("Degrees of freedom")
-plot(loglamvec, loglamout[,3], type="b")
-title("RMSE")
-plot(loglamvec, loglamout[,4], type="b")
-title("Mean gcv")
-return(loglamout)
+    xfd = smoothlist$fd   #  the curve smoothing the data
+    loglamout[m,2] = smoothlist$df
+    #  degrees of freedom in the smoothing curve
+    loglamout[m,3] = sqrt(mean((eval.fd(argvals, xfd) - x)^2))
+    loglamout[m,4] = mean(smoothlist$gcv)  #  the mean of the N gcv values
+  }
+  cat("log10 lambda, deg. freedom, RMSE, gcv\n")
+  for (i in 1:m) {
+    cat(format(round(loglamout[i,],3)))
+    cat("\n")
+  }
+  par(mfrow=c(3,1))
+  plot(loglamvec, loglamout[,2], type="b")
+  title("Degrees of freedom")
+  plot(loglamvec, loglamout[,3], type="b")
+  title("RMSE")
+  plot(loglamvec, loglamout[,4], type="b")
+  title("Mean gcv")
+  return(loglamout)
 }
 
 #  Use the data that you used in Example 1, or run the following code:
@@ -431,7 +431,7 @@ loglamout = plotGCVRMSE.fd(-6, -3, 0.25, x, argvals, y, fdParobj)
 ##                       Simulated data example 3:
 ##           a roughness-penalized smooth of a sample of curves
 ##
-n = 51   #  number of observations per curve
+n =  51   #  number of observations per curve
 N = 100   #  number of curves
 argvals = seq(0,1,len=n)
 #  The true curve values are linear combinations of fourier function
@@ -497,6 +497,7 @@ loglamout = plotGCVRMSE.fd(-6, -3, 0.25, x, argvals, y, fdParobj)
 #  are small relative to the range of the observations.  Compare
 #  regression and roughness penalty smoothing in these situations.
 
+if(!CRAN()){
 ##
 ####### Simulated data example 4: a roughness-penalized smooth  ########
 ##                           with correlated error
@@ -844,42 +845,20 @@ gaitfdPar <- fdPar(gaitbasis, harmaccelLfd, lambda)
 gaitSmooth <- smooth.basis(gaittime, gait, gaitfdPar)
 gaitfd <- gaitSmooth$fd
 \dontrun{
-# by default creates multiple plots, asking for a click between plots
-plotfit.fd(gait, gaittime, gaitfd)
+  # by default creates multiple plots, asking for a click between plots
+  plotfit.fd(gait, gaittime, gaitfd)
 }
 
 \dontshow{
-# Check to make sure that it works with N=1e5
-N <- 1e5
-Bsp <- create.bspline.basis(N, 9)
-set.seed(1) # to ensure the same results across platforms
-system.time(fit <- smooth.basis(1:N, runif(N), Bsp))
+  # Check to make sure that it works with N=1e5
+  N <- 1e5
+  Bsp <- create.bspline.basis(N, 9)
+  set.seed(1) # to ensure the same results across platforms
+  system.time(fit <- smooth.basis(1:N, runif(N), Bsp))
 }
 
-##
-## 10.  with argvals of class Date and POSIXct
-##
-# Date
-invasion1 <- as.Date('1775-09-04')
-invasion2 <- as.Date('1812-07-12')
-earlyUS.Canada <- c(invasion1, invasion2)
-BspInvasion <- create.bspline.basis(earlyUS.Canada)
+} #  end of if (!CRAN) {
 
-earlyUSyears <- seq(invasion1, invasion2, length.out=7)
-(earlyUScubic <- (as.numeric(earlyUSyears-invasion1)/365.24)^3)
-fitCubic <- smooth.basis(earlyUSyears, earlyUScubic, BspInvasion)
-fitCubic$fd$coefs
-# earlyUScubic is proportional to the fourth basis function
-
-
-# POSIXct
-AmRev.ct <- as.POSIXct1970(c('1776-07-04', '1789-04-30'))
-BspRev.ct <- create.bspline.basis(AmRev.ct)
-AmRevYrs.ct <- seq(AmRev.ct[1], AmRev.ct[2], length.out=14)
-
-(AmRevLin.ct <- as.numeric(AmRevYrs.ct-AmRev.ct[1]))
-fitLin.ct <- smooth.basis(AmRevYrs.ct, AmRevLin.ct, BspRev.ct)
-
-}
+} #  end of examples {
 % docclass is function
 \keyword{smooth}
