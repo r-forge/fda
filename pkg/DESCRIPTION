@@ -19,11 +19,20 @@ Description: These functions were developed to support functional data
         Matlab (Springer). The package includes data sets and script
         files working many examples including all but one of the 76
         figures in this latter book.
-        The principal changes to version 2.2.8 are:
-        1.  The use of sparse matrix representation for spline basis
-        functions and in function smooth.basis.
-        2.  The correction of a bug in function pca.fd.  Analyses using
-        the earlier version should be redone.
+        As of this release, the R-Project is no longer distributing the
+        Matlab versions of the functional data analysis functions and sample
+        analyses through the CRAN distribution system.
+        This is due to the pressure placed on storage required in the many
+        CRAN sites by the rapidly increasing number of R packages, of which
+        the fda package is one.  The three of us involved in this package
+        have agreed to help out this situation by switching to distributing
+        the Matlab functions and analyses through Jim Ramsay's ftp site at
+        McGill University.
+        To obtain these Matlab files, go to this site using an ftp utility:
+        http://www.psych.mcgill.ca/misc/fda/downloads/FDAfuns/
+        There you find a set of .zip files containing the functions and
+        sample analyses, as well as two .txt files giving instructions for
+        installation and some additional information.
 License: GPL (>= 2)
 URL: http://www.functionaldata.org
 LazyData: true
