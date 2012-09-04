@@ -9,7 +9,7 @@
   compute time constraints with CRAN tests.
 }
 \usage{
-CRAN(x='R_CHECK_TIMINGS')
+CRAN(x='_R_CHECK_TIMINGS_')
 }
 \arguments{
   \item{x}{
@@ -36,13 +36,18 @@ CRAN(x='R_CHECK_TIMINGS')
 
 %\seealso{}
 \examples{
-%\dontrun{
+\dontrun{
+cran <- CRAN()
+str(cran)
+print(cran)
+stop()
+
 if(CRAN()){
   stop('CRAN')
 } else {
   stop('NOT CRAN')
 }
-%}
+}
 }
 \keyword{environment}
 
