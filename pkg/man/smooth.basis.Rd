@@ -202,9 +202,7 @@ smooth.basis(argvals=1:n, y, fdParobj, wtvec=NULL, fdnames=NULL,
   The "qr" algorithm option defined by the "method" parameter will
   not normally be needed, but if a warning of a near singularity in
   the coefficient calculations appears, this choice may be a cure.
-
 }
-
 \value{
   an object of class \code{fdSmooth}, which is a named list of length 8
   with the following components:
@@ -253,7 +251,6 @@ smooth.basis(argvals=1:n, y, fdParobj, wtvec=NULL, fdnames=NULL,
   \code{\link{smooth.basisPar}}
   \code{\link{Data2fd}},
 }
-
 \examples{
 ##
 ######## Simulated data example 1: a simple regression smooth  ########
@@ -860,5 +857,4 @@ gaitfd <- gaitSmooth$fd
 } #  end of if (!CRAN)
 
 } #  end of examples
-% docclass is function
 \keyword{smooth}
