@@ -12,7 +12,7 @@
   gcv and RMSE depend on the log10 smoothing parameter.
 }
 \usage{
-plotGCVRMSE.fd(lamlow, lamhi, lamdel, x, argvals, y,
+plotGCVRMSE.fd(lamlow, lamhi, lamdel, argvals, y,
             fdParobj, wtvec=NULL, fdnames=NULL, covariates=NULL, ...)
 }
 \arguments{
@@ -20,13 +20,6 @@ plotGCVRMSE.fd(lamlow, lamhi, lamdel, x, argvals, y,
     numeric scalars giving the low (lamlow) and high (lamhi) ends of the
     range for log10(smoothing) and the increment (lamdel, on the log
     scale).
-  }
-  \item{x}{
-    ???? something like y but potentially different ???
-
-    ???? Documentation written by Spencer Graves;  function included in
-    former examples for smooth.basis, presumably written by Giles Hooker
-    -- but I can't figure it out in the time I have for it.????
   }
   \item{argvals, y, wtvec, fdnames, covariates}{
     arguments passed to smooth.basis
