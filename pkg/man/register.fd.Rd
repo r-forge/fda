@@ -195,6 +195,7 @@ plotreg.fd(smB.reg.0)
 ##
 ## 3.  Define a more flexible basis for the warping functions
 ##
+if(!CRAN()){
 Wnbasis   <- 4
 Wbasis    <- create.bspline.basis(rng.growth, Wnbasis)
 Wfd0      <- fd(matrix(0,Wnbasis,1),Wbasis)
@@ -271,6 +272,6 @@ plotreg.fd(gaitreglist)
 #  display horizonal shift values
 print(round(gaitreglist$shift,1))
 }
-
+}
 % docclass is function
 \keyword{smooth}
