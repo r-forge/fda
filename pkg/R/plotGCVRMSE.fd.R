@@ -1,4 +1,4 @@
-plotGCVRMSE.fd = function(lamlow, lamhi, lamdel, x, argvals, y,
+plotGCVRMSE.fd = function(lamlow, lamhi, lamdel, argvals, y,
             fdParobj, wtvec=NULL, fdnames=NULL, covariates=NULL, ...)  {
   loglamvec = seq(lamlow, lamhi, lamdel)
   loglamout = matrix(0,length(loglamvec),4)
@@ -12,7 +12,7 @@ plotGCVRMSE.fd = function(lamlow, lamhi, lamdel, x, argvals, y,
     xfd = smoothlist$fd   #  the curve smoothing the data
     loglamout[m,2] = smoothlist$df
     #  degrees of freedom in the smoothing curve
-    loglamout[m,3] = sqrt(mean((eval.fd(argvals, xfd) - x)^2))
+    loglamout[m,3] = sqrt(mean((eval.fd(argvals, xfd) - y)^2))
     loglamout[m,4] = mean(smoothlist$gcv)  #  the mean of the N gcv values
   }
   cat("log10 lambda, deg. freedom, RMSE, gcv\n")
