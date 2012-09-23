@@ -341,6 +341,41 @@ points(argvals,x, pch="*")
 #  known features in the curve, and will generally provide better RMSE
 #  for given degrees of freedom.
 
+#  It does require a bit more effort, though.
+#  First, we define a little display function for showing how
+#  df, gcv and RMSE depend on the log10 smoothing parameter
+plotGCVRMSE.fd = function(lamlow, lamhi, lamdel, x, argvals, y,
+            fdParobj, wtvec=NULL, fdnames=NULL, covariates=NULL)  {
+  loglamvec = seq(lamlow, lamhi, lamdel)
+  loglamout = matrix(0,length(loglamvec),4)
+  m = 0
+  for (loglambda in loglamvec) {
+    m = m + 1
+    loglamout[m,1] = loglambda
+    fdParobj$lambda = 10^(loglambda)
+    smoothlist = smooth.basis(argvals, y, fdParobj, wtvec=wtvec,
+             fdnames=fdnames, covariates=covariates)
+    xfd = smoothlist$fd   #  the curve smoothing the data
+    loglamout[m,2] = smoothlist$df
+    #  degrees of freedom in the smoothing curve
+    loglamout[m,3] = sqrt(mean((eval.fd(argvals, xfd) - x)^2))
+    loglamout[m,4] = mean(smoothlist$gcv)  #  the mean of the N gcv values
+  }
+  cat("log10 lambda, deg. freedom, RMSE, gcv\n")
+  for (i in 1:m) {
+    cat(format(round(loglamout[i,],3)))
+    cat("\n")
+  }
+  par(mfrow=c(3,1))
+  plot(loglamvec, loglamout[,2], type="b")
+  title("Degrees of freedom")
+  plot(loglamvec, loglamout[,3], type="b")
+  title("RMSE")
+  plot(loglamvec, loglamout[,4], type="b")
+  title("Mean gcv")
+  return(loglamout)
+}
+
 #  Use the data that you used in Example 1, or run the following code:
 n = 51
 argvals = seq(0,1,len=n)
@@ -372,7 +407,9 @@ plotfit.fd(y, argvals, xfd)
 points(argvals,x, pch="*")
 #  Repeat these analyses for a range of log10(lambda) values by running
 #  the function plotGCVRMSE that we defined above.
+
 loglamout = plotGCVRMSE.fd(-6, -3, 0.25, x, argvals, y, fdParobj)
+
 #  When we ran this example, the optimal RMSE was 0.073, and was achieved
 #  for log10(lambda) = -4.25 or lambda = 0.000056.  At this level of
 #  smoothing, the degrees of freedom index was 10.6, a value close to

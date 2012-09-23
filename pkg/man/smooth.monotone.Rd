@@ -202,7 +202,11 @@ growfdPar <- fdPar(Wfd0, Lfdobj, lambda)
 wgt   <- rep(1,nage)
 #  Smooth the data for the first girl
 hgt1 = growth$hgtf[,1]
-result <- smooth.monotone(age, hgt1, growfdPar, wgt)
+
+# conv=0.1 to reduce the compute time,
+# required to reduce the test time on CRAN
+result <- smooth.monotone(age, hgt1, growfdPar, wgt,
+                          conv=0.1)
 #  Extract the functional data object and regression
 #  coefficients
 Wfd  <- result$Wfdobj
