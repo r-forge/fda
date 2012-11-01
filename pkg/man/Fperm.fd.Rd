@@ -182,6 +182,9 @@ F.res2 = Fperm.fd(annualprec, xfdlist, betalist,nperm=10)
 
 # First set up a basis system to hold the smooths
 
+# cut this example to reduce test time on CRAN
+if(!CRAN()){
+
 Knots  <- growth$age
 norder <- 6
 nbasis <- length(Knots) + norder - 2
@@ -215,6 +218,7 @@ betalist = list(fdPar(hgtbasis,2,1e-6),fdPar(hgtbasis,2,1e-6))
 # Should use nperm = 200 or so,
 # but use 10 to save test time
 Fres = Fperm.fd(hgtfd,xfdlist,betalist,nperm=10)
+}
 
 }
 \keyword{smooth}
