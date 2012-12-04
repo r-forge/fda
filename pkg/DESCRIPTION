@@ -6,10 +6,10 @@ Author: J. O. Ramsay <ramsay@psych.mcgill.ca>, Hadley Wickham
         <h.wickham@gmail.com>, Spencer Graves
         <spencer.graves@prodsyse.com>, Giles Hooker <gjh27@cornell.edu>
 Maintainer: J. O. Ramsay <ramsay@psych.mcgill.ca>
-Depends: R (>= 2.10.0), splines, zoo, Matrix, RCurl
+Depends: R (>= 2.10.0), splines, zoo, Matrix
 Imports: Matrix
 Suggests: graphics, odesolve, R.matlab, quadprog, DierckxSpline, nlme,
-	  lattice
+	  lattice, RCurl
 Description: These functions were developed to support functional data
         analysis as described in Ramsay, J. O. and Silverman, B. W.
         (2005) Functional Data Analysis. New York: Springer.  They were
