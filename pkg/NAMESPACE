@@ -30,6 +30,8 @@ export(AmpPhaseDecomp,
        CSTR2in, CSTR2, CSTRfitLS, CSTRfn, CSTRres, CSTRres0, CSTRsse,
        cycleplot.fd,
        Data2fd,
+       density.fd,
+       deriv.fd,
        df2lambda,
        dirs,
        Eigen,
@@ -68,6 +70,7 @@ export(AmpPhaseDecomp,
        is.fdPar,
        is.fdSmooth,
        is.Lfd,
+       knots.fd, knots.fdSmooth, knots.basisfd,
        lambda2df,
        lambda2gcv,
        landmarkreg,
@@ -76,6 +79,7 @@ export(AmpPhaseDecomp,
        lmeWinsor,
        lmWinsor,
        matplot,
+       mean.fd,
        monfn,
        monomial,
        monomialpen,
@@ -123,7 +127,7 @@ export(AmpPhaseDecomp,
 
 #importFrom(base, mean, coefficients)
 
-import(zoo)
+#import(zoo)
 import(Matrix)
 #import(zoo)
 #import(rpart)
