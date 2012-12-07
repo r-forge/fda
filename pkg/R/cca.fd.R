@@ -147,8 +147,6 @@ cca.fd <- function(fdobj1, fdobj2=fdobj1, ncan = 2,
   names(ccafd) <- c("ccawtfd1", "ccawtfd2", "ccacorr",
                     "ccavar1",  "ccavar2")
 
-#  setOldClass("cca.fd")
-#  oldClass(ccafd) <- "cca.fd"
   class(ccafd) <- "cca.fd"
 
   return(ccafd)
