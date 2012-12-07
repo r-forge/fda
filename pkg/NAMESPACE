@@ -90,6 +90,7 @@ export(AmpPhaseDecomp,
        pda.fd,
        pda.overlay,
        phaseplanePlot,
+       plot.cca.fd
        plot.pca.fd,
        plotbeta,
        plotfit.fd, plotfit.fdSmooth,
