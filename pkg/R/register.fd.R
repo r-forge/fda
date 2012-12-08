@@ -34,8 +34,8 @@ register.fd <- function(y0fd=NULL, yfd=NULL, WfdParobj=NULL,
 #              The periodic option should ONLY be used with a Fourier
 #              basis for the target function Y0FD, the functions to be
 #              registered, YFD.
-#  CRIT    ... if 1 least squares, 
-#              if 2 log eigenvalue ratio, 
+#  CRIT    ... if 1 least squares,
+#              if 2 log eigenvalue ratio,
 #              if 3 least squares using residual y0 - yi*dhdt
 #              Default is 2.
 #  RETURNMATRIX ... If False, a matrix in sparse storage model can be returned
@@ -620,7 +620,7 @@ regfngrad <- function(xfine, y0fine, Dhwrtc, yregfd, Wfd,
       res  <- y0ivar - ywrthi
       Fval <- Fval + aa - 2*bb + cc
       gvec <- gvec - 2*crossprod(Dywrtc, res)/nfine
-    } elseif (crit == 2) {
+    } else if (crit == 2) {
       ee   <- aa + cc
       ff   <- aa - cc
       dd   <- sqrt(ff^2 + 4*bb^2)
@@ -629,7 +629,7 @@ regfngrad <- function(xfine, y0fine, Dhwrtc, yregfd, Wfd,
       Dcc  <- 2.0 * crossprod(Dywrtc, ywrthi)/nfine
       Ddd  <- (4*bb*Dbb - ff*Dcc)/dd
       gvec <- gvec + (Dcc - Ddd)
-    } elseif (crit == 3) {
+    } else if (crit == 3) {
         #  least squares with root Dh weighting criterion
       res  = y0ivar - ywrthi*sqrt(dhdt)
       Fval = Fval + mean(res^2)
