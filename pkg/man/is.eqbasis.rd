@@ -22,7 +22,7 @@ a logical value:
 \code{TRUE} if the two basis objects are identical, \code{FALSE} otherwise.
 }
 \seealso{
-\code{\link{basis.fd.fd}}, 
+\code{\link{basisfd}},
 }
 % docclass is function
 \keyword{basis}
