@@ -246,10 +246,31 @@ if(!(length(basisvalues) == 0 || missing(basisvalues) || !is.null(basisvalues)))
 }
 else basisvalues <- vector("list",0)
 
-
 #  check if DROPIND is present, and set to default if not
 
 if(missing(dropind)) dropind <- vector("list",0)
+
+if (length(dropind) > 0) {
+    #  check DROPIND
+    ndrop = length(dropind)
+    if (ndrop >= nbasis) stop('Too many index values in DROPIND.')
+    dropind = sort(dropind)
+    if (ndrop > 1 && any(diff(dropind)) == 0) 
+        stop('Multiple index values in DROPIND.')
+    for (i in 1:ndrop) {
+        if (dropind[i] < 1 || dropind[i] > nbasis)
+                stop('A DROPIND index value is out of range.')
+    }
+    #  drop columns from VALUES cells if present
+    nvalues = length(values)
+    if (nvalues > 0 && length(values[[1]] > 0)) {
+        for (ivalue in 1:nvalues) {
+            derivvals = value[[ivalue]]
+            derivvals = derivvals[,-dropind]
+            values[[ivalue]] = derivvals
+        }
+    }
+}
 
 #  select the appropriate type and process
 
@@ -589,7 +610,6 @@ return(basisequal)
       create.bspline.basis(range1, nbasis, norder, allbreaks)
     return(prodbasisobj)
   }
-#  end if(type1 & type2 == 'bspline')
 
   if (type1 == "fourier" && type2 == "fourier") {
     #  both bases Fourier
@@ -644,10 +664,10 @@ return(basisequal)
 {
   #  select subsets of basis functions in a basis object
 
-    dropind = vector("numeric", 0);
+    dropind = vector("numeric", 0)
     nbasis <- basisobj$nbasis
     for (i in 1:nbasis) {
-        if (!any(subs==i)) dropind = c(dropind, i);
+        if (!any(subs==i)) dropind = c(dropind, i)
     }
     basisobj$dropind <- dropind
     return(basisobj)
