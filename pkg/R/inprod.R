@@ -84,11 +84,16 @@ if (rng[1] < range1[1] || rng[2] > range1[2]) stop(
 #  (5) there is no weight function
 #  (6) RNG is equal to the range of the two bases.
 
-if (inherits(fdobj1,"fd")       && inherits(fdobj2,"fd")   &&
-    type1 == "bspline"          && type2 == "bspline"      &&
-    is.eqbasis(basisobj1, basisobj2)                       &&
-    is.integer(Lfdobj1)         && is.integer(Lfdobj2)      &&
-    wtfd == 0                   && all(rng == range1)) {
+if (inherits(fdobj1,"fd")            && 
+    inherits(fdobj2,"fd")            &&
+    type1 == "bspline"               && 
+    type2 == "bspline"               &&
+    is.eqbasis(basisobj1, basisobj2) &&
+    is.integer(Lfdobj1)              && 
+    is.integer(Lfdobj2)              &&
+    length(basisobj1$dropind) == 0   &&
+    length(basisobj1$dropind) == 0   &&
+    wtfd == 0                        && all(rng == range1)) {
 
     inprodmat <- inprod.bspline(fdobj1, fdobj2,
                      Lfdobj1$nderiv, Lfdobj2$nderiv)

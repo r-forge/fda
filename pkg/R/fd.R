@@ -91,22 +91,12 @@ fd <- function (coef=NULL, basisobj=NULL, fdnames=NULL)
         stop("Argument basis must be of basis class")
   }
 
-  nbasis = basisobj$nbasis
-  if (coefd[1] != nbasis)
-    stop("First dim. of 'coef' not equal to 'nbasis'.")
+  nbasis   = basisobj$nbasis
+  ndropind = length(basisobj$dropind)
+  if (coefd[1] != nbasis - dropind)
+    stop("First dim. of 'coef' not equal to 'nbasis - ndropind'.")
 
   dropind <- basisobj$dropind
-# coefd[1] should equal basisobj$nbasis - length(dropind)
-# However, fd is not yet programmed for dropind.
-# Therefore, trap it:
-  if(length(dropind)>0)
-    stop("'fd' not yet programmed to handle 'dropind'")
-
-# If dropind is not trapped earlier, it will generate the following
-# cryptic error message:
-  if (coefd[1] != basisobj$nbasis)
-    stop("Number of coefficients does not match ",
-         "the number of basis functions.")
 
 #  setup number of replicates and number of variables
 
@@ -127,7 +117,6 @@ fd <- function (coef=NULL, basisobj=NULL, fdnames=NULL)
 
     names(fdnames) <- c("args", "reps", "funs")
   }
-
   if(is.null(dimnames(coef))){
     dimc <- dim(coef)
     ndim <- length(dimc)
@@ -149,7 +138,6 @@ fd <- function (coef=NULL, basisobj=NULL, fdnames=NULL)
 
   fdobj <- list(coefs=coef, basis=basisobj, fdnames=fdnames)
     oldClass(fdobj) <- "fd"
-
     fdobj
 }
 
