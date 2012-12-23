@@ -2,7 +2,7 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
                                   norder=4,      breaks=NULL,
                                   dropind=NULL,  quadvals=NULL,
                                   values=NULL,   basisvalues=NULL,
-                                  names="bspl")
+                                  bnames="bspl")
 {
 #  This function creates a bspline functional data basis.
 #  Arguments
@@ -86,10 +86,10 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
 #               basisobj$basisvalues <- vector("list",1)
 #               basisobj$basisvalues[[1]] <-
 #                               list(args=evalargs, values=basismat)
-#  NAMES ...  Either a character vector of length NABASIS
+#  BNAMES ... Either a character vector of length NABASIS
 #             or a single character string to which NORDER, "." and
 #             1:NBASIS are appended by the command
-#                paste(names, norder, ".", 1:nbreaks, sep="").
+#                paste(bnames, norder, ".", 1:nbreaks, sep="").
 #             For example, if norder = 4, this defaults to
 #                     'bspl4.1', 'bspl4.2', ... .
 #  Returns
@@ -124,7 +124,7 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
 #    basisvalues <- NULL
 #    basisobj  <- list(type=type, rangeval=rangeval, nbasis=nbasis,
 #                  params=params, dropind=dropind,   quadvals=quadvals,
-#                  values=values, basisvalues=basisvalues, names=names)
+#                  values=values, basisvalues=basisvalues, names=bnames)
 #    oldClass(basisobj) <- "basisfd"
 #    return(basisobj)
 #  }
@@ -299,16 +299,19 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
                   params=params, dropind=dropind,   quadvals=quadvals,
                   values=values, basisvalues=basisvalues)
 ##
-## 7.  names
+## 7.  bnames
 ##
   {
-    if(length(names) == nbasis)
-      basisobj$names <- names
+    ndropind = length(dropind)
+    if(length(bnames) == nbasis)
+      basisobj$names <- bnames
     else {
-      if(length(names)>1)
-        stop('length(names) = ', length(names), ';  must be either ',
+      if(length(bnames) > 1)
+        stop('length(bnames) = ', length(bnames), ';  must be either ',
              '1 or nbasis = ', nbasis)
-      basisobj$names <- paste(names, norder, ".", 1:nbasis, sep="")
+      basisind = 1:nbasis
+      bnames   = paste(bnames, norder, ".",as.character(basisind), sep="")
+      basisobj$names <- bnames
     }
   }
 ##

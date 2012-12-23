@@ -100,6 +100,7 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 #  check fdParobj
 
   fdParobj <- fdParcheck(fdParobj)
+
   fdobj    <- fdParobj$fd
   lambda   <- fdParobj$lambda
   Lfdobj   <- fdParobj$Lfd
@@ -125,7 +126,7 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 
   nderiv   <- Lfdobj$nderiv
   basisobj <- fdobj$basis
-  nbasis   <- basisobj$nbasis
+  nbasis   <- basisobj$nbasis - length(basisobj$dropind) 
   onebasis <- rep(1,nbasis)
 
 #  set up names for first dimension of y
@@ -135,8 +136,9 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 
 #  get names for basis functions
 
-  bnames <- fdParobj$fd$basis$names
-
+  bnames <- basisobj$names
+  bnames <- bnames[-basisobj$dropind]
+  
 #  set up matrix or array for coefficients of basis expansion,
 #  as well as names for replications and, if needed, variables
 
@@ -212,14 +214,12 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 
     #  the weighted crossproduct of the basis matrix
       Bmat  <- t(basisw) %*% basismat
-    #  Bmat  <- crossprod(basisw,basismat)
       Bmat0 <- Bmat
 
     #  set up right side of normal equations
 
       if (ndim < 3) {
         Dmat <- t(basisw) %*% y
-        # Dmat <- crossprod(basisw,y)
       } else {
         Dmat <- array(0, c(nbasis+q, nrep, nvar))
         for (ivar in 1:nvar) {
@@ -466,7 +466,6 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
     }
 
   }
-
 #  ----------------------------------------------------------------
 #            compute SSE, yhat, GCV and other fit summaries
 #  ----------------------------------------------------------------
@@ -487,7 +486,7 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
     } else {
         temp <- t(basismat) %*% (as.vector(wtvec)*basismat)
     }
-#
+
     if  (lambda > 0) {
         temp <- temp + lambda*penmat
     }
@@ -535,7 +534,7 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
         SSEi <- sum((y[1:n,i] - yhat[,i])^2)
         gcv[i] <- (SSEi/n)/((n - df.)/n)^2
       }
-      if (ndim>1)names(gcv) <- ynames
+      if (ndim > 1) names(gcv) <- ynames
     } else {
       gcv <- matrix(0,nrep,nvar)
       for (ivar in 1:nvar) {
