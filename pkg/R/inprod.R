@@ -32,7 +32,7 @@ inprod <- function(fdobj1, fdobj2=NULL, Lfdobj1=int2Lfd(0), Lfdobj2=int2Lfd(0),
 #  A matrix of NREP1 by NREP2 of inner products for each possible pair
 #  of functions.
 
-#  Last modified 8 May 2012 by Jim Ramsay
+#  Last modified 24 December 2012 by Jim Ramsay
 
 #  Check FDOBJ1 and get no. replications and basis object
 
@@ -265,10 +265,10 @@ fdchk <- function(fdobj) {
 
     if (inherits(fdobj, "fd")) coef  <- fdobj$coefs
     else
-	    if (inherits(fdobj, "basisfd")) {
-    	    coef  <- diag(rep(1,fdobj$nbasis))
+	  if (inherits(fdobj, "basisfd")) {
+    	    coef  <- diag(rep(1,fdobj$nbasis - length(fdobj$dropind)))
     	    fdobj <- fd(coef, fdobj)
-	    }
+	  }
     else stop("FDOBJ is not an FD object.")
 
     #  extract the number of replications and basis object

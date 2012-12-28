@@ -63,8 +63,7 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 #   PENMAT  the penalty matrix.
 #   Y2CMAP  the matrix mapping the data to the coefficients.
 #
-# last modified 2012.07.04 by Spencer Graves
-#    for argvals of class Date and POSIXct
+# last modified 24 December 2012
 
 #  This version of smooth.basis, introduced in March 2011, permits ARGVALS
 #  to be a matrix, with the same dimensions as the first two dimensions of Y
@@ -74,12 +73,28 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 #  The earlier version of smooth.basis is found at the end of the file where
 #  it is names smooth.basis1.
 
+        print("inside smooth.basis1")
+
 #  ---------------------------------------------------------------------
 #                      Check argments
 #  ---------------------------------------------------------------------
 
 #  check Y  and set nrep, nvar and ndim
 
+ebasis <- rep(1,nbasis)
+
+#  set up names for first dimension of y
+
+  tnames <- dimnames(y)[[1]]
+  if (is.null(tnames)) tnames <- 1:n
+
+#  get names for basis functions
+
+  bnames <- basisobj$names
+  bnames <- bnames[-basisobj$dropind]
+  
+#  set up matrix or array for coefficients of basis expansion,
+#  as well as names for replications and, if needed, variables  
   if (is.vector(y))y <- matrix(y,length(y),1)
   dimy <- dim(y)
   n    <- dimy[1]
@@ -127,20 +142,6 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
   nderiv   <- Lfdobj$nderiv
   basisobj <- fdobj$basis
   nbasis   <- basisobj$nbasis - length(basisobj$dropind) 
-  onebasis <- rep(1,nbasis)
-
-#  set up names for first dimension of y
-
-  tnames <- dimnames(y)[[1]]
-  if (is.null(tnames)) tnames <- 1:n
-
-#  get names for basis functions
-
-  bnames <- basisobj$names
-  bnames <- bnames[-basisobj$dropind]
-  
-#  set up matrix or array for coefficients of basis expansion,
-#  as well as names for replications and, if needed, variables
 
   if (ndim == 2)  {
     coef   <- matrix(0,nbasis,nrep)
@@ -209,6 +210,10 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
       } else {
         rtwtvec <- sqrt(wtvec)
         rtwtmat <- matrix(rtwtvec,n,nrep)
+        print(nbasis)
+        print(q)
+        print(dim(basismat))
+        print(dim(wtvec))
         basisw  <- (wtvec %*% matrix(1,1,nbasis+q))*basismat
       }
 
