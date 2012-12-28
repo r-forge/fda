@@ -2,7 +2,7 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
                                   norder=4,      breaks=NULL,
                                   dropind=NULL,  quadvals=NULL,
                                   values=NULL,   basisvalues=NULL,
-                                  bnames="bspl")
+                                  BasisFnNames="bspl")
 {
 #  This function creates a bspline functional data basis.
 #  Arguments
@@ -86,16 +86,16 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
 #               basisobj$basisvalues <- vector("list",1)
 #               basisobj$basisvalues[[1]] <-
 #                               list(args=evalargs, values=basismat)
-#  BNAMES ... Either a character vector of length NABASIS
+#  BASISFNNAMES ... Either a character vector of length NABASIS
 #             or a single character string to which NORDER, "." and
 #             1:NBASIS are appended by the command
-#                paste(bnames, norder, ".", 1:nbreaks, sep="").
+#                paste(BasisFnNames, norder, ".", 1:nbreaks, sep="").
 #             For example, if norder = 4, this defaults to
 #                     'bspl4.1', 'bspl4.2', ... .
 #  Returns
 #  BASISFD ...a functional data basis object
 
-#  Last modified  21 December 2012 by Jim Ramsay
+#  Last modified  28 December 2012 by Jim Ramsay
 
 #  -------------------------------------------------------------------------
 #  Default basis for missing arguments:  A B-spline basis over [0,1] of
@@ -124,7 +124,7 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
 #    basisvalues <- NULL
 #    basisobj  <- list(type=type, rangeval=rangeval, nbasis=nbasis,
 #                  params=params, dropind=dropind,   quadvals=quadvals,
-#                  values=values, basisvalues=basisvalues, names=bnames)
+#                  values=values, basisvalues=basisvalues, names=BasisFnNames)
 #    oldClass(basisobj) <- "basisfd"
 #    return(basisobj)
 #  }
@@ -299,19 +299,19 @@ create.bspline.basis <- function (rangeval=NULL, nbasis=NULL,
                   params=params, dropind=dropind,   quadvals=quadvals,
                   values=values, basisvalues=basisvalues)
 ##
-## 7.  bnames
+## 7.  BasisFnNames
 ##
   {
     ndropind = length(dropind)
-    if(length(bnames) == nbasis)
-      basisobj$names <- bnames
+    if(length(BasisFnNames) == nbasis)
+      basisobj$names <- BasisFnNames
     else {
-      if(length(bnames) > 1)
-        stop('length(bnames) = ', length(bnames), ';  must be either ',
+      if(length(BasisFnNames) > 1)
+        stop('length(BasisFnNames) = ', length(BasisFnNames), ';  must be either ',
              '1 or nbasis = ', nbasis)
       basisind = 1:nbasis
-      bnames   = paste(bnames, norder, ".",as.character(basisind), sep="")
-      basisobj$names <- bnames
+      BasisFnNames   = paste(BasisFnNames, norder, ".",as.character(basisind), sep="")
+      basisobj$names <- BasisFnNames
     }
   }
 ##
