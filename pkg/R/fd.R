@@ -828,8 +828,10 @@ mean.fd <- function(x, ...)
   ndim      <- length(coefd)
   basisobj  <- x$basis
   nbasis    <- basisobj$nbasis
+  dropind   <- basisobj$dropind
+  ndropind  <- length(dropind)
   if (ndim == 2) {
-    coefmean  <- matrix(apply(coef,1,mean),nbasis,1)
+    coefmean  <- matrix(apply(coef,1,mean),nbasis-ndropind,1)
     coefnames <- list(dimnames(coef)[[1]],"Mean")
   } else {
     nvar <- coefd[3]
@@ -865,8 +867,10 @@ sum.fd <- function(..., na.rm=FALSE)
   ndim   <- length(coefd)
   basis  <- fd$basis
   nbasis <- basis$nbasis
+  dropind   <- basisobj$dropind
+  ndropind  <- length(dropind)
   if (ndim == 2) {
-    coefsum   <- matrix(apply(coef,1,sum),nbasis,1)
+    coefsum   <- matrix(apply(coef,1,sum),nbasis-ndropind,1)
     coefnames <- list(dimnames(coef)[[1]],"Sum")
   } else {
     nvar <- coefd[3]
