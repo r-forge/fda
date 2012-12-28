@@ -116,7 +116,7 @@ basisfd <- function(type, rangeval, nbasis, params, dropind=vector("list",0),
 #  CREATE_POLYNOMIAL_BASIS  ...  creates a polynomial basis
 #  CREATE_POWER_BASIS       ...  creates a monomial basis
 
-#  Last modified 19 August 2010 by Jim Ramsay
+#  Last modified 28 December 2012 by Jim Ramsay
 # value -> values 2012.12.27 by spencer graves
 #  Set up default basis if there are no arguments:
 #     order 2 monomial basis over [0,1]

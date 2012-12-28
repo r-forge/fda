@@ -63,7 +63,7 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 #   PENMAT  the penalty matrix.
 #   Y2CMAP  the matrix mapping the data to the coefficients.
 #
-# last modified 24 December 2012
+# last modified 28 December 2012
 
 #  This version of smooth.basis, introduced in March 2011, permits ARGVALS
 #  to be a matrix, with the same dimensions as the first two dimensions of Y
@@ -73,8 +73,6 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 #  The earlier version of smooth.basis is found at the end of the file where
 #  it is names smooth.basis1.
 
-        print("inside smooth.basis1")
-
 #  ---------------------------------------------------------------------
 #                      Check argments
 #  ---------------------------------------------------------------------
@@ -83,16 +81,6 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 
 ebasis <- rep(1,nbasis)
 
-#  set up names for first dimension of y
-
-  tnames <- dimnames(y)[[1]]
-  if (is.null(tnames)) tnames <- 1:n
-
-#  get names for basis functions
-
-  bnames <- basisobj$names
-  bnames <- bnames[-basisobj$dropind]
-  
 #  set up matrix or array for coefficients of basis expansion,
 #  as well as names for replications and, if needed, variables  
   if (is.vector(y))y <- matrix(y,length(y),1)
@@ -137,6 +125,16 @@ ebasis <- rep(1,nbasis)
 
 # if (matwt) wtmat <- wtvec #  else wtmat <- diag(as.vector(wtvec))
 
+#  set up names for first dimension of y
+
+  tnames <- dimnames(y)[[1]]
+  if (is.null(tnames)) tnames <- 1:n
+
+#  get names for basis functions
+
+  BasisFnNames <- basisobj$names
+  BasisFnNames <- BasisFnNames[-basisobj$dropind]
+  
 #  extract information from fdParobj
 
   nderiv   <- Lfdobj$nderiv
@@ -147,14 +145,14 @@ ebasis <- rep(1,nbasis)
     coef   <- matrix(0,nbasis,nrep)
     ynames <- dimnames(y)[[2]]
     vnames <- "value"
-    dimnames(coef) <- list(bnames, ynames)
+    dimnames(coef) <- list(BasisFnNames, ynames)
   }
 
   if (ndim == 3)  {
     coef <- array(0,c(nbasis,nrep,nvar))
     ynames <- dimnames(y)[[2]]
     vnames <- dimnames(y)[[3]]
-    dimnames(coef) <- list(bnames, ynames, vnames)
+    dimnames(coef) <- list(BasisFnNames, ynames, vnames)
   }
 
 #  check COVARIATES and set value for q, the number of covariates
@@ -174,6 +172,16 @@ ebasis <- rep(1,nbasis)
     beta. <- NULL
   }
 
+#  set up names for first dimension of y
+
+  tnames <- dimnames(y)[[1]]
+  if (is.null(tnames)) tnames <- 1:n
+
+#  get names for basis functions
+
+  BasisFnNames <- basisobj$names
+  BasisFnNames <- BasisFnNames[-basisobj$dropind]
+  
 #  ----------------------------------------------------------------
 #                set up the linear equations for smoothing
 #  ----------------------------------------------------------------
@@ -210,10 +218,6 @@ ebasis <- rep(1,nbasis)
       } else {
         rtwtvec <- sqrt(wtvec)
         rtwtmat <- matrix(rtwtvec,n,nrep)
-        print(nbasis)
-        print(q)
-        print(dim(basismat))
-        print(dim(wtvec))
         basisw  <- (wtvec %*% matrix(1,1,nbasis+q))*basismat
       }
 

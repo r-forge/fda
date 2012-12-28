@@ -629,11 +629,12 @@ regfngrad <- function(xfine, y0fine, Dhwrtc, yregfd, Wfd,
       Dcc  <- 2.0 * crossprod(Dywrtc, ywrthi)/nfine
       Ddd  <- (4*bb*Dbb - ff*Dcc)/dd
       gvec <- gvec + (Dcc - Ddd)
-    } else if (crit == 3) {
+      # } else if (crit == 3) {
         #  least squares with root Dh weighting criterion
-      res  = y0ivar - ywrthi*sqrt(dhdt)
-      Fval = Fval + mean(res^2)
-      gvec = gvec - 2*crossprod(Dywrtc, res)/nfine
+        #  dhdt not defined here ... fix later
+      # res  = y0ivar - ywrthi*sqrt(dhdt)
+      # Fval = Fval + mean(res^2)
+      # gvec = gvec - 2*crossprod(Dywrtc, res)/nfine
     } else {
       stop("Invalid value for fitting criterion CRIT.")
     }
