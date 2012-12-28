@@ -38,7 +38,7 @@ fd <- function (coef=NULL, basisobj=NULL, fdnames=NULL)
 #  Returns:
 #  FD ... a functional data object
 
-#  Last modified 3 February 2010 by Jim Ramsay
+#  Last modified 24 December 2012 by Jim Ramsay
 
 ##
 ## 1.  check coef and get its dimensions
@@ -91,12 +91,12 @@ fd <- function (coef=NULL, basisobj=NULL, fdnames=NULL)
         stop("Argument basis must be of basis class")
   }
 
-  nbasis   = basisobj$nbasis
-  ndropind = length(basisobj$dropind)
-  if (coefd[1] != nbasis - dropind)
+  nbasis   <- basisobj$nbasis
+  dropind  <- basisobj$dropind
+  ndropind <- length(basisobj$dropind)
+  if (coefd[1] != nbasis - ndropind)
     stop("First dim. of 'coef' not equal to 'nbasis - ndropind'.")
 
-  dropind <- basisobj$dropind
 
 #  setup number of replicates and number of variables
 
