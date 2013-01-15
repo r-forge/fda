@@ -855,7 +855,7 @@ sum.fd <- function(..., na.rm=FALSE)
 {
   #  Compute sum function for functional observations
 
-  #  Last modified 5 March 2007
+  #  Last modified 15 January 2013
 
   fd <- list(...)[[1]]
 
@@ -867,7 +867,7 @@ sum.fd <- function(..., na.rm=FALSE)
   ndim   <- length(coefd)
   basis  <- fd$basis
   nbasis <- basis$nbasis
-  dropind   <- basisobj$dropind
+  dropind   <- basis$dropind
   ndropind  <- length(dropind)
   if (ndim == 2) {
     coefsum   <- matrix(apply(coef,1,sum),nbasis-ndropind,1)
