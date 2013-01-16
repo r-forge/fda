@@ -11,7 +11,7 @@ canonical variables.
 \usage{
 cca.fd(fdobj1, fdobj2=fdobj1, ncan = 2,
        ccafdPar1=fdPar(basisobj1, 2, 1e-10),
-       ccafdPar2=ccafdParobj1, centerfns=TRUE)
+       ccafdPar2=ccafdPar1, centerfns=TRUE)
 }
 \arguments{
 \item{fdobj1}{
