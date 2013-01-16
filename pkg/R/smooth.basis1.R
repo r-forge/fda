@@ -63,7 +63,7 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 #   PENMAT  the penalty matrix.
 #   Y2CMAP  the matrix mapping the data to the coefficients.
 #
-# last modified 28 December 2012
+# last modified 16 January 2013 by Jim Ramsay
 
 #  This version of smooth.basis, introduced in March 2011, permits ARGVALS
 #  to be a matrix, with the same dimensions as the first two dimensions of Y
@@ -129,29 +129,29 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
   tnames <- dimnames(y)[[1]]
   if (is.null(tnames)) tnames <- 1:n
 
-#  get names for basis functions
-
-  BasisFnNames <- basisobj$names
-  BasisFnNames <- BasisFnNames[-basisobj$dropind]
-  
 #  extract information from fdParobj
 
   nderiv   <- Lfdobj$nderiv
   basisobj <- fdobj$basis
   nbasis   <- basisobj$nbasis - length(basisobj$dropind) 
 
+#  get names for basis functions
+
+  names <- basisobj$names
+  names <- names[-basisobj$dropind]
+  
   if (ndim == 2)  {
     coef   <- matrix(0,nbasis,nrep)
     ynames <- dimnames(y)[[2]]
     vnames <- "value"
-    dimnames(coef) <- list(BasisFnNames, ynames)
+    dimnames(coef) <- list(names, ynames)
   }
 
   if (ndim == 3)  {
     coef <- array(0,c(nbasis,nrep,nvar))
     ynames <- dimnames(y)[[2]]
     vnames <- dimnames(y)[[3]]
-    dimnames(coef) <- list(BasisFnNames, ynames, vnames)
+    dimnames(coef) <- list(names, ynames, vnames)
   }
 
 #  check COVARIATES and set value for q, the number of covariates
@@ -176,11 +176,6 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
   tnames <- dimnames(y)[[1]]
   if (is.null(tnames)) tnames <- 1:n
 
-#  get names for basis functions
-
-  BasisFnNames <- basisobj$names
-  BasisFnNames <- BasisFnNames[-basisobj$dropind]
-  
 #  ----------------------------------------------------------------
 #                set up the linear equations for smoothing
 #  ----------------------------------------------------------------
