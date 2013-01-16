@@ -1,5 +1,7 @@
 matplot <- function(x, ...) {
-    UseMethod('matplot')
+    if(inherits(x, 'numeric')){
+        fda:::matplot.default(x, ...)
+    } else UseMethod('matplot')
 }
 
 matplot.default <- function(x, y, type = "p", lty = 1:5, lwd = 1,
