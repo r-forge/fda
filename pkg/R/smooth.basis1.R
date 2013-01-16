@@ -79,10 +79,9 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 
 #  check Y  and set nrep, nvar and ndim
 
-ebasis <- rep(1,nbasis)
-
 #  set up matrix or array for coefficients of basis expansion,
-#  as well as names for replications and, if needed, variables  
+#  as well as names for replications and, if needed, variables 
+ 
   if (is.vector(y))y <- matrix(y,length(y),1)
   dimy <- dim(y)
   n    <- dimy[1]
