@@ -133,12 +133,16 @@ smooth.basis1 <- function (argvals=1:n, y, fdParobj,
 
   nderiv   <- Lfdobj$nderiv
   basisobj <- fdobj$basis
-  nbasis   <- basisobj$nbasis - length(basisobj$dropind) 
+  dropind  <- basisobj$dropind
+  ndropind <- length(dropind)
+  nbasis   <- basisobj$nbasis - ndropind 
 
 #  get names for basis functions
 
   names <- basisobj$names
-  names <- names[-basisobj$dropind]
+  if (ndropind > 0) {
+    names <- names[-dropind]
+  }
   
   if (ndim == 2)  {
     coef   <- matrix(0,nbasis,nrep)
