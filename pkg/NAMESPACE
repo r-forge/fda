@@ -6,6 +6,7 @@ export(AmpPhaseDecomp,
        argvalsy.swap,
        plus.fd, minus.fd, times.fd,
        as.array3,
+       as.fd,
        as.POSIXct1970,
        axisIntervals, axesIntervals,
        bifd,
@@ -47,6 +48,7 @@ export(AmpPhaseDecomp,
        exponentiate.fd,
        exponpen,
        fd, fbplot,
+       fd2list,
        fdaMatlabPath,
        fdlabels,
        fdPar,
@@ -56,6 +58,7 @@ export(AmpPhaseDecomp,
        Fperm.fd,
        fRegress,
        fRegress.CV,
+       fRegress.numeric,
        fRegress.stderr,
        Fstat.fd,
        getbasismatrix,
@@ -116,6 +119,7 @@ export(AmpPhaseDecomp,
        smooth.morph,
        smooth.pos,
        svd2,
+       "[.fd",
        TaylorSpline,
        tperm.fd,
        var.fd,
@@ -176,8 +180,10 @@ S3method(knots, fdSmooth)
 S3method(knots, basisfd)
 S3method(lines, fd)
 S3method(lines, fdSmooth)
+S3method(knots, dierckx)
 S3method(matplot, Date)
 S3method(matplot, POSIXct)
+S3method(matplot, matrix)
 S3method(mean, fd)
 S3method(norder, fd)
 S3method(norder, basisfd)
