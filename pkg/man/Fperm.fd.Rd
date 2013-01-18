@@ -152,7 +152,7 @@ constantfd <- fd(matrix(1,1,35), create.constant.basis(c(0, 365)))
 
 xfdlist <- vector("list",2)
 xfdlist[[1]] <- constantfd
-xfdlist[[2]] <- tempfd
+xfdlist[[2]] <- tempfd[1:35]
 
 betalist   <- vector("list",2)
 #  set up the first regression function as a constant
