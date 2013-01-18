@@ -141,27 +141,27 @@ girlGrowth.fd <- as.fd(girlGrowthSm)
 ##
 ## as.fd.dierckx
 ##
-###x <- 0:24
-###y <- c(1.0,1.0,1.4,1.1,1.0,1.0,4.0,9.0,13.0,
-###       13.4,12.8,13.1,13.0,14.0,13.0,13.5,
-###       10.0,2.0,3.0,2.5,2.5,2.5,3.0,4.0,3.5)
-###library(DierckxSpline)
-###curfit.xy <- curfit(x, y, s=0)
+x <- 0:24
+y <- c(1.0,1.0,1.4,1.1,1.0,1.0,4.0,9.0,13.0,
+       13.4,12.8,13.1,13.0,14.0,13.0,13.5,
+       10.0,2.0,3.0,2.5,2.5,2.5,3.0,4.0,3.5)
+library(DierckxSpline)
+curfit.xy <- curfit(x, y, s=0)
 
-###curfit.fd <- as.fd(curfit.xy)
-###plot(curfit.fd) # as an 'fd' object
-###points(x, y) # Curve goes through the points.
+curfit.fd <- as.fd(curfit.xy)
+plot(curfit.fd) # as an 'fd' object
+points(x, y) # Curve goes through the points.
 
-###x. <- seq(0, 24, length=241)
-###pred.y <- predict(curfit.xy, x.)
-###lines(x., pred.y, lty="dashed", lwd=3, col="blue")
+x. <- seq(0, 24, length=241)
+pred.y <- predict(curfit.xy, x.)
+lines(x., pred.y, lty="dashed", lwd=3, col="blue")
 # dierckx and fd objects match.
 
 \dontshow{stopifnot(}
-###all.equal(knots(curfit.xy, FALSE), knots(curfit.fd, FALSE))
+all.equal(knots(curfit.xy, FALSE), knots(curfit.fd, FALSE))
 \dontshow{)}
 \dontshow{stopifnot(}
-###all.equal(coef(curfit.xy), as.vector(coef(curfit.fd)))
+all.equal(coef(curfit.xy), as.vector(coef(curfit.fd)))
 \dontshow{)}
 
 ##
