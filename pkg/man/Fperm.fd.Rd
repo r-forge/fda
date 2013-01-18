@@ -152,7 +152,7 @@ constantfd <- fd(matrix(1,1,35), create.constant.basis(c(0, 365)))
 
 xfdlist <- vector("list",2)
 xfdlist[[1]] <- constantfd
-xfdlist[[2]] <- tempfd[1:35]
+xfdlist[[2]] <- tempfd
 
 betalist   <- vector("list",2)
 #  set up the first regression function as a constant
@@ -172,7 +172,7 @@ betalist[[2]] <- betafdPar2
 
 # Should use the default nperm = 200
 # but use 10 to save test time for illustration
-F.res2 = Fperm.fd(annualprec, xfdlist, betalist,nperm=10)
+F.res2 = Fperm.fd(annualprec, xfdlist, betalist, nperm=10)
 
 ##
 ## 2.  yfdpar = Functional data object (class fd)
