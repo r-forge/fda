@@ -174,7 +174,6 @@ S3method(fRegress, numeric)
 S3method(knots, fd)
 S3method(knots, fdSmooth)
 S3method(knots, basisfd)
-S3method{knots, dierckx}
 S3method(lines, fd)
 S3method(lines, fdSmooth)
 S3method(matplot, Date)
