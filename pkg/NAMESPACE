@@ -133,6 +133,7 @@ export(AmpPhaseDecomp,
 
 #importFrom(base, mean, coefficients)
 
+#import(DierckxSpline)
 #import(zoo)
 import(Matrix)
 #import(zoo)
