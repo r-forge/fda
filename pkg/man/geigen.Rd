@@ -35,6 +35,11 @@ geigen(Amat, Bmat, Cmat)
 \seealso{
   \code{\link{eigen}}
 }
-%\examples{}
+\examples{
+A <- matrix(1:6, 2)
+B <- matrix(c(2, 1, 1, 2), 2)
+C <- diag(1:3)
+ABC <- geigen(A, B, C)
+}
 % docclass is function
 \keyword{array}
