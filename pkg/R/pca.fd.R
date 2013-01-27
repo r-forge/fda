@@ -80,7 +80,7 @@ if (lambda > 0) {
 }
 Lmat <- (Lmat + t(Lmat))/2
 
-#  compute the Choleski factor of Wmat
+#  compute the Choleski factor Mmat of Lmat
 
 Mmat    <- chol(Lmat)
 Mmatinv <- solve(Mmat)
