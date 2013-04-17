@@ -15,7 +15,8 @@ svd2 <- function(x, nu = min(n, p), nv = min(n, p), LINPACK = FALSE){
                      "; sum(abs(x)==Inf) = ", nInf,
                      ".  'x stored in .svd.x.NA.Inf'",
                      sep="")
-        assign('.svd.x.NA.Inf', x, envir = .GlobalEnv)
+        svd2Env <- new.env()
+        assign('.svd.x.NA.Inf', x, envir = svd2Env)
         stop(msg)
       }
       attr(x, "n") <- n

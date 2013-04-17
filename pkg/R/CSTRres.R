@@ -75,23 +75,23 @@ CSTRres <- function(kref=NULL, EoverR=NULL, a=NULL, b=NULL,
 ##
 #  parvec <- vector("list", 4)
 #  names(parvec) <- c("kref", "EoverR", "a", "b")
-#  parvec$kref <- kref
+#  parvec$kref  <- kref
 #  parvec$Eover <- EoverR
-#  parvec$a <- a
-#  parvec$b <- b
+#  parvec$a     <- a
+#  parvec$b     <- b
   parvec <- list(kref=kref, EoverR=EoverR, a=a, b=b)
-  pv <- unlist(parvec)
+  pv     <- unlist(parvec)
 ##
 ## 2.  Call CSTRfn
 ##
   cstr. <- CSTRfn(parvec=pv, datstruct=datstruct, fitstruct=fitstruct,
-         CSTRbasis=CSTRbasis, lambda=lambda, gradwrd=gradwrd)
+                  CSTRbasis=CSTRbasis, lambda=lambda, gradwrd=gradwrd)
   Res <- as.vector(cstr.$res)
   if(length(d.r <- dim(Res))>1){
     ys <- dimnames(Res)[[2]]
     if(!is.null(ys)){
       resNames <- t(outer(ys, 1:d.r[1], paste, sep=""))
-      Res <- as.vector(Res)
+      Res      <- as.vector(Res)
       names(Res) <- resNames
     }
   }
