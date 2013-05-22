@@ -1,6 +1,6 @@
 Package: fda
-Version: 2.3.5
-Date: 2013-04
+Version: 2.3.6
+Date: 2013-05
 Title: Functional Data Analysis
 Author: J. O. Ramsay <ramsay@psych.mcgill.ca>, Hadley Wickham
         <h.wickham@gmail.com>, Spencer Graves
@@ -8,7 +8,7 @@ Author: J. O. Ramsay <ramsay@psych.mcgill.ca>, Hadley Wickham
 Maintainer: J. O. Ramsay <ramsay@psych.mcgill.ca>
 Depends: R (>= 2.10.0), splines, zoo, Matrix
 Imports: Matrix
-Suggests: graphics, odesolve, R.matlab, quadprog, DierckxSpline, nlme,
+Suggests: deSolve, graphics, R.matlab, quadprog, DierckxSpline, nlme,
 	  lattice, RCurl
 Description: These functions were developed to support functional data
         analysis as described in Ramsay, J. O. and Silverman, B. W.
