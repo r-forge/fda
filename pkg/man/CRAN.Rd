@@ -28,11 +28,12 @@ CRAN(CRAN_pattern, n_R_CHECK4CRAN)
   customized "by setting environment variables _R_CHECK_*_:, as
   described in" the Tools section of the "R Internals" manual.
 
-  'R CMD check' was tested with R 3.0.1 and Rtools 3.0 from April 16,
-  2013 under Windows 7.  With the '--as-cran' option, 7 matches were
-  found;  without it, only 3 were found.  These numbers were unaffected
-  by the presence or absence of the '--timings' parameter.  On this
-  basis, the default value of n_R_CHECK4CRAN was set at 5.
+  'R CMD check' was tested with R 3.0.1 under Fedora 18 Linux and with
+  Rtools 3.0 from April 16, 2013 under Windows 7.  With the '--as-cran'
+  option, 7 matches were found;  without it, only 3 were found.  These
+  numbers were unaffected by the presence or absence of the '--timings'
+  parameter.  On this basis, the default value of n_R_CHECK4CRAN was set
+  at 5.
 
   1.  x. <- Sys.getenv()
 
