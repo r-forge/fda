@@ -19,7 +19,7 @@ Description: These functions were developed to support functional data
         Matlab (Springer). The package includes data sets and script
         files working many examples including all but one of the 76
         figures in this latter book.  Matlab versions of the code and
-        sample analyses are no longer distribued through CRAN, as they
+        sample analyses are no longer distributed through CRAN, as they
         were when the book was published.  For those, ftp from
         http://www.psych.mcgill.ca/misc/fda/downloads/FDAfuns/
         There you find a set of .zip files containing the functions and
