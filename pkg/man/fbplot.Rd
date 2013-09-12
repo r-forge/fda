@@ -1,4 +1,4 @@
-\name{fbplot}
+\name{fbplot{fda}}
 \Rdversion{1.1}
 \alias{fbplot}
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -12,25 +12,22 @@ It can also be used to carry out functional data ordering based on band depth.
 }
 \usage{
 fbplot(fit, x = NULL, method = "MBD", depth = NULL, plot = TRUE, 
-	 prob = 0.5, color = 6, outliercol = 2, barcol = 4, fullout=FALSE, 
-   factor = 1.5, ...)	 
+	 prob = 0.5, color = 6, outliercol = 2, barcol = 4, 
+	 xlim = NULL, ylim = NULL, xlab = "", ylab = "", 
+	 axes = T, main = "", fullout=F, factor = 1.5)	 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{fit}{
-  either a functional data object or 
-  a p-by-n data matrix where n is the number of curves, and p is the number 
-  of evaluation points. 
+  a p-by-n functional data matrix where n is the number of curves, and p is defined below.
 %%     ~~Describe \code{fit} here~~
 }
   \item{x}{
-  evaluation points of the curves. Defaults to 101 equally spaced
-  points on the range of \code{fit} if \code{fit} is a functional data object
-  or to 1:p where p is the number of x coordinates if \code{fit} is a data matrix.
+  the x coordinates of curves. Defaults to 1:p where p is the number of x coordinates.
 %%     ~~Describe \code{x} here~~
 }
   \item{method}{
-  the method to be used to compute band depth. Can be one of "BD2", "BD3", "MBD" or "Both" with a default of "MBD". See also details.
+  the method to be used to compute band depth. Can be one of "BD2", "MBD" or "Both" with a default of "MBD". See also details.
 %%     ~~Describe \code{method} here~~
 }
   \item{depth}{
@@ -63,15 +60,20 @@ fbplot(fit, x = NULL, method = "MBD", depth = NULL, plot = TRUE,
 }
 \item{factor}{
   the constant factor to inflate the middle box and determine fences for outliers. Defaults to be 1.5 as in a classical boxplot.
-}
 %%     ~~Describe \code{factor} here~~
-\item{...}{ additional plotting arguments}
+}
+
 }
 \details{
 For functional data, the band depth (BD) or modifed band depth (MBD) allows for ordering a sample of curves from the center outwards 
 and, thus, introduces a measure to define functional quantiles and the centrality or outlyingness of an
-observation. A smaller rank is associated with a more central position with respect to the sample curves. "BD2" uses two curves to determine a band and "BD3" uses three curves.
-BD usually provides many ties (curves have the same depth values), but MBD does not. The method "Both" uses BD2 first and then uses MBD to break ties.
+observation. A smaller rank is associated with a more central position with respect to the sample curves. 
+BD usually provides many ties (curves have the same depth values), but MBD does not.
+"BD2" uses two curves to determine a band. The method "Both" uses "BD2" first  and then uses "MBD" to break ties.
+The method "Both" uses BD2 first and then uses MBD to break ties. 
+The computation is carried out by the fast algorithm proposed by Sun et al. (2012).
+
+
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
@@ -84,18 +86,19 @@ BD usually provides many ties (curves have the same depth values), but MBD does 
 %% ...
 }
 \references{
-Sun, Y., and Genton, M. G. (2011), "Functional boxplots,"
-<http://www.stat.tamu.edu/%7Egenton/2011.SG.JCGS.pdf> /Journal of
-Computational and Graphical Statistics/, to appear.
+Sun, Y., Genton, M. G. and Nychka, D. (2012), "Exact fast computation of band depth for large functional 
+datasets: How quickly can one million curves be ranked?" Stat, 1, 68-74.
+\cr
+\cr Sun, Y. and Genton, M. G. (2011), "Functional Boxplots," Journal of Computational and Graphical Statistics, 20, 316-334. 
 \cr
 \cr Lopez-Pintado, S. and Romo, J. (2009), "On the concept of depth for functional data," Journal
 of the American Statistical Association, 104, 718-734.
 %% ~put references to the literature/web site here ~
 }
 \author{
-Ying Sun \email{sunwards@stat.tamu.edu}
+Ying Sun \email{sunwards@stat.osu.edu}
 \cr
-\cr Marc G. Genton \email{genton@stat.tamu.edu}
+\cr Marc G. Genton \email{marc.genton@kaust.edu.sa}
 %%  ~~who you are~~
 }
 %\note{
@@ -116,7 +119,7 @@ cov.fun=function(d,k,c,mu){
 n=50
 p=30
 t=seq(0,1,len=p)
-d=dist(t,upper=TRUE,diag=TRUE)
+d=dist(t,upper=T,diag=T)
 d.matrix=as.matrix(d)
 #covariance function in time
 t.cov=cov.fun(d.matrix,1,1,1)
@@ -124,7 +127,7 @@ t.cov=cov.fun(d.matrix,1,1,1)
 L=chol(t.cov)
 mu=4*t
 e=matrix(rnorm(n*p),p,n)
-y=mu+t(L)%*%e
+y=mu+t(L)\%*\%e
 
 #functional boxplot
 fbplot(y,method='MBD',ylim=c(-11,15))
@@ -135,7 +138,7 @@ k=6
 #randomly introduce outliers
 C=rbinom(n,1,0.1)
 s=2*rbinom(n,1,0.5)-1
-cs.m=matrix(C*s,p,n,byrow=TRUE)
+cs.m=matrix(C*s,p,n,byrow=T)
 
 e=matrix(rnorm(n*p),p,n)
 y=mu+t(L)\%*\%e+k*cs.m
