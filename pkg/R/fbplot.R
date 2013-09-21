@@ -50,8 +50,8 @@ fbplot=function(fit,x=NULL,method='MBD',depth=NULL,plot=TRUE,prob=0.5,color=6,ou
 	else if (method=='Both') {depth=round(fBD2(fit),4)*10000+fMBD(fit)}
   }
 
-	dp_s=sort(depth,decreasing=T)
-	index=order(depth,decreasing=T)
+	dp_s=sort(depth,decreasing=TRUE)
+	index=order(depth,decreasing=TRUE)
 	med=depth==max(depth)
 	medavg=matrix(fit[,med],ncol=sum(med),nrow=tp)
 	y=apply(medavg,1,mean)
@@ -93,8 +93,8 @@ fbplot=function(fit,x=NULL,method='MBD',depth=NULL,plot=TRUE,prob=0.5,color=6,ou
 		    lines(c(x[bar],x[bar]),c(mincurve[bar],inf[bar]),col=barcol,lwd=2)
 			}
 		}
-		xx=c(x,x[order(x,decreasing=T)])
-		supinv=sup[order(x,decreasing=T)]
+		xx=c(x,x[order(x,decreasing=TRUE)])
+		supinv=sup[order(x,decreasing=TRUE)]
 		yy=c(inf,supinv)
 		if (plot) {
 		if (prob[pp]==0.5) {polygon(xx,yy,col=color[pp],border=barcol,lwd=2)}
