@@ -13,9 +13,10 @@ It can also be used to carry out functional data ordering based on band depth.
 \usage{
 fbplot(fit, x = NULL, method = "MBD", depth = NULL, plot = TRUE, 
 	 prob = 0.5, color = 6, outliercol = 2, barcol = 4, 
-	 xlim = NULL, ylim = NULL, xlab = "", ylab = "", 
-	 axes = T, main = "", fullout=F, factor = 1.5)	 
+	 fullout=FALSE, factor=1.5,xlim=c(1,nrow(fit)),
+	 ylim=c(min(fit)-.5*diff(range(fit)),max(fit)+.5*diff(range(fit))),...)
 }
+
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{fit}{
@@ -62,7 +63,9 @@ fbplot(fit, x = NULL, method = "MBD", depth = NULL, plot = TRUE,
   the constant factor to inflate the middle box and determine fences for outliers. Defaults to be 1.5 as in a classical boxplot.
 %%     ~~Describe \code{factor} here~~
 }
-
+\item{xlim}{ x-axis limits }
+\item{ylim}{ y-axis limits }
+\item{...}{ other arguments to \code{plot}}
 }
 \details{
 For functional data, the band depth (BD) or modifed band depth (MBD) allows for ordering a sample of curves from the center outwards 
@@ -119,7 +122,7 @@ cov.fun=function(d,k,c,mu){
 n=50
 p=30
 t=seq(0,1,len=p)
-d=dist(t,upper=T,diag=T)
+d=dist(t,upper=TRUE,diag=TRUE)
 d.matrix=as.matrix(d)
 #covariance function in time
 t.cov=cov.fun(d.matrix,1,1,1)
@@ -138,7 +141,7 @@ k=6
 #randomly introduce outliers
 C=rbinom(n,1,0.1)
 s=2*rbinom(n,1,0.5)-1
-cs.m=matrix(C*s,p,n,byrow=T)
+cs.m=matrix(C*s,p,n,byrow=TRUE)
 
 e=matrix(rnorm(n*p),p,n)
 y=mu+t(L)\%*\%e+k*cs.m
