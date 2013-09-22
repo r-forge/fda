@@ -1,4 +1,4 @@
-\name{fbplot{fda}}
+\name{fbplot}
 \Rdversion{1.1}
 \alias{fbplot}
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -7,12 +7,12 @@ Functional Boxplots
 }
 \description{
 Produces functional boxplots or enhanced functional boxplots of the given functional data.
-It can also be used to carry out functional data ordering based on band depth. 
+It can also be used to carry out functional data ordering based on band depth.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-fbplot(fit, x = NULL, method = "MBD", depth = NULL, plot = TRUE, 
-	 prob = 0.5, color = 6, outliercol = 2, barcol = 4, 
+fbplot(fit, x = NULL, method = "MBD", depth = NULL, plot = TRUE,
+	 prob = 0.5, color = 6, outliercol = 2, barcol = 4,
 	 fullout=FALSE, factor=1.5,xlim=c(1,nrow(fit)),
 	 ylim=c(min(fit)-.5*diff(range(fit)),max(fit)+.5*diff(range(fit))),...)
 }
@@ -68,12 +68,12 @@ fbplot(fit, x = NULL, method = "MBD", depth = NULL, plot = TRUE,
 \item{...}{ other arguments to \code{plot}}
 }
 \details{
-For functional data, the band depth (BD) or modifed band depth (MBD) allows for ordering a sample of curves from the center outwards 
+For functional data, the band depth (BD) or modifed band depth (MBD) allows for ordering a sample of curves from the center outwards
 and, thus, introduces a measure to define functional quantiles and the centrality or outlyingness of an
-observation. A smaller rank is associated with a more central position with respect to the sample curves. 
+observation. A smaller rank is associated with a more central position with respect to the sample curves.
 BD usually provides many ties (curves have the same depth values), but MBD does not.
 "BD2" uses two curves to determine a band. The method "Both" uses "BD2" first  and then uses "MBD" to break ties.
-The method "Both" uses BD2 first and then uses MBD to break ties. 
+The method "Both" uses BD2 first and then uses MBD to break ties.
 The computation is carried out by the fast algorithm proposed by Sun et al. (2012).
 
 
@@ -89,10 +89,10 @@ The computation is carried out by the fast algorithm proposed by Sun et al. (201
 %% ...
 }
 \references{
-Sun, Y., Genton, M. G. and Nychka, D. (2012), "Exact fast computation of band depth for large functional 
+Sun, Y., Genton, M. G. and Nychka, D. (2012), "Exact fast computation of band depth for large functional
 datasets: How quickly can one million curves be ranked?" Stat, 1, 68-74.
 \cr
-\cr Sun, Y. and Genton, M. G. (2011), "Functional Boxplots," Journal of Computational and Graphical Statistics, 20, 316-334. 
+\cr Sun, Y. and Genton, M. G. (2011), "Functional Boxplots," Journal of Computational and Graphical Statistics, 20, 316-334.
 \cr
 \cr Lopez-Pintado, S. and Romo, J. (2009), "On the concept of depth for functional data," Journal
 of the American Statistical Association, 104, 718-734.
