@@ -6,7 +6,7 @@ Author: J. O. Ramsay <ramsay@psych.mcgill.ca>, Hadley Wickham
         <h.wickham@gmail.com>, Spencer Graves
         <spencer.graves@prodsyse.com>, Giles Hooker <gjh27@cornell.edu>
 Maintainer: J. O. Ramsay <ramsay@psych.mcgill.ca>
-Depends: R (>= 2.10.0), splines, zoo, Matrix
+Depends: R (>= 2.10.0), splines, zoo, Matrix, graphics
 Imports: Matrix
 Suggests: deSolve, graphics, R.matlab, quadprog, DierckxSpline, nlme,
 	  lattice, RCurl

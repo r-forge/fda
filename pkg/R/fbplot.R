@@ -14,7 +14,7 @@ fBD2=function(data){
 	down=apply(rmat,1,min)-1
 	up=n-apply(rmat,1,max)
 	(up*down+n-1)/combinat(n,2)
-	
+
 }
 
 #MBD
@@ -29,21 +29,24 @@ fMBD=function(data){
 #function boxplot
 #fit: p by n functional data matrix, n is the number of curves
 #method: BD2, MBD
-fbplot=function(fit,x=NULL,method='MBD',depth=NULL,plot=TRUE,prob=0.5,color=6,outliercol=2,
-				barcol=4,fullout=FALSE, factor=1.5,xlim=c(1,nrow(fit)),ylim=c(min(fit)-.5*diff(range(fit)),max(fit)+.5*diff(range(fit))),...){
-				
-  #if(is.fdSmooth(fit) | is.fdPar(fit)){ fit = fit$fd }  
+fbplot <- function(fit, x=NULL, method='MBD', depth=NULL, plot=TRUE,
+                   prob=0.5, color=6, outliercol=2, barcol=4,
+                   fullout=FALSE, factor=1.5, xlim=c(1,nrow(fit)),
+        ylim=c(min(fit)-.5*diff(range(fit)),max(fit)+.5*diff(range(fit))),
+                   ...){
+
+  #if(is.fdSmooth(fit) | is.fdPar(fit)){ fit = fit$fd }
 	#if(is.fd(fit)){
     #if(length(x)==0){
     #  x = seq(fit$basis$rangeval[1],fit$basis$rangeval[2],len=101)
     #}
     #fit = eval.fd(x,fit)
-  #}				
-				
+  #}
+
 	tp=dim(fit)[1]
 	n=dim(fit)[2]
 	if (length(x)==0) {x=1:tp}
-  #compute band depth	
+  #compute band depth
   if (length(depth)==0){
 	if (method=='BD2') {depth=fBD2(fit)}
 	else if (method=='MBD') {depth=fMBD(fit)}
@@ -55,9 +58,9 @@ fbplot=function(fit,x=NULL,method='MBD',depth=NULL,plot=TRUE,prob=0.5,color=6,ou
 	med=depth==max(depth)
 	medavg=matrix(fit[,med],ncol=sum(med),nrow=tp)
 	y=apply(medavg,1,mean)
-	
+
 	if (plot) {
-	plot(x,y,lty=1,lwd=2,col=1,type='l',xlim,ylim,...)
+            plot(x,y,lty=1,lwd=2,col=1,type='l',xlim,ylim,...)
 	}
 	for (pp in 1:length(prob)){
 		m=ceiling(n*prob[pp])#at least 50%
@@ -65,7 +68,7 @@ fbplot=function(fit,x=NULL,method='MBD',depth=NULL,plot=TRUE,prob=0.5,color=6,ou
 		out=fit[,index[(m+1):n]]
 		inf=apply(center,1,min)
 		sup=apply(center,1,max)
-		
+
 		if (prob[pp]==0.5){ #check outliers
 			dist=factor*(sup-inf)
 			upper=sup+dist

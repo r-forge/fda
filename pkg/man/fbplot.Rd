@@ -1,6 +1,9 @@
 \name{fbplot}
 \Rdversion{1.1}
 \alias{fbplot}
+\alias{boxplot.fd}
+\alias{boxplot.fdPar}
+\alias{boxplot.fdSmooth}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Functional Boxplots
@@ -15,73 +18,98 @@ fbplot(fit, x = NULL, method = "MBD", depth = NULL, plot = TRUE,
 	 prob = 0.5, color = 6, outliercol = 2, barcol = 4,
 	 fullout=FALSE, factor=1.5,xlim=c(1,nrow(fit)),
 	 ylim=c(min(fit)-.5*diff(range(fit)),max(fit)+.5*diff(range(fit))),...)
+\method{boxplot}{fd}(x, z=NULL, method = "MBD", depth = NULL, plot = TRUE,
+	 prob = 0.5, color = 6, outliercol = 2, barcol = 4,
+	 fullout=FALSE, factor=1.5,xlim=c(1,nrow(x)),
+	 ylim=c(min(x)-.5*diff(range(x)),max(x)+.5*diff(range(x))),...)
+\method{boxplot}{fdPar}(x, z=NULL, method = "MBD", depth = NULL, plot = TRUE,
+	 prob = 0.5, color = 6, outliercol = 2, barcol = 4,
+	 fullout=FALSE, factor=1.5,xlim=c(1,nrow(x)),
+	 ylim=c(min(x)-.5*diff(range(x)),max(x)+.5*diff(range(x))),...)
+\method{boxplot}{fdSmooth}(x, z=NULL, method = "MBD", depth = NULL,
+         plot = TRUE, prob = 0.5, color = 6, outliercol = 2, barcol = 4,
+	 fullout=FALSE, factor=1.5,xlim=c(1,nrow(x)),
+	 ylim=c(min(x)-.5*diff(range(x)),max(x)+.5*diff(range(x))),...)
 }
 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{fit}{
-  a p-by-n functional data matrix where n is the number of curves, and p is defined below.
-%%     ~~Describe \code{fit} here~~
-}
+    a p-by-n functional data matrix where n is the number of curves, and
+    p is defined below.
+  }
   \item{x}{
-  the x coordinates of curves. Defaults to 1:p where p is the number of x coordinates.
-%%     ~~Describe \code{x} here~~
-}
+    For \code{fbplot}, \code{x} is the x coordinates of curves. Defaults
+    to 1:p where p is the number of x coodinates.
+
+    For \code{boxplot.fd}, \code{boxplot.fdPar} and
+    \code{boxplot.fdSmooth}, \code{x} is an object of class fd, fdPar or
+    fdSmooth, respectively.
+  }
+  \item{z}{
+    The coordinate of the curves, labeled \code{x} for \code{fdplot}.
+    For \code{boxplot.fd}, \code{boxplot.fdPar} and
+    \code{boxplot.fdSmooth}, this cannot be \code{x}, because that would
+    clash with the generic \code{boxplot(x, ...)} standard.
+  }
   \item{method}{
-  the method to be used to compute band depth. Can be one of "BD2", "MBD" or "Both" with a default of "MBD". See also details.
-%%     ~~Describe \code{method} here~~
-}
+    the method to be used to compute band depth. Can be one of "BD2",
+    "MBD" or "Both" with a default of "MBD". See also details.
+  }
   \item{depth}{
-  a vector giving band depths of curves. If missing, band depth computation is conducted.
-%%     ~~Describe \code{depth} here~~
-}
+    a vector giving band depths of curves. If missing, band depth
+    computation is conducted.
+  }
   \item{plot}{
-  logical. If TRUE (the default) then a functional boxplot is produced. If not, band depth and outliers are returned.
-%%     ~~Describe \code{plot} here~~
-}
+    logical. If TRUE (the default) then a functional boxplot is
+    produced. If not, band depth and outliers are returned.
+  }
   \item{prob}{
-  a vector giving the probabilities of central regions in a decreasing order, then an enhanced functional boxplot is produced. Defaults to be 0.5 and a functional boxplot is plotted.
-%%     ~~Describe \code{prob} here~~
-}
+    a vector giving the probabilities of central regions in a decreasing
+    order, then an enhanced functional boxplot is produced. Defaults to
+    be 0.5 and a functional boxplot is plotted.
+  }
   \item{color}{
-  a vector giving the colors of central regions from light to dark for an enhanced functional boxplot. Defaults to be magenta for a functional boxplot.
-%%     ~~Describe \code{color} here~~
-}
+    a vector giving the colors of central regions from light to dark for
+    an enhanced functional boxplot. Defaults to be magenta for a
+    functional boxplot.
+  }
   \item{outliercol}{
-  color of outlying curves. Defaults to be red.
-%%     ~~Describe \code{outliercol} here~~
-}
+    color of outlying curves. Defaults to be red.
+  }
   \item{barcol}{
-  color of bars in a functional boxplot. Defaults to be blue.
-%%     ~~Describe \code{barcol} here~~
-}
- \item{fullout}{
-  logical for plotting outlying curves. If FALSE (the default) then only the part  outside the box is plotted. If TRUE, complete outling curves are plotted.
-%%     ~~Describe \code{fullout} here~~
-}
-\item{factor}{
-  the constant factor to inflate the middle box and determine fences for outliers. Defaults to be 1.5 as in a classical boxplot.
-%%     ~~Describe \code{factor} here~~
-}
-\item{xlim}{ x-axis limits }
-\item{ylim}{ y-axis limits }
-\item{...}{ other arguments to \code{plot}}
+    color of bars in a functional boxplot. Defaults to be blue.
+  }
+  \item{fullout}{
+    logical for plotting outlying curves. If FALSE (the default) then
+    only the part outside the box is plotted. If TRUE, complete outling
+    curves are plotted.
+  }
+  \item{factor}{
+    the constant factor to inflate the middle box and determine fences
+    for outliers.  Defaults to be 1.5 as in a classical boxplot.
+  }
+  \item{xlim}{ x-axis limits }
+  \item{ylim}{ y-axis limits }
+  \item{...}{ other arguments to \code{plot}}
 }
 \details{
-For functional data, the band depth (BD) or modifed band depth (MBD) allows for ordering a sample of curves from the center outwards
-and, thus, introduces a measure to define functional quantiles and the centrality or outlyingness of an
-observation. A smaller rank is associated with a more central position with respect to the sample curves.
-BD usually provides many ties (curves have the same depth values), but MBD does not.
-"BD2" uses two curves to determine a band. The method "Both" uses "BD2" first  and then uses "MBD" to break ties.
-The method "Both" uses BD2 first and then uses MBD to break ties.
-The computation is carried out by the fast algorithm proposed by Sun et al. (2012).
-
-
+  For functional data, the band depth (BD) or modifed band depth (MBD)
+  allows for ordering a sample of curves from the center outwards and,
+  thus, introduces a measure to define functional quantiles and the
+  centrality or outlyingness of an observation. A smaller rank is
+  associated with a more central position with respect to the sample
+  curves.  BD usually provides many ties (curves have the same depth
+  values), but MBD does not.  "BD2" uses two curves to determine a
+  band. The method "Both" uses "BD2" first  and then uses "MBD" to break
+  ties.  The method "Both" uses BD2 first and then uses MBD to break
+  ties.  The computation is carried out by the fast algorithm proposed
+  by Sun et al. (2012).
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-\item{depth }{band depths of given curves.}
-\item{outpoint }{column indices of detected outliers.}
+  \item{depth }{band depths of given curves.}
+  \item{outpoint }{column indices of detected outliers.}
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -89,19 +117,22 @@ The computation is carried out by the fast algorithm proposed by Sun et al. (201
 %% ...
 }
 \references{
-Sun, Y., Genton, M. G. and Nychka, D. (2012), "Exact fast computation of band depth for large functional
-datasets: How quickly can one million curves be ranked?" Stat, 1, 68-74.
-\cr
-\cr Sun, Y. and Genton, M. G. (2011), "Functional Boxplots," Journal of Computational and Graphical Statistics, 20, 316-334.
-\cr
-\cr Lopez-Pintado, S. and Romo, J. (2009), "On the concept of depth for functional data," Journal
-of the American Statistical Association, 104, 718-734.
+  Sun, Y., Genton, M. G. and Nychka, D. (2012), "Exact fast computation
+  of band depth for large functional datasets: How quickly can one
+  million curves be ranked?" Stat, 1, 68-74.
+
+  Sun, Y. and Genton, M. G. (2011), "Functional Boxplots," Journal of
+  Computational and Graphical Statistics, 20, 316-334.
+
+  Lopez-Pintado, S. and Romo, J. (2009), "On the concept of depth for
+  functional data," Journal of the American Statistical Association,
+  104, 718-734.
 %% ~put references to the literature/web site here ~
 }
 \author{
-Ying Sun \email{sunwards@stat.osu.edu}
-\cr
-\cr Marc G. Genton \email{marc.genton@kaust.edu.sa}
+  Ying Sun \email{sunwards@stat.osu.edu}
+
+  Marc G. Genton \email{marc.genton@kaust.edu.sa}
 %%  ~~who you are~~
 }
 %\note{
@@ -134,6 +165,9 @@ y=mu+t(L)\%*\%e
 
 #functional boxplot
 fbplot(y,method='MBD',ylim=c(-11,15))
+
+# The same using boxplot.fd
+boxplot.fd(y, method='MBD', ylim=c(-11, 15))
 
 #model 2 with outliers
 #magnitude
