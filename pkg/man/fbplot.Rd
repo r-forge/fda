@@ -145,8 +145,10 @@ fbplot(fit, x = NULL, method = "MBD", depth = NULL, plot = TRUE,
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
-#generate 50 random curves with some covariance structure
-#model 1 without outliers
+##
+## 1.  generate 50 random curves with some covariance structure
+##     model 1 without outliers
+##
 cov.fun=function(d,k,c,mu){
         k*exp(-c*d^mu)
 }
@@ -169,7 +171,30 @@ fbplot(y,method='MBD',ylim=c(-11,15))
 # The same using boxplot.fd
 boxplot.fd(y, method='MBD', ylim=c(-11, 15))
 
-#model 2 with outliers
+# same with default ylim
+boxplot.fd(y)
+
+##
+## 2.  as an fd object
+##
+Y <- Data2fd(y)
+boxplot(Y)
+
+##
+## 3.  as an fdPar object
+##
+Ypar <- fdPar(Y)
+boxplot(Ypar)
+
+##
+## 4.  Smoothed version
+##
+Ysmooth <- smooth.fdPar(Y)
+boxplot(Ysmooth)
+
+##
+## 5.  model 2 with outliers
+##
 #magnitude
 k=6
 #randomly introduce outliers
