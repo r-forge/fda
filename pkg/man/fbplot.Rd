@@ -6,11 +6,12 @@
 \alias{boxplot.fdSmooth}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Functional Boxplots
+  Functional Boxplots
 }
 \description{
-Produces functional boxplots or enhanced functional boxplots of the given functional data.
-It can also be used to carry out functional data ordering based on band depth.
+  Produces functional boxplots or enhanced functional boxplots of the
+  given functional data. It can also be used to carry out functional
+  data ordering based on band depth.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
@@ -31,7 +32,6 @@ fbplot(fit, x = NULL, method = "MBD", depth = NULL, plot = TRUE,
 	 fullout=FALSE, factor=1.5,xlim=c(1,nrow(x)),
 	 ylim=c(min(x)-.5*diff(range(x)),max(x)+.5*diff(range(x))),...)
 }
-
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{fit}{
@@ -43,8 +43,8 @@ fbplot(fit, x = NULL, method = "MBD", depth = NULL, plot = TRUE,
     to 1:p where p is the number of x coodinates.
 
     For \code{boxplot.fd}, \code{boxplot.fdPar} and
-    \code{boxplot.fdSmooth}, \code{x} is an object of class fd, fdPar or
-    fdSmooth, respectively.
+    \code{boxplot.fdSmooth}, \code{x} is an object of class \code{fd},
+    \code{fdPar} or \code{fdSmooth}, respectively.
   }
   \item{z}{
     The coordinate of the curves, labeled \code{x} for \code{fdplot}.
