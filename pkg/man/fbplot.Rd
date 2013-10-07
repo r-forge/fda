@@ -19,18 +19,9 @@ fbplot(fit, x = NULL, method = "MBD", depth = NULL, plot = TRUE,
 	 prob = 0.5, color = 6, outliercol = 2, barcol = 4,
 	 fullout=FALSE, factor=1.5,xlim=c(1,nrow(fit)),
 	 ylim=c(min(fit)-.5*diff(range(fit)),max(fit)+.5*diff(range(fit))),...)
-\method{boxplot}{fd}(x, z=NULL, method = "MBD", depth = NULL, plot = TRUE,
-	 prob = 0.5, color = 6, outliercol = 2, barcol = 4,
-	 fullout=FALSE, factor=1.5,xlim=c(1,nrow(x)),
-	 ylim=c(min(x)-.5*diff(range(x)),max(x)+.5*diff(range(x))),...)
-\method{boxplot}{fdPar}(x, z=NULL, method = "MBD", depth = NULL, plot = TRUE,
-	 prob = 0.5, color = 6, outliercol = 2, barcol = 4,
-	 fullout=FALSE, factor=1.5,xlim=c(1,nrow(x)),
-	 ylim=c(min(x)-.5*diff(range(x)),max(x)+.5*diff(range(x))),...)
-\method{boxplot}{fdSmooth}(x, z=NULL, method = "MBD", depth = NULL,
-         plot = TRUE, prob = 0.5, color = 6, outliercol = 2, barcol = 4,
-	 fullout=FALSE, factor=1.5,xlim=c(1,nrow(x)),
-	 ylim=c(min(x)-.5*diff(range(x)),max(x)+.5*diff(range(x))),...)
+\method{boxplot}{fd}(x, z=NULL, ...)
+\method{boxplot}{fdPar}(x, z=NULL, ...)
+\method{boxplot}{fdSmooth}(x, z=NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -91,7 +82,12 @@ fbplot(fit, x = NULL, method = "MBD", depth = NULL, plot = TRUE,
   }
   \item{xlim}{ x-axis limits }
   \item{ylim}{ y-axis limits }
-  \item{...}{ other arguments to \code{plot}}
+  \item{...}{
+    For \code{fbplot}, optional arguments for \code{plot}.
+
+    For \code{boxplot.fd}, \code{boxplot.fdPar}, or
+    \code{boxplot.fdSmooth}, optional arguments for \code{fbplot}.
+  }
 }
 \details{
   For functional data, the band depth (BD) or modifed band depth (MBD)
