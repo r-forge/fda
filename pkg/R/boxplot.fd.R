@@ -1,40 +1,32 @@
-boxplot.fdSmooth <- function(x, z=NULL, method = "MBD", depth = NULL,
-         plot = TRUE, prob = 0.5, color = 6, outliercol = 2, barcol = 4,
-	 fullout=FALSE, factor=1.5,xlim=c(1,nrow(x)),
-	 ylim=c(min(x)-.5*diff(range(x)),max(x)+.5*diff(range(x))),
-                          ...){
-  boxplot(x$fd, z, method=method, depth=depth, plot=plot, prob=prob,
-         color=color, outliercol=outliercol, barcol=barcol,
-         fullout=fullout, factor=factor, xlim=xlim, ylim=ylim, ...)
+boxplot.fdSmooth <- function(x, z=NULL, ...){
+  boxplot(x$fd, z, ...)
 }
 
-boxplot.fdPar <- function(x, z=NULL, method = "MBD", depth = NULL,
-         plot = TRUE, prob = 0.5, color = 6, outliercol = 2, barcol = 4,
-	 fullout=FALSE, factor=1.5,xlim=c(1,nrow(x)),
-	 ylim=c(min(x)-.5*diff(range(x)),max(x)+.5*diff(range(x))),
-                          ...){
-  boxplot(x$fd, z, method=method, depth=depth, plot=plot, prob=prob,
-         color=color, outliercol=outliercol, barcol=barcol,
-         fullout=fullout, factor=factor, xlim=xlim, ylim=ylim, ...)
+boxplot.fdPar <- function(x, z=NULL, ...){
+  boxplot(x$fd, z, ...)
 }
 
-boxplot.fd <- function(x, z=NULL, method = "MBD", depth = NULL,
-         plot = TRUE, prob = 0.5, color = 6, outliercol = 2, barcol = 4,
-	 fullout=FALSE, factor=1.5,xlim=c(1,nrow(x)),
-	 ylim=c(min(x)-.5*diff(range(x)),max(x)+.5*diff(range(x))),
-                          ...){
+boxplot.fd <- function(x, z=NULL, ...){
   if(is.numeric(x)){
-      fbplot(x, z, method=method, depth=depth, plot=plot, prob=prob,
-         color=color, outliercol=outliercol, barcol=barcol,
-         fullout=fullout, factor=factor, xlim=xlim, ylim=ylim, ...)
+      fbplot(x, z, ...)
   } else {
       if(is.null(z)){
           rng <- getbasisrange(x$basis)
-          z <- seq(rng[1], rng[2], length=201)
+          z <- seq(rng[1], rng[2], length=101)
       }
-      x. <- predict(x, z)
-      fbplot(x., z, method=method, depth=depth, plot=plot, prob=prob,
-         color=color, outliercol=outliercol, barcol=barcol,
-         fullout=fullout, factor=factor, xlim=xlim, ylim=ylim, ...)
+      x. <- eval.fd(z, x)
+#      x. <- predict(x, z)
+      dots <- list(...)
+      if(!('xlim' %in% names(dots)))xlim <- range(z)
+      if(!('ylim' %in% names(dots)))
+          ylim <- c(min(x.)-.5*diff(range(x.)),max(x.)+.5*diff(range(x.)))
+      dots$fit <- x.
+      dots$x <- z
+      dots$xlim <- xlim
+      dots$ylim <- ylim
+      do.call(fbplot, dots)
+#      fbplot(x., z, method=method, depth=depth, plot=plot, prob=prob,
+#         color=color, outliercol=outliercol, barcol=barcol,
+#         fullout=fullout, factor=factor, ...)
   }
 }
