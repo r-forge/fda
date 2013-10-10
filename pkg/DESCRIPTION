@@ -6,9 +6,9 @@ Author: J. O. Ramsay <ramsay@psych.mcgill.ca>, Hadley Wickham
         <h.wickham@gmail.com>, Spencer Graves
         <spencer.graves@prodsyse.com>, Giles Hooker <gjh27@cornell.edu>
 Maintainer: J. O. Ramsay <ramsay@psych.mcgill.ca>
-Depends: R (>= 2.10.0), splines, zoo, Matrix, graphics
+Depends: R (>= 2.10.0), splines, Matrix, graphics
 Suggests: deSolve, R.matlab, quadprog, DierckxSpline, nlme,
-	  lattice, RCurl
+	  lattice, RCurl, zoo
 Description: These functions were developed to support functional data
         analysis as described in Ramsay, J. O. and Silverman, B. W.
         (2005) Functional Data Analysis. New York: Springer.  They were
