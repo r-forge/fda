@@ -37,6 +37,10 @@ smooth.pos <- function(argvals, y, WfdParobj, wtvec=rep(1,n), conv=1e-4,
 #               to initialize the optimization process.
 #               Its coefficient array contains the starting values for
 #               the iterative minimization of mean squared error.
+#               This means that it must be set up with the coefficients
+#               for each replication in Y and each variable.  Do not
+#               supply only a basis object for the FDOBJ argument in 
+#               setting up the FDPAROBJ argument.
 #  WTVEC   ...  a vector of weights, a vector of N one's by default.
 #  CONV    ...  convergence criterion, 0.0001 by default
 #  ITERLIM ...  maximum number of iterations, 50 by default.
@@ -106,8 +110,30 @@ wtvec = wtcheck(n, wtvec)$wtvec
 #  set up some arrays
 
 climit  <- c(rep(-400,nbasis),rep(400,nbasis))
-coef0   <- Wfdobj$coefs
 active  <- 1:nbasis
+
+%  set up initial coefficient: use that of Wfd0 if its dimensions
+%  are correct, otherwise set to a zero array.
+
+coef0 = Wfd$coefs  #  initial coefficients
+if (ndim == 2) {    
+    if (dim(coef0)[2] != ncurve || length(dim(coef0)) != 2) {
+        coef0 = matrix(0,nbasis,ncurve)
+        warning(paste("Dimensions of coefficient array inconsistent",
+                      "with data Y, initial coefficients set to 0."))
+    }
+} else {
+    if (length(dim(coef0)) != 3) {
+        coef0 = array(0,c(nbasis,ncurve,nvar))
+        warning(paste("Dimensions of coefficient array inconsistent",
+                      "with data Y, initial coefficients set to 0."))
+    }
+    if  (dim(coef0)[2] != ncurve || dim(coef0)[3] != nvar) {
+        coef0 = array(0,c(nbasis,ncurve,nvar))
+        warning(paste("Dimensions of coefficient array inconsistent",
+                      "with data Y, initial coefficients set to 0."))
+    }
+}
 
 #  initialize matrix Kmat defining penalty term
 
@@ -119,12 +145,6 @@ else            Kmat <- matrix(0,nbasis,nbasis)
 #  --------------------------------------------------------------------
 
 #  set up arrays and lists to contain returned information
-
-if (ndim == 2) {
-    coef = matrix(0,nbasis,ncurve)
-} else {
-    coef = array(0,c(nbasis,ncurve,nvar))
-}
 
 if (ncurve > 1 || nvar > 1 ) Flist = vector("list",ncurve*nvar)
 else                         Flist = NULL
