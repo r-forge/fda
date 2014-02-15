@@ -216,7 +216,7 @@ alphafd = fd(alphacoef, alphabasis, alphafdnames)
 #  bi-functional structure for the beta function
 
 ind1 = alphanbasis + (1:betan)
-betacoef    = matrix(coefvec[ind1],betatnbasis,betasnbasis)
+betacoef    = t(matrix(coefvec[ind1],betatnbasis,betasnbasis))
 betafdnames = xfdobj$fdnames
 betafdnames[[3]] = "Reg. Coefficient"
 betafd = bifd(t(betacoef), betasbasis, betatbasis, betafdnames)
