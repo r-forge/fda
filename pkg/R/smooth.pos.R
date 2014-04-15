@@ -112,8 +112,8 @@ wtvec = wtcheck(n, wtvec)$wtvec
 climit  <- c(rep(-400,nbasis),rep(400,nbasis))
 active  <- 1:nbasis
 
-%  set up initial coefficient: use that of Wfd0 if its dimensions
-%  are correct, otherwise set to a zero array.
+#  set up initial coefficient: use that of Wfd0 if its dimensions
+#  are correct, otherwise set to a zero array.
 
 coef0 = Wfd$coefs  #  initial coefficients
 if (ndim == 2) {    
