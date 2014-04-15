@@ -1,6 +1,6 @@
 Package: fda
-Version: 2.4.1
-Date: 2013-05
+Version: 2.4.2
+Date: 2014-04
 Title: Functional Data Analysis
 Author: J. O. Ramsay <ramsay@psych.mcgill.ca>, Hadley Wickham
         <h.wickham@gmail.com>, Spencer Graves
@@ -24,6 +24,10 @@ Description: These functions were developed to support functional data
         There you find a set of .zip files containing the functions and
         sample analyses, as well as two .txt files giving instructions for
         installation and some additional information.
+        The changes from Version 2.4.1 are fixes of bugs in density.fd and
+        removal of functions create.polynomial.basis, polynompen, and polynomial,
+        as well as their .Rd files. These were deleted because the monomial basis
+        does the same thing and because there were errors in the code.
 License: GPL (>= 2)
 URL: http://www.functionaldata.org
 LazyData: true
