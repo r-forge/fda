@@ -66,7 +66,7 @@ smooth.pos <- function(argvals, y, WfdParobj, wtvec=rep(1,n), conv=1e-4,
 #  FLIST objects are indexed linear with curves varying inside
 #  variables.
 
-#  Last modified 9 May 2012  by Jim Ramsay
+#  Last modified 16 April 2014  by Jim Ramsay
 
 
 #  check ARGVALS
@@ -81,6 +81,7 @@ if (n < 2) stop('ARGVALS does not contain at least two values.')
 
 #  check Y
 
+y      = as.matrix(y)
 ychk   = ycheck(y, n)
 y      = ychk$y
 ncurve = ychk$ncurve
@@ -101,7 +102,7 @@ nbasis   <- basisobj$nbasis  #  number of basis functions
 
 #  set up initial coefficient array
 
-coef0    <- Wfdobj$coefs
+coef0 <- Wfdobj$coefs
 
 #  check WTVEC
 
@@ -115,7 +116,7 @@ active  <- 1:nbasis
 #  set up initial coefficient: use that of Wfd0 if its dimensions
 #  are correct, otherwise set to a zero array.
 
-coef0 = Wfd$coefs  #  initial coefficients
+coef0 = Wfdobj$coefs  #  initial coefficients
 if (ndim == 2) {    
     if (dim(coef0)[2] != ncurve || length(dim(coef0)) != 2) {
         coef0 = matrix(0,nbasis,ncurve)
@@ -134,6 +135,7 @@ if (ndim == 2) {
                       "with data Y, initial coefficients set to 0."))
     }
 }
+coef <- coef0
 
 #  initialize matrix Kmat defining penalty term
 
@@ -371,9 +373,10 @@ for (ivar in 1:nvar) {
 
   posFd <- list("Wfdobj"=Wfdobj, "Flist"=Flist,
                 "argvals"=argvals, "y"=y)
+
   class(posFd) <- 'posfd'
 
-  return(posFd)
+  posFd
 }
 
 #  ---------------------------------------------------------------
