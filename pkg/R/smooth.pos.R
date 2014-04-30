@@ -39,7 +39,7 @@ smooth.pos <- function(argvals, y, WfdParobj, wtvec=rep(1,n), conv=1e-4,
 #               the iterative minimization of mean squared error.
 #               This means that it must be set up with the coefficients
 #               for each replication in Y and each variable.  Do not
-#               supply only a basis object for the FDOBJ argument in 
+#               supply only a basis object for the FDOBJ argument in
 #               setting up the FDPAROBJ argument.
 #  WTVEC   ...  a vector of weights, a vector of N one's by default.
 #  CONV    ...  convergence criterion, 0.0001 by default
@@ -117,7 +117,7 @@ active  <- 1:nbasis
 #  are correct, otherwise set to a zero array.
 
 coef0 = Wfdobj$coefs  #  initial coefficients
-if (ndim == 2) {    
+if (ndim == 2) {
     if (dim(coef0)[2] != ncurve || length(dim(coef0)) != 2) {
         coef0 = matrix(0,nbasis,ncurve)
         warning(paste("Dimensions of coefficient array inconsistent",
@@ -381,7 +381,7 @@ for (ivar in 1:nvar) {
 
 #  ---------------------------------------------------------------
 
-PENSSEfun <- function(argvals, yi, basisobj, cveci, Kmat, wtvec, 
+PENSSEfun <- function(argvals, yi, basisobj, cveci, Kmat, wtvec,
                       returnMatrix=FALSE) {
 	#  Computes the log likelihood and its derivative with
 	#    respect to the coefficients in CVEC
@@ -398,7 +398,7 @@ PENSSEfun <- function(argvals, yi, basisobj, cveci, Kmat, wtvec,
 
 #  ---------------------------------------------------------------
 
-PENSSEhess <- function(argvals, yi, basisobj, cveci, Kmat, wtvec, 
+PENSSEhess <- function(argvals, yi, basisobj, cveci, Kmat, wtvec,
                        returnMatrix=FALSE) {
 	#  Computes the expected Hessian
    	n       <- length(argvals)
@@ -412,5 +412,5 @@ PENSSEhess <- function(argvals, yi, basisobj, cveci, Kmat, wtvec,
   	D2PENSSE  <- 2*crossprod(Dres)/n + 2*Kmat
 	return(D2PENSSE)
 }
-	
+
 
