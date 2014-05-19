@@ -25,8 +25,8 @@ Description: These functions were developed to support functional data
         sample analyses, as well as two .txt files giving instructions for
         installation and some additional information.
         The changes from Version 2.4.1 are fixes of bugs in density.fd and
-        removal of functions create.polynomial.basis, polynompen, and polynomial,
-        as well as their .Rd files. These were deleted because the monomial basis
+        removal of functions create.polynomial.basis, polynompen, and 
+        polynomial. These were deleted because the monomial basis
         does the same thing and because there were errors in the code.
 License: GPL (>= 2)
 URL: http://www.functionaldata.org
