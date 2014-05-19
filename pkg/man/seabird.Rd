@@ -26,16 +26,17 @@
     }
     \item{\code{Temp}}{a numeric vector}
     \item{\code{ObservCond}}{
-      a factor with levels \code{Average} \code{Excellent} \code{Fair}
-      \code{Good} \code{Ideal}
+      a factor with levels \code{Average}, \code{Excellent},
+      \code{Fair}, \code{Good}, and \code{Ideal}.  
     }
     \item{\code{Bay}}{
       a factor with levels \code{E. Sitkalidak} \code{Uganik}
       \code{Uyak} \code{W. Sitkalidak}
     }
     \item{\code{ObservCondFactor3}}{
-      a factor with levels \code{ExcellentIdeal} \code{FairAverage}
-      \code{Good}, combining levels from \code{ObservCond}
+      a factor with levels \code{ExcellentIdeal}, 
+      \code{FairAverage}, and \code{Good}.  These combine levels 
+      from \code{ObservCond}.
     }
   }
 }
