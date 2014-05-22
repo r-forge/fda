@@ -11,8 +11,7 @@
 \format{
   A data frame with 3793 observations on the following 22 variables.
   \describe{
-    \item{BAGO, BLSC, COME, COMU, CORM, HADU, HOGR, LOON, MAMU, 
-          OLDS, PIGU, RBME, RNGR, SUSC, WWSC}{
+    \item{BAGO, BLSC, COME, COMU, CORM, HADU, HOGR, LOON, MAMU, OLDS, PIGU, RBME, RNGR, SUSC, WWSC}{
       integer count of the numbers of sightings of each species by
       transect by year
     }
