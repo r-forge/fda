@@ -7,7 +7,7 @@ Author: J. O. Ramsay <ramsay@psych.mcgill.ca>, Hadley Wickham
         <spencer.graves@prodsyse.com>, Giles Hooker <gjh27@cornell.edu>
 Maintainer: J. O. Ramsay <ramsay@psych.mcgill.ca>
 Depends: R (>= 2.10.0), splines, Matrix, graphics
-Suggests: deSolve, R.matlab, quadprog, DierckxSpline, nlme,
+Suggests: deSolve, R.matlab, quadprog, nlme,
 	  lattice, RCurl, zoo
 Description: These functions were developed to support functional data
         analysis as described in Ramsay, J. O. and Silverman, B. W.
