@@ -141,6 +141,15 @@ export(AmpPhaseDecomp,
 #importFrom(base, mean, coefficients)
 importFrom(graphics, boxplot)
 importFrom(splines, spline.des)
+importFrom("grDevices", "dev.new")
+importFrom("graphics", "abline", "axis", "hist", "legend", "lines",
+             "locator", "matlines", "mtext", "par", "plot", "points",
+             "polygon", "text", "title")
+importFrom("stats", "approx", "coef", "cov", "dist", "fitted",
+             "formula", "integrate", "lsfit", "model.frame",
+             "model.matrix", "na.fail", "na.pass", "optimize", "predict",
+             "predict.lm", "quantile", "terms", "var")
+importFrom("utils", "read.table")
 
 #import(DierckxSpline)
 #import(zoo)
