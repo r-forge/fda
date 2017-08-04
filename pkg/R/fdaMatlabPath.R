@@ -16,10 +16,11 @@ fdaMatlabPath <- function(R.matlab) {
   if(missRmat)R.matlab <- TRUE 
   if(R.matlab){
     if(requireNamespace('R.matlab')){
-      dirs2add <- c(system.file('externals', package='R.matlab'),
-                    dirs2add)
+      dirs2add <- c(system.file('externals', 
+              package='R.matlab'), dirs2add)
     } else if(!missRmat)
-        warning('Package R.matlab is not installed and can not be',
+        warning('Package R.matlab is not installed', 
+                ' and can not be',
                 ' included in the Matlab path.')
   }
 ##
