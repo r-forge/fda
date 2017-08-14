@@ -1,5 +1,5 @@
 Package: fda
-Version: 2.4.6
+Version: 2.4.7
 Date: 2017-08-12
 Title: Functional Data Analysis
 Author: J. O. Ramsay <ramsay@psych.mcgill.ca>, Hadley Wickham
@@ -20,7 +20,7 @@ Description: These functions were developed to support functional data
         figures in this latter book.  Matlab versions of the code and
         sample analyses are no longer distributed through CRAN, as they
         were when the book was published.  For those, ftp from
-        http://www.psych.mcgill.ca/misc/fda/downloads/FDAfuns/
+        <http://www.psych.mcgill.ca/misc/fda/downloads/FDAfuns/>
         There you find a set of .zip files containing the functions and
         sample analyses, as well as two .txt files giving instructions for
         installation and some additional information.
