@@ -1,4 +1,4 @@
-knots <- function(Fn, ...)UseMethod('knots')
+.knots_default <- function(Fn, ...)UseMethod('knots')
 
 knots.basisfd <- function(Fn, interior = TRUE, ...) {
 ##
